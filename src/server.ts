@@ -20,10 +20,12 @@ class Server {
     this.app.use(bodyParser.json());
     this.app.use('/', router());
     this.app.use(errorHandler);
-    this.initialize();
+    if (process.env.NODE_ENV === 'production' && process.env.NODE_APP_INSTANCE === '0') {
+      this.initializeBot();
+    }
   }
 
-  initialize(): void {
+  initializeBot(): void {
     bot.sync();
     console.log('Loading discord bot');
   }
