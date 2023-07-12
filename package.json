@@ -38,6 +38,7 @@
     "discord.js": "^14.9.0",
     "dotenv": "^16.0.3",
     "express": "^5.0.0-beta.1",
+    "lodash": "^4.17.21",
     "mime-types": "^2.1.35",
     "nanoid": "^3.0.0",
     "pm2": "^5.3.0",
@@ -46,6 +47,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.2",
     "@types/cors": "^2.8.13",
     "@types/node": "^20.1.1",
     "nodemon": "^2.0.22",
