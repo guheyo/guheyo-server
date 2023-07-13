@@ -11,18 +11,25 @@ class Server {
 
   constructor() {
     this.app = express();
-    const whitelist = ['http://localhost:3000', 'https://www.wtb.kr'];
-    this.app.use(cors({
-      origin: whitelist,
-      credentials: true
-    }));
+    if (process.env.NODE_ENV === 'development') {
+      this.app.use(cors({
+        origin: true,
+        credentials: true
+      }));
+    } else {
+      const whitelist = ['https://www.wtb.kr'];
+      this.app.use(cors({
+        origin: whitelist,
+        credentials: true
+      }));
+      if (process.env.NODE_APP_INSTANCE === '0') {
+        this.initializeBot();
+      }
+    }
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(bodyParser.json());
     this.app.use('/', router());
     this.app.use(errorHandler);
-    if (process.env.NODE_ENV === 'production' && process.env.NODE_APP_INSTANCE === '0') {
-      this.initializeBot();
-    }
   }
 
   initializeBot(): void {
