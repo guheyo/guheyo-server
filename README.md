@@ -2,6 +2,12 @@
 
 > [wtb.kr](https://wtb.kr)은 디스코드 장터 [동물의 왕국](https://discord.com/servers/dongmulyi-wanggug-806383744151584779)에서 시작된 웹서비스입니다
 
+## Start
+
+Apis - `npm run start:dev:apis`
+
+Bot - `npm run start:dev:bot`
+
 
 **Want to Buy** : 좋아하는 것을 구매해요
 1. 커스텀 키보드를 좋아하는 사람들과 거래해요
