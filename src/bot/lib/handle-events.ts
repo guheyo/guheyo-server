@@ -2,27 +2,29 @@ import { Client } from 'discord.js';
 import path from 'path';
 import fs from 'fs';
 
+const handleEvent = async (client: Client, filePath: string) => {
+  const eventHandler = (await import(filePath)).default;
+  eventHandler.on(client);
+};
+
 const handleEvents = async (client: Client) => {
   const foldersPath = path.join(__dirname, '../../bot/events');
   const eventFolders = fs.readdirSync(foldersPath);
-  
-  for (const folder of eventFolders) {
+
+  eventFolders.forEach((folder) => {
     const eventsPath = path.join(foldersPath, folder);
-    const handleEventFiles = fs.readdirSync(eventsPath).filter(file => /(\.ts$)|(\.js$)/.test(file));
-    for (const file of handleEventFiles) {
+    const handleEventFiles = fs
+      .readdirSync(eventsPath)
+      .filter((file) => /(\.ts$)|(\.js$)/.test(file));
+    handleEventFiles.forEach(async (file) => {
       const filePath = path.join(eventsPath, file);
       try {
         await handleEvent(client, filePath);
       } catch (err) {
         console.log(err);
       }
-    }
-  };
-};
-
-const handleEvent = async (client: Client, filePath: string) => {
-  const handleEvent = (await import(filePath)).default;
-  handleEvent.on(client);
+    });
+  });
 };
 
 export default handleEvents;

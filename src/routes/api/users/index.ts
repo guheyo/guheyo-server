@@ -1,5 +1,11 @@
 import { Router } from 'express';
-import { getUser, getUserBySocailAccount, createUser, updateUser, deleteUser } from './user.ctrl';
+import {
+  getUser,
+  getUserBySocailAccount,
+  createUser,
+  updateUser,
+  deleteUser,
+} from './user.ctrl';
 
 const router = Router({ mergeParams: true });
 router.get('/:id', getUser);

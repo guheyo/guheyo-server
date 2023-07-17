@@ -1,60 +1,56 @@
-import { Session, SocialAccount, User, VerificationToken } from '@prisma/client';
+import { Session } from '@prisma/client';
 import { prisma } from '../loaders';
-import _ from 'lodash';
 
 const sessionService = {
   async createSession(data: Session) {
     return prisma.session.create({
-      data: data
+      data,
     });
   },
   async getSessionAndUser(sessionToken: string) {
     const sessionAndUser = await prisma.session.findUnique({
       where: {
-        sessionToken: sessionToken
+        sessionToken,
       },
       include: {
         user: {
           include: {
             roles: {
               orderBy: {
-                rank: 'asc'
-              }
+                rank: 'asc',
+              },
             },
             socialAccounts: {
               orderBy: {
-                createdAt: 'asc'
-              }
-            }
-          }
-        }
-      }
+                createdAt: 'asc',
+              },
+            },
+          },
+        },
+      },
     });
     if (!sessionAndUser) return null;
-    const {
-      user,
-      ... session
-    } = sessionAndUser;
+    const { user, ...session } = sessionAndUser;
     return {
       session,
-      user
+      user,
     };
   },
   async updateSession(data: Session) {
     return prisma.session.update({
       where: {
-        sessionToken: data.sessionToken
+        sessionToken: data.sessionToken,
       },
-      data: data
+      data,
     });
   },
   async deleteSession(sessionToken: string) {
     return prisma.session.delete({
       where: {
-        sessionToken: sessionToken
-      }
+        sessionToken,
+      },
     });
   },
-}
+};
 
 export default sessionService;

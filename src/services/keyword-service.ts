@@ -1,19 +1,14 @@
 import { prisma } from '../loaders';
-import _ from 'lodash';
 
 const keywordService = {
-  async getKeyword({
-    id
-  }: {
-    id: string
-  }) {
+  async getKeyword({ id }: { id: string }) {
     const keyword = await prisma.keyword.findUnique({
       where: {
-        id: id
+        id,
       },
       include: {
-        users: true
-      }
+        users: true,
+      },
     });
     return keyword;
   },
@@ -44,6 +39,6 @@ const keywordService = {
   //   });
   //   return keyword;
   // }
-}
+};
 
 export default keywordService;

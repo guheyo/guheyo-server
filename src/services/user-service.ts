@@ -1,168 +1,161 @@
-import { prisma } from '../loaders';
 import { User } from '@prisma/client';
-import _ from 'lodash';
+import { prisma } from '../loaders';
 
 const userService = {
   async createUser(data: User) {
     return prisma.user.create({
-      data: data
+      data,
     });
   },
   async getUser(id: string) {
     return prisma.user.findUnique({
       where: {
-        id: id
+        id,
       },
       include: {
         roles: {
           orderBy: {
-            rank: 'asc'
-          }
+            rank: 'asc',
+          },
         },
         socialAccounts: {
           orderBy: {
-            createdAt: 'asc'
-          }
-        }
-      }
+            createdAt: 'asc',
+          },
+        },
+      },
     });
   },
   async getUserBySocailAccount(provider: string, socialId: string) {
     const socailAccount = await prisma.socialAccount.findFirst({
       where: {
-        provider: provider,
-        socialId: socialId,
+        provider,
+        socialId,
       },
       include: {
         user: {
           include: {
             roles: {
               orderBy: {
-                rank: 'asc'
-              }
+                rank: 'asc',
+              },
             },
             socialAccounts: {
               orderBy: {
-                createdAt: 'asc'
-              }
-            }
-          }
-        }
-      }
+                createdAt: 'asc',
+              },
+            },
+          },
+        },
+      },
     });
     return socailAccount?.user;
   },
   async updateUser(id: string, data: User) {
     return prisma.user.update({
       where: {
-        id: id
+        id,
       },
-      data: data,
+      data,
       include: {
         roles: {
           orderBy: {
-            rank: 'asc'
-          }
+            rank: 'asc',
+          },
         },
         socialAccounts: {
           orderBy: {
-            createdAt: 'asc'
-          }
-        }
-      }
+            createdAt: 'asc',
+          },
+        },
+      },
     });
   },
   async deleteUser(id: string) {
     return prisma.user.delete({
       where: {
-        id: id
-      }
+        id,
+      },
     });
   },
   async connectRoles(id: string, roleIds: string[]) {
     return prisma.user.update({
       where: {
-        id: id,
+        id,
       },
       data: {
         roles: {
-          connect: roleIds.map((id) => {
-            return {
-              id: id
-            }
-          })
-        }
+          connect: roleIds.map((roleId) => ({
+            id: roleId,
+          })),
+        },
       },
       include: {
         roles: {
           orderBy: {
-            rank: 'asc'
-          }
+            rank: 'asc',
+          },
         },
         socialAccounts: {
           orderBy: {
-            createdAt: 'asc'
-          }
-        }
-      }
+            createdAt: 'asc',
+          },
+        },
+      },
     });
   },
   async disconnectRoles(id: string, roleIds: string[]) {
     return prisma.user.update({
       where: {
-        id: id,
+        id,
       },
       data: {
         roles: {
-          disconnect: roleIds.map((id) => {
-            return {
-              id: id
-            }
-          })
-        }
+          disconnect: roleIds.map((roleId) => ({
+            id: roleId,
+          })),
+        },
       },
       include: {
         roles: {
           orderBy: {
-            rank: 'asc'
-          }
+            rank: 'asc',
+          },
         },
         socialAccounts: {
           orderBy: {
-            createdAt: 'asc'
-          }
-        }
-      }
+            createdAt: 'asc',
+          },
+        },
+      },
     });
   },
   async setRoles(id: string, roleIds: string[]) {
     return prisma.user.update({
       where: {
-        id: id,
+        id,
       },
       data: {
         roles: {
-          set: roleIds.map((id) => {
-            return {
-              id: id
-            }
-          })
-        }
+          set: roleIds.map((roleId) => ({
+            id: roleId,
+          })),
+        },
       },
       include: {
         roles: {
           orderBy: {
-            rank: 'asc'
-          }
+            rank: 'asc',
+          },
         },
         socialAccounts: {
           orderBy: {
-            createdAt: 'asc'
-          }
-        }
-      }
+            createdAt: 'asc',
+          },
+        },
+      },
     });
   },
-}
+};
 
 export default userService;

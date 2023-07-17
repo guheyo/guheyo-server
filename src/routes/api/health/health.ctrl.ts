@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { RequestHandler } from 'express';
 
 export const checkHealth: RequestHandler = async (req, res, next) => {
@@ -6,10 +5,10 @@ export const checkHealth: RequestHandler = async (req, res, next) => {
     const data = {
       uptime: process.uptime(),
       message: 'Ok',
-      date: new Date()
+      date: new Date(),
     };
     return res.status(200).send(data);
-  } catch(e) {
+  } catch (e) {
     return next(e);
   }
 };

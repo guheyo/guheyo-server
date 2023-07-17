@@ -1,6 +1,11 @@
 import { ErrorRequestHandler } from 'express';
 
-export const errorHandler: ErrorRequestHandler = async (err, req, res, next) => {
+export const errorHandler: ErrorRequestHandler = async (
+  err,
+  req,
+  res,
+  next,
+) => {
   console.log(err);
   return res.status(500);
   // next(err);

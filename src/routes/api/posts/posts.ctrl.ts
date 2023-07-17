@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import postService from '../../../services/postService';
 import _ from 'lodash';
+import postService from '../../../services/post-service';
 
 export const getPost: RequestHandler = async (req, res, next) => {
   const id = _.get(req, 'params.id', '');
