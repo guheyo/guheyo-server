@@ -14,7 +14,7 @@ module.exports = {
     project: './tsconfig.json',
   },
   extends: ['airbnb', 'airbnb-typescript', 'prettier'],
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'prettier', 'check-file'],
   rules: {
     'prettier/prettier': ERROR,
     'import/prefer-default-export': OFF,
