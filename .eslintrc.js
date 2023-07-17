@@ -13,7 +13,7 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  extends: ['airbnb', 'airbnb-typescript', 'prettier'],
+  extends: ['airbnb-base', 'airbnb-typescript/base', 'prettier'],
   plugins: ['@typescript-eslint', 'prettier', 'check-file'],
   rules: {
     'prettier/prettier': ERROR,
@@ -24,6 +24,7 @@ module.exports = {
     'no-param-reassign': [ERROR, { props: false }],
     'no-use-before-define': OFF,
     'no-unused-vars': OFF,
+    'no-console': OFF,
     '@typescript-eslint/no-use-before-define': ERROR,
     '@typescript-eslint/no-unused-vars': [ERROR, { args: 'none' }],
     '@typescript-eslint/naming-convention': [
