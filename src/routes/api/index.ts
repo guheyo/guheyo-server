@@ -1,12 +1,11 @@
 import { Router } from 'express';
 import user from './users';
-import socialAcounts from './socialAccounts';
+import socialAcounts from './social-accounts';
 import guilds from './guilds';
 import categories from './categories';
 import posts from './posts';
 import sessions from './sessions';
 import health from './health';
-
 
 const router = Router();
 router.use('/users', user);

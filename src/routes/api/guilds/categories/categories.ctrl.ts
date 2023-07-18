@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { RequestHandler } from 'express';
-import guildService from '../../../../services/guildService';
+import guildService from '../../../../services/guild-service';
 
 export const getCategories: RequestHandler = async (req, res, next) => {
   const name = _.get(req, 'params.name', '');

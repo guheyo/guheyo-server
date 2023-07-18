@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import postService from '../../../../services/postService';
 import _ from 'lodash';
+import postService from '../../../../services/post-service';
 
 export const listPosts: RequestHandler = async (req, res, next) => {
   const id = _.get(req, 'params.id', '');
@@ -9,8 +9,8 @@ export const listPosts: RequestHandler = async (req, res, next) => {
   try {
     const posts = await postService.getRecentPosts({
       categoryId: id,
-      type: type,
-      cursor: cursor
+      type,
+      cursor,
     });
     return res.send(posts);
   } catch (e) {

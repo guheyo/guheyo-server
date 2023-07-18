@@ -1,8 +1,7 @@
-import { PrismaClient } from '@prisma/client'
-import _ from 'lodash';
-import softDelete from './middlewares/softDelete';
+import { PrismaClient } from '@prisma/client';
+import softDelete from './middlewares/soft-delete';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 prisma.$use(softDelete);
 
 export default prisma;
