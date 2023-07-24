@@ -1,13 +1,13 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { CreateDateColumn, Entity, UpdateDateColumn } from "typeorm";
+import { ApiProperty } from '@nestjs/swagger';
+import { CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export abstract class CommonEntity {
   @ApiProperty()
-  @UpdateDateColumn({ name: "update_ts" })
+  @UpdateDateColumn({ name: 'update_ts' })
   updatedAt: Date;
 
   @ApiProperty()
-  @CreateDateColumn({ name: "create_ts" })
+  @CreateDateColumn({ name: 'create_ts' })
   createdAt: Date;
 }
