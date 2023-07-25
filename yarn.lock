@@ -1041,15 +1041,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/axios@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@nestjs/axios@npm:2.0.0"
+"@nestjs/axios@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@nestjs/axios@npm:3.0.0"
   peerDependencies:
-    "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0
+    "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
     axios: ^1.3.1
     reflect-metadata: ^0.1.12
     rxjs: ^6.0.0 || ^7.0.0
-  checksum: bfadc38c3eed5aa78a39fa62b3026a99ea019a759f1da299c3efb667b07b1129b9c2eaa74a4a5bd2793983c94e9a77ce6cc3802e2399a8861dad8c14d9705be1
+  checksum: 0483ef5a10ed920eb84756472de59b5bd83d09f152de9b769f68a57bd9c2c922961545c50001ac3ea45584cf991aee355b8fef4fe249b849fded4f1df92244f6
   languageName: node
   linkType: hard
 
@@ -1127,19 +1127,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/config@npm:^2.3.0":
-  version: 2.3.4
-  resolution: "@nestjs/config@npm:2.3.4"
+"@nestjs/config@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@nestjs/config@npm:3.0.0"
   dependencies:
     dotenv: 16.1.4
     dotenv-expand: 10.0.0
     lodash: 4.17.21
     uuid: 9.0.0
   peerDependencies:
-    "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0
+    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
     reflect-metadata: ^0.1.13
-    rxjs: ^6.0.0 || ^7.2.0
-  checksum: 3b0c3d90e99788a224d65b8c5eb26809c85c54ac9f5d9e71f623de51a2cc84290c5c2e4b0beb98c68d42caf595571b12c5aabdfee72587b1e2e2fd77cf8952f4
+  checksum: e886dc337cd0fa2018aff5088c5ec9f38331aaf47dbd065ff72e6429a14b213c83cb5a9782b5044c3625a89ef4d7bb426b173773b9d09140433820885731ffa0
   languageName: node
   linkType: hard
 
@@ -1274,18 +1273,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/typeorm@npm:^9.0.1":
-  version: 9.0.1
-  resolution: "@nestjs/typeorm@npm:9.0.1"
+"@nestjs/typeorm@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "@nestjs/typeorm@npm:10.0.0"
   dependencies:
-    uuid: 8.3.2
+    uuid: 9.0.0
   peerDependencies:
-    "@nestjs/common": ^8.0.0 || ^9.0.0
-    "@nestjs/core": ^8.0.0 || ^9.0.0
+    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
+    "@nestjs/core": ^8.0.0 || ^9.0.0 || ^10.0.0
     reflect-metadata: ^0.1.13
     rxjs: ^7.2.0
     typeorm: ^0.3.0
-  checksum: fbf8d28405331bffa7bf224664d99078c0b7bf55a77007f79ca141a94fcf812dbc5ac40baacff370626b15f6e037bb8d60e6fee977c798fbb3f6b080c5d5b3d9
+  checksum: 8551187f6652cb661dd72b2f7dbb0b8c9870e09dd58b11403b510fff5447a0a722d5240468624343580e9f364e9a6d2eaef83d40bd7f409c015b786756e35fb7
   languageName: node
   linkType: hard
 
@@ -2526,6 +2525,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "axios@npm:1.4.0"
+  dependencies:
+    follow-redirects: ^1.15.0
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: 7fb6a4313bae7f45e89d62c70a800913c303df653f19eafec88e56cea2e3821066b8409bc68be1930ecca80e861c52aa787659df0ffec6ad4d451c7816b9386b
+  languageName: node
+  linkType: hard
+
 "babel-jest@npm:^29.6.1":
   version: 29.6.1
   resolution: "babel-jest@npm:29.6.1"
@@ -3662,23 +3672,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-airbnb@npm:^19.0.4":
-  version: 19.0.4
-  resolution: "eslint-config-airbnb@npm:19.0.4"
-  dependencies:
-    eslint-config-airbnb-base: ^15.0.0
-    object.assign: ^4.1.2
-    object.entries: ^1.1.5
-  peerDependencies:
-    eslint: ^7.32.0 || ^8.2.0
-    eslint-plugin-import: ^2.25.3
-    eslint-plugin-jsx-a11y: ^6.5.1
-    eslint-plugin-react: ^7.28.0
-    eslint-plugin-react-hooks: ^4.3.0
-  checksum: 253178689c3c80eef2567e3aaf0612e18973bc9cf51d9be36074b5dd58210e8b6942200a424bcccbb81ac884e41303479ab09f251a2a97addc2de61efdc9576c
-  languageName: node
-  linkType: hard
-
 "eslint-config-prettier@npm:^8.3.0":
   version: 8.8.0
   resolution: "eslint-config-prettier@npm:8.8.0"
@@ -4270,6 +4263,16 @@ __metadata:
   version: 3.2.7
   resolution: "flatted@npm:3.2.7"
   checksum: 427633049d55bdb80201c68f7eb1cbd533e03eac541f97d3aecab8c5526f12a20ccecaeede08b57503e772c769e7f8680b37e8d482d1e5f8d7e2194687f9ea35
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.15.0":
+  version: 1.15.2
+  resolution: "follow-redirects@npm:1.15.2"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: faa66059b66358ba65c234c2f2a37fcec029dc22775f35d9ad6abac56003268baf41e55f9ee645957b32c7d9f62baf1f0b906e68267276f54ec4b4c597c2b190
   languageName: node
   linkType: hard
 
@@ -7005,6 +7008,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: ed7fcc2ba0a33404958e34d95d18638249a68c430e30fcb6c478497d72739ba64ce9810a24f53a7d921d0c065e5b78e3822759800698167256b04659366ca4d4
+  languageName: node
+  linkType: hard
+
 "pump@npm:^3.0.0":
   version: 3.0.0
   resolution: "pump@npm:3.0.0"
@@ -8502,15 +8512,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:8.3.2":
-  version: 8.3.2
-  resolution: "uuid@npm:8.3.2"
-  bin:
-    uuid: dist/bin/uuid
-  checksum: 5575a8a75c13120e2f10e6ddc801b2c7ed7d8f3c8ac22c7ed0c7b2ba6383ec0abda88c905085d630e251719e0777045ae3236f04c812184b7c765f63a70e58df
-  languageName: node
-  linkType: hard
-
 "uuid@npm:9.0.0, uuid@npm:^9.0.0":
   version: 9.0.0
   resolution: "uuid@npm:9.0.0"
@@ -8631,6 +8632,43 @@ __metadata:
   languageName: node
   linkType: hard
 
+"webpack@npm:^5.88.2":
+  version: 5.88.2
+  resolution: "webpack@npm:5.88.2"
+  dependencies:
+    "@types/eslint-scope": ^3.7.3
+    "@types/estree": ^1.0.0
+    "@webassemblyjs/ast": ^1.11.5
+    "@webassemblyjs/wasm-edit": ^1.11.5
+    "@webassemblyjs/wasm-parser": ^1.11.5
+    acorn: ^8.7.1
+    acorn-import-assertions: ^1.9.0
+    browserslist: ^4.14.5
+    chrome-trace-event: ^1.0.2
+    enhanced-resolve: ^5.15.0
+    es-module-lexer: ^1.2.1
+    eslint-scope: 5.1.1
+    events: ^3.2.0
+    glob-to-regexp: ^0.4.1
+    graceful-fs: ^4.2.9
+    json-parse-even-better-errors: ^2.3.1
+    loader-runner: ^4.2.0
+    mime-types: ^2.1.27
+    neo-async: ^2.6.2
+    schema-utils: ^3.2.0
+    tapable: ^2.1.1
+    terser-webpack-plugin: ^5.3.7
+    watchpack: ^2.4.0
+    webpack-sources: ^3.2.3
+  peerDependenciesMeta:
+    webpack-cli:
+      optional: true
+  bin:
+    webpack: bin/webpack.js
+  checksum: 79476a782da31a21f6dd38fbbd06b68da93baf6a62f0d08ca99222367f3b8668f5a1f2086b7bb78e23172e31fa6df6fa7ab09b25e827866c4fc4dc2b30443ce2
+  languageName: node
+  linkType: hard
+
 "whatwg-url@npm:^5.0.0":
   version: 5.0.0
   resolution: "whatwg-url@npm:5.0.0"
@@ -8740,17 +8778,17 @@ __metadata:
   resolution: "wtb-server@workspace:."
   dependencies:
     "@fastify/static": ^6.10.2
-    "@nestjs/axios": ^2.0.0
+    "@nestjs/axios": ^3.0.0
     "@nestjs/cache-manager": ^2.1.0
     "@nestjs/cli": ^10.0.1
     "@nestjs/common": ^10.0.0
-    "@nestjs/config": ^2.3.0
+    "@nestjs/config": ^3.0.0
     "@nestjs/core": ^10.0.0
     "@nestjs/platform-fastify": ^10.0.0
     "@nestjs/schematics": ^10.0.1
     "@nestjs/swagger": ^7.1.1
     "@nestjs/testing": ^10.0.0
-    "@nestjs/typeorm": ^9.0.1
+    "@nestjs/typeorm": ^10.0.0
     "@prisma/client": ^4.13.0
     "@types/cache-manager-redis-store": ^2.0.1
     "@types/express": ^4.17.17
@@ -8761,13 +8799,14 @@ __metadata:
     "@types/supertest": ^2.0.11
     "@typescript-eslint/eslint-plugin": ^5.0.0
     "@typescript-eslint/parser": ^5.0.0
+    axios: ^1.4.0
     cache-manager: ^5.2.3
     cache-manager-redis-store: ^2.0.0
     class-transformer: ^0.5.1
     class-validator: ^0.14.0
     cross-env: ^7.0.3
     eslint: ^8.0.1
-    eslint-config-airbnb: ^19.0.4
+    eslint-config-airbnb-base: ^15.0.0
     eslint-config-airbnb-typescript: ^17.0.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-check-file: ^2.5.0
@@ -8792,6 +8831,7 @@ __metadata:
     tsconfig-paths: 4.1.1
     typeorm: ^0.3.11
     typescript: ^4.7.4
+    webpack: ^5.88.2
   languageName: unknown
   linkType: soft
 
