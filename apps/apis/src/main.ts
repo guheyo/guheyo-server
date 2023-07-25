@@ -9,11 +9,11 @@ import { ApisModule } from "~apis/src/apis.module";
 
 function swagger(app: NestFastifyApplication) {
   const swaggerDocumentBuilder = new DocumentBuilder()
-    .setTitle("Apis Document")
-    .setVersion("1.0.0")
+    .setTitle('Apis Document')
+    .setVersion('1.0.0')
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerDocumentBuilder);
-  SwaggerModule.setup("documentation", app, swaggerDocument);
+  SwaggerModule.setup('documentation', app, swaggerDocument);
 }
 
 async function bootstrap() {
@@ -23,14 +23,14 @@ async function bootstrap() {
   });
 
   const configService = app.get(ConfigService);
-  const serverConfig = configService.get("server");
+  const serverConfig = configService.get('server');
 
   app.enableShutdownHooks();
 
   app.useGlobalFilters(new HttpExceptionFilter()); // 전역 필터 적용
 
-  app.setGlobalPrefix("apis", {
-    exclude: [{ path: "check_health", method: RequestMethod.GET }],
+  app.setGlobalPrefix('apis', {
+    exclude: [{ path: 'check_health', method: RequestMethod.GET }],
   });
 
   app.useGlobalPipes(
@@ -43,7 +43,7 @@ async function bootstrap() {
 
   swagger(app);
 
-  await app.listen(serverConfig.port, "0.0.0.0");
+  await app.listen(serverConfig.port, '0.0.0.0');
 }
 
 bootstrap();
