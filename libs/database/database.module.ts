@@ -1,16 +1,26 @@
-import {DynamicModule} from "@nestjs/common";
-import {TypeOrmModule, TypeOrmModuleOptions} from "@nestjs/typeorm";
-import {ConfigService} from "@nestjs/config";
+import { DynamicModule, Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { RedisClientOptions } from "redis";
+import { CacheModule } from "@nestjs/cache-manager";
+import { CacheModuleOptions } from "@nestjs/common/cache";
+import { PrismaService } from "@lib/database/prisma.service";
 
 export class DatabaseModule {
-  static TypeOrmModule(database: string, options: TypeOrmModuleOptions): DynamicModule {
-    return TypeOrmModule.forRootAsync({
+  static PrismaModule(): DynamicModule {
+    return {
+      module: DatabaseModule,
+      providers: [PrismaService],
+      exports: [PrismaService],
+    };
+  }
+
+  static RedisModule(options: CacheModuleOptions): DynamicModule {
+    return CacheModule.registerAsync<RedisClientOptions>({
+      imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (
-          configService: ConfigService,
-      ): Promise<TypeOrmModuleOptions> => {
-        const config = configService.get(database);
-        return {...config, ...options};
+      useFactory: async (configService: ConfigService): Promise<CacheModuleOptions> => {
+        const config = configService.get("redis");
+        return { ...config, ...options };
       },
     });
   }

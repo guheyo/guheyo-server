@@ -4,7 +4,8 @@ import { RequestMethod, ValidationPipe } from "@nestjs/common";
 import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
 import { ConfigService } from "@nestjs/config";
 import { HttpExceptionFilter } from "@lib/filter/http-exception.filter";
-import { BotModule } from "~bot/src/bot.module";
+import { PrismaService } from "@lib/database/prisma.service";
+import { ApisModule } from "~apis/src/apis.module";
 
 function swagger(app: NestFastifyApplication) {
   const swaggerDocumentBuilder = new DocumentBuilder()
@@ -17,12 +18,15 @@ function swagger(app: NestFastifyApplication) {
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
-  const app = await NestFactory.create<NestFastifyApplication>(BotModule, fastifyAdapter, {
+  const app = await NestFactory.create<NestFastifyApplication>(ApisModule, fastifyAdapter, {
     logger: ["error", "warn"],
   });
 
   const configService = app.get(ConfigService);
   const serverConfig = configService.get("server");
+
+  const prismaService = app.get(PrismaService);
+  await prismaService.enableShutdownHooks(app);
 
   app.useGlobalFilters(new HttpExceptionFilter()); // 전역 필터 적용
 
