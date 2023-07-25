@@ -19,6 +19,7 @@ module.exports = {
   rules: {
     'prettier/prettier': ERROR,
     'import/prefer-default-export': OFF,
+    'import/extensions': OFF,
     'no-nested-ternary': OFF,
     'no-ternary': OFF,
     'no-unneeded-ternary': WARNING,
@@ -26,6 +27,7 @@ module.exports = {
     'no-use-before-define': OFF,
     'no-unused-vars': OFF,
     'no-console': OFF,
+    'class-methods-use-this': OFF,
     '@typescript-eslint/no-use-before-define': ERROR,
     '@typescript-eslint/no-unused-vars': [ERROR, { args: 'none' }],
     '@typescript-eslint/naming-convention': [
@@ -60,8 +62,9 @@ module.exports = {
     'check-file/folder-naming-convention': [
       ERROR,
       {
-        '*/**/': 'KEBAB_CASE',
+        '*/!(__tests__)/': 'KEBAB_CASE',
       },
     ],
   },
-};
+  ignorePatterns: ['.eslintrc.js'],
+}
