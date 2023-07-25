@@ -1,34 +1,34 @@
-import { NestFactory } from "@nestjs/core";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { RequestMethod, ValidationPipe } from "@nestjs/common";
-import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
-import { ConfigService } from "@nestjs/config";
-import { HttpExceptionFilter } from "@lib/filter/http-exception.filter";
-import { BotModule } from "~bot/src/bot.module";
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { RequestMethod, ValidationPipe } from '@nestjs/common';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { ConfigService } from '@nestjs/config';
+import { HttpExceptionFilter } from '@lib/filter/http-exception.filter';
+import { BotModule } from '~bot/src/bot.module';
 
 function swagger(app: NestFastifyApplication) {
   const swaggerDocumentBuilder = new DocumentBuilder()
-    .setTitle("Bot Document")
-    .setDescription("Bot.md")
-    .setVersion("1.0.0")
+    .setTitle('Bot Document')
+    .setDescription('Bot.md')
+    .setVersion('1.0.0')
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerDocumentBuilder);
-  SwaggerModule.setup("documentation", app, swaggerDocument);
+  SwaggerModule.setup('documentation', app, swaggerDocument);
 }
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
   const app = await NestFactory.create<NestFastifyApplication>(BotModule, fastifyAdapter, {
-    logger: ["error", "warn"],
+    logger: ['error', 'warn'],
   });
 
   const configService = app.get(ConfigService);
-  const serverConfig = configService.get("server");
+  const serverConfig = configService.get('server');
 
   app.useGlobalFilters(new HttpExceptionFilter()); // 전역 필터 적용
 
-  app.setGlobalPrefix("bot", {
-    exclude: [{ path: "check_health", method: RequestMethod.GET }],
+  app.setGlobalPrefix('bot', {
+    exclude: [{ path: 'check_health', method: RequestMethod.GET }],
   });
 
   app.useGlobalPipes(
@@ -41,7 +41,7 @@ async function bootstrap() {
 
   swagger(app);
 
-  await app.listen(serverConfig.port, "0.0.0.0");
+  await app.listen(serverConfig.port, '0.0.0.0');
 }
 
 bootstrap();

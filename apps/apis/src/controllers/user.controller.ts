@@ -1,20 +1,20 @@
-import { Controller, Get, HttpStatus, Inject, Param, Version } from "@nestjs/common";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { HttpResponse } from "@lib/response/http.response";
-import { IUserService } from "~apis/src/interfaces";
+import { Controller, Get, HttpStatus, Inject, Param, Version } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { HttpResponse } from '@lib/response/http.response';
+import { IUserService } from '~apis/src/interfaces';
 
-@ApiTags("user")
-@Controller("user")
+@ApiTags('user')
+@Controller('user')
 export class UserController {
-  constructor(@Inject("IUserService") private readonly userService: IUserService) {}
+  constructor(@Inject('IUserService') private readonly userService: IUserService) {}
 
   @ApiOperation({
-    summary: "Retrieve a user by id",
+    summary: 'Retrieve a user by id',
   })
-  @Version("1")
-  @Get("/user")
-  async findOne(@Param("userId") userId: number): Promise<HttpResponse<number>> {
+  @Version('1')
+  @Get('/user')
+  async findOne(@Param('userId') userId: number): Promise<HttpResponse<number>> {
     const data = await this.userService.findOne(userId);
-    return new HttpResponse(HttpStatus.OK, "OK", data);
+    return new HttpResponse(HttpStatus.OK, 'OK', data);
   }
 }
