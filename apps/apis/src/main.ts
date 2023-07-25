@@ -1,11 +1,10 @@
-import { NestFactory } from "@nestjs/core";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { RequestMethod, ValidationPipe } from "@nestjs/common";
-import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
-import { ConfigService } from "@nestjs/config";
-import { HttpExceptionFilter } from "@lib/filter/http-exception.filter";
-import { PrismaService } from "@lib/database/prisma.service";
-import { ApisModule } from "~apis/src/apis.module";
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { RequestMethod, ValidationPipe } from '@nestjs/common';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { ConfigService } from '@nestjs/config';
+import { HttpExceptionFilter } from '@lib/filter/http-exception.filter';
+import { ApisModule } from '~apis/src/apis.module';
 
 function swagger(app: NestFastifyApplication) {
   const swaggerDocumentBuilder = new DocumentBuilder()
@@ -19,7 +18,7 @@ function swagger(app: NestFastifyApplication) {
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
   const app = await NestFactory.create<NestFastifyApplication>(ApisModule, fastifyAdapter, {
-    logger: ["error", "warn"],
+    logger: ['error', 'warn'],
   });
 
   const configService = app.get(ConfigService);

@@ -9,7 +9,7 @@ async function main() {
     },
     update: {},
     create: {
-      name: "키보드",
+      name: '키보드',
       rank: 0,
       categories: {
         create: [
