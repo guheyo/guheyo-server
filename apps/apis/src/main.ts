@@ -25,8 +25,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const serverConfig = configService.get("server");
 
-  const prismaService = app.get(PrismaService);
-  await prismaService.enableShutdownHooks(app);
+  app.enableShutdownHooks();
 
   app.useGlobalFilters(new HttpExceptionFilter()); // 전역 필터 적용
 

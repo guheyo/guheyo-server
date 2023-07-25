@@ -11,6 +11,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
           url: configService.get("postgresql.url"),
         },
       },
+      log: [
+        { emit: "event", level: "query" },
+        { emit: "stdout", level: "info" },
+        { emit: "stdout", level: "warn" },
+        { emit: "stdout", level: "error" },
+      ],
     });
   }
 
@@ -20,11 +26,5 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 
   async onModuleDestroy() {
     await this.$disconnect();
-  }
-
-  async enableShutdownHooks(app: INestApplication) {
-    this.$on("beforeExit", async () => {
-      await app.close();
-    });
   }
 }
