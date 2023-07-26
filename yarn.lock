@@ -1033,15 +1033,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/axios@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@nestjs/axios@npm:2.0.0"
+"@nestjs/axios@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@nestjs/axios@npm:3.0.0"
   peerDependencies:
-    "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0
+    "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
     axios: ^1.3.1
     reflect-metadata: ^0.1.12
     rxjs: ^6.0.0 || ^7.0.0
-  checksum: bfadc38c3eed5aa78a39fa62b3026a99ea019a759f1da299c3efb667b07b1129b9c2eaa74a4a5bd2793983c94e9a77ce6cc3802e2399a8861dad8c14d9705be1
+  checksum: 0483ef5a10ed920eb84756472de59b5bd83d09f152de9b769f68a57bd9c2c922961545c50001ac3ea45584cf991aee355b8fef4fe249b849fded4f1df92244f6
+  languageName: node
+  linkType: hard
+
+"@nestjs/cache-manager@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@nestjs/cache-manager@npm:2.1.0"
+  peerDependencies:
+    "@nestjs/common": ^9.0.0 || ^10.0.0
+    "@nestjs/core": ^9.0.0 || ^10.0.0
+    cache-manager: <=5
+    reflect-metadata: ^0.1.12
+    rxjs: ^7.0.0
+  checksum: f38cff32a17ce2277f90b80c9b58ed5d915ed4e3b644067d9315a71d8ba5e3caba99d283a9e2103a14673df529235f29c9e345ead0c0f6a7bb458f1c8cf6dcd5
   languageName: node
   linkType: hard
 
@@ -1085,7 +1098,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/common@npm:^10.1.1":
+"@nestjs/common@npm:^10.0.0":
   version: 10.2.6
   resolution: "@nestjs/common@npm:10.2.6"
   dependencies:
@@ -1106,19 +1119,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/config@npm:^2.3.0":
-  version: 2.3.4
-  resolution: "@nestjs/config@npm:2.3.4"
+"@nestjs/config@npm:^3.0.0":
+  version: 3.1.1
+  resolution: "@nestjs/config@npm:3.1.1"
   dependencies:
-    dotenv: 16.1.4
+    dotenv: 16.3.1
     dotenv-expand: 10.0.0
     lodash: 4.17.21
     uuid: 9.0.0
   peerDependencies:
-    "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0
+    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
     reflect-metadata: ^0.1.13
-    rxjs: ^6.0.0 || ^7.2.0
-  checksum: 3b0c3d90e99788a224d65b8c5eb26809c85c54ac9f5d9e71f623de51a2cc84290c5c2e4b0beb98c68d42caf595571b12c5aabdfee72587b1e2e2fd77cf8952f4
+  checksum: 95446dd12678581582c15a1c7cc4d7b560466b646085cec2aab442e977def6699526f300c18f0bbbd795d7e7675b505ace382a453b3babc650d14d0c5af9502f
   languageName: node
   linkType: hard
 
@@ -1253,18 +1265,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/typeorm@npm:^9.0.1":
-  version: 9.0.1
-  resolution: "@nestjs/typeorm@npm:9.0.1"
+"@nestjs/typeorm@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "@nestjs/typeorm@npm:10.0.0"
   dependencies:
-    uuid: 8.3.2
+    uuid: 9.0.0
   peerDependencies:
-    "@nestjs/common": ^8.0.0 || ^9.0.0
-    "@nestjs/core": ^8.0.0 || ^9.0.0
+    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
+    "@nestjs/core": ^8.0.0 || ^9.0.0 || ^10.0.0
     reflect-metadata: ^0.1.13
     rxjs: ^7.2.0
     typeorm: ^0.3.0
-  checksum: fbf8d28405331bffa7bf224664d99078c0b7bf55a77007f79ca141a94fcf812dbc5ac40baacff370626b15f6e037bb8d60e6fee977c798fbb3f6b080c5d5b3d9
+  checksum: 8551187f6652cb661dd72b2f7dbb0b8c9870e09dd58b11403b510fff5447a0a722d5240468624343580e9f364e9a6d2eaef83d40bd7f409c015b786756e35fb7
   languageName: node
   linkType: hard
 
@@ -1321,6 +1333,34 @@ __metadata:
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
   checksum: 6ad6a00fc4f2f2cfc6bff76fb1d88b8ee20bc0601e18ebb01b6d4be583733a860239a521a7fbca73b612e66705078809483549d2b18f370eb346c5155c8e4a0f
+  languageName: node
+  linkType: hard
+
+"@prisma/client@npm:^4.13.0":
+  version: 4.13.0
+  resolution: "@prisma/client@npm:4.13.0"
+  dependencies:
+    "@prisma/engines-version": 4.13.0-50.1e7af066ee9cb95cf3a403c78d9aab3e6b04f37a
+  peerDependencies:
+    prisma: "*"
+  peerDependenciesMeta:
+    prisma:
+      optional: true
+  checksum: 74e2ede6308d6f70dc6244c34d13cf5f6c8da4f1a1ffe42a26192675ecac02733cb5482518d2a37fa057f160873fe8d42f5e3a08fc45d52b1eb386522bdbec0b
+  languageName: node
+  linkType: hard
+
+"@prisma/engines-version@npm:4.13.0-50.1e7af066ee9cb95cf3a403c78d9aab3e6b04f37a":
+  version: 4.13.0-50.1e7af066ee9cb95cf3a403c78d9aab3e6b04f37a
+  resolution: "@prisma/engines-version@npm:4.13.0-50.1e7af066ee9cb95cf3a403c78d9aab3e6b04f37a"
+  checksum: cc583fe956b65fd4548082917f14ccf1c3c54d6b26623583f5e63298a8b4b5a492ba90597123af1fc272115621cb7340e2d708d5b5e252f59139b35f0df00abe
+  languageName: node
+  linkType: hard
+
+"@prisma/engines@npm:4.13.0":
+  version: 4.13.0
+  resolution: "@prisma/engines@npm:4.13.0"
+  checksum: 6c2315dc1e1a8a07f02a074ee6898a66a96a3bbbb4341224cb1dc966da3959c2ee7557131a2ce37fd559c53d210b904b72c4559474e017438e6753d480c3cfe1
   languageName: node
   linkType: hard
 
@@ -1495,6 +1535,23 @@ __metadata:
     "@types/connect": "*"
     "@types/node": "*"
   checksum: e17840c7d747a549f00aebe72c89313d09fbc4b632b949b2470c5cb3b1cb73863901ae84d9335b567a79ec5efcfb8a28ff8e3f36bc8748a9686756b6d5681f40
+  languageName: node
+  linkType: hard
+
+"@types/cache-manager-redis-store@npm:^2.0.1":
+  version: 2.0.2
+  resolution: "@types/cache-manager-redis-store@npm:2.0.2"
+  dependencies:
+    "@types/cache-manager": "*"
+    "@types/redis": ^2.8.0
+  checksum: 32f2db11102b70d446532bf97329f77fd5875ba278c05711a46686e1174ee9a5b111556da025b9abfe63d24e9c1636b42dc9069314b3972c0b3258125e6d8036
+  languageName: node
+  linkType: hard
+
+"@types/cache-manager@npm:*":
+  version: 4.0.3
+  resolution: "@types/cache-manager@npm:4.0.3"
+  checksum: b17db6995dc748c9454d7426dbb99644a76ca89ad0b0745fc5d105ce1de52285682e05eaf8509c691c418c9838a155272c15187d201ce45c8470d01cc21f76c0
   languageName: node
   linkType: hard
 
@@ -1686,6 +1743,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/redis@npm:^2.8.0":
+  version: 2.8.32
+  resolution: "@types/redis@npm:2.8.32"
+  dependencies:
+    "@types/node": "*"
+  checksum: 2b12103e05977941870c9a248f6ea51f4b7ad7e0f16a7403799c2ed1b3e63b60f693c39f9186be0ea02776934c4595ddcd2a5bde41e530aaad42d26449f6a669
+  languageName: node
+  linkType: hard
+
 "@types/semver@npm:^7.3.12":
   version: 7.5.0
   resolution: "@types/semver@npm:7.5.0"
@@ -1736,6 +1802,13 @@ __metadata:
   dependencies:
     "@types/superagent": "*"
   checksum: f0e2b44f86bec2f708d6a3d0cb209055b487922040773049b0f8c6b557af52d4b5fa904e17dfaa4ce6e610172206bbec7b62420d158fa57b6ffc2de37b1730d3
+  languageName: node
+  linkType: hard
+
+"@types/validator@npm:^13.7.10":
+  version: 13.11.1
+  resolution: "@types/validator@npm:13.11.1"
+  checksum: 49e8b611e0b9a0cd645534fd5eeacc64c14ac2f11d7e91d3d8b891f7cf730bccb8a4b7466ac67f4c11e16531bc211a547b97314ca977dd5e58468a77bd0da735
   languageName: node
   linkType: hard
 
@@ -2459,6 +2532,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "axios@npm:1.4.0"
+  dependencies:
+    follow-redirects: ^1.15.0
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: 7fb6a4313bae7f45e89d62c70a800913c303df653f19eafec88e56cea2e3821066b8409bc68be1930ecca80e861c52aa787659df0ffec6ad4d451c7816b9386b
+  languageName: node
+  linkType: hard
+
 "babel-jest@npm:^29.7.0":
   version: 29.7.0
   resolution: "babel-jest@npm:29.7.0"
@@ -2674,6 +2758,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cache-manager-redis-store@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "cache-manager-redis-store@npm:2.0.0"
+  dependencies:
+    redis: ^3.0.2
+  checksum: 2e651dbf40691e3d75e5e85b597c4e2db3d110ba92a18a3a3c31aaa57f343e17213e4bd2f77e7283336b7105de2240766ceb375e1438edc0bae02fb595b76952
+  languageName: node
+  linkType: hard
+
+"cache-manager@npm:^5.2.3":
+  version: 5.2.3
+  resolution: "cache-manager@npm:5.2.3"
+  dependencies:
+    lodash.clonedeep: ^4.5.0
+    lru-cache: ^9.1.2
+  checksum: 2bcd6a385e5575bf9577a209e02c9f5074cd476e6eb08a0f108e45d80c20f4e91fbff163493fe345f166f8ecb232687f20541bc4f42fb2167f8770f9f8b26c51
+  languageName: node
+  linkType: hard
+
 "call-bind@npm:^1.0.0, call-bind@npm:^1.0.2":
   version: 1.0.2
   resolution: "call-bind@npm:1.0.2"
@@ -2801,13 +2904,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"class-validator@npm:^0.13.2":
-  version: 0.13.2
-  resolution: "class-validator@npm:0.13.2"
+"class-validator@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "class-validator@npm:0.14.0"
   dependencies:
-    libphonenumber-js: ^1.9.43
+    "@types/validator": ^13.7.10
+    libphonenumber-js: ^1.10.14
     validator: ^13.7.0
-  checksum: 0deb4c29faa18345f6989fd7eaaaa07b05caae5298603fcd6485531c6daad503e5d2b24cc1342e4fc88ae5ba0acffdc24d0fc333110ef3f21a667cd8a79e1258
+  checksum: f62e4a0ad24cee68f4b2bc70d32b96de90cb598f96bde362b4dbf4234151af8eb6ae225458312a38fc49fa3959844cf61c60e731a8205e9a570454cff8de2710
   languageName: node
   linkType: hard
 
@@ -3245,6 +3349,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"denque@npm:^1.5.0":
+  version: 1.5.1
+  resolution: "denque@npm:1.5.1"
+  checksum: 4375ad19d5cea99f90effa82a8cecdaa10f4eb261fbcd7e47cd753ff2737f037aac8f7f4e031cc77f3966314c491c86a0d3b20c128aeee57f791b4662c45108e
+  languageName: node
+  linkType: hard
+
 "depd@npm:2.0.0, depd@npm:^2.0.0":
   version: 2.0.0
   resolution: "depd@npm:2.0.0"
@@ -3331,10 +3442,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.1.4":
-  version: 16.1.4
-  resolution: "dotenv@npm:16.1.4"
-  checksum: c1b2e13df4d374a6a29e134c56c7b040ba20500677fe8b9939ea654f3b3badb9aaa0b172e40e4dfa1233a4177dbb8fb79d84cc79a50ac9c9641fe2ad98c14876
+"dotenv@npm:16.3.1":
+  version: 16.3.1
+  resolution: "dotenv@npm:16.3.1"
+  checksum: 15d75e7279018f4bafd0ee9706593dd14455ddb71b3bcba9c52574460b7ccaf67d5cf8b2c08a5af1a9da6db36c956a04a1192b101ee102a3e0cf8817bbcf3dfd
   languageName: node
   linkType: hard
 
@@ -3645,23 +3756,6 @@ __metadata:
     eslint: ^7.32.0 || ^8.2.0
     eslint-plugin-import: ^2.25.3
   checksum: cfd26a2782e322ebfdfbf9a64262332c7653f297c4a32d7b951079eb18bb9502a83d67b3f7ef2cc1c5374ae06098eb454ed010784b3416e7274839083022a08c
-  languageName: node
-  linkType: hard
-
-"eslint-config-airbnb@npm:^19.0.4":
-  version: 19.0.4
-  resolution: "eslint-config-airbnb@npm:19.0.4"
-  dependencies:
-    eslint-config-airbnb-base: ^15.0.0
-    object.assign: ^4.1.2
-    object.entries: ^1.1.5
-  peerDependencies:
-    eslint: ^7.32.0 || ^8.2.0
-    eslint-plugin-import: ^2.25.3
-    eslint-plugin-jsx-a11y: ^6.5.1
-    eslint-plugin-react: ^7.28.0
-    eslint-plugin-react-hooks: ^4.3.0
-  checksum: 253178689c3c80eef2567e3aaf0612e18973bc9cf51d9be36074b5dd58210e8b6942200a424bcccbb81ac884e41303479ab09f251a2a97addc2de61efdc9576c
   languageName: node
   linkType: hard
 
@@ -4254,6 +4348,16 @@ __metadata:
   version: 3.2.7
   resolution: "flatted@npm:3.2.7"
   checksum: 427633049d55bdb80201c68f7eb1cbd533e03eac541f97d3aecab8c5526f12a20ccecaeede08b57503e772c769e7f8680b37e8d482d1e5f8d7e2194687f9ea35
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.15.0":
+  version: 1.15.2
+  resolution: "follow-redirects@npm:1.15.2"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: faa66059b66358ba65c234c2f2a37fcec029dc22775f35d9ad6abac56003268baf41e55f9ee645957b32c7d9f62baf1f0b906e68267276f54ec4b4c597c2b190
   languageName: node
   linkType: hard
 
@@ -5953,7 +6057,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libphonenumber-js@npm:^1.9.43":
+"libphonenumber-js@npm:^1.10.14":
   version: 1.10.44
   resolution: "libphonenumber-js@npm:1.10.44"
   checksum: ada1bc135ce4b77eaa859a2c39d5b64cf142a76d203cb52f8f0e3097c30acba8a8faa4c6d975968333216d48448c589eb640b829ae5e95de706415684791cad9
@@ -6011,6 +6115,13 @@ __metadata:
   dependencies:
     p-locate: ^5.0.0
   checksum: 72eb661788a0368c099a184c59d2fee760b3831c9c1c33955e8a19ae4a21b4116e53fa736dc086cdeb9fce9f7cc508f2f92d2d3aae516f133e16a2bb59a39f5a
+  languageName: node
+  linkType: hard
+
+"lodash.clonedeep@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.clonedeep@npm:4.5.0"
+  checksum: 92c46f094b064e876a23c97f57f81fbffd5d760bf2d8a1c61d85db6d1e488c66b0384c943abee4f6af7debf5ad4e4282e74ff83177c9e63d8ff081a4837c3489
   languageName: node
   linkType: hard
 
@@ -6074,6 +6185,13 @@ __metadata:
   version: 10.0.0
   resolution: "lru-cache@npm:10.0.0"
   checksum: 18f101675fe283bc09cda0ef1e3cc83781aeb8373b439f086f758d1d91b28730950db785999cd060d3c825a8571c03073e8c14512b6655af2188d623031baf50
+  languageName: node
+  linkType: hard
+
+"lru-cache@npm:^9.1.2":
+  version: 9.1.2
+  resolution: "lru-cache@npm:9.1.2"
+  checksum: d3415634be3908909081fc4c56371a8d562d9081eba70543d86871b978702fffd0e9e362b83921b27a29ae2b37b90f55675aad770a54ac83bb3e4de5049d4b15
   languageName: node
   linkType: hard
 
@@ -7031,6 +7149,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prisma@npm:^4.13.0":
+  version: 4.13.0
+  resolution: "prisma@npm:4.13.0"
+  dependencies:
+    "@prisma/engines": 4.13.0
+  bin:
+    prisma: build/index.js
+    prisma2: build/index.js
+  checksum: b735dd19842da1dfe5b3411551665db5f2a419ee5e67136dfc2c8cae3c7fe0f885b472b0f9decb3adb4af83260c51a605ecca8f2194805804e020c382096a75a
+  languageName: node
+  linkType: hard
+
 "process-warning@npm:^1.0.0":
   version: 1.0.0
   resolution: "process-warning@npm:1.0.0"
@@ -7079,6 +7209,13 @@ __metadata:
     forwarded: 0.2.0
     ipaddr.js: 1.9.1
   checksum: 29c6990ce9364648255454842f06f8c46fcd124d3e6d7c5066df44662de63cdc0bad032e9bf5a3d653ff72141cc7b6019873d685708ac8210c30458ad99f2b74
+  languageName: node
+  linkType: hard
+
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: ed7fcc2ba0a33404958e34d95d18638249a68c430e30fcb6c478497d72739ba64ce9810a24f53a7d921d0c065e5b78e3822759800698167256b04659366ca4d4
   languageName: node
   linkType: hard
 
@@ -7198,6 +7335,41 @@ __metadata:
   dependencies:
     resolve: ^1.1.6
   checksum: fe76bf9c21875ac16e235defedd7cbd34f333c02a92546142b7911a0f7c7059d2e16f441fe6fb9ae203f459c05a31b2bcf26202896d89e390eda7514d5d2702b
+  languageName: node
+  linkType: hard
+
+"redis-commands@npm:^1.7.0":
+  version: 1.7.0
+  resolution: "redis-commands@npm:1.7.0"
+  checksum: d1ff7fbcb5e54768c77f731f1d49679d2a62c3899522c28addb4e2e5813aea8bcac3f22519d71d330224c3f2937f935dfc3d8dc65e90db0f5fe22dc2c1515aa7
+  languageName: node
+  linkType: hard
+
+"redis-errors@npm:^1.0.0, redis-errors@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "redis-errors@npm:1.2.0"
+  checksum: f28ac2692113f6f9c222670735aa58aeae413464fd58ccf3fce3f700cae7262606300840c802c64f2b53f19f65993da24dc918afc277e9e33ac1ff09edb394f4
+  languageName: node
+  linkType: hard
+
+"redis-parser@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "redis-parser@npm:3.0.0"
+  dependencies:
+    redis-errors: ^1.0.0
+  checksum: 89290ae530332f2ae37577647fa18208d10308a1a6ba750b9d9a093e7398f5e5253f19855b64c98757f7129cccce958e4af2573fdc33bad41405f87f1943459a
+  languageName: node
+  linkType: hard
+
+"redis@npm:^3.0.2":
+  version: 3.1.2
+  resolution: "redis@npm:3.1.2"
+  dependencies:
+    denque: ^1.5.0
+    redis-commands: ^1.7.0
+    redis-errors: ^1.2.0
+    redis-parser: ^3.0.0
+  checksum: baec42198626b22d2dfc063b6a6f30394daee994c21f380e58ecf91c3edee333c4e32907c30f082fe66d2177695f7b2567902eef399ecb22da3e199ea6363a30
   languageName: node
   linkType: hard
 
@@ -8644,15 +8816,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:8.3.2":
-  version: 8.3.2
-  resolution: "uuid@npm:8.3.2"
-  bin:
-    uuid: dist/bin/uuid
-  checksum: 5575a8a75c13120e2f10e6ddc801b2c7ed7d8f3c8ac22c7ed0c7b2ba6383ec0abda88c905085d630e251719e0777045ae3236f04c812184b7c765f63a70e58df
-  languageName: node
-  linkType: hard
-
 "uuid@npm:9.0.0, uuid@npm:^9.0.0":
   version: 9.0.0
   resolution: "uuid@npm:9.0.0"
@@ -8736,7 +8899,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:5.88.2":
+"webpack@npm:5.88.2, webpack@npm:^5.88.2":
   version: 5.88.2
   resolution: "webpack@npm:5.88.2"
   dependencies:
@@ -8907,16 +9070,19 @@ __metadata:
   resolution: "wtb-server@workspace:."
   dependencies:
     "@fastify/static": ^6.10.2
-    "@nestjs/axios": ^2.0.0
+    "@nestjs/axios": ^3.0.0
+    "@nestjs/cache-manager": ^2.1.0
     "@nestjs/cli": ^10.0.1
-    "@nestjs/common": ^10.1.1
-    "@nestjs/config": ^2.3.0
+    "@nestjs/common": ^10.0.0
+    "@nestjs/config": ^3.0.0
     "@nestjs/core": ^10.0.0
     "@nestjs/platform-fastify": ^10.0.0
     "@nestjs/schematics": ^10.0.1
     "@nestjs/swagger": ^7.1.1
     "@nestjs/testing": ^10.0.0
-    "@nestjs/typeorm": ^9.0.1
+    "@nestjs/typeorm": ^10.0.0
+    "@prisma/client": ^4.13.0
+    "@types/cache-manager-redis-store": ^2.0.1
     "@types/express": ^4.17.17
     "@types/jest": 29.2.4
     "@types/js-yaml": ^4.0.5
@@ -8925,11 +9091,14 @@ __metadata:
     "@types/supertest": ^2.0.11
     "@typescript-eslint/eslint-plugin": ^5.0.0
     "@typescript-eslint/parser": ^5.0.0
+    axios: ^1.4.0
+    cache-manager: ^5.2.3
+    cache-manager-redis-store: ^2.0.0
     class-transformer: ^0.5.1
-    class-validator: ^0.13.2
+    class-validator: ^0.14.0
     cross-env: ^7.0.3
     eslint: ^8.0.1
-    eslint-config-airbnb: ^19.0.4
+    eslint-config-airbnb-base: ^15.0.0
     eslint-config-airbnb-typescript: ^17.0.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-check-file: ^2.5.0
@@ -8942,6 +9111,7 @@ __metadata:
     nestjs-typeorm-paginate: ^4.0.3
     nodeenv: ^3.0.75
     prettier: ^2.3.2
+    prisma: ^4.13.0
     redis: ^4.6.5
     reflect-metadata: ^0.1.13
     rxjs: ^7.2.0
@@ -8953,6 +9123,7 @@ __metadata:
     tsconfig-paths: 4.1.1
     typeorm: ^0.3.11
     typescript: ^4.7.4
+    webpack: ^5.88.2
   languageName: unknown
   linkType: soft
 
