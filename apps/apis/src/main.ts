@@ -4,7 +4,7 @@ import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from '@lib/filter/http-exception.filter';
-import { BotModule } from '~bot/src/bot.module';
+import { ApisModule } from '~apis/src/apis.module';
 
 function swagger(app: NestFastifyApplication) {
   const swaggerDocumentBuilder = new DocumentBuilder()
@@ -17,12 +17,14 @@ function swagger(app: NestFastifyApplication) {
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
-  const app = await NestFactory.create<NestFastifyApplication>(BotModule, fastifyAdapter, {
+  const app = await NestFactory.create<NestFastifyApplication>(ApisModule, fastifyAdapter, {
     logger: ['error', 'warn'],
   });
 
   const configService = app.get(ConfigService);
   const serverConfig = configService.get('server');
+
+  app.enableShutdownHooks();
 
   app.useGlobalFilters(new HttpExceptionFilter()); // 전역 필터 적용
 
