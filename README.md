@@ -4,7 +4,7 @@
 
 ## Start
 
-Apis - `npm run start:dev:apis`
+Api - `npm run start:dev:api`
 
 Bot - `npm run start:dev:bot`
 

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ApisException } from '~apis/src/exceptions/apis.exception';
-import { IUserRepository, IUserService } from '~apis/src/interfaces';
+import { ApisException } from '~api/src/exceptions/api.exception';
+import { IUserRepository, IUserService } from '~api/src/interfaces';
 
 @Injectable()
 export class UserService implements IUserService {

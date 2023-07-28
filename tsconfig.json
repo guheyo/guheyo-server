@@ -43,7 +43,7 @@
 
     /* Alias Path 옵션 */
     "paths": {
-      "~apis/*": ["apps/apis/*"],
+      "~api/*": ["apps/api/*"],
       "~bot/*": ["apps/bot/*"],
       "@lib/*": ["libs/*"],
     },

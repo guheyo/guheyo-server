@@ -3,8 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigYamlModule } from '@lib/config/config-yaml.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import request from 'supertest';
-import { Interfaces } from '~apis/src/interfaces';
-import { UserController } from '~apis/src/controllers/user.controller';
+import { Interfaces } from '~api/src/interfaces';
+import { UserController } from '~api/src/controllers/user.controller';
 
 describe('API (e2e)', () => {
   let app: INestApplication;

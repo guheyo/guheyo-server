@@ -1,7 +1,7 @@
 import { Controller, Get, HttpStatus, Inject, Param, Version } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { HttpResponse } from '@lib/response/http.response';
-import { IUserService } from '~apis/src/interfaces';
+import { IUserService } from '~api/src/interfaces';
 
 @ApiTags('user')
 @Controller('user')

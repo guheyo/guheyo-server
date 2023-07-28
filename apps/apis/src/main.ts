@@ -4,7 +4,7 @@ import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from '@lib/filter/http-exception.filter';
-import { ApisModule } from '~apis/src/apis.module';
+import { ApisModule } from '~api/src/api.module';
 
 function swagger(app: NestFastifyApplication) {
   const swaggerDocumentBuilder = new DocumentBuilder()
@@ -28,7 +28,7 @@ async function bootstrap() {
 
   app.useGlobalFilters(new HttpExceptionFilter()); // 전역 필터 적용
 
-  app.setGlobalPrefix('apis', {
+  app.setGlobalPrefix('api', {
     exclude: [{ path: 'check_health', method: RequestMethod.GET }],
   });
 

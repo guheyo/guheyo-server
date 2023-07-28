@@ -8,13 +8,13 @@
   },
   "monorepo": true,
   "projects": {
-    "apis": {
+    "api": {
       "type": "application",
-      "root": "apps/apis",
+      "root": "apps/api",
       "entryFile": "main",
-      "sourceRoot": "apps/apis/src",
+      "sourceRoot": "apps/api/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/apis/tsconfig.app.json"
+        "tsConfigPath": "apps/api/tsconfig.app.json"
       }
     },
     "bot": {
