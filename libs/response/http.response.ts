@@ -3,7 +3,7 @@ import { HttpStatus } from '@nestjs/common';
 export class HttpResponse<T> {
   statusCode: HttpStatus = HttpStatus.OK;
 
-  data: T;
+  data?: T;
 
   message: string;
 
