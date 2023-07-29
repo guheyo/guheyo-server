@@ -14,4 +14,4 @@ import { Interfaces } from '~api/src/interfaces';
   controllers: [UserController],
   providers: [...Interfaces],
 })
-export class ApisModule {}
+export class ApiModule {}

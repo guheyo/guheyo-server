@@ -4,11 +4,11 @@ import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from '@lib/filter/http-exception.filter';
-import { ApisModule } from '~api/src/api.module';
+import { ApiModule } from '~api/src/api.module';
 
 function swagger(app: NestFastifyApplication) {
   const swaggerDocumentBuilder = new DocumentBuilder()
-    .setTitle('Apis Document')
+    .setTitle('Api Document')
     .setVersion('1.0.0')
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerDocumentBuilder);
@@ -17,7 +17,7 @@ function swagger(app: NestFastifyApplication) {
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
-  const app = await NestFactory.create<NestFastifyApplication>(ApisModule, fastifyAdapter, {
+  const app = await NestFactory.create<NestFastifyApplication>(ApiModule, fastifyAdapter, {
     logger: ['error', 'warn'],
   });
 
