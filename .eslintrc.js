@@ -20,6 +20,14 @@ module.exports = {
     'prettier/prettier': ERROR,
     'import/prefer-default-export': OFF,
     'import/extensions': OFF,
+    "import/no-extraneous-dependencies":[
+      ERROR,
+      {
+         "devDependencies":[
+            "**/__tests__/*"
+         ]
+      }
+    ],
     'no-nested-ternary': OFF,
     'no-ternary': OFF,
     'no-unneeded-ternary': WARNING,
