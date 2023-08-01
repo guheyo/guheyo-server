@@ -1,0 +1,9 @@
+{
+  "name": "@wtb-server/shared",
+  "version": "1.0.0",
+  "packageManager": "yarn@3.6.1",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "js-yaml": "^4.1.0"
+  }
+}
