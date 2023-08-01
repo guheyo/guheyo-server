@@ -3,8 +3,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
-import { HttpExceptionFilter } from '@lib/filter/http-exception.filter';
-import { BotModule } from '~bot/src/bot.module';
+import { HttpExceptionFilter } from '@lib/core';
+import { BotModule } from '@app/bot/bot.module';
 
 function swagger(app: NestFastifyApplication) {
   const swaggerDocumentBuilder = new DocumentBuilder()

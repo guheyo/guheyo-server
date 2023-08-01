@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
-import { HttpResponse } from '@lib/response/http.response';
+import { HttpResponse } from '@lib/core';
 
 export class ApiException {
   userNotFound(): HttpException {

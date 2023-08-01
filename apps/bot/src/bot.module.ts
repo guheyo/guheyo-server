@@ -1,7 +1,7 @@
-import { ConfigYamlModule } from '@lib/config/config-yaml.module';
+import { ConfigYamlModule } from '@app/bot/config/config.module';
 import { Module } from '@nestjs/common';
-import { BotController } from '~bot/src/controllers/bot.controller';
-import { Interfaces } from '~bot/src/interfaces';
+import { BotController } from '@app/bot/controllers/bot.controller';
+import { Interfaces } from '@app/bot/interfaces';
 
 @Module({
   imports: [ConfigYamlModule],

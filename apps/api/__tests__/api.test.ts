@@ -1,10 +1,10 @@
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConfigYamlModule } from '@lib/config/config-yaml.module';
+import { ConfigYamlModule } from '@app/api/config/config.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import request from 'supertest';
-import { Interfaces } from '~api/src/interfaces';
-import { UserController } from '~api/src/controllers/user.controller';
+import { Interfaces } from '@app/api/interfaces';
+import { UserController } from '@app/api/controllers/user.controller';
 
 describe('API (e2e)', () => {
   let app: INestApplication;

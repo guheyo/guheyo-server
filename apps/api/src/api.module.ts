@@ -1,16 +1,10 @@
-import { ConfigYamlModule } from '@lib/config/config-yaml.module';
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '@lib/database/database.module';
-import * as redisStore from 'cache-manager-redis-store';
-import { UserController } from '~api/src/controllers/user.controller';
-import { Interfaces } from '~api/src/interfaces';
+import { UserController } from '@app/api/controllers/user.controller';
+import { Interfaces } from '@app/api/interfaces';
+import { ConfigYamlModule } from '@app/api/config/config.module';
 
 @Module({
-  imports: [
-    ConfigYamlModule,
-    DatabaseModule.prismaModule(),
-    DatabaseModule.redisModule({ ttl: 0, store: redisStore }),
-  ],
+  imports: [ConfigYamlModule],
   controllers: [UserController],
   providers: [...Interfaces],
 })

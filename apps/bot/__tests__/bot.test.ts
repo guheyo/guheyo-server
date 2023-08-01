@@ -1,10 +1,10 @@
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConfigYamlModule } from '@lib/config/config-yaml.module';
+import { ConfigYamlModule } from '@app/api/config/config.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import request from 'supertest';
-import { BotController } from '~bot/src/controllers/bot.controller';
-import { Interfaces } from '~bot/src/interfaces';
+import { BotController } from '@app/bot/controllers/bot.controller';
+import { Interfaces } from '@app/bot/interfaces';
 
 describe('Bot API (e2e)', () => {
   let app: INestApplication;

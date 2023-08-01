@@ -1,5 +1,5 @@
-import { UserRepository } from '~api/src/repositories/user.repository';
-import { UserService } from '~api/src/services/user.service';
+import { UserRepository } from '@app/api/repositories/user.repository';
+import { UserService } from '@app/api/services/user.service';
 
 export * from './repositories/user-repository.interface';
 export * from './services/user-service.interface';

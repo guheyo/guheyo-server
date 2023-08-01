@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IBotRepository } from '~bot/src/interfaces/repositories/bot-repository.interface';
+import { IBotRepository } from '@app/bot/interfaces/repositories/bot-repository.interface';
 
 @Injectable()
 export class BotRepository implements IBotRepository {
