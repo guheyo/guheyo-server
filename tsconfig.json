@@ -11,15 +11,30 @@
     "moduleResolution": "Node", /* Specify how TypeScript looks up a file from a given module specifier. */
     "baseUrl": "./", /* Specify the base directory to resolve non-relative module names. */
     "paths": { /* Specify a set of entries that re-map imports to additional lookup locations. */
-      "~api/*": [
-        "apps/api/*"
+      "@app/api": [
+        "apps/api/src"
       ],
-      "~bot/*": [
-        "apps/bot/*"
+      "@app/api/*": [
+        "apps/api/src/*"
       ],
-      "@lib/*": [
-        "libs/*"
-      ]
+      "@app/bot": [
+        "apps/bot/src"
+      ],
+      "@app/bot/*": [
+        "apps/bot/src/*"
+      ],
+      "@lib/core": [
+        "libs/core/src"
+      ],
+      "@lib/core/*": [
+        "libs/core/src/*"
+      ],
+      "@lib/shared": [
+        "libs/shared/src"
+      ],
+      "@lib/shared/*": [
+        "libs/shared/src/*"
+      ],
     },
     "resolveJsonModule": true, /* Enable importing .json files. */
     
