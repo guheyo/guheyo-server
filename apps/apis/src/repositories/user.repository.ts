@@ -7,10 +7,23 @@ import { IUserRepository } from '~apis/src/interfaces';
 export class UserRepository implements IUserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findOne(args: Prisma.UserFindUniqueOrThrowArgs): Promise<User> {
-    return this.prisma.user.findUniqueOrThrow({
-      where: args.where,
-      include: args.include,
-    });
+  async findUnique(args: Prisma.UserFindUniqueOrThrowArgs): Promise<User> {
+    return this.prisma.user.findUniqueOrThrow({ ...args });
+  }
+
+  async findFirst(args: Prisma.UserFindFirstOrThrowArgs): Promise<User> {
+    return this.prisma.user.findFirstOrThrow({ ...args });
+  }
+
+  async create(args: Prisma.UserCreateArgs): Promise<User> {
+    return this.prisma.user.create({ ...args });
+  }
+
+  async update(args: Prisma.UserUpdateArgs): Promise<User> {
+    return this.prisma.user.update({ ...args });
+  }
+
+  async delete(args: Prisma.UserDeleteArgs): Promise<User> {
+    return this.prisma.user.delete({ ...args });
   }
 }
