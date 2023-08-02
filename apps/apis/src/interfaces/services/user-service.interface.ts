@@ -1,3 +1,5 @@
+import { User } from '@prisma/client';
+
 export interface IUserService {
-  findOne(userId: number): Promise<number>;
+  getUser(id: string): Promise<User>;
 }

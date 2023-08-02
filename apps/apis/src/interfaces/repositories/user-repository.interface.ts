@@ -1,3 +1,5 @@
+import { Prisma, User } from '@prisma/client';
+
 export interface IUserRepository {
-  findOne(userId: number): Promise<number>;
+  findOne(args: Prisma.UserFindUniqueOrThrowArgs): Promise<User>;
 }
