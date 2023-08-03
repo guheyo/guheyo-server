@@ -1,5 +1,5 @@
 {
-  "name": "@wtb-server/shared",
+  "name": "@wtb/shared",
   "version": "1.0.0",
   "packageManager": "yarn@3.6.1",
   "dependencies": {
