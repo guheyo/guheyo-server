@@ -15,9 +15,12 @@
   "coverageDirectory": "./coverage",
   "testEnvironment": "node",
   "moduleNameMapper": {
-    "^~content(|/.*)$": "<rootDir>/apps/content/$1",
-    "^~meta(|/.*)$": "<rootDir>/apps/meta/$1",
-    "^@lib(|/.*)$": "<rootDir>/libs/$1"
+    "^@app/api/(.*)$": "<rootDir>/apps/api/src/$1",
+    "^@app/bot/(.*)$": "<rootDir>/apps/bot/src/$1",
+    "^@lib/core$": "<rootDir>/libs/core/src",
+    "^@lib/core/(.*)$": "<rootDir>/libs/core/src/$1",
+    "^@lib/shared$": "<rootDir>/libs/shared/src",
+    "^@lib/shared$/(.*)$": "<rootDir>/libs/shared/src/$1"
   },
   "roots": [
     "<rootDir>/apps/",
