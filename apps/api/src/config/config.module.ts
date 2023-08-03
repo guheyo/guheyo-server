@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { loadYaml } from '@lib/shared/config/load-yaml';
+import { loadYaml } from '@lib/shared';
 
 const YAML_CONFIG_FILENAME = `config.${process.env.NODE_ENV}.yaml`;
 const filePath = join(__dirname, 'config', YAML_CONFIG_FILENAME);
