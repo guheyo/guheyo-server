@@ -3,17 +3,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigYamlModule } from '@app/api/config/config.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import request from 'supertest';
-import { BotController } from '@app/bot/controllers/bot.controller';
-import { Interfaces } from '@app/bot/interfaces';
+import { Interfaces } from '@app/api/interfaces';
+import { UserController } from '@app/api/controllers/user.controller';
 
-describe('Bot API (e2e)', () => {
+describe('API (e2e)', () => {
   let app: INestApplication;
   let moduleRef: TestingModule;
 
   beforeAll(async () => {
     moduleRef = await Test.createTestingModule({
       imports: [ConfigYamlModule],
-      controllers: [BotController],
+      controllers: [UserController],
       providers: [...Interfaces],
     }).compile();
 
@@ -31,7 +31,7 @@ describe('Bot API (e2e)', () => {
     await app.getHttpAdapter().getInstance().ready();
   });
 
-  describe('Bot API', () => {
-    it('findOne', () => request(app.getHttpServer()).get('/bot/1033').expect(HttpStatus.OK));
+  describe('User API', () => {
+    it('findOne', () => request(app.getHttpServer()).get('/user/1033').expect(HttpStatus.OK));
   });
 });
