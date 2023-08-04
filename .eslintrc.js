@@ -1,3 +1,5 @@
+const { join } = require('path');
+
 const OFF = 0;
 const WARNING = 1;
 const ERROR = 2;
@@ -20,6 +22,14 @@ module.exports = {
     'prettier/prettier': ERROR,
     'import/prefer-default-export': OFF,
     'import/extensions': OFF,
+    'import/no-extraneous-dependencies':[
+      ERROR,
+      {
+        'devDependencies': [
+          '**/__tests__/*',
+        ],
+      },
+    ],
     'no-nested-ternary': OFF,
     'no-ternary': OFF,
     'no-unneeded-ternary': WARNING,

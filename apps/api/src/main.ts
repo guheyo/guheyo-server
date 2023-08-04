@@ -4,12 +4,11 @@ import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from '@lib/core';
-import { BotModule } from '@app/bot/bot.module';
+import { ApiModule } from '@app/api/api.module';
 
 function swagger(app: NestFastifyApplication) {
   const swaggerDocumentBuilder = new DocumentBuilder()
-    .setTitle('Bot Document')
-    .setDescription('Bot.md')
+    .setTitle('Api Document')
     .setVersion('1.0.0')
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerDocumentBuilder);
@@ -18,16 +17,18 @@ function swagger(app: NestFastifyApplication) {
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
-  const app = await NestFactory.create<NestFastifyApplication>(BotModule, fastifyAdapter, {
+  const app = await NestFactory.create<NestFastifyApplication>(ApiModule, fastifyAdapter, {
     logger: ['error', 'warn'],
   });
 
   const configService = app.get(ConfigService);
   const serverConfig = configService.get('server');
 
+  app.enableShutdownHooks();
+
   app.useGlobalFilters(new HttpExceptionFilter()); // 전역 필터 적용
 
-  app.setGlobalPrefix('bot', {
+  app.setGlobalPrefix('api', {
     exclude: [{ path: 'check_health', method: RequestMethod.GET }],
   });
 
