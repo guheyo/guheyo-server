@@ -1,0 +1,19 @@
+server:
+  version:
+  port:
+postgresql:
+  url:
+redis:
+  host:
+  port:
+document:
+  title:
+  description:
+  version:
+  path:
+logger:
+  path:
+  filename:
+  pretty:
+  level:
+  stdout:

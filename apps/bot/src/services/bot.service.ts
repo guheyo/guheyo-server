@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IBotRepository, IBotService } from '~bot/src/interfaces';
-import { BotException } from '~bot/src/exceptions/bot.exception';
+import { IBotRepository, IBotService } from '@app/bot/interfaces';
+import { BotException } from '@app/bot/exceptions/bot.exception';
 
 @Injectable()
 export class BotService implements IBotService {
