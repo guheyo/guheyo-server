@@ -1,5 +1,10 @@
 import { Router } from 'express';
-import { createSession, getSessionAndUser, updateSession, deleteSession } from './session.ctrl';
+import {
+  createSession,
+  getSessionAndUser,
+  updateSession,
+  deleteSession,
+} from './session.ctrl';
 
 const router = Router({ mergeParams: true });
 router.post('/', createSession);
