@@ -6,7 +6,7 @@ labels: 'bug'
 
 ---
 
-wtb-server version:
+guheyo-server version:
 
 ## 버그 재현 절차
 
