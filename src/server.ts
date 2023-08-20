@@ -19,7 +19,7 @@ class Server {
         }),
       );
     } else {
-      const whitelist = ['https://www.wtb.kr'];
+      const whitelist = ['https://www.guheyo.com'];
       this.app.use(
         cors({
           origin: whitelist,

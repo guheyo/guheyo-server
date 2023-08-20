@@ -1,7 +1,7 @@
 {
-  "name": "wtb-server",
+  "name": "guheyo-server",
   "version": "1.0.0",
-  "description": "monorepo for wtb-server",
+  "description": "monorepo for guheyo-server",
   "author": "keypport",
   "license": "BUSL-1.1",
   "workspaces": [
