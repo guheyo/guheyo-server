@@ -1,5 +1,5 @@
 {
-  "name": "@wtb/core",
+  "name": "@guheyo/core",
   "version": "1.0.0",
   "prisma": {
     "schema": "./src/prisma/schema.prisma"
