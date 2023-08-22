@@ -18,12 +18,6 @@
       "@app/bot/*": [
         "apps/bot/src/*"
       ],
-      "@lib/core": [
-        "libs/core/src"
-      ],
-      "@lib/core/*": [
-        "libs/core/src/*"
-      ],
       "@lib/shared": [
         "libs/shared/src"
       ],
