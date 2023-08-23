@@ -27,6 +27,7 @@ module.exports = {
       {
         'devDependencies': [
           '**/__tests__/*',
+          '**/*.spec.ts'
         ],
       },
     ],

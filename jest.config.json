@@ -17,8 +17,6 @@
   "moduleNameMapper": {
     "^@app/api/(.*)$": "<rootDir>/apps/api/src/$1",
     "^@app/bot/(.*)$": "<rootDir>/apps/bot/src/$1",
-    "^@lib/core$": "<rootDir>/libs/core/src",
-    "^@lib/core/(.*)$": "<rootDir>/libs/core/src/$1",
     "^@lib/shared$": "<rootDir>/libs/shared/src",
     "^@lib/shared$/(.*)$": "<rootDir>/libs/shared/src/$1"
   },
