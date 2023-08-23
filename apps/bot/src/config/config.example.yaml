@@ -3,6 +3,7 @@ server:
   port:
 discord:
   bot:
+    name:
     client-id:
     token:
     owner-id:

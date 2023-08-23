@@ -10,8 +10,7 @@
 	- `api`: API server (depends on `core` + `shared`)
 	- `bot`: Discord bot server (depends on `core` + `shared`)
 - libs
-	- `core`: Shared utilities between servers
-	- `shared`: Shared utilities between server and client
+	- `shared`: Shared utilities
 
 ## Installation
 
@@ -19,7 +18,7 @@
 $ yarn install
 
 # generating prisma client
-$ yarn workspace @guheyo/core prisma:generate
+$ yarn workspace @guheyo/shared prisma:generate
 ```
 
 ## Running the app

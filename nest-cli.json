@@ -36,15 +36,6 @@
         ]
       }
     },
-    "core": {
-      "type": "library",
-      "root": "libs/core",
-      "entryFile": "index",
-      "sourceRoot": "libs/core/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/core/tsconfig.lib.json"
-      }
-    },
     "shared": {
       "type": "library",
       "root": "libs/shared",
@@ -52,6 +43,15 @@
       "sourceRoot": "libs/shared/src",
       "compilerOptions": {
         "tsConfigPath": "libs/shared/tsconfig.lib.json"
+      }
+    },
+    "domains": {
+      "type": "library",
+      "root": "libs/domains",
+      "entryFile": "index",
+      "sourceRoot": "libs/domains/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/domains/tsconfig.lib.json"
       }
     }
   }
