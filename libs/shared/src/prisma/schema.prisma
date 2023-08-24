@@ -9,150 +9,366 @@ generator client {
 }
 
 model User {
-  id              String      @id @default(uuid())
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  deleted         Boolean     @default(false)
-  name            String?
-  username        String      @unique
-  socialAccounts  SocialAccount[]
-  avatarURL       String?
-  bot             Boolean     @default(false)
-  roles           Role[]
-  posts           Post[]
-  images          Image[]
-  keywords        Keyword[]
-  sessions        Session[]
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String?
+  username          String      @unique
+  socialAccounts    SocialAccount[]
+  avatarURL         String?
+  bot               Boolean     @default(false)
+  members           Member[]
+  sessions          Session[]
+  offers            Offer[]
+  demands           Demand[]
+  swaps             Swap[]
+  auctions          Auction[]
+  bids              Bid[]
+  auctionComments   AuctionComment[]
+  posts             Post[]
+  postComments      PostComment[]
+}
+
+model Member {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  userId            String
+  user              User        @relation(fields: [userId], references: [id])
+  guildId           String
+  guild             Guild       @relation(fields: [guildId], references: [id])
+  roles             Role[]
 }
 
 model SocialAccount {
-  id              String      @id @default(uuid())
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  deleted         Boolean     @default(false)
-  provider        String
-  socialId        String
-  userId          String
-  user            User        @relation(fields: [userId], references: [id])
-  refreshToken    String?
-  accessToken     String?
-  expiresAt       Int?
-  tokenType       String?
-  scope           String?
-  idToken         String?
-  sessionState    String?
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  provider          String
+  socialId          String
+  userId            String
+  user              User        @relation(fields: [userId], references: [id])
+  refreshToken      String?
+  accessToken       String?
+  expiresAt         Int?
+  tokenType         String?
+  scope             String?
+  idToken           String?
+  sessionState      String?
 
   @@unique([provider, socialId])
 }
 
 model Session {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  deleted       Boolean   @default(false)
-  sessionToken  String    @unique
-  expires       DateTime
-  userId        String
-  user          User      @relation(fields: [userId], references: [id])
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  sessionToken      String      @unique
+  expires           DateTime
+  userId            String
+  user              User        @relation(fields: [userId], references: [id])
 }
 
 model VerificationToken {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  deleted       Boolean   @default(false)
-  identifier    String
-  token         String    @unique
-  expires       DateTime
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  identifier        String
+  token             String      @unique
+  expires           DateTime
 
   @@unique([identifier, token])
 }
 
 model Role {
-  id          String      @id @default(uuid())
-  createdAt   DateTime    @default(now())
-  updateedAt  DateTime    @updatedAt
-  deleted     Boolean     @default(false)
-  name        String      @unique
-  rank        Int?
-  hexColor    String      @default("#000000")
-  users       User[]
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updateedAt        DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String      @unique
+  rank              Int?
+  hexColor          String      @default("#000000")
+  guilds            Guild[]
+  members           Member[]
 }
 
 model Guild {
-  id          String      @id @default(uuid())
-  createdAt   DateTime    @default(now())
-  updateedAt  DateTime    @updatedAt
-  deleted     Boolean     @default(false)
-  name        String      @unique
-  categories  Category[]
-  rank        Int?
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String      @unique
+  description       String?
+  icon              String?
+  rank              Int?
+  members           Member[]
+  roles             Role[]
+  market            Market?
+  community         Community?
+  brands            Brand[]
 }
 
-model Category {
-  id          String      @id @default(uuid())
-  createdAt   DateTime    @default(now())
-  updateedAt  DateTime    @updatedAt
-  deleted     Boolean     @default(false)
-  name        String      @unique
-  guildId     String
-  guild       Guild       @relation(fields: [guildId], references: [id])
-  posts       Post[]
-  rank        Int?
+model Market {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String
+  description       String?
+  guildId           String      @unique
+  guild             Guild       @relation(fields: [guildId], references: [id])
+  productCategories ProductCategory[]
+  offers            Offer[]
+  demands           Demand[]
+  swaps             Swap[]
+  auctions          Auction[]
 }
+
+model Community {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String
+  description       String?
+  guildId           String      @unique
+  guild             Guild       @relation(fields: [guildId], references: [id])
+  postCategories    PostCategory[]
+  posts             Post[]
+}
+
+model PostCategory {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String
+  description       String?
+  rank              Int?
+  communityId       String
+  community         Community   @relation(fields: [communityId], references: [id])
+  posts Post[]
+}
+
+model ProductCategory {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String
+  description       String?
+  rank              Int?
+  marketId          String
+  market            Market      @relation(fields: [marketId], references: [id])
+  offers            Offer[]
+  demands           Demand[]
+  swap0s            Swap[]      @relation("Swap0Category")
+  swap1s            Swap[]      @relation("Swap1Category")
+  auctions          Auction[]
+}
+
+model Brand {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String
+  description       String?
+  logo              String?
+  rank              Int?
+  offers            Offer[]
+  demands           Demand[]
+  swap0s            Swap[]      @relation("Swap0Brand")
+  swap1s            Swap[]      @relation("Swap1Brand")
+  auctions          Auction[]
+  guilds            Guild[]
+}
+
+// image
+
+// id String
+// name String
+// size Int
+// url String
+// height Int?
+// width Int?
 
 model Post {
-  id          String      @id @default(uuid())
-  createdAt   DateTime    @default(now())
-  updateedAt  DateTime    @updatedAt
-  deleted     Boolean     @default(false)
-  messageId   String?     @unique
-  type        String
-  title       String
-  subTitle    String?
-  price       Int
-  nego        Boolean?    @default(false)
-  content     String?
-  published   Boolean     @default(false)
-  closed      Boolean     @default(false)
-  userId      String
-  user        User        @relation(fields: [userId], references: [id])
-  categoryId  String
-  category    Category    @relation(fields: [categoryId], references: [id])
-  images      Image[]
-  tags        Tag[]
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  title             String
+  content           String
+  communityId       String
+  community         Community     @relation(fields: [communityId], references: [id])
+  postCategoryId    String
+  postCategory      PostCategory  @relation(fields: [postCategoryId], references: [id])
+  authorId          String
+  author            User          @relation(fields: [authorId], references: [id])
+  images            Json[]
+  comments          PostComment[]
 }
 
-model Image {
-  id          String      @id @default(uuid())
-  createdAt   DateTime    @default(now())
-  updateedAt  DateTime    @updatedAt
-  deleted     Boolean     @default(false)
-  name        String
-  size        Int
-  url         String      @unique
-  height      Int?
-  width       Int?
-  userId      String
-  user        User        @relation(fields: [userId], references: [id])
-  postId      String?
-  post        Post?       @relation(fields: [postId], references: [id])
+model PostComment {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  authorId          String
+  author            User          @relation(fields: [authorId], references: [id])
+  content           String
+  postId            String
+  post              Post          @relation(fields: [postId], references: [id])
+  parentId          String?
+  parent            PostComment?  @relation("PostComments", fields: [parentId], references: [id])
+  comments          PostComment[] @relation("PostComments")
 }
 
-model Tag {
-  id          String      @id @default(uuid())
-  createdAt   DateTime    @default(now())
-  updateedAt  DateTime    @updatedAt
-  deleted     Boolean     @default(false)
-  name        String      @unique
-  posts       Post[]
+// product
+
+// name String
+// description String
+// iamges Image[]
+
+model Offer {
+  id                String          @id @default(uuid())
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
+  product           Json
+  price             Int
+  priceCurrency     String
+  businessFunction  String
+  marketId          String
+  market            Market          @relation(fields: [marketId], references: [id])
+  brandId           String?
+  brand             Brand?          @relation(fields: [brandId], references: [id])
+  productCategoryId String
+  productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
+  sellerId          String
+  seller            User            @relation(fields: [sellerId], references: [id])
+  status            String
 }
 
-model Keyword {
-  id          String      @id @default(uuid())
-  createdAt   DateTime    @default(now())
-  updateedAt  DateTime    @updatedAt
-  deleted     Boolean     @default(false)
-  name        String      @unique
-  users       User[]
+model Demand {
+  id                String          @id @default(uuid())
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
+  product           Json
+  price             Int
+  priceCurrency     String
+  businessFunction  String
+  marketId          String
+  market            Market          @relation(fields: [marketId], references: [id])
+  brandId           String?
+  brand             Brand?          @relation(fields: [brandId], references: [id])
+  productCategoryId String
+  productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
+  buyerId           String
+  buyer             User            @relation(fields: [buyerId], references: [id])
+  status            String
+}
+
+model Swap {
+  id                  String          @id @default(uuid())
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  deletedAt           DateTime?
+  marketId            String
+  market              Market          @relation(fields: [marketId], references: [id])
+  price               Int
+  priceCurrency       String
+  product0            Json
+  product1            Json
+  brand0Id            String?
+  brand0              Brand?          @relation("Swap0Brand", fields: [brand0Id], references: [id])
+  brand1Id            String?
+  brand1              Brand?          @relation("Swap1Brand", fields: [brand1Id], references: [id])
+  productCategory0Id  String
+  productCategory0    ProductCategory @relation("Swap0Category", fields: [productCategory0Id], references: [id])
+  productCategory1Id  String
+  productCategory1    ProductCategory @relation("Swap1Category", fields: [productCategory1Id], references: [id])
+  proposerId          String
+  proposer            User            @relation(fields: [proposerId], references: [id])
+  status              String
+}
+
+model Auction {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  endedAt           DateTime
+  bids              Bid[]  
+  product           Json
+  marketId          String
+  market            Market            @relation(fields: [marketId], references: [id])
+  brandId           String?
+  brand             Brand?            @relation(fields: [brandId], references: [id])
+  productCategoryId String
+  productCategory   ProductCategory   @relation(fields: [productCategoryId], references: [id])
+  sellerId          String
+  seller            User              @relation(fields: [sellerId], references: [id])
+  comments          AuctionComment[]
+  status            String
+}
+
+model AuctionComment {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  authorId          String
+  author            User              @relation(fields: [authorId], references: [id])
+  content           String
+  auctionId         String
+  auction           Auction           @relation(fields: [auctionId], references: [id])
+  parentId          String?
+  parent            AuctionComment?   @relation("AuctionComments", fields: [parentId], references: [id])
+  comments          AuctionComment[]  @relation("AuctionComments")
+}
+
+model Bid {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  canceledAt        DateTime?
+  price             Int
+  priceCurrency     String
+  auctionId         String
+  auction           Auction           @relation(fields: [auctionId], references: [id])
+  bidderId          String
+  bidder            User              @relation(fields: [bidderId], references: [id])
+  status            String
+}
+
+model DiscordChannelLink {
+  discordChannelId  String            @unique
+  discordGuildId    String
+  modelId           String
+  modelName         String
+}
+
+model DiscordMessageLink {
+  discordMessageId  String            @unique
+  discordChannelId  String
+  discordGuildId    String
+  modelId           String
+  modelName         String
+}
+
+model DiscordMarketChannelLink {
+  productCategoryId         String    @unique
+  discordOfferChannelId     String
+  discordDemandChannelId    String
+  discordSwapChannelId      String
+  discordGuildId            String
 }
