@@ -2,7 +2,9 @@
   "name": "@guheyo/domains",
   "packageManager": "yarn@3.6.1",
   "dependencies": {
-    "@nestjs/common": "^10.2.1"
+    "@nestjs/common": "^10.2.1",
+    "@nestjs/swagger": "^7.1.8",
+    "@prisma/client": "^4.13.0"
   },
   "devDependencies": {
     "@nestjs/testing": "^10.2.1"
