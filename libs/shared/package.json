@@ -24,5 +24,8 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
   },
-  "packageManager": "yarn@3.6.1"
+  "packageManager": "yarn@3.6.1",
+  "devDependencies": {
+    "prisma-class-generator": "^0.2.7"
+  }
 }
