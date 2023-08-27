@@ -8,6 +8,14 @@ generator client {
   previewFeatures = ["extendedWhereUnique"]
 }
 
+// NOTE: Used for code generation only
+
+// generator prismaClassGenerator {
+//   provider = "prisma-class-generator"
+//   output = "./gen"
+//   dryRun = false
+// }
+
 model User {
   id                String      @id @default(uuid())
   createdAt         DateTime    @default(now())
