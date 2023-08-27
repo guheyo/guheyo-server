@@ -1,7 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { SocialAccount } from '@prisma/client';
+import { Exclude } from 'class-transformer';
 
 export class SocialAccountEntity implements SocialAccount {
+  constructor(partial: Partial<SocialAccountEntity>) {
+    Object.assign(this, partial);
+  }
+
   @ApiProperty({ type: String })
   id: string;
 
@@ -11,7 +16,7 @@ export class SocialAccountEntity implements SocialAccount {
   @ApiProperty({ type: Date })
   updatedAt: Date;
 
-  @ApiPropertyOptional({ type: Date })
+  @Exclude()
   deletedAt: Date | null;
 
   @ApiProperty({ type: String })

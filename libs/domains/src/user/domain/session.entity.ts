@@ -1,7 +1,12 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Session } from '@prisma/client';
+import { Exclude } from 'class-transformer';
 
 export class SessionEntity implements Session {
+  constructor(partial: Partial<SessionEntity>) {
+    Object.assign(this, partial);
+  }
+
   @ApiProperty({ type: String })
   id: string;
 
@@ -11,7 +16,7 @@ export class SessionEntity implements Session {
   @ApiProperty({ type: Date })
   updatedAt: Date;
 
-  @ApiPropertyOptional({ type: Date })
+  @Exclude()
   deletedAt: Date | null;
 
   @ApiProperty({ type: String })

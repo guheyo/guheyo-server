@@ -1,9 +1,14 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { User } from '@prisma/client';
+import { Exclude, Type } from 'class-transformer';
 import { SocialAccountEntity } from './social-account.entity';
 import { MemberEntity } from './member.entity';
 
 export class UserEntity implements User {
+  constructor(partial: Partial<UserEntity>) {
+    Object.assign(this, partial);
+  }
+
   @ApiProperty({ type: String })
   id: string;
 
@@ -13,7 +18,7 @@ export class UserEntity implements User {
   @ApiProperty({ type: Date })
   updatedAt: Date;
 
-  @ApiPropertyOptional({ type: Date })
+  @Exclude()
   deletedAt: Date | null;
 
   @ApiPropertyOptional({ type: String })
@@ -22,6 +27,7 @@ export class UserEntity implements User {
   @ApiProperty({ type: String })
   username: string;
 
+  @Type(() => SocialAccountEntity)
   @ApiProperty({ isArray: true, type: () => SocialAccountEntity })
   socialAccounts: SocialAccountEntity[];
 
@@ -31,6 +37,7 @@ export class UserEntity implements User {
   @ApiProperty({ type: Boolean })
   bot: boolean;
 
+  @Type(() => MemberEntity)
   @ApiProperty({ isArray: true, type: () => MemberEntity })
   members: MemberEntity[];
 }

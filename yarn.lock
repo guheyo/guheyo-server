@@ -676,6 +676,7 @@ __metadata:
     "@nestjs/swagger": ^7.1.8
     "@nestjs/testing": ^10.2.1
     "@prisma/client": ^4.13.0
+    class-transformer: ^0.5.1
   languageName: unknown
   linkType: soft
 
