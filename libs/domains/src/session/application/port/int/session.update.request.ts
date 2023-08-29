@@ -1,5 +1,5 @@
 import { PickType } from '@nestjs/swagger';
-import { SessionEntity } from '@lib/domains/user/domain/session.entity';
+import { SessionEntity } from '@lib/domains/session/domain/session.entity';
 
 export class SessionUpdateRequest extends PickType(SessionEntity, [
   'sessionToken',
