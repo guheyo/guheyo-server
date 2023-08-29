@@ -1,8 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { Exclude, Type } from 'class-transformer';
+import { MemberEntity } from '@lib/domains/member/domain/member.entity';
 import { SocialAccountEntity } from './social-account.entity';
-import { MemberEntity } from './member.entity';
 
 export class UserEntity implements User {
   constructor(partial: Partial<UserEntity>) {
