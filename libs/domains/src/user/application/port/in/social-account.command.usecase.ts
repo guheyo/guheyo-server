@@ -1,7 +1,7 @@
-import { SessionCreateRequest } from './session.create.request';
-import { SessionResponse } from './session.response';
+import { SocialAccountCreateRequest } from './social-account.create.request';
+import { SocialAccountResponse } from './social-account.response';
 
 export interface SocialAccountCommandUseCase {
-  create(request: SessionCreateRequest): Promise<SessionResponse>;
-  delete(userId: string, provider: string, socialId: string): Promise<SessionResponse>;
+  create(request: SocialAccountCreateRequest): Promise<SocialAccountResponse>;
+  delete(userId: string, provider: string, socialId: string): Promise<SocialAccountResponse>;
 }
