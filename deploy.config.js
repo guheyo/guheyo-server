@@ -3,6 +3,6 @@ module.exports = {
     name   : "server",
     script : "./dist/server.js",
     instances: 2,
-    exec_mode: "cluster"
-  }]
+    exec_mode: "cluster",
+  }],
 }
