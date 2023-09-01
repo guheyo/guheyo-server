@@ -3,9 +3,11 @@
   "packageManager": "yarn@3.6.1",
   "dependencies": {
     "@nestjs/common": "^10.2.1",
+    "@nestjs/cqrs": "^10.2.5",
     "@nestjs/swagger": "^7.1.8",
     "@prisma/client": "^4.13.0",
-    "class-transformer": "^0.5.1"
+    "class-transformer": "^0.5.1",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@nestjs/testing": "^10.2.1"
