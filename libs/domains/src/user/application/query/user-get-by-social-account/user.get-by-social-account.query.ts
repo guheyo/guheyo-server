@@ -1,6 +1,6 @@
-import { ICommand } from '@nestjs/cqrs';
+import { IQuery } from '@nestjs/cqrs';
 
-export class UserGetBySocialAccountQuery implements ICommand {
+export class UserGetBySocialAccountQuery implements IQuery {
   constructor(
     public readonly provider: string,
     public readonly socialId: string,
