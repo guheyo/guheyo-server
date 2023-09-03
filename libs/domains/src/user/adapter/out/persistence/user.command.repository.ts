@@ -22,8 +22,8 @@ export class UserCommandRepository {
     });
   }
 
-  async update(user: UserEntity): Promise<UserEntity> {
-    return this.prismaService.user.update({
+  async update(user: UserEntity): Promise<void> {
+    await this.prismaService.user.update({
       where: {
         id: user.id,
       },
@@ -43,8 +43,8 @@ export class UserCommandRepository {
     await this.prismaService.user.delete({ where: { id } });
   }
 
-  async createSocialAccount(socialAccount: SocialAccountEntity): Promise<UserEntity> {
-    return this.prismaService.user.update({
+  async createSocialAccount(socialAccount: SocialAccountEntity): Promise<void> {
+    await this.prismaService.user.update({
       where: {
         id: socialAccount.userId,
       },
