@@ -2,6 +2,7 @@ import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { PrismaService } from '@lib/shared';
 import { Injectable } from '@nestjs/common';
 import _ from 'lodash';
+import { UserGetBySocialAccountQuery } from '@lib/domains/user/application/query/user-get-by-social-account/user.get-by-social-account.query';
 
 @Injectable()
 export class UserQueryRepository {
@@ -22,13 +23,13 @@ export class UserQueryRepository {
     return user ? new UserEntity(user) : null;
   }
 
-  async getBySocialAccount(provider: string, socialId: string): Promise<UserEntity | null> {
+  async getBySocialAccount(query: UserGetBySocialAccountQuery): Promise<UserEntity | null> {
     const users = await this.prismaService.user.findMany({
       where: {
         socialAccounts: {
           some: {
-            provider,
-            socialId,
+            provider: query.provider,
+            socialId: query.socialId,
           },
         },
       },

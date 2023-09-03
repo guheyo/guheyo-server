@@ -19,6 +19,7 @@ describe('UserGetBySocialAccountQuery', () => {
         },
       ],
     }).compile();
+
     handler = moduleRef.get<UserGetBySocialAccountHandler>(UserGetBySocialAccountHandler);
   });
 
@@ -26,7 +27,7 @@ describe('UserGetBySocialAccountQuery', () => {
     it('should execute getBySocailAccount', async () => {
       const query: UserGetBySocialAccountQuery = { provider: 'discord', socialId: 'social-id' };
       await handler.execute(query);
-      verify(loadPort.getBySocailAccount(query.provider, query.socialId)).once();
+      verify(loadPort.getBySocailAccount(query)).once();
     });
   });
 });
