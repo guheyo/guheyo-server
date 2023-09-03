@@ -8,7 +8,7 @@ export class UserQueryRepository {
   constructor(private prismaService: PrismaService) {}
 
   async getById(id: string): Promise<UserEntity | null> {
-    return this.prismaService.user.findUnique({
+    const user = await this.prismaService.user.findUnique({
       where: { id },
       include: {
         socialAccounts: true,
@@ -19,6 +19,7 @@ export class UserQueryRepository {
         },
       },
     });
+    return user ? new UserEntity(user) : null;
   }
 
   async getBySocialAccount(provider: string, socialId: string): Promise<UserEntity | null> {
@@ -40,6 +41,6 @@ export class UserQueryRepository {
         },
       },
     });
-    return users.length ? users[0] : null;
+    return users.length ? new UserEntity(users[0]) : null;
   }
 }
