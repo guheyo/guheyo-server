@@ -1,6 +1,6 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { UserResponse } from '../response/user.response';
+import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { UserGetBySocialAccountQuery } from './user.get-by-social-account.query';
 import { UserLoadPort } from '../../port/out/user.load.port';
 
@@ -8,7 +8,7 @@ import { UserLoadPort } from '../../port/out/user.load.port';
 export class UserGetBySocialAccountHandler implements IQueryHandler<UserGetBySocialAccountQuery> {
   constructor(@Inject('UserLoadPort') private userLoadPort: UserLoadPort) {}
 
-  async execute(query: UserGetBySocialAccountQuery): Promise<UserResponse | null> {
+  async execute(query: UserGetBySocialAccountQuery): Promise<UserEntity | null> {
     return this.userLoadPort.getBySocailAccount(query.provider, query.socialId);
   }
 }
