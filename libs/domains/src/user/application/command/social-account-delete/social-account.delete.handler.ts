@@ -5,7 +5,8 @@ import { SocialAccountSavePort } from '../../port/out/social-account.save.port';
 
 @CommandHandler(SocialAccountDeleteCommand)
 export class SocialAccountDeleteHandler implements ICommandHandler<SocialAccountDeleteCommand> {
-  constructor(@Inject('SocialAccountSavePort')
+  constructor(
+    @Inject('SocialAccountSavePort')
     private socialAccountSavePort: SocialAccountSavePort,
   ) {}
 

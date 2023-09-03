@@ -1,7 +1,6 @@
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { PrismaService } from '@lib/shared';
 import { Injectable } from '@nestjs/common';
-import _ from 'lodash';
 import { UserGetBySocialAccountQuery } from '@lib/domains/user/application/query/user-get-by-social-account/user.get-by-social-account.query';
 
 @Injectable()
