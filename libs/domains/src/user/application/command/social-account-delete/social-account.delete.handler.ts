@@ -10,6 +10,6 @@ export class SocialAccountDeleteHandler implements ICommandHandler<SocialAccount
   ) {}
 
   async execute(command: SocialAccountDeleteCommand): Promise<void> {
-    await this.socialAccountSavePort.delete(command.userId, command.provider, command.socialId);
+    await this.socialAccountSavePort.delete(command);
   }
 }
