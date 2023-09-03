@@ -12,6 +12,6 @@ export class UserQueryAdapter implements UserLoadPort {
   }
 
   async getBySocailAccount(provider: string, socialId: string): Promise<UserEntity | null> {
-    return this.getBySocailAccount(provider, socialId);
+    return this.repository.getBySocialAccount(provider, socialId);
   }
 }
