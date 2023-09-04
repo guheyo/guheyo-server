@@ -1,12 +1,14 @@
-import { SocialAccountEntity } from '@lib/domains/user/domain/social-account.entity';
-import { UserEntity } from '@lib/domains/user/domain/user.entity';
-import { PrismaService } from '@lib/shared';
 import { Injectable } from '@nestjs/common';
-import { SocialAccountDeleteCommand } from '@lib/domains/user/application/command/social-account-delete/social-account.delete.command';
 import _ from 'lodash';
+import { PrismaService } from '@lib/shared';
+import { UserSavePort } from '@lib/domains/user/application/port/out/user.save.port';
+import { SocialAccountSavePort } from '@lib/domains/user/application/port/out/social-account.save.port';
+import { UserEntity } from '@lib/domains/user/domain/user.entity';
+import { SocialAccountEntity } from '@lib/domains/user/domain/social-account.entity';
+import { SocialAccountDeleteCommand } from '@lib/domains/user/application/command/social-account-delete/social-account.delete.command';
 
 @Injectable()
-export class UserCommandRepository {
+export class UserCommandRepository implements UserSavePort, SocialAccountSavePort {
   constructor(private prismaService: PrismaService) {}
 
   async create(user: UserEntity): Promise<void> {
