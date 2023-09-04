@@ -6,7 +6,8 @@ import { SocialAccountSavePort } from '../../port/out/social-account.save.port';
 
 @CommandHandler(SocialAccountUpdateCommand)
 export class SocialAccountUpdateHandler implements ICommandHandler<SocialAccountUpdateCommand> {
-  constructor(@Inject('SocialAccountSavePort')
+  constructor(
+    @Inject('SocialAccountSavePort')
     private socialAccountSavePort: SocialAccountSavePort,
   ) {}
 
