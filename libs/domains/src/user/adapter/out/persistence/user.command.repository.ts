@@ -2,6 +2,7 @@ import { SocialAccountEntity } from '@lib/domains/user/domain/social-account.ent
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { PrismaService } from '@lib/shared';
 import { Injectable } from '@nestjs/common';
+import { SocialAccountDeleteCommand } from '@lib/domains/user/application/command/social-account-delete/social-account.delete.command';
 import _ from 'lodash';
 
 @Injectable()
@@ -91,16 +92,16 @@ export class UserCommandRepository {
     });
   }
 
-  async deleteSocialAccount(userId: string, provider: string, socialId: string): Promise<void> {
+  async deleteSocialAccount(command: SocialAccountDeleteCommand): Promise<void> {
     await this.prismaService.user.update({
       where: {
-        id: userId,
+        id: command.userId,
       },
       data: {
         socialAccounts: {
           deleteMany: {
-            provider,
-            socialId,
+            provider: command.provider,
+            socialId: command.socialId,
           },
         },
       },
