@@ -31,7 +31,7 @@ describe('SocialAccountDeleteCommand', () => {
         userId: 'user-id',
       };
       await handler.execute(command);
-      verify(savePort.delete(command.userId, command.provider, command.socialId));
+      verify(savePort.delete(command)).once();
     });
   });
 });

@@ -9,6 +9,6 @@ export class UserGetBySocialAccountHandler implements IQueryHandler<UserGetBySoc
   constructor(@Inject('UserLoadPort') private userLoadPort: UserLoadPort) {}
 
   async execute(query: UserGetBySocialAccountQuery): Promise<UserEntity | null> {
-    return this.userLoadPort.getBySocailAccount(query.provider, query.socialId);
+    return this.userLoadPort.getBySocailAccount(query);
   }
 }
