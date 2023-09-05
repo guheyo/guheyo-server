@@ -13,6 +13,6 @@ export class SocialAccountCreateHandler implements ICommandHandler<SocialAccount
 
   async execute(command: SocialAccountCreateCommand): Promise<void> {
     const socialAccount = new SocialAccountEntity(command);
-    await this.socialAccountSavePort.create(socialAccount);
+    await this.socialAccountSavePort.createSocialAccount(socialAccount);
   }
 }
