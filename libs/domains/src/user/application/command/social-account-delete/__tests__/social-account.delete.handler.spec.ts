@@ -1,13 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { mock, verify, instance } from 'ts-mockito';
-import { SocialAccountCommandAdapter } from '@lib/domains/user/adapter/out/persistence/social-account.command.adapter';
+import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
 import { SocialAccountSavePort } from '../../../port/out/social-account.save.port';
 import { SocialAccountDeleteCommand } from '../social-account.delete.command';
 import { SocialAccountDeleteHandler } from '../social-account.delete.handler';
 
 describe('SocialAccountDeleteCommand', () => {
   let handler: SocialAccountDeleteHandler;
-  const savePort: SocialAccountSavePort = mock(SocialAccountCommandAdapter);
+  const savePort: SocialAccountSavePort = mock(UserCommandRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -31,7 +31,7 @@ describe('SocialAccountDeleteCommand', () => {
         userId: 'user-id',
       };
       await handler.execute(command);
-      verify(savePort.delete(command)).once();
+      verify(savePort.deleteSocialAccount(command)).once();
     });
   });
 });

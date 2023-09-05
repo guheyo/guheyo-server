@@ -13,6 +13,6 @@ export class SocialAccountUpdateHandler implements ICommandHandler<SocialAccount
 
   async execute(command: SocialAccountUpdateCommand): Promise<void> {
     const socialAccount = new SocialAccountEntity(command);
-    await this.socialAccountSavePort.update(socialAccount);
+    await this.socialAccountSavePort.updateSocialAccount(socialAccount);
   }
 }
