@@ -1,13 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { mock, verify, instance } from 'ts-mockito';
-import { UserQueryAdapter } from '@lib/domains/user/adapter/out/persistence/user.query.adapter';
+import { UserQueryRepository } from '@lib/domains/user/adapter/out/persistence/user.query.repository';
 import { UserLoadPort } from '../../../port/out/user.load.port';
 import { UserGetByIdQuery } from '../user.get-by-id.query';
 import { UserGetByIdHandler } from '../user.get-by-id.handler';
 
 describe('UserGetByIdQuery', () => {
   let handler: UserGetByIdHandler;
-  const loadPort: UserLoadPort = mock(UserQueryAdapter);
+  const loadPort: UserLoadPort = mock(UserQueryRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({

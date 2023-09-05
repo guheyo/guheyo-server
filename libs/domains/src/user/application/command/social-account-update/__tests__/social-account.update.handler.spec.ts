@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { mock, verify, instance, anyOfClass } from 'ts-mockito';
-import { SocialAccountCommandAdapter } from '@lib/domains/user/adapter/out/persistence/social-account.command.adapter';
+import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
 import { SocialAccountEntity } from '@lib/domains/user/domain/social-account.entity';
 import { SocialAccountSavePort } from '../../../port/out/social-account.save.port';
 import { SocialAccountUpdateCommand } from '../social-account.update.command';
@@ -8,7 +8,7 @@ import { SocialAccountUpdateHandler } from '../social-account.update.handler';
 
 describe('SocialAccountUpdateCommand', () => {
   let handler: SocialAccountUpdateHandler;
-  const savePort: SocialAccountSavePort = mock(SocialAccountCommandAdapter);
+  const savePort: SocialAccountSavePort = mock(UserCommandRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -39,7 +39,7 @@ describe('SocialAccountUpdateCommand', () => {
         sessionState: 'session-state',
       };
       await handler.execute(command);
-      verify(savePort.update(anyOfClass(SocialAccountEntity))).once();
+      verify(savePort.updateSocialAccount(anyOfClass(SocialAccountEntity))).once();
     });
   });
 });
