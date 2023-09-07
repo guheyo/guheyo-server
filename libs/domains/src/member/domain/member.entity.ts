@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Field, ID, GraphQLISODateTime } from '@nestjs/graphql';
 import { Member } from '@prisma/client';
 import { Exclude, Type } from 'class-transformer';
 import { RoleEntity } from './role.entity';
@@ -8,25 +8,26 @@ export class MemberEntity implements Member {
     Object.assign(this, partial);
   }
 
-  @ApiProperty({ type: String })
+  @Field(() => ID)
   id: string;
 
-  @ApiProperty({ type: Date })
+  @Field(() => GraphQLISODateTime)
   createdAt: Date;
 
-  @ApiProperty({ type: Date })
+  @Field(() => GraphQLISODateTime)
   updatedAt: Date;
 
   @Exclude()
+  @Field(() => GraphQLISODateTime, { nullable: true })
   deletedAt: Date | null;
 
-  @ApiProperty({ type: String })
+  @Field()
   userId: string;
 
-  @ApiProperty({ type: String })
+  @Field()
   guildId: string;
 
   @Type(() => RoleEntity)
-  @ApiProperty({ isArray: true, type: () => RoleEntity })
+  @Field(() => [RoleEntity], { nullable: true })
   roles: RoleEntity[];
 }

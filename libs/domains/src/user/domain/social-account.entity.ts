@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Field, GraphQLISODateTime, ID, Int } from '@nestjs/graphql';
 import { SocialAccount } from '@prisma/client';
 import { Exclude } from 'class-transformer';
 
@@ -7,45 +7,46 @@ export class SocialAccountEntity implements SocialAccount {
     Object.assign(this, partial);
   }
 
-  @ApiProperty({ type: String })
+  @Field(() => ID)
   id: string;
 
-  @ApiProperty({ type: Date })
+  @Field(() => GraphQLISODateTime)
   createdAt: Date;
 
-  @ApiProperty({ type: Date })
+  @Field(() => GraphQLISODateTime)
   updatedAt: Date;
 
   @Exclude()
+  @Field(() => GraphQLISODateTime, { nullable: true })
   deletedAt: Date | null;
 
-  @ApiProperty({ type: String })
+  @Field()
   provider: string;
 
-  @ApiProperty({ type: String })
+  @Field()
   socialId: string;
 
-  @ApiProperty({ type: String })
+  @Field()
   userId: string;
 
-  @ApiPropertyOptional({ type: String })
+  @Field(() => String, { nullable: true })
   refreshToken: string | null;
 
-  @ApiPropertyOptional({ type: String })
+  @Field(() => String, { nullable: true })
   accessToken: string | null;
 
-  @ApiPropertyOptional({ type: Number })
+  @Field(() => Int, { nullable: true })
   expiresAt: number | null;
 
-  @ApiPropertyOptional({ type: String })
+  @Field(() => String, { nullable: true })
   tokenType: string | null;
 
-  @ApiPropertyOptional({ type: String })
+  @Field(() => String, { nullable: true })
   scope: string | null;
 
-  @ApiPropertyOptional({ type: String })
+  @Field(() => String, { nullable: true })
   idToken: string | null;
 
-  @ApiPropertyOptional({ type: String })
+  @Field(() => String, { nullable: true })
   sessionState: string | null;
 }
