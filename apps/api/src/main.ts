@@ -1,19 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from '@lib/shared';
 import { ApiModule } from '@app/api/api.module';
-
-function swagger(app: NestFastifyApplication) {
-  const swaggerDocumentBuilder = new DocumentBuilder()
-    .setTitle('Api Document')
-    .setVersion('1.0.0')
-    .build();
-  const swaggerDocument = SwaggerModule.createDocument(app, swaggerDocumentBuilder);
-  SwaggerModule.setup('documentation', app, swaggerDocument);
-}
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
@@ -39,8 +29,6 @@ async function bootstrap() {
       transform: true, // 넘어오는값은 무조건 String이라 하나하나 원하는 타입으로 바꿔줘야하는데 이런 불편함을 없애줌
     }),
   );
-
-  swagger(app);
 
   await app.listen(serverConfig.port, '0.0.0.0');
 }
