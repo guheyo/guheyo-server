@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Field, GraphQLISODateTime, ID, Int } from '@nestjs/graphql';
 import { Role } from '@prisma/client';
 import { Exclude } from 'class-transformer';
 
@@ -7,24 +7,25 @@ export class RoleEntity implements Role {
     Object.assign(this, partial);
   }
 
-  @ApiProperty({ type: String })
+  @Field(() => ID)
   id: string;
 
-  @ApiProperty({ type: Date })
+  @Field(() => GraphQLISODateTime)
   createdAt: Date;
 
-  @ApiProperty({ type: Date })
+  @Field(() => GraphQLISODateTime)
   updateedAt: Date;
 
   @Exclude()
+  @Field(() => GraphQLISODateTime, { nullable: true })
   deletedAt: Date | null;
 
-  @ApiProperty({ type: String })
+  @Field()
   name: string;
 
-  @ApiPropertyOptional({ type: Number })
+  @Field(() => Int, { nullable: true })
   rank: number | null;
 
-  @ApiProperty({ type: String })
+  @Field()
   hexColor: string = '#000000';
 }
