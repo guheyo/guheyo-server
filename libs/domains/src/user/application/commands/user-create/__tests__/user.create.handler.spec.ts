@@ -26,7 +26,10 @@ describe('UserCreateCommand', () => {
 
   describe('execute', () => {
     it('should execute create', async () => {
-      const command: UserCreateCommand = { username: 'test-user' };
+      const command = new UserCreateCommand({
+        id: '94587c54-4d7d-11ee-be56-0242ac120002',
+        username: 'test-user',
+      });
       await handler.execute(command);
       verify(savePort.create(anyOfClass(UserEntity))).once();
     });

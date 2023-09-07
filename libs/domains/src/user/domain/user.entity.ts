@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Field, GraphQLISODateTime, ID } from '@nestjs/graphql';
 import { User } from '@prisma/client';
 import { Exclude, Type } from 'class-transformer';
 import { MemberEntity } from '@lib/domains/member/domain/member.entity';
@@ -9,35 +9,36 @@ export class UserEntity implements User {
     Object.assign(this, partial);
   }
 
-  @ApiProperty({ type: String })
+  @Field(() => ID)
   id: string;
 
-  @ApiProperty({ type: Date })
+  @Field(() => GraphQLISODateTime)
   createdAt: Date;
 
-  @ApiProperty({ type: Date })
+  @Field(() => GraphQLISODateTime)
   updatedAt: Date;
 
   @Exclude()
+  @Field(() => GraphQLISODateTime, { nullable: true })
   deletedAt: Date | null;
 
-  @ApiPropertyOptional({ type: String })
+  @Field(() => String, { nullable: true })
   name: string | null;
 
-  @ApiProperty({ type: String })
+  @Field()
   username: string;
 
   @Type(() => SocialAccountEntity)
-  @ApiProperty({ isArray: true, type: () => SocialAccountEntity })
+  @Field(() => [SocialAccountEntity], { nullable: true })
   socialAccounts: SocialAccountEntity[];
 
-  @ApiPropertyOptional({ type: String })
+  @Field(() => String, { nullable: true })
   avatarURL: string | null;
 
-  @ApiProperty({ type: Boolean })
+  @Field()
   bot: boolean;
 
   @Type(() => MemberEntity)
-  @ApiProperty({ isArray: true, type: () => MemberEntity })
+  @Field(() => [MemberEntity], { nullable: true })
   members: MemberEntity[];
 }
