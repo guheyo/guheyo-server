@@ -1,33 +1,34 @@
 import { Test } from '@nestjs/testing';
-import { mock, verify, instance, anyOfClass } from 'ts-mockito';
+import { mock, verify, instance } from 'ts-mockito';
 import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
-import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { UserSavePort } from '../../../port/out/user.save.port';
-import { UserUpdateCommand } from '../user.update.command';
-import { UserUpdateHandler } from '../user.update.handler';
+import { UserDeleteCommand } from '../user.delete.command';
+import { UserDeleteHandler } from '../user.delete.handler';
 
-describe('UserUpdateCommand', () => {
-  let handler: UserUpdateHandler;
+describe('UserDeleteCommand', () => {
+  let handler: UserDeleteHandler;
   const savePort: UserSavePort = mock(UserCommandRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        UserUpdateHandler,
+        UserDeleteHandler,
         {
           provide: 'UserSavePort',
           useValue: instance(savePort),
         },
       ],
     }).compile();
-    handler = moduleRef.get<UserUpdateHandler>(UserUpdateHandler);
+    handler = moduleRef.get<UserDeleteHandler>(UserDeleteHandler);
   });
 
   describe('execute', () => {
-    it('should execute update', async () => {
-      const command: UserUpdateCommand = { name: 'changed-name' };
+    it('should execute delete', async () => {
+      const command: UserDeleteCommand = new UserDeleteCommand({
+        id: '94587c54-4d7d-11ee-be56-0242ac120002',
+      });
       await handler.execute(command);
-      verify(savePort.update(anyOfClass(UserEntity))).once();
+      verify(savePort.delete(command.id)).once();
     });
   });
 });
