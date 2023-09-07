@@ -25,7 +25,10 @@ describe('UserUpdateCommand', () => {
 
   describe('execute', () => {
     it('should execute update', async () => {
-      const command: UserUpdateCommand = { name: 'changed-name' };
+      const command = new UserUpdateCommand({
+        id: '94587c54-4d7d-11ee-be56-0242ac120002',
+        name: 'changed-name',
+      });
       await handler.execute(command);
       verify(savePort.update(anyOfClass(UserEntity))).once();
     });

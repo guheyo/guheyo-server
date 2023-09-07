@@ -1,7 +1,16 @@
-import { PartialType, PickType } from '@nestjs/swagger';
 import { ICommand } from '@nestjs/cqrs';
-import { UserEntity } from '@lib/domains/user/domain/user.entity';
+import { UserUpdateInput } from './user.update.input';
 
-export class UserUpdateCommand
-  extends PartialType(PickType(UserEntity, ['name', 'avatarURL'] as const))
-  implements ICommand {}
+export class UserUpdateCommand implements ICommand {
+  id: string;
+
+  name?: string;
+
+  avatarURL?: string;
+
+  constructor(public readonly input: UserUpdateInput) {
+    this.id = input.id;
+    this.name = input.name;
+    this.avatarURL = input.avatarURL;
+  }
+}
