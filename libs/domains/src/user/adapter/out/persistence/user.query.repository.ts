@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@lib/shared';
 import { UserLoadPort } from '@lib/domains/user/application/port/out/user.load.port';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
-import { UserGetBySocialAccountQuery } from '@lib/domains/user/application/query/user-get-by-social-account/user.get-by-social-account.query';
+import { UserGetBySocialAccountQuery } from '@lib/domains/user/application/queries/user-get-by-social-account/user.get-by-social-account.query';
 
 @Injectable()
 export class UserQueryRepository implements UserLoadPort {
