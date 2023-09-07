@@ -1,7 +1,13 @@
-import { PickType } from '@nestjs/swagger';
 import { ICommand } from '@nestjs/cqrs';
-import { UserEntity } from '@lib/domains/user/domain/user.entity';
+import { UserCreateInput } from './user.create.input';
 
-export class UserCreateCommand
-  extends PickType(UserEntity, ['username'] as const)
-  implements ICommand {}
+export class UserCreateCommand implements ICommand {
+  id: string;
+
+  username: string;
+
+  constructor(public readonly input: UserCreateInput) {
+    this.id = input.id;
+    this.username = input.username;
+  }
+}
