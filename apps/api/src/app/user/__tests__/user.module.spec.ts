@@ -4,10 +4,13 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UserSavePort } from '@lib/domains/user/application/port/out/user.save.port';
 import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
 import { UserCreateHandler } from '@lib/domains/user/application/commands/user-create/user.create.handler';
+import { UserUpdateHandler } from '@lib/domains/user/application/commands/user-update/user.update.handler';
+import { UserDeleteHandler } from '@lib/domains/user/application/commands/user-delete/user.delete.handler';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { UserModule } from '../user.module';
 import { UserResolver } from '../user.resolver';
+
 
 describe('UserModule', () => {
   let apiModule: ApiModule;
@@ -15,6 +18,8 @@ describe('UserModule', () => {
   let resolver: UserResolver;
   let savePort: UserSavePort;
   let userCreateHandler: UserCreateHandler;
+  let userUpdateHandler: UserUpdateHandler;
+  let userDeleteHandler: UserDeleteHandler;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -32,6 +37,8 @@ describe('UserModule', () => {
     resolver = moduleRef.get<UserResolver>(UserResolver);
     savePort = moduleRef.get<UserSavePort>('UserSavePort');
     userCreateHandler = moduleRef.get<UserCreateHandler>(UserCreateHandler);
+    userUpdateHandler = moduleRef.get<UserUpdateHandler>(UserUpdateHandler);
+    userDeleteHandler = moduleRef.get<UserDeleteHandler>(UserDeleteHandler);
   });
 
   describe('UserApiModule', () => {
@@ -61,6 +68,18 @@ describe('UserModule', () => {
   describe('UserCreateHandler', () => {
     it('should be instance of UserCreateHandler', async () => {
       expect(userCreateHandler).toBeInstanceOf(UserCreateHandler);
+    });
+  });
+
+  describe('UserUpdateHandler', () => {
+    it('should be instance of UserUpdateHandler', async () => {
+      expect(userUpdateHandler).toBeInstanceOf(UserUpdateHandler);
+    });
+  });
+
+  describe('UserDeleteHandler', () => {
+    it('should be instance of UserDeleteHandler', async () => {
+      expect(userDeleteHandler).toBeInstanceOf(UserDeleteHandler);
     });
   });
 });
