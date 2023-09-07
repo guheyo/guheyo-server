@@ -24,7 +24,9 @@ describe('UserDeleteCommand', () => {
 
   describe('execute', () => {
     it('should execute delete', async () => {
-      const command: UserDeleteCommand = { id: '1' };
+      const command: UserDeleteCommand = new UserDeleteCommand({
+        id: '94587c54-4d7d-11ee-be56-0242ac120002',
+      });
       await handler.execute(command);
       verify(savePort.delete(command.id)).once();
     });
