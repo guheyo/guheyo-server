@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UserCommandService } from '@lib/domains/user/application/command/user.command.service';
-import { UserCreateInput } from '@lib/domains/user/application/command/user-create/user.create.input';
+import { UserCommandService } from '@lib/domains/user/application/commands/user.command.service';
+import { UserCreateInput } from '@lib/domains/user/application/commands/user-create/user.create.input';
 
 @Resolver()
 export class UserResolver {

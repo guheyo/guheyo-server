@@ -3,7 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UserSavePort } from '@lib/domains/user/application/port/out/user.save.port';
 import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
-import { UserCreateHandler } from '@lib/domains/user/application/command/user-create/user.create.handler';
+import { UserCreateHandler } from '@lib/domains/user/application/commands/user-create/user.create.handler';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { UserModule } from '../user.module';
