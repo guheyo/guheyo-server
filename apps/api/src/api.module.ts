@@ -4,6 +4,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigYamlModule } from '@app/api/config/config.module';
 import { UserModule } from './app/user/user.module';
+import { SocialAccountModule } from './app/social-account/social-account.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UserModule } from './app/user/user.module';
       sortSchema: true,
     }),
     UserModule,
+    SocialAccountModule,
   ],
 })
 export class ApiModule {}
