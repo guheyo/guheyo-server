@@ -4,6 +4,8 @@
 
 type Mutation {
   createUser(input: UserCreateInput!): String!
+  deleteUser(input: UserDeleteInput!): String!
+  updateUser(input: UserUpdateInput!): String!
 }
 
 type Query {
@@ -13,4 +15,14 @@ type Query {
 input UserCreateInput {
   id: String!
   username: String!
+}
+
+input UserDeleteInput {
+  id: String!
+}
+
+input UserUpdateInput {
+  avatarURL: String
+  id: String!
+  name: String
 }

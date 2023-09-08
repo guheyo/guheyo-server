@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsString, IsUUID } from 'class-validator';
+import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class UserUpdateInput {
@@ -7,10 +7,12 @@ export class UserUpdateInput {
   @Field()
   id: string;
 
+  @IsOptional()
   @IsString()
   @Field({ nullable: true })
   name?: string;
 
+  @IsOptional()
   @IsString()
   @Field({ nullable: true })
   avatarURL?: string;
