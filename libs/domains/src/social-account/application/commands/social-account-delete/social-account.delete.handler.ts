@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
+import { SocialAccountSavePort } from '@lib/domains/social-account/port/out/social-account.save.port';
 import { SocialAccountDeleteCommand } from './social-account.delete.command';
-import { SocialAccountSavePort } from '../../port/out/social-account.save.port';
 
 @CommandHandler(SocialAccountDeleteCommand)
 export class SocialAccountDeleteHandler implements ICommandHandler<SocialAccountDeleteCommand> {
@@ -11,6 +11,6 @@ export class SocialAccountDeleteHandler implements ICommandHandler<SocialAccount
   ) {}
 
   async execute(command: SocialAccountDeleteCommand): Promise<void> {
-    await this.socialAccountSavePort.deleteSocialAccount(command);
+    await this.socialAccountSavePort.delete(command);
   }
 }
