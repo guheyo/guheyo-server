@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { mock, verify, instance } from 'ts-mockito';
 import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
-import { SocialAccountSavePort } from '@lib/domains/social-account/port/out/social-account.save.port';
+import { SocialAccountSavePort } from '@lib/domains/social-account/application/port/out/social-account.save.port';
 import { SocialAccountDeleteCommand } from '../social-account.delete.command';
 import { SocialAccountDeleteHandler } from '../social-account.delete.handler';
 

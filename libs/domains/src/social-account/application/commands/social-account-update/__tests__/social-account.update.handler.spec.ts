@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { mock, verify, instance, anyOfClass } from 'ts-mockito';
 import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
-import { SocialAccountSavePort } from '@lib/domains/social-account/port/out/social-account.save.port';
+import { SocialAccountSavePort } from '@lib/domains/social-account/application/port/out/social-account.save.port';
 import { SocialAccountUpdateCommand } from '../social-account.update.command';
 import { SocialAccountUpdateHandler } from '../social-account.update.handler';
 

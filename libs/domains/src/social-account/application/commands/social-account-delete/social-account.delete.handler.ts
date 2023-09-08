@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { SocialAccountSavePort } from '@lib/domains/social-account/port/out/social-account.save.port';
+import { SocialAccountSavePort } from '@lib/domains/social-account/application/port/out/social-account.save.port';
 import { SocialAccountDeleteCommand } from './social-account.delete.command';
 
 @CommandHandler(SocialAccountDeleteCommand)
