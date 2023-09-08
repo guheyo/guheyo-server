@@ -1,6 +1,7 @@
 import { Field, GraphQLISODateTime, ID, Int } from '@nestjs/graphql';
 import { Role } from '@prisma/client';
 import { Exclude } from 'class-transformer';
+import { IsOptional } from 'class-validator';
 
 export class RoleEntity implements Role {
   constructor(partial: Partial<RoleEntity>) {
@@ -13,9 +14,11 @@ export class RoleEntity implements Role {
   @Field(() => GraphQLISODateTime)
   createdAt: Date;
 
+  @Exclude()
   @Field(() => GraphQLISODateTime)
   updateedAt: Date;
 
+  @IsOptional()
   @Exclude()
   @Field(() => GraphQLISODateTime, { nullable: true })
   deletedAt: Date | null;
@@ -23,6 +26,7 @@ export class RoleEntity implements Role {
   @Field()
   name: string;
 
+  @IsOptional()
   @Field(() => Int, { nullable: true })
   rank: number | null;
 
