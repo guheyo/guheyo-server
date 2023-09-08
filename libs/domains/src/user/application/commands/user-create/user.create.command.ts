@@ -6,7 +6,7 @@ export class UserCreateCommand implements ICommand {
 
   username: string;
 
-  constructor(public readonly input: UserCreateInput) {
+  constructor(input: UserCreateInput) {
     this.id = input.id;
     this.username = input.username;
   }
