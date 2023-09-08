@@ -8,7 +8,7 @@ export class UserUpdateCommand implements ICommand {
 
   avatarURL?: string;
 
-  constructor(public readonly input: UserUpdateInput) {
+  constructor(input: UserUpdateInput) {
     this.id = input.id;
     this.name = input.name;
     this.avatarURL = input.avatarURL;
