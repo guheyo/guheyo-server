@@ -11,7 +11,6 @@ import { ConfigYamlModule } from '../../../config/config.module';
 import { UserModule } from '../user.module';
 import { UserResolver } from '../user.resolver';
 
-
 describe('UserModule', () => {
   let apiModule: ApiModule;
   let userModule: UserModule;
