@@ -3,13 +3,47 @@
 # ------------------------------------------------------
 
 type Mutation {
+  createSocialAccount(input: SocialAccountCreateInput!): String!
   createUser(input: UserCreateInput!): String!
+  deleteSocialAccount(input: SocialAccountDeleteInput!): String!
   deleteUser(input: UserDeleteInput!): String!
+  updateSocialAccount(input: SocialAccountUpdateInput!): String!
   updateUser(input: UserUpdateInput!): String!
 }
 
 type Query {
+  getSocialAccountsByUserId(id: String!): String!
   getUserById(id: String!): String!
+}
+
+input SocialAccountCreateInput {
+  accessToken: String
+  expiresAt: Int
+  id: ID!
+  idToken: String
+  provider: String!
+  refreshToken: String
+  scope: String
+  sessionState: String
+  socialId: String!
+  tokenType: String
+  userId: String!
+}
+
+input SocialAccountDeleteInput {
+  id: String!
+}
+
+input SocialAccountUpdateInput {
+  accessToken: String
+  expiresAt: Int
+  id: String!
+  idToken: String
+  refreshToken: String
+  scope: String
+  sessionState: String
+  tokenType: String
+  userId: String!
 }
 
 input UserCreateInput {
