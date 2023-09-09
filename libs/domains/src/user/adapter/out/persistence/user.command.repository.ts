@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import _ from 'lodash';
 import { PrismaService } from '@lib/shared';
-import { UserSavePort } from '@lib/domains/user/application/port/out/user.save.port';
+import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 
 @Injectable()
-export class UserCommandRepository implements UserSavePort {
-  constructor(private prismaService: PrismaService) {}
+export class UserCommandRepository implements SavePort<UserEntity> {
+  constructor(readonly prismaService: PrismaService) {}
 
   async create(user: UserEntity): Promise<void> {
     await this.prismaService.user.create({
@@ -39,7 +39,11 @@ export class UserCommandRepository implements UserSavePort {
     });
   }
 
-  async delete(id: string): Promise<void> {
-    await this.prismaService.user.delete({ where: { id } });
+  async delete(user: UserEntity): Promise<void> {
+    await this.prismaService.user.delete({
+      where: {
+        id: user.id,
+      },
+    });
   }
 }
