@@ -1,14 +1,14 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
-import { SocialAccountSavePort } from '@lib/domains/social-account/application/port/out/social-account.save.port';
+import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { SocialAccountCreateCommand } from './social-account.create.command';
 
 @CommandHandler(SocialAccountCreateCommand)
 export class SocialAccountCreateHandler implements ICommandHandler<SocialAccountCreateCommand> {
   constructor(
     @Inject('SocialAccountSavePort')
-    private socialAccountSavePort: SocialAccountSavePort,
+    private socialAccountSavePort: SavePort<SocialAccountEntity>,
   ) {}
 
   async execute(command: SocialAccountCreateCommand): Promise<void> {
