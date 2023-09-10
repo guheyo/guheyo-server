@@ -1,11 +1,12 @@
 import { Test } from '@nestjs/testing';
 import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { SocialAccountSavePort } from '@lib/domains/social-account/application/port/out/social-account.save.port';
+import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
 import { SocialAccountCreateHandler } from '@lib/domains/social-account/application/commands/social-account-create/social-account.create.handler';
 import { SocialAccountUpdateHandler } from '@lib/domains/social-account/application/commands/social-account-update/social-account.update.handler';
 import { SocialAccountDeleteHandler } from '@lib/domains/social-account/application/commands/social-account-delete/social-account.delete.handler';
+import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { SocialAccountModule } from '../social-account.module';
@@ -15,7 +16,7 @@ describe('SocialAccountModule', () => {
   let apiModule: ApiModule;
   let socialAccountModule: SocialAccountModule;
   let resolver: SocialAccountResolver;
-  let savePort: SocialAccountSavePort;
+  let savePort: SavePort<SocialAccountEntity>;
   let socialAccountCreateHandler: SocialAccountCreateHandler;
   let socialAccountUpdateHandler: SocialAccountUpdateHandler;
   let socialAccountDeleteHandler: SocialAccountDeleteHandler;
@@ -34,7 +35,7 @@ describe('SocialAccountModule', () => {
     apiModule = moduleRef;
     socialAccountModule = moduleRef.get<SocialAccountModule>(SocialAccountModule);
     resolver = moduleRef.get<SocialAccountResolver>(SocialAccountResolver);
-    savePort = moduleRef.get<SocialAccountSavePort>('SocialAccountSavePort');
+    savePort = moduleRef.get<SavePort<SocialAccountEntity>>('SocialAccountSavePort');
     socialAccountCreateHandler = moduleRef.get<SocialAccountCreateHandler>(
       SocialAccountCreateHandler,
     );

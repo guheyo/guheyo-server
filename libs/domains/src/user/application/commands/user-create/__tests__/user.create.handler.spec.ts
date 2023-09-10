@@ -2,13 +2,13 @@ import { Test } from '@nestjs/testing';
 import { mock, verify, instance, anyOfClass } from 'ts-mockito';
 import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
-import { UserSavePort } from '../../../port/out/user.save.port';
+import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { UserCreateCommand } from '../user.create.command';
 import { UserCreateHandler } from '../user.create.handler';
 
 describe('UserCreateCommand', () => {
   let handler: UserCreateHandler;
-  const savePort: UserSavePort = mock(UserCommandRepository);
+  const savePort: SavePort<UserEntity> = mock(UserCommandRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
