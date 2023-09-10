@@ -1,12 +1,15 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UserCommandService } from '@lib/domains/user/application/commands/user.command.service';
+import { CommandBus } from '@nestjs/cqrs';
 import { UserCreateInput } from '@lib/domains/user/application/commands/user-create/user.create.input';
+import { UserCreateCommand } from '@lib/domains/user/application/commands/user-create/user.create.command';
 import { UserUpdateInput } from '@lib/domains/user/application/commands/user-update/user.update.input';
+import { UserUpdateCommand } from '@lib/domains/user/application/commands/user-update/user.update.command';
 import { UserDeleteInput } from '@lib/domains/user/application/commands/user-delete/user.delete.input';
+import { UserDeleteCommand } from '@lib/domains/user/application/commands/user-delete/user.delete.command';
 
 @Resolver()
 export class UserResolver {
-  constructor(private readonly userCommandService: UserCommandService) {}
+  constructor(private readonly commandBus: CommandBus) {}
 
   // TODO: implement getUserById using userQueryService
   @Query(() => String)
@@ -16,19 +19,19 @@ export class UserResolver {
 
   @Mutation(() => String)
   async createUser(@Args('input') input: UserCreateInput): Promise<String> {
-    await this.userCommandService.create(input);
+    await this.commandBus.execute(new UserCreateCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
   async updateUser(@Args('input') input: UserUpdateInput): Promise<String> {
-    await this.userCommandService.update(input);
+    await this.commandBus.execute(new UserUpdateCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
   async deleteUser(@Args('input') input: UserDeleteInput): Promise<String> {
-    await this.userCommandService.delete(input);
+    await this.commandBus.execute(new UserDeleteCommand(input));
     return input.id;
   }
 }
