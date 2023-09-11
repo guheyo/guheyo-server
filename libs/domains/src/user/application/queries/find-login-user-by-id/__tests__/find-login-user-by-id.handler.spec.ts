@@ -2,31 +2,31 @@ import { Test } from '@nestjs/testing';
 import { mock, verify, instance } from 'ts-mockito';
 import { UserQueryRepository } from '@lib/domains/user/adapter/out/persistence/user.query.repository';
 import { UserLoadPort } from '../../../port/out/user.load.port';
-import { UserGetByIdQuery } from '../user.get-by-id.query';
-import { UserGetByIdHandler } from '../user.get-by-id.handler';
+import { FindLoginUserByIdQuery } from '../find-login-user-by-id.query';
+import { FindLoginUserByIdHandler } from '../find-login-user-by-id.handler';
 
-describe('UserGetByIdQuery', () => {
-  let handler: UserGetByIdHandler;
+describe('FindLoginUserByIdQuery', () => {
+  let handler: FindLoginUserByIdHandler;
   const loadPort: UserLoadPort = mock(UserQueryRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        UserGetByIdHandler,
+        FindLoginUserByIdHandler,
         {
           provide: 'UserLoadPort',
           useValue: instance(loadPort),
         },
       ],
     }).compile();
-    handler = moduleRef.get<UserGetByIdHandler>(UserGetByIdHandler);
+    handler = moduleRef.get<FindLoginUserByIdHandler>(FindLoginUserByIdHandler);
   });
 
   describe('execute', () => {
-    it('should execute getById', async () => {
-      const query: UserGetByIdQuery = { id: 'user-id' };
+    it('should execute findLoginUserById', async () => {
+      const query: FindLoginUserByIdQuery = { id: 'user-id' };
       await handler.execute(query);
-      verify(loadPort.getById(query.id)).once();
+      verify(loadPort.findLoginUserById(query)).once();
     });
   });
 });

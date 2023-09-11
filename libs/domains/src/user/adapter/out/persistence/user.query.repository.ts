@@ -1,29 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@lib/shared';
 import { UserLoadPort } from '@lib/domains/user/application/port/out/user.load.port';
-import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { UserGetBySocialAccountQuery } from '@lib/domains/user/application/queries/user-get-by-social-account/user.get-by-social-account.query';
+import { FindLoginUserByIdQuery } from '@lib/domains/user/application/queries/find-login-user-by-id/find-login-user-by-id.query';
+import { LoginUserResponse } from '@lib/domains/user/application/dtos/login-user.response';
 
 @Injectable()
 export class UserQueryRepository implements UserLoadPort {
   constructor(private prismaService: PrismaService) {}
 
-  async getById(id: string): Promise<UserEntity | null> {
+  async findLoginUserById(query: FindLoginUserByIdQuery): Promise<LoginUserResponse | null> {
     const user = await this.prismaService.user.findUnique({
-      where: { id },
+      where: { id: query.id },
       include: {
-        socialAccounts: true,
         members: {
           include: {
             roles: true,
           },
         },
+        socialAccounts: true,
       },
     });
-    return user ? new UserEntity(user) : null;
+    return user ? new LoginUserResponse(user) : null;
   }
 
-  async getBySocailAccount(query: UserGetBySocialAccountQuery): Promise<UserEntity | null> {
+  async getLoginUserBySocailAccount(
+    query: UserGetBySocialAccountQuery,
+  ): Promise<LoginUserResponse | null> {
     const users = await this.prismaService.user.findMany({
       where: {
         socialAccounts: {
@@ -42,6 +45,6 @@ export class UserQueryRepository implements UserLoadPort {
         },
       },
     });
-    return users.length ? new UserEntity(users[0]) : null;
+    return users.length ? new LoginUserResponse(users[0]) : null;
   }
 }
