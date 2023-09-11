@@ -7,8 +7,8 @@ import { UserCreateHandler } from '@lib/domains/user/application/commands/user-c
 import { UserUpdateHandler } from '@lib/domains/user/application/commands/user-update/user.update.handler';
 import { UserDeleteHandler } from '@lib/domains/user/application/commands/user-delete/user.delete.handler';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
-import { FindLoginUserByIdHandler } from '@lib/domains/user/application/queries/find-login-user-by-id/find-login-user-by-id.handler';
-import { FindLoginUserBySocialAccountHandler } from '@lib/domains/user/application/queries/find-login-user-by-social-account/find-login-user-by-social-account.handler';
+import { FindMyUserByIdHandler } from '@lib/domains/user/application/queries/find-my-user-by-id/find-my-user-by-id.handler';
+import { FindMyUserBySocialAccountHandler } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.handler';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { UserModule } from '../user.module';
@@ -22,8 +22,8 @@ describe('UserModule', () => {
   let userCreateHandler: UserCreateHandler;
   let userUpdateHandler: UserUpdateHandler;
   let userDeleteHandler: UserDeleteHandler;
-  let findLoginUserByIdHandler: FindLoginUserByIdHandler;
-  let findLoginUserBySocialAccountHandler: FindLoginUserBySocialAccountHandler;
+  let findMyUserByIdHandler: FindMyUserByIdHandler;
+  let findMyUserBySocialAccountHandler: FindMyUserBySocialAccountHandler;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -43,9 +43,9 @@ describe('UserModule', () => {
     userCreateHandler = moduleRef.get<UserCreateHandler>(UserCreateHandler);
     userUpdateHandler = moduleRef.get<UserUpdateHandler>(UserUpdateHandler);
     userDeleteHandler = moduleRef.get<UserDeleteHandler>(UserDeleteHandler);
-    findLoginUserByIdHandler = moduleRef.get<FindLoginUserByIdHandler>(FindLoginUserByIdHandler);
-    findLoginUserBySocialAccountHandler = moduleRef.get<FindLoginUserBySocialAccountHandler>(
-      FindLoginUserBySocialAccountHandler,
+    findMyUserByIdHandler = moduleRef.get<FindMyUserByIdHandler>(FindMyUserByIdHandler);
+    findMyUserBySocialAccountHandler = moduleRef.get<FindMyUserBySocialAccountHandler>(
+      FindMyUserBySocialAccountHandler,
     );
   });
 
@@ -91,16 +91,16 @@ describe('UserModule', () => {
     });
   });
 
-  describe('FindLoginUserByIdHandler', () => {
-    it('should be instance of FindLoginUserByIdHandler', async () => {
-      expect(findLoginUserByIdHandler).toBeInstanceOf(FindLoginUserByIdHandler);
+  describe('FindMyUserByIdHandler', () => {
+    it('should be instance of FindMyUserByIdHandler', async () => {
+      expect(findMyUserByIdHandler).toBeInstanceOf(FindMyUserByIdHandler);
     });
   });
 
-  describe('FindLoginUserBySocialAccountHandler', () => {
-    it('should be instance of FindLoginUserBySocialAccountHandler', async () => {
-      expect(findLoginUserBySocialAccountHandler).toBeInstanceOf(
-        FindLoginUserBySocialAccountHandler,
+  describe('FindMyUserBySocialAccountHandler', () => {
+    it('should be instance of FindMyUserBySocialAccountHandler', async () => {
+      expect(findMyUserBySocialAccountHandler).toBeInstanceOf(
+        FindMyUserBySocialAccountHandler,
       );
     });
   });

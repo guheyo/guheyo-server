@@ -5,7 +5,7 @@ import { MemberReponse } from '@lib/domains/member/application/dtos/member.repon
 import { UserReponse } from './user.reponse';
 
 @ObjectType()
-export class LoginUserResponse extends UserReponse {
+export class MyUserResponse extends UserReponse {
   @Type(() => SocialAccountResponse)
   @Field(() => [SocialAccountResponse], { nullable: true })
   socialAccounts: SocialAccountResponse[];
@@ -14,7 +14,7 @@ export class LoginUserResponse extends UserReponse {
   @Field(() => [MemberReponse], { nullable: true })
   members: MemberReponse[];
 
-  constructor(partial: Partial<LoginUserResponse>) {
+  constructor(partial: Partial<MyUserResponse>) {
     super(partial);
     Object.assign(this, partial);
   }

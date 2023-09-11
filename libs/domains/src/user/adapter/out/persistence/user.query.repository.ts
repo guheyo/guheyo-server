@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@lib/shared';
 import { UserLoadPort } from '@lib/domains/user/application/port/out/user.load.port';
-import { FindLoginUserBySocialAccountQuery } from '@lib/domains/user/application/queries/find-login-user-by-social-account/find-login-user-by-social-account.query';
-import { FindLoginUserByIdQuery } from '@lib/domains/user/application/queries/find-login-user-by-id/find-login-user-by-id.query';
-import { LoginUserResponse } from '@lib/domains/user/application/dtos/login-user.response';
+import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.query';
+import { FindMyUserByIdQuery } from '@lib/domains/user/application/queries/find-my-user-by-id/find-my-user-by-id.query';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 
 @Injectable()
 export class UserQueryRepository implements UserLoadPort {
   constructor(private prismaService: PrismaService) {}
 
-  async findLoginUserById(query: FindLoginUserByIdQuery): Promise<LoginUserResponse | null> {
+  async findMyUserById(query: FindMyUserByIdQuery): Promise<MyUserResponse | null> {
     const user = await this.prismaService.user.findUnique({
       where: { id: query.id },
       include: {
@@ -21,12 +21,12 @@ export class UserQueryRepository implements UserLoadPort {
         socialAccounts: true,
       },
     });
-    return user ? new LoginUserResponse(user) : null;
+    return user ? new MyUserResponse(user) : null;
   }
 
-  async findLoginUserBySocailAccount(
-    query: FindLoginUserBySocialAccountQuery,
-  ): Promise<LoginUserResponse | null> {
+  async findMyUserBySocailAccount(
+    query: FindMyUserBySocialAccountQuery,
+  ): Promise<MyUserResponse | null> {
     const users = await this.prismaService.user.findMany({
       where: {
         socialAccounts: {
@@ -45,6 +45,6 @@ export class UserQueryRepository implements UserLoadPort {
         },
       },
     });
-    return users.length ? new LoginUserResponse(users[0]) : null;
+    return users.length ? new MyUserResponse(users[0]) : null;
   }
 }

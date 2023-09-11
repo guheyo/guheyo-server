@@ -6,9 +6,9 @@ import { UserUpdateInput } from '@lib/domains/user/application/commands/user-upd
 import { UserUpdateCommand } from '@lib/domains/user/application/commands/user-update/user.update.command';
 import { UserDeleteInput } from '@lib/domains/user/application/commands/user-delete/user.delete.input';
 import { UserDeleteCommand } from '@lib/domains/user/application/commands/user-delete/user.delete.command';
-import { LoginUserResponse } from '@lib/domains/user/application/dtos/login-user.response';
-import { FindLoginUserByIdQuery } from '@lib/domains/user/application/queries/find-login-user-by-id/find-login-user-by-id.query';
-import { FindLoginUserBySocialAccountQuery } from '@lib/domains/user/application/queries/find-login-user-by-social-account/find-login-user-by-social-account.query';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { FindMyUserByIdQuery } from '@lib/domains/user/application/queries/find-my-user-by-id/find-my-user-by-id.query';
+import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.query';
 
 @Resolver()
 export class UserResolver {
@@ -17,18 +17,18 @@ export class UserResolver {
     private readonly queryBus: QueryBus,
   ) {}
 
-  @Query(() => LoginUserResponse)
-  async findLoginUserById(@Args('id') id: string) {
-    const query = new FindLoginUserByIdQuery(id);
+  @Query(() => MyUserResponse)
+  async findMyUserById(@Args('id') id: string) {
+    const query = new FindMyUserByIdQuery(id);
     return this.queryBus.execute(query);
   }
 
-  @Query(() => LoginUserResponse)
-  async findLoginUserBySocialAccount(
+  @Query(() => MyUserResponse)
+  async findMyUserBySocialAccount(
     @Args('provider') provider: string,
     @Args('socialId') socialId: string,
   ) {
-    const query = new FindLoginUserBySocialAccountQuery(provider, socialId);
+    const query = new FindMyUserBySocialAccountQuery(provider, socialId);
     return this.queryBus.execute(query);
   }
 

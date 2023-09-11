@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '@lib/shared/prisma/prisma.module';
-import { FindLoginUserByIdHandler } from './find-login-user-by-id/find-login-user-by-id.handler';
+import { FindMyUserByIdHandler } from './find-my-user-by-id/find-my-user-by-id.handler';
 import { UserQueryRepository } from '../../adapter/out/persistence/user.query.repository';
-import { FindLoginUserBySocialAccountHandler } from './find-login-user-by-social-account/find-login-user-by-social-account.handler';
+import { FindMyUserBySocialAccountHandler } from './find-my-user-by-social-account/find-my-user-by-social-account.handler';
 
-const queryHandlers = [FindLoginUserByIdHandler, FindLoginUserBySocialAccountHandler];
+const queryHandlers = [FindMyUserByIdHandler, FindMyUserBySocialAccountHandler];
 
 @Module({
   imports: [PrismaModule],
