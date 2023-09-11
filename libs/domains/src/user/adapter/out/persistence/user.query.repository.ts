@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@lib/shared';
 import { UserLoadPort } from '@lib/domains/user/application/port/out/user.load.port';
-import { UserGetBySocialAccountQuery } from '@lib/domains/user/application/queries/user-get-by-social-account/user.get-by-social-account.query';
+import { FindLoginUserBySocialAccountQuery } from '@lib/domains/user/application/queries/find-login-user-by-social-account/find-login-user-by-social-account.query';
 import { FindLoginUserByIdQuery } from '@lib/domains/user/application/queries/find-login-user-by-id/find-login-user-by-id.query';
 import { LoginUserResponse } from '@lib/domains/user/application/dtos/login-user.response';
 
@@ -24,8 +24,8 @@ export class UserQueryRepository implements UserLoadPort {
     return user ? new LoginUserResponse(user) : null;
   }
 
-  async getLoginUserBySocailAccount(
-    query: UserGetBySocialAccountQuery,
+  async findLoginUserBySocailAccount(
+    query: FindLoginUserBySocialAccountQuery,
   ): Promise<LoginUserResponse | null> {
     const users = await this.prismaService.user.findMany({
       where: {
