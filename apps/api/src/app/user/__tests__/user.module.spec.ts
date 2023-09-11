@@ -99,9 +99,7 @@ describe('UserModule', () => {
 
   describe('FindMyUserBySocialAccountHandler', () => {
     it('should be instance of FindMyUserBySocialAccountHandler', async () => {
-      expect(findMyUserBySocialAccountHandler).toBeInstanceOf(
-        FindMyUserBySocialAccountHandler,
-      );
+      expect(findMyUserBySocialAccountHandler).toBeInstanceOf(FindMyUserBySocialAccountHandler);
     });
   });
 });

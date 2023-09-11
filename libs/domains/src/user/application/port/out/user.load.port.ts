@@ -4,7 +4,5 @@ import { MyUserResponse } from '../../dtos/my-user.response';
 
 export interface UserLoadPort {
   findMyUserById(query: FindMyUserByIdQuery): Promise<MyUserResponse | null>;
-  findMyUserBySocailAccount(
-    query: FindMyUserBySocialAccountQuery,
-  ): Promise<MyUserResponse | null>;
+  findMyUserBySocailAccount(query: FindMyUserBySocialAccountQuery): Promise<MyUserResponse | null>;
 }

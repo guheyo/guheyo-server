@@ -20,9 +20,7 @@ describe('FindMyUserBySocialAccountQuery', () => {
       ],
     }).compile();
 
-    handler = moduleRef.get<FindMyUserBySocialAccountHandler>(
-      FindMyUserBySocialAccountHandler,
-    );
+    handler = moduleRef.get<FindMyUserBySocialAccountHandler>(FindMyUserBySocialAccountHandler);
   });
 
   describe('execute', () => {
