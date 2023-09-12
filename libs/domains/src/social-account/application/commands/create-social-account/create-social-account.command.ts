@@ -1,7 +1,7 @@
 import { ICommand } from '@nestjs/cqrs';
-import { SocialAccountCreateInput } from './social-account.create.input';
+import { CreateSocialAccountInput } from './create-social-account.input';
 
-export class SocialAccountCreateCommand implements ICommand {
+export class CreateSocialAccountCommand implements ICommand {
   id: string;
 
   provider: string;
@@ -24,7 +24,7 @@ export class SocialAccountCreateCommand implements ICommand {
 
   sessionState?: string;
 
-  constructor(input: SocialAccountCreateInput) {
+  constructor(input: CreateSocialAccountInput) {
     this.id = input.id;
     this.provider = input.provider;
     this.socialId = input.socialId;

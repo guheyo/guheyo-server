@@ -27,7 +27,7 @@ type MemberReponse {
 }
 
 type Mutation {
-  createSocialAccount(input: SocialAccountCreateInput!): String!
+  createSocialAccount(input: CreateSocialAccountInput!): String!
   createUser(input: CreateUserInput!): String!
   deleteSocialAccount(input: SocialAccountDeleteInput!): String!
   deleteUser(input: DeleteUserInput!): String!
@@ -48,7 +48,7 @@ type RoleReponse {
   rank: Int
 }
 
-input SocialAccountCreateInput {
+input CreateSocialAccountInput {
   accessToken: String
   expiresAt: Int
   id: ID!

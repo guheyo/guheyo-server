@@ -3,7 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
-import { SocialAccountCreateHandler } from '@lib/domains/social-account/application/commands/social-account-create/social-account.create.handler';
+import { CreateSocialAccountHandler } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.handler';
 import { SocialAccountUpdateHandler } from '@lib/domains/social-account/application/commands/social-account-update/social-account.update.handler';
 import { SocialAccountDeleteHandler } from '@lib/domains/social-account/application/commands/social-account-delete/social-account.delete.handler';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
@@ -17,7 +17,7 @@ describe('SocialAccountModule', () => {
   let socialAccountModule: SocialAccountModule;
   let resolver: SocialAccountResolver;
   let savePort: SavePort<SocialAccountEntity>;
-  let socialAccountCreateHandler: SocialAccountCreateHandler;
+  let socialAccountCreateHandler: CreateSocialAccountHandler;
   let socialAccountUpdateHandler: SocialAccountUpdateHandler;
   let socialAccountDeleteHandler: SocialAccountDeleteHandler;
 
@@ -36,8 +36,8 @@ describe('SocialAccountModule', () => {
     socialAccountModule = moduleRef.get<SocialAccountModule>(SocialAccountModule);
     resolver = moduleRef.get<SocialAccountResolver>(SocialAccountResolver);
     savePort = moduleRef.get<SavePort<SocialAccountEntity>>('SocialAccountSavePort');
-    socialAccountCreateHandler = moduleRef.get<SocialAccountCreateHandler>(
-      SocialAccountCreateHandler,
+    socialAccountCreateHandler = moduleRef.get<CreateSocialAccountHandler>(
+      CreateSocialAccountHandler,
     );
     socialAccountUpdateHandler = moduleRef.get<SocialAccountUpdateHandler>(
       SocialAccountUpdateHandler,
@@ -71,9 +71,9 @@ describe('SocialAccountModule', () => {
     });
   });
 
-  describe('SocialAccountCreateHandler', () => {
-    it('should be instance of SocialAccountCreateHandler', async () => {
-      expect(socialAccountCreateHandler).toBeInstanceOf(SocialAccountCreateHandler);
+  describe('CreateSocialAccountHandler', () => {
+    it('should be instance of CreateSocialAccountHandler', async () => {
+      expect(socialAccountCreateHandler).toBeInstanceOf(CreateSocialAccountHandler);
     });
   });
 

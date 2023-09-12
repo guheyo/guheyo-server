@@ -3,17 +3,17 @@ import { mock, verify, instance, anyOfClass } from 'ts-mockito';
 import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
-import { SocialAccountCreateCommand } from '../social-account.create.command';
-import { SocialAccountCreateHandler } from '../social-account.create.handler';
+import { CreateSocialAccountCommand } from '../create-social-account.command';
+import { CreateSocialAccountHandler } from '../create-social-account.handler';
 
-describe('SocialAccountCreateCommand', () => {
-  let handler: SocialAccountCreateHandler;
+describe('CreateSocialAccountCommand', () => {
+  let handler: CreateSocialAccountHandler;
   const savePort: SavePort<SocialAccountEntity> = mock(SocialAccountCommandRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        SocialAccountCreateHandler,
+        CreateSocialAccountHandler,
         {
           provide: 'SocialAccountSavePort',
           useValue: instance(savePort),
@@ -21,12 +21,12 @@ describe('SocialAccountCreateCommand', () => {
       ],
     }).compile();
 
-    handler = moduleRef.get<SocialAccountCreateHandler>(SocialAccountCreateHandler);
+    handler = moduleRef.get<CreateSocialAccountHandler>(CreateSocialAccountHandler);
   });
 
   describe('execute', () => {
     it('should execute create', async () => {
-      const command: SocialAccountCreateCommand = {
+      const command: CreateSocialAccountCommand = {
         id: '94587c54-4d7d-11ee-be56-0242ac120002',
         provider: 'discord',
         socialId: 'social-id',
