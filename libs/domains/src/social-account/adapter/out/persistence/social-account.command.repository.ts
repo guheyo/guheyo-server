@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@lib/shared';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
-import { SocialAccountDeleteCommand } from '@lib/domains/social-account/application/commands/social-account-delete/social-account.delete.command';
+import { DeleteSocialAccountCommand } from '@lib/domains/social-account/application/commands/delete-social-account/delete-social-account.command';
 
 @Injectable()
 export class SocialAccountCommandRepository implements SavePort<SocialAccountEntity> {
@@ -24,7 +24,7 @@ export class SocialAccountCommandRepository implements SavePort<SocialAccountEnt
     });
   }
 
-  async delete(socialAccount: SocialAccountDeleteCommand): Promise<void> {
+  async delete(socialAccount: DeleteSocialAccountCommand): Promise<void> {
     await this.prismaService.socialAccount.delete({
       where: {
         id: socialAccount.id,

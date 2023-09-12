@@ -27,12 +27,12 @@ type MemberReponse {
 }
 
 type Mutation {
-  createSocialAccount(input: SocialAccountCreateInput!): String!
-  createUser(input: UserCreateInput!): String!
-  deleteSocialAccount(input: SocialAccountDeleteInput!): String!
-  deleteUser(input: UserDeleteInput!): String!
-  updateSocialAccount(input: SocialAccountUpdateInput!): String!
-  updateUser(input: UserUpdateInput!): String!
+  createSocialAccount(input: CreateSocialAccountInput!): String!
+  createUser(input: CreateUserInput!): String!
+  deleteSocialAccount(input: DeleteSocialAccountInput!): String!
+  deleteUser(input: DeleteUserInput!): String!
+  updateSocialAccount(input: UpdateSocialAccountInput!): String!
+  updateUser(input: UpdateUserInput!): String!
 }
 
 type Query {
@@ -48,7 +48,7 @@ type RoleReponse {
   rank: Int
 }
 
-input SocialAccountCreateInput {
+input CreateSocialAccountInput {
   accessToken: String
   expiresAt: Int
   id: ID!
@@ -62,7 +62,7 @@ input SocialAccountCreateInput {
   userId: String!
 }
 
-input SocialAccountDeleteInput {
+input DeleteSocialAccountInput {
   id: String!
 }
 
@@ -81,7 +81,7 @@ type SocialAccountResponse {
   userId: String!
 }
 
-input SocialAccountUpdateInput {
+input UpdateSocialAccountInput {
   accessToken: String
   expiresAt: Int
   id: String!
@@ -93,16 +93,16 @@ input SocialAccountUpdateInput {
   userId: String!
 }
 
-input UserCreateInput {
+input CreateUserInput {
   id: String!
   username: String!
 }
 
-input UserDeleteInput {
+input DeleteUserInput {
   id: String!
 }
 
-input UserUpdateInput {
+input UpdateUserInput {
   avatarURL: String
   id: String!
   name: String
