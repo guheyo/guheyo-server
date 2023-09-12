@@ -3,17 +3,17 @@ import { mock, verify, instance, anyOfClass } from 'ts-mockito';
 import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
-import { SocialAccountDeleteCommand } from '../social-account.delete.command';
-import { SocialAccountDeleteHandler } from '../social-account.delete.handler';
+import { DeleteSocialAccountCommand } from '../delete-social-account.command';
+import { DeleteSocialAccountHandler } from '../delete-social-account.handler';
 
-describe('SocialAccountDeleteCommand', () => {
-  let handler: SocialAccountDeleteHandler;
+describe('DeleteSocialAccountCommand', () => {
+  let handler: DeleteSocialAccountHandler;
   const savePort: SavePort<SocialAccountEntity> = mock(SocialAccountCommandRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        SocialAccountDeleteHandler,
+        DeleteSocialAccountHandler,
         {
           provide: 'SocialAccountSavePort',
           useValue: instance(savePort),
@@ -21,12 +21,12 @@ describe('SocialAccountDeleteCommand', () => {
       ],
     }).compile();
 
-    handler = moduleRef.get<SocialAccountDeleteHandler>(SocialAccountDeleteHandler);
+    handler = moduleRef.get<DeleteSocialAccountHandler>(DeleteSocialAccountHandler);
   });
 
   describe('execute', () => {
     it('should execute delete', async () => {
-      const command: SocialAccountDeleteCommand = {
+      const command: DeleteSocialAccountCommand = {
         id: 'test-id',
       };
       await handler.execute(command);

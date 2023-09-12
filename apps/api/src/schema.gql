@@ -29,7 +29,7 @@ type MemberReponse {
 type Mutation {
   createSocialAccount(input: CreateSocialAccountInput!): String!
   createUser(input: CreateUserInput!): String!
-  deleteSocialAccount(input: SocialAccountDeleteInput!): String!
+  deleteSocialAccount(input: DeleteSocialAccountInput!): String!
   deleteUser(input: DeleteUserInput!): String!
   updateSocialAccount(input: SocialAccountUpdateInput!): String!
   updateUser(input: UpdateUserInput!): String!
@@ -62,7 +62,7 @@ input CreateSocialAccountInput {
   userId: String!
 }
 
-input SocialAccountDeleteInput {
+input DeleteSocialAccountInput {
   id: String!
 }
 

@@ -2,10 +2,10 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateSocialAccountInput } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.input';
 import { CreateSocialAccountCommand } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.command';
-import { SocialAccountDeleteInput } from '@lib/domains/social-account/application/commands/social-account-delete/social-account.delete.input';
+import { DeleteSocialAccountInput } from '@lib/domains/social-account/application/commands/delete-social-account/delete-social-account.input';
 import { SocialAccountUpdateCommand } from '@lib/domains/social-account/application/commands/social-account-update/social-account.update.command';
 import { SocialAccountUpdateInput } from '@lib/domains/social-account/application/commands/social-account-update/social-account.update.input';
-import { SocialAccountDeleteCommand } from '@lib/domains/social-account/application/commands/social-account-delete/social-account.delete.command';
+import { DeleteSocialAccountCommand } from '@lib/domains/social-account/application/commands/delete-social-account/delete-social-account.command';
 
 @Resolver()
 export class SocialAccountResolver {
@@ -30,8 +30,8 @@ export class SocialAccountResolver {
   }
 
   @Mutation(() => String)
-  async deleteSocialAccount(@Args('input') input: SocialAccountDeleteInput): Promise<String> {
-    await this.commandBus.execute(new SocialAccountDeleteCommand(input));
+  async deleteSocialAccount(@Args('input') input: DeleteSocialAccountInput): Promise<String> {
+    await this.commandBus.execute(new DeleteSocialAccountCommand(input));
     return input.id;
   }
 }
