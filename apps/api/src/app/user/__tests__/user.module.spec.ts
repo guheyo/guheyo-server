@@ -4,7 +4,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
 import { CreateUserHandler } from '@lib/domains/user/application/commands/create-user/create-user.handler';
-import { UserUpdateHandler } from '@lib/domains/user/application/commands/user-update/user.update.handler';
+import { UpdateUserHandler } from '@lib/domains/user/application/commands/update-user/update-user.handler';
 import { DeleteUserHandler } from '@lib/domains/user/application/commands/delete-user/delete-user.handler';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { FindMyUserByIdHandler } from '@lib/domains/user/application/queries/find-my-user-by-id/find-my-user-by-id.handler';
@@ -20,7 +20,7 @@ describe('UserModule', () => {
   let resolver: UserResolver;
   let savePort: SavePort<UserEntity>;
   let userCreateHandler: CreateUserHandler;
-  let userUpdateHandler: UserUpdateHandler;
+  let userUpdateHandler: UpdateUserHandler;
   let userDeleteHandler: DeleteUserHandler;
   let findMyUserByIdHandler: FindMyUserByIdHandler;
   let findMyUserBySocialAccountHandler: FindMyUserBySocialAccountHandler;
@@ -41,7 +41,7 @@ describe('UserModule', () => {
     resolver = moduleRef.get<UserResolver>(UserResolver);
     savePort = moduleRef.get<SavePort<UserEntity>>('UserSavePort');
     userCreateHandler = moduleRef.get<CreateUserHandler>(CreateUserHandler);
-    userUpdateHandler = moduleRef.get<UserUpdateHandler>(UserUpdateHandler);
+    userUpdateHandler = moduleRef.get<UpdateUserHandler>(UpdateUserHandler);
     userDeleteHandler = moduleRef.get<DeleteUserHandler>(DeleteUserHandler);
     findMyUserByIdHandler = moduleRef.get<FindMyUserByIdHandler>(FindMyUserByIdHandler);
     findMyUserBySocialAccountHandler = moduleRef.get<FindMyUserBySocialAccountHandler>(
@@ -79,9 +79,9 @@ describe('UserModule', () => {
     });
   });
 
-  describe('UserUpdateHandler', () => {
-    it('should be instance of UserUpdateHandler', async () => {
-      expect(userUpdateHandler).toBeInstanceOf(UserUpdateHandler);
+  describe('UpdateUserHandler', () => {
+    it('should be instance of UpdateUserHandler', async () => {
+      expect(userUpdateHandler).toBeInstanceOf(UpdateUserHandler);
     });
   });
 

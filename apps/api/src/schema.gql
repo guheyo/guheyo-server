@@ -32,7 +32,7 @@ type Mutation {
   deleteSocialAccount(input: SocialAccountDeleteInput!): String!
   deleteUser(input: DeleteUserInput!): String!
   updateSocialAccount(input: SocialAccountUpdateInput!): String!
-  updateUser(input: UserUpdateInput!): String!
+  updateUser(input: UpdateUserInput!): String!
 }
 
 type Query {
@@ -102,7 +102,7 @@ input DeleteUserInput {
   id: String!
 }
 
-input UserUpdateInput {
+input UpdateUserInput {
   avatarURL: String
   id: String!
   name: String

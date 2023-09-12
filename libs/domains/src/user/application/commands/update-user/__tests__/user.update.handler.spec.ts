@@ -3,29 +3,29 @@ import { mock, verify, instance, anyOfClass } from 'ts-mockito';
 import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
-import { UserUpdateCommand } from '../user.update.command';
-import { UserUpdateHandler } from '../user.update.handler';
+import { UpdateUserCommand } from '../update-user.command';
+import { UpdateUserHandler } from '../update-user.handler';
 
-describe('UserUpdateCommand', () => {
-  let handler: UserUpdateHandler;
+describe('UpdateUserCommand', () => {
+  let handler: UpdateUserHandler;
   const savePort: SavePort<UserEntity> = mock(UserCommandRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        UserUpdateHandler,
+        UpdateUserHandler,
         {
           provide: 'UserSavePort',
           useValue: instance(savePort),
         },
       ],
     }).compile();
-    handler = moduleRef.get<UserUpdateHandler>(UserUpdateHandler);
+    handler = moduleRef.get<UpdateUserHandler>(UpdateUserHandler);
   });
 
   describe('execute', () => {
     it('should execute update', async () => {
-      const command = new UserUpdateCommand({
+      const command = new UpdateUserCommand({
         id: '94587c54-4d7d-11ee-be56-0242ac120002',
         name: 'changed-name',
       });

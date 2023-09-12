@@ -2,13 +2,13 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
-import { UserUpdateCommand } from './user.update.command';
+import { UpdateUserCommand } from './update-user.command';
 
-@CommandHandler(UserUpdateCommand)
-export class UserUpdateHandler implements ICommandHandler<UserUpdateCommand> {
+@CommandHandler(UpdateUserCommand)
+export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   constructor(@Inject('UserSavePort') private userSavePort: SavePort<UserEntity>) {}
 
-  async execute(command: UserUpdateCommand): Promise<void> {
+  async execute(command: UpdateUserCommand): Promise<void> {
     const user = new UserEntity(command);
     await this.userSavePort.update(user);
   }
