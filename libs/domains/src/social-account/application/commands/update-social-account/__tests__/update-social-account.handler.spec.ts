@@ -3,17 +3,17 @@ import { mock, verify, instance, anyOfClass } from 'ts-mockito';
 import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
-import { SocialAccountUpdateCommand } from '../social-account.update.command';
-import { SocialAccountUpdateHandler } from '../social-account.update.handler';
+import { UpdateSocialAccountCommand } from '../update-social-account.command';
+import { UpdateSocialAccountHandler } from '../update-social-account.handler';
 
-describe('SocialAccountUpdateCommand', () => {
-  let handler: SocialAccountUpdateHandler;
+describe('UpdateSocialAccountCommand', () => {
+  let handler: UpdateSocialAccountHandler;
   const savePort: SavePort<SocialAccountEntity> = mock(SocialAccountCommandRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        SocialAccountUpdateHandler,
+        UpdateSocialAccountHandler,
         {
           provide: 'SocialAccountSavePort',
           useValue: instance(savePort),
@@ -21,12 +21,12 @@ describe('SocialAccountUpdateCommand', () => {
       ],
     }).compile();
 
-    handler = moduleRef.get<SocialAccountUpdateHandler>(SocialAccountUpdateHandler);
+    handler = moduleRef.get<UpdateSocialAccountHandler>(UpdateSocialAccountHandler);
   });
 
   describe('execute', () => {
     it('should execute update', async () => {
-      const command: SocialAccountUpdateCommand = {
+      const command: UpdateSocialAccountCommand = {
         id: '94587c54-4d7d-11ee-be56-0242ac120002',
         userId: '94587c54-4d7d-11ee-be56-0242ac120002',
         refreshToken: 'refresh-token',

@@ -31,7 +31,7 @@ type Mutation {
   createUser(input: CreateUserInput!): String!
   deleteSocialAccount(input: DeleteSocialAccountInput!): String!
   deleteUser(input: DeleteUserInput!): String!
-  updateSocialAccount(input: SocialAccountUpdateInput!): String!
+  updateSocialAccount(input: UpdateSocialAccountInput!): String!
   updateUser(input: UpdateUserInput!): String!
 }
 
@@ -81,7 +81,7 @@ type SocialAccountResponse {
   userId: String!
 }
 
-input SocialAccountUpdateInput {
+input UpdateSocialAccountInput {
   accessToken: String
   expiresAt: Int
   id: String!

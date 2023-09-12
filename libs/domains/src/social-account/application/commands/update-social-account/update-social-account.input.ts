@@ -2,7 +2,7 @@ import { Field, InputType, Int } from '@nestjs/graphql';
 import { IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
-export class SocialAccountUpdateInput {
+export class UpdateSocialAccountInput {
   @IsUUID()
   @Field()
   id: string;

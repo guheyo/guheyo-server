@@ -3,8 +3,8 @@ import { CommandBus } from '@nestjs/cqrs';
 import { CreateSocialAccountInput } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.input';
 import { CreateSocialAccountCommand } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.command';
 import { DeleteSocialAccountInput } from '@lib/domains/social-account/application/commands/delete-social-account/delete-social-account.input';
-import { SocialAccountUpdateCommand } from '@lib/domains/social-account/application/commands/social-account-update/social-account.update.command';
-import { SocialAccountUpdateInput } from '@lib/domains/social-account/application/commands/social-account-update/social-account.update.input';
+import { UpdateSocialAccountCommand } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.command';
+import { UpdateSocialAccountInput } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.input';
 import { DeleteSocialAccountCommand } from '@lib/domains/social-account/application/commands/delete-social-account/delete-social-account.command';
 
 @Resolver()
@@ -24,8 +24,8 @@ export class SocialAccountResolver {
   }
 
   @Mutation(() => String)
-  async updateSocialAccount(@Args('input') input: SocialAccountUpdateInput): Promise<String> {
-    await this.commandBus.execute(new SocialAccountUpdateCommand(input));
+  async updateSocialAccount(@Args('input') input: UpdateSocialAccountInput): Promise<String> {
+    await this.commandBus.execute(new UpdateSocialAccountCommand(input));
     return input.id;
   }
 

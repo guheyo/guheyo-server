@@ -1,7 +1,7 @@
 import { ICommand } from '@nestjs/cqrs';
-import { SocialAccountUpdateInput } from './social-account.update.input';
+import { UpdateSocialAccountInput } from './update-social-account.input';
 
-export class SocialAccountUpdateCommand implements ICommand {
+export class UpdateSocialAccountCommand implements ICommand {
   id: string;
 
   userId: string;
@@ -20,7 +20,7 @@ export class SocialAccountUpdateCommand implements ICommand {
 
   sessionState?: string;
 
-  constructor(input: SocialAccountUpdateInput) {
+  constructor(input: UpdateSocialAccountInput) {
     this.id = input.id;
     this.userId = input.userId;
     this.refreshToken = input.refreshToken;
