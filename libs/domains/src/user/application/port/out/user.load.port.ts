@@ -1,7 +1,8 @@
-import { UserEntity } from '@lib/domains/user/domain/user.entity';
-import { UserGetBySocialAccountQuery } from '../../queries/user-get-by-social-account/user.get-by-social-account.query';
+import { FindMyUserByIdQuery } from '../../queries/find-my-user-by-id/find-my-user-by-id.query';
+import { FindMyUserBySocialAccountQuery } from '../../queries/find-my-user-by-social-account/find-my-user-by-social-account.query';
+import { MyUserResponse } from '../../dtos/my-user.response';
 
 export interface UserLoadPort {
-  getById(id: string): Promise<UserEntity | null>;
-  getBySocailAccount(query: UserGetBySocialAccountQuery): Promise<UserEntity | null>;
+  findMyUserById(query: FindMyUserByIdQuery): Promise<MyUserResponse | null>;
+  findMyUserBySocailAccount(query: FindMyUserBySocialAccountQuery): Promise<MyUserResponse | null>;
 }

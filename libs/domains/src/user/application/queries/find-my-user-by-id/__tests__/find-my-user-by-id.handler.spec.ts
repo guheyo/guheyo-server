@@ -2,32 +2,31 @@ import { Test } from '@nestjs/testing';
 import { mock, verify, instance } from 'ts-mockito';
 import { UserQueryRepository } from '@lib/domains/user/adapter/out/persistence/user.query.repository';
 import { UserLoadPort } from '../../../port/out/user.load.port';
-import { UserGetBySocialAccountQuery } from '../user.get-by-social-account.query';
-import { UserGetBySocialAccountHandler } from '../user.get-by-social-account.handler';
+import { FindMyUserByIdQuery } from '../find-my-user-by-id.query';
+import { FindMyUserByIdHandler } from '../find-my-user-by-id.handler';
 
-describe('UserGetBySocialAccountQuery', () => {
-  let handler: UserGetBySocialAccountHandler;
+describe('FindMyUserByIdQuery', () => {
+  let handler: FindMyUserByIdHandler;
   const loadPort: UserLoadPort = mock(UserQueryRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        UserGetBySocialAccountHandler,
+        FindMyUserByIdHandler,
         {
           provide: 'UserLoadPort',
           useValue: instance(loadPort),
         },
       ],
     }).compile();
-
-    handler = moduleRef.get<UserGetBySocialAccountHandler>(UserGetBySocialAccountHandler);
+    handler = moduleRef.get<FindMyUserByIdHandler>(FindMyUserByIdHandler);
   });
 
   describe('execute', () => {
-    it('should execute getBySocailAccount', async () => {
-      const query: UserGetBySocialAccountQuery = { provider: 'discord', socialId: 'social-id' };
+    it('should execute findMyUserById', async () => {
+      const query: FindMyUserByIdQuery = { id: 'user-id' };
       await handler.execute(query);
-      verify(loadPort.getBySocailAccount(query)).once();
+      verify(loadPort.findMyUserById(query)).once();
     });
   });
 });
