@@ -30,7 +30,7 @@ type Mutation {
   createSocialAccount(input: SocialAccountCreateInput!): String!
   createUser(input: CreateUserInput!): String!
   deleteSocialAccount(input: SocialAccountDeleteInput!): String!
-  deleteUser(input: UserDeleteInput!): String!
+  deleteUser(input: DeleteUserInput!): String!
   updateSocialAccount(input: SocialAccountUpdateInput!): String!
   updateUser(input: UserUpdateInput!): String!
 }
@@ -98,7 +98,7 @@ input CreateUserInput {
   username: String!
 }
 
-input UserDeleteInput {
+input DeleteUserInput {
   id: String!
 }
 

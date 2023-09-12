@@ -5,7 +5,7 @@ import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
 import { CreateUserHandler } from '@lib/domains/user/application/commands/create-user/create-user.handler';
 import { UserUpdateHandler } from '@lib/domains/user/application/commands/user-update/user.update.handler';
-import { UserDeleteHandler } from '@lib/domains/user/application/commands/user-delete/user.delete.handler';
+import { DeleteUserHandler } from '@lib/domains/user/application/commands/delete-user/delete-user.handler';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { FindMyUserByIdHandler } from '@lib/domains/user/application/queries/find-my-user-by-id/find-my-user-by-id.handler';
 import { FindMyUserBySocialAccountHandler } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.handler';
@@ -21,7 +21,7 @@ describe('UserModule', () => {
   let savePort: SavePort<UserEntity>;
   let userCreateHandler: CreateUserHandler;
   let userUpdateHandler: UserUpdateHandler;
-  let userDeleteHandler: UserDeleteHandler;
+  let userDeleteHandler: DeleteUserHandler;
   let findMyUserByIdHandler: FindMyUserByIdHandler;
   let findMyUserBySocialAccountHandler: FindMyUserBySocialAccountHandler;
 
@@ -42,7 +42,7 @@ describe('UserModule', () => {
     savePort = moduleRef.get<SavePort<UserEntity>>('UserSavePort');
     userCreateHandler = moduleRef.get<CreateUserHandler>(CreateUserHandler);
     userUpdateHandler = moduleRef.get<UserUpdateHandler>(UserUpdateHandler);
-    userDeleteHandler = moduleRef.get<UserDeleteHandler>(UserDeleteHandler);
+    userDeleteHandler = moduleRef.get<DeleteUserHandler>(DeleteUserHandler);
     findMyUserByIdHandler = moduleRef.get<FindMyUserByIdHandler>(FindMyUserByIdHandler);
     findMyUserBySocialAccountHandler = moduleRef.get<FindMyUserBySocialAccountHandler>(
       FindMyUserBySocialAccountHandler,
@@ -85,9 +85,9 @@ describe('UserModule', () => {
     });
   });
 
-  describe('UserDeleteHandler', () => {
-    it('should be instance of UserDeleteHandler', async () => {
-      expect(userDeleteHandler).toBeInstanceOf(UserDeleteHandler);
+  describe('DeleteUserHandler', () => {
+    it('should be instance of DeleteUserHandler', async () => {
+      expect(userDeleteHandler).toBeInstanceOf(DeleteUserHandler);
     });
   });
 

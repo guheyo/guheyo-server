@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from '@lib/shared/prisma/prisma.module';
 import { CreateUserHandler } from '@lib/domains/user/application/commands/create-user/create-user.handler';
 import { UserUpdateHandler } from '@lib/domains/user/application/commands/user-update/user.update.handler';
-import { UserDeleteHandler } from '@lib/domains/user/application/commands/user-delete/user.delete.handler';
+import { DeleteUserHandler } from '@lib/domains/user/application/commands/delete-user/delete-user.handler';
 import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
 
-const commandHandlers = [CreateUserHandler, UserUpdateHandler, UserDeleteHandler];
+const commandHandlers = [CreateUserHandler, UserUpdateHandler, DeleteUserHandler];
 
 @Module({
   imports: [PrismaModule],

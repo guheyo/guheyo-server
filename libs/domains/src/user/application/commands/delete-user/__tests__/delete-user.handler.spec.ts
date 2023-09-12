@@ -3,29 +3,29 @@ import { mock, verify, instance, anyOfClass } from 'ts-mockito';
 import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
-import { UserDeleteCommand } from '../user.delete.command';
-import { UserDeleteHandler } from '../user.delete.handler';
+import { DeleteUserCommand } from '../delete-user.command';
+import { DeleteUserHandler } from '../delete-user.handler';
 
-describe('UserDeleteCommand', () => {
-  let handler: UserDeleteHandler;
+describe('DeleteUserCommand', () => {
+  let handler: DeleteUserHandler;
   const savePort: SavePort<UserEntity> = mock(UserCommandRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        UserDeleteHandler,
+        DeleteUserHandler,
         {
           provide: 'UserSavePort',
           useValue: instance(savePort),
         },
       ],
     }).compile();
-    handler = moduleRef.get<UserDeleteHandler>(UserDeleteHandler);
+    handler = moduleRef.get<DeleteUserHandler>(DeleteUserHandler);
   });
 
   describe('execute', () => {
     it('should execute delete', async () => {
-      const command: UserDeleteCommand = new UserDeleteCommand({
+      const command: DeleteUserCommand = new DeleteUserCommand({
         id: '94587c54-4d7d-11ee-be56-0242ac120002',
       });
       await handler.execute(command);

@@ -4,8 +4,8 @@ import { CreateUserInput } from '@lib/domains/user/application/commands/create-u
 import { CreateUserCommand } from '@lib/domains/user/application/commands/create-user/create-user.command';
 import { UserUpdateInput } from '@lib/domains/user/application/commands/user-update/user.update.input';
 import { UserUpdateCommand } from '@lib/domains/user/application/commands/user-update/user.update.command';
-import { UserDeleteInput } from '@lib/domains/user/application/commands/user-delete/user.delete.input';
-import { UserDeleteCommand } from '@lib/domains/user/application/commands/user-delete/user.delete.command';
+import { DeleteUserInput } from '@lib/domains/user/application/commands/delete-user/delete-user.input';
+import { DeleteUserCommand } from '@lib/domains/user/application/commands/delete-user/delete-user.command';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { FindMyUserByIdQuery } from '@lib/domains/user/application/queries/find-my-user-by-id/find-my-user-by-id.query';
 import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.query';
@@ -45,8 +45,8 @@ export class UserResolver {
   }
 
   @Mutation(() => String)
-  async deleteUser(@Args('input') input: UserDeleteInput): Promise<String> {
-    await this.commandBus.execute(new UserDeleteCommand(input));
+  async deleteUser(@Args('input') input: DeleteUserInput): Promise<String> {
+    await this.commandBus.execute(new DeleteUserCommand(input));
     return input.id;
   }
 }
