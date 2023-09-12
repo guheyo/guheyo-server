@@ -62,9 +62,15 @@ type MyUserResponse {
   username: String!
 }
 
+type PageInfo {
+  endCursor: String!
+  hasNextPage: Boolean!
+}
+
 type Query {
   findMyUserById(id: String!): MyUserResponse!
   findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse!
+  findUsers(cursor: ID, skip: Int! = 1, take: Int!): UsersPaginationResponse!
   getSocialAccountsByUserId(id: String!): String!
 }
 
@@ -106,4 +112,18 @@ input UpdateUserInput {
   avatarURL: String
   id: String!
   name: String
+}
+
+type UserReponse {
+  avatarURL: String
+  bot: Boolean!
+  createdAt: DateTime!
+  id: ID!
+  name: String
+  username: String!
+}
+
+type UsersPaginationResponse {
+  nodes: [UserReponse!]!
+  pageInfo: PageInfo!
 }
