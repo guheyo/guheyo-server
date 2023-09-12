@@ -3,9 +3,9 @@ import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
-import { SocialAccountCreateHandler } from '@lib/domains/social-account/application/commands/social-account-create/social-account.create.handler';
-import { SocialAccountUpdateHandler } from '@lib/domains/social-account/application/commands/social-account-update/social-account.update.handler';
-import { SocialAccountDeleteHandler } from '@lib/domains/social-account/application/commands/social-account-delete/social-account.delete.handler';
+import { CreateSocialAccountHandler } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.handler';
+import { UpdateSocialAccountHandler } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.handler';
+import { DeleteSocialAccountHandler } from '@lib/domains/social-account/application/commands/delete-social-account/delete-social-account.handler';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
@@ -17,9 +17,9 @@ describe('SocialAccountModule', () => {
   let socialAccountModule: SocialAccountModule;
   let resolver: SocialAccountResolver;
   let savePort: SavePort<SocialAccountEntity>;
-  let socialAccountCreateHandler: SocialAccountCreateHandler;
-  let socialAccountUpdateHandler: SocialAccountUpdateHandler;
-  let socialAccountDeleteHandler: SocialAccountDeleteHandler;
+  let socialAccountCreateHandler: CreateSocialAccountHandler;
+  let socialAccountUpdateHandler: UpdateSocialAccountHandler;
+  let socialAccountDeleteHandler: DeleteSocialAccountHandler;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -36,14 +36,14 @@ describe('SocialAccountModule', () => {
     socialAccountModule = moduleRef.get<SocialAccountModule>(SocialAccountModule);
     resolver = moduleRef.get<SocialAccountResolver>(SocialAccountResolver);
     savePort = moduleRef.get<SavePort<SocialAccountEntity>>('SocialAccountSavePort');
-    socialAccountCreateHandler = moduleRef.get<SocialAccountCreateHandler>(
-      SocialAccountCreateHandler,
+    socialAccountCreateHandler = moduleRef.get<CreateSocialAccountHandler>(
+      CreateSocialAccountHandler,
     );
-    socialAccountUpdateHandler = moduleRef.get<SocialAccountUpdateHandler>(
-      SocialAccountUpdateHandler,
+    socialAccountUpdateHandler = moduleRef.get<UpdateSocialAccountHandler>(
+      UpdateSocialAccountHandler,
     );
-    socialAccountDeleteHandler = moduleRef.get<SocialAccountDeleteHandler>(
-      SocialAccountDeleteHandler,
+    socialAccountDeleteHandler = moduleRef.get<DeleteSocialAccountHandler>(
+      DeleteSocialAccountHandler,
     );
   });
 
@@ -71,21 +71,21 @@ describe('SocialAccountModule', () => {
     });
   });
 
-  describe('SocialAccountCreateHandler', () => {
-    it('should be instance of SocialAccountCreateHandler', async () => {
-      expect(socialAccountCreateHandler).toBeInstanceOf(SocialAccountCreateHandler);
+  describe('CreateSocialAccountHandler', () => {
+    it('should be instance of CreateSocialAccountHandler', async () => {
+      expect(socialAccountCreateHandler).toBeInstanceOf(CreateSocialAccountHandler);
     });
   });
 
-  describe('SocialAccountUpdateHandler', () => {
-    it('should be instance of SocialAccountUpdateHandler', async () => {
-      expect(socialAccountUpdateHandler).toBeInstanceOf(SocialAccountUpdateHandler);
+  describe('UpdateSocialAccountHandler', () => {
+    it('should be instance of UpdateSocialAccountHandler', async () => {
+      expect(socialAccountUpdateHandler).toBeInstanceOf(UpdateSocialAccountHandler);
     });
   });
 
-  describe('SocialAccountDeleteHandler', () => {
-    it('should be instance of SocialAccountDeleteHandler', async () => {
-      expect(socialAccountDeleteHandler).toBeInstanceOf(SocialAccountDeleteHandler);
+  describe('DeleteSocialAccountHandler', () => {
+    it('should be instance of DeleteSocialAccountHandler', async () => {
+      expect(socialAccountDeleteHandler).toBeInstanceOf(DeleteSocialAccountHandler);
     });
   });
 });
