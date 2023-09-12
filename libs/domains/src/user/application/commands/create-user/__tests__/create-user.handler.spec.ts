@@ -3,17 +3,17 @@ import { mock, verify, instance, anyOfClass } from 'ts-mockito';
 import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
-import { UserCreateCommand } from '../user.create.command';
-import { UserCreateHandler } from '../user.create.handler';
+import { CreateUserCommand } from '../create-user.command';
+import { CreateUserHandler } from '../create-user.handler';
 
-describe('UserCreateCommand', () => {
-  let handler: UserCreateHandler;
+describe('CreateUserCommand', () => {
+  let handler: CreateUserHandler;
   const savePort: SavePort<UserEntity> = mock(UserCommandRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        UserCreateHandler,
+        CreateUserHandler,
         {
           provide: 'UserSavePort',
           useValue: instance(savePort),
@@ -21,12 +21,12 @@ describe('UserCreateCommand', () => {
       ],
     }).compile();
 
-    handler = moduleRef.get<UserCreateHandler>(UserCreateHandler);
+    handler = moduleRef.get<CreateUserHandler>(CreateUserHandler);
   });
 
   describe('execute', () => {
     it('should execute create', async () => {
-      const command = new UserCreateCommand({
+      const command = new CreateUserCommand({
         id: '94587c54-4d7d-11ee-be56-0242ac120002',
         username: 'test-user',
       });

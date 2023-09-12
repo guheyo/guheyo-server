@@ -3,7 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
-import { UserCreateHandler } from '@lib/domains/user/application/commands/user-create/user.create.handler';
+import { CreateUserHandler } from '@lib/domains/user/application/commands/create-user/create-user.handler';
 import { UserUpdateHandler } from '@lib/domains/user/application/commands/user-update/user.update.handler';
 import { UserDeleteHandler } from '@lib/domains/user/application/commands/user-delete/user.delete.handler';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
@@ -19,7 +19,7 @@ describe('UserModule', () => {
   let userModule: UserModule;
   let resolver: UserResolver;
   let savePort: SavePort<UserEntity>;
-  let userCreateHandler: UserCreateHandler;
+  let userCreateHandler: CreateUserHandler;
   let userUpdateHandler: UserUpdateHandler;
   let userDeleteHandler: UserDeleteHandler;
   let findMyUserByIdHandler: FindMyUserByIdHandler;
@@ -40,7 +40,7 @@ describe('UserModule', () => {
     userModule = moduleRef.get<UserModule>(UserModule);
     resolver = moduleRef.get<UserResolver>(UserResolver);
     savePort = moduleRef.get<SavePort<UserEntity>>('UserSavePort');
-    userCreateHandler = moduleRef.get<UserCreateHandler>(UserCreateHandler);
+    userCreateHandler = moduleRef.get<CreateUserHandler>(CreateUserHandler);
     userUpdateHandler = moduleRef.get<UserUpdateHandler>(UserUpdateHandler);
     userDeleteHandler = moduleRef.get<UserDeleteHandler>(UserDeleteHandler);
     findMyUserByIdHandler = moduleRef.get<FindMyUserByIdHandler>(FindMyUserByIdHandler);
@@ -73,9 +73,9 @@ describe('UserModule', () => {
     });
   });
 
-  describe('UserCreateHandler', () => {
-    it('should be instance of UserCreateHandler', async () => {
-      expect(userCreateHandler).toBeInstanceOf(UserCreateHandler);
+  describe('CreateUserHandler', () => {
+    it('should be instance of CreateUserHandler', async () => {
+      expect(userCreateHandler).toBeInstanceOf(CreateUserHandler);
     });
   });
 

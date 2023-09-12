@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { UserCreateInput } from '@lib/domains/user/application/commands/user-create/user.create.input';
-import { UserCreateCommand } from '@lib/domains/user/application/commands/user-create/user.create.command';
+import { CreateUserInput } from '@lib/domains/user/application/commands/create-user/create-user.input';
+import { CreateUserCommand } from '@lib/domains/user/application/commands/create-user/create-user.command';
 import { UserUpdateInput } from '@lib/domains/user/application/commands/user-update/user.update.input';
 import { UserUpdateCommand } from '@lib/domains/user/application/commands/user-update/user.update.command';
 import { UserDeleteInput } from '@lib/domains/user/application/commands/user-delete/user.delete.input';
@@ -33,8 +33,8 @@ export class UserResolver {
   }
 
   @Mutation(() => String)
-  async createUser(@Args('input') input: UserCreateInput): Promise<String> {
-    await this.commandBus.execute(new UserCreateCommand(input));
+  async createUser(@Args('input') input: CreateUserInput): Promise<String> {
+    await this.commandBus.execute(new CreateUserCommand(input));
     return input.id;
   }
 
