@@ -2,6 +2,30 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type MyUserResponse {
+  avatarURL: String
+  bot: Boolean!
+  createdAt: DateTime!
+  id: ID!
+  members: [MemberReponse!]
+  name: String
+  socialAccounts: [SocialAccountResponse!]
+  username: String!
+}
+
+type MemberReponse {
+  createdAt: DateTime!
+  guildId: String!
+  id: ID!
+  roles: [RoleReponse!]
+  userId: String!
+}
+
 type Mutation {
   createSocialAccount(input: SocialAccountCreateInput!): String!
   createUser(input: UserCreateInput!): String!
@@ -12,8 +36,16 @@ type Mutation {
 }
 
 type Query {
+  findMyUserById(id: String!): MyUserResponse!
+  findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse!
   getSocialAccountsByUserId(id: String!): String!
-  getUserById(id: String!): String!
+}
+
+type RoleReponse {
+  hexColor: String!
+  id: ID!
+  name: String!
+  rank: Int
 }
 
 input SocialAccountCreateInput {
@@ -32,6 +64,21 @@ input SocialAccountCreateInput {
 
 input SocialAccountDeleteInput {
   id: String!
+}
+
+type SocialAccountResponse {
+  accessToken: String
+  createdAt: DateTime!
+  expiresAt: Int
+  id: ID!
+  idToken: String
+  provider: String!
+  refreshToken: String
+  scope: String
+  sessionState: String
+  socialId: String!
+  tokenType: String
+  userId: String!
 }
 
 input SocialAccountUpdateInput {
