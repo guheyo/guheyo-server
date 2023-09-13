@@ -2,20 +2,41 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateSocialAccountInput {
+  accessToken: String
+  expiresAt: Int
+  id: ID!
+  idToken: String
+  provider: String!
+  refreshToken: String
+  scope: String
+  sessionState: String
+  socialId: String!
+  tokenType: String
+  userId: String!
+}
+
+input CreateUserInput {
+  id: String!
+  username: String!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
 
-type MyUserResponse {
-  avatarURL: String
-  bot: Boolean!
-  createdAt: DateTime!
-  id: ID!
-  members: [MemberReponse!]
-  name: String
-  socialAccounts: [SocialAccountResponse!]
-  username: String!
+input DeleteSocialAccountInput {
+  id: String!
+}
+
+input DeleteUserInput {
+  id: String!
+}
+
+type Edge {
+  cursor: String!
+  node: UserReponse!
 }
 
 type MemberReponse {
@@ -35,9 +56,26 @@ type Mutation {
   updateUser(input: UpdateUserInput!): String!
 }
 
+type MyUserResponse {
+  avatarURL: String
+  bot: Boolean!
+  createdAt: DateTime!
+  id: ID!
+  members: [MemberReponse!]
+  name: String
+  socialAccounts: [SocialAccountResponse!]
+  username: String!
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+}
+
 type Query {
   findMyUserById(id: String!): MyUserResponse!
   findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse!
+  findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   getSocialAccountsByUserId(id: String!): String!
 }
 
@@ -46,24 +84,6 @@ type RoleReponse {
   id: ID!
   name: String!
   rank: Int
-}
-
-input CreateSocialAccountInput {
-  accessToken: String
-  expiresAt: Int
-  id: ID!
-  idToken: String
-  provider: String!
-  refreshToken: String
-  scope: String
-  sessionState: String
-  socialId: String!
-  tokenType: String
-  userId: String!
-}
-
-input DeleteSocialAccountInput {
-  id: String!
 }
 
 type SocialAccountResponse {
@@ -93,17 +113,22 @@ input UpdateSocialAccountInput {
   userId: String!
 }
 
-input CreateUserInput {
-  id: String!
-  username: String!
-}
-
-input DeleteUserInput {
-  id: String!
-}
-
 input UpdateUserInput {
   avatarURL: String
   id: String!
   name: String
+}
+
+type UserReponse {
+  avatarURL: String
+  bot: Boolean!
+  createdAt: DateTime!
+  id: ID!
+  name: String
+  username: String!
+}
+
+type PaginatedUsersResponse {
+  edges: [Edge!]!
+  pageInfo: PageInfo!
 }
