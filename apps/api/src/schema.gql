@@ -34,6 +34,11 @@ input DeleteUserInput {
   id: String!
 }
 
+type Edge {
+  cursor: String!
+  node: UserReponse!
+}
+
 type MemberReponse {
   createdAt: DateTime!
   guildId: String!
@@ -63,7 +68,7 @@ type MyUserResponse {
 }
 
 type PageInfo {
-  endCursor: String!
+  endCursor: String
   hasNextPage: Boolean!
 }
 
@@ -124,6 +129,6 @@ type UserReponse {
 }
 
 type UsersPaginationResponse {
-  nodes: [UserReponse!]!
+  edges: [Edge!]!
   pageInfo: PageInfo!
 }
