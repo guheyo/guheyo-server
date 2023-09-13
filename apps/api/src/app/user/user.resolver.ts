@@ -9,6 +9,9 @@ import { DeleteUserCommand } from '@lib/domains/user/application/commands/delete
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { FindMyUserByIdQuery } from '@lib/domains/user/application/queries/find-my-user-by-id/find-my-user-by-id.query';
 import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.query';
+import { PaginationArgs } from '@lib/shared/cqrs/queries/pagination/pagination.args';
+import { FindUsersQuery } from '@lib/domains/user/application/queries/find-users/find-users.query';
+import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/find-users/paginated-users.response';
 
 @Resolver()
 export class UserResolver {
@@ -29,6 +32,12 @@ export class UserResolver {
     @Args('socialId') socialId: string,
   ) {
     const query = new FindMyUserBySocialAccountQuery(provider, socialId);
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => PaginatedUsersResponse)
+  async findUsers(@Args() paginationArgs: PaginationArgs) {
+    const query = new FindUsersQuery(paginationArgs);
     return this.queryBus.execute(query);
   }
 
