@@ -6,6 +6,8 @@ import { FindMyUserByIdQuery } from '@lib/domains/user/application/queries/find-
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { FindUsersQuery } from '@lib/domains/user/application/queries/find-users/find-users.query';
 import { UsersPaginationResponse } from '@lib/domains/user/application/queries/find-users/users.pagination.response';
+import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
+import { UserReponse } from '@lib/domains/user/application/dtos/user.reponse';
 
 @Injectable()
 export class UserQueryRepository implements UserLoadPort {
@@ -59,17 +61,11 @@ export class UserQueryRepository implements UserLoadPort {
     const users = await this.prismaService.user.findMany({
       cursor,
       take: query.take,
-      skip: query.cursor ? query.skip : 0,
+      skip: query.skip,
       orderBy: {
         createdAt: 'desc',
       },
     });
-    return {
-      nodes: users,
-      pageInfo: {
-        endCursor: 'hello',
-        hasNextPage: users.length !== query.take,
-      },
-    };
+    return paginate<UserReponse>(users, 'id', query.take);
   }
 }
