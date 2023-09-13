@@ -5,7 +5,7 @@ import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/qu
 import { FindMyUserByIdQuery } from '@lib/domains/user/application/queries/find-my-user-by-id/find-my-user-by-id.query';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { FindUsersQuery } from '@lib/domains/user/application/queries/find-users/find-users.query';
-import { UsersPaginationResponse } from '@lib/domains/user/application/queries/find-users/users.pagination.response';
+import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/find-users/paginated-users.response';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { UserReponse } from '@lib/domains/user/application/dtos/user.reponse';
 
@@ -52,7 +52,7 @@ export class UserQueryRepository implements UserLoadPort {
     return users.length ? new MyUserResponse(users[0]) : null;
   }
 
-  async findUsers(query: FindUsersQuery): Promise<UsersPaginationResponse> {
+  async findUsers(query: FindUsersQuery): Promise<PaginatedUsersResponse> {
     const cursor = query.cursor
       ? {
           id: query.cursor,

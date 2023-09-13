@@ -3,4 +3,4 @@ import { ObjectType } from '@nestjs/graphql';
 import { UserReponse } from '../../dtos/user.reponse';
 
 @ObjectType()
-export class UsersPaginationResponse extends paginated<UserReponse>(UserReponse) {}
+export class PaginatedUsersResponse extends paginated<UserReponse>(UserReponse) {}

@@ -2,10 +2,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Type } from '@nestjs/common';
 import { PageInfo } from './page-info';
-import { IPaginationResponse } from './pagination.response.interface';
+import { IPaginatedResponse } from './paginated.response.interface';
 import { IEdge } from './edge.interface';
 
-export function paginated<T>(classRef: Type<T>): Type<IPaginationResponse<T>> {
+export function paginated<T>(classRef: Type<T>): Type<IPaginatedResponse<T>> {
   @ObjectType()
   abstract class Edge implements IEdge<T> {
     @Field(() => classRef)
@@ -16,7 +16,7 @@ export function paginated<T>(classRef: Type<T>): Type<IPaginationResponse<T>> {
   }
 
   @ObjectType()
-  abstract class PaginationResponse implements IPaginationResponse<T> {
+  abstract class PaginatedResponse implements IPaginatedResponse<T> {
     @Field(() => [Edge])
     edges: Edge[];
 
@@ -24,5 +24,5 @@ export function paginated<T>(classRef: Type<T>): Type<IPaginationResponse<T>> {
     pageInfo: PageInfo;
   }
 
-  return PaginationResponse as Type<IPaginationResponse<T>>;
+  return PaginatedResponse as Type<IPaginatedResponse<T>>;
 }

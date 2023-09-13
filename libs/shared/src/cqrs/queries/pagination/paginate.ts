@@ -1,10 +1,10 @@
-import { IPaginationResponse } from './pagination.response.interface';
+import { IPaginatedResponse } from './paginated.response.interface';
 
 export function paginate<T = Record<string, any>>(
   nodes: T[],
   cursorKey: keyof T,
   take: number,
-): IPaginationResponse<T> {
+): IPaginatedResponse<T> {
   const edges = nodes.map((node) => ({
     node,
     cursor: node[cursorKey] as string,

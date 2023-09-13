@@ -75,7 +75,7 @@ type PageInfo {
 type Query {
   findMyUserById(id: String!): MyUserResponse!
   findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse!
-  findUsers(cursor: ID, skip: Int! = 1, take: Int!): UsersPaginationResponse!
+  findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   getSocialAccountsByUserId(id: String!): String!
 }
 
@@ -128,7 +128,7 @@ type UserReponse {
   username: String!
 }
 
-type UsersPaginationResponse {
+type PaginatedUsersResponse {
   edges: [Edge!]!
   pageInfo: PageInfo!
 }

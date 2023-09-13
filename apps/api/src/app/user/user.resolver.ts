@@ -11,7 +11,7 @@ import { FindMyUserByIdQuery } from '@lib/domains/user/application/queries/find-
 import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.query';
 import { PaginationArgs } from '@lib/shared/cqrs/queries/pagination/pagination.args';
 import { FindUsersQuery } from '@lib/domains/user/application/queries/find-users/find-users.query';
-import { UsersPaginationResponse } from '@lib/domains/user/application/queries/find-users/users.pagination.response';
+import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/find-users/paginated-users.response';
 
 @Resolver()
 export class UserResolver {
@@ -35,7 +35,7 @@ export class UserResolver {
     return this.queryBus.execute(query);
   }
 
-  @Query(() => UsersPaginationResponse)
+  @Query(() => PaginatedUsersResponse)
   async findUsers(@Args() paginationArgs: PaginationArgs) {
     const query = new FindUsersQuery(paginationArgs);
     return this.queryBus.execute(query);
