@@ -72,6 +72,11 @@ type PageInfo {
   hasNextPage: Boolean!
 }
 
+type PaginatedUsersResponse {
+  edges: [Edge!]!
+  pageInfo: PageInfo!
+}
+
 type Query {
   findMyUserById(id: String!): MyUserResponse!
   findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse!
@@ -126,9 +131,4 @@ type UserReponse {
   id: ID!
   name: String
   username: String!
-}
-
-type PaginatedUsersResponse {
-  edges: [Edge!]!
-  pageInfo: PageInfo!
 }
