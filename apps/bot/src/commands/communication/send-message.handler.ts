@@ -5,7 +5,7 @@ import { SendMessageRequest } from './send-message.request';
 
 @Injectable()
 export class SendMessageHandler {
-  @SlashCommand({ name: 'send-message', description: 'Send a message to the channel'})
+  @SlashCommand({ name: 'send-message', description: 'Send a message to the channel' })
   public async onSendMessage(
     @Context() [interaction]: SlashCommandContext,
     @Options() { message, channel }: SendMessageRequest,
