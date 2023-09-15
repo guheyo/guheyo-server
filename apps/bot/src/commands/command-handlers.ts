@@ -1,4 +1,4 @@
-import { SendMessageHandler } from './communication/send-message.handler';
-import { PingHandler } from './info/ping.handler';
+import { PingSlashCommandHandler } from './info/ping.slash-command-handler';
+import { SendMessageSlashCommandHandler } from './communication/send-message.slash-command-handler';
 
-export const COMMAND_HANDLERS = [PingHandler, SendMessageHandler];
+export const COMMAND_HANDLERS = [PingSlashCommandHandler, SendMessageSlashCommandHandler];

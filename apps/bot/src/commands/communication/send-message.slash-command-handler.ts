@@ -4,7 +4,7 @@ import { ChannelType, TextBasedChannel } from 'discord.js';
 import { SendMessageRequest } from './send-message.request';
 
 @Injectable()
-export class SendMessageHandler {
+export class SendMessageSlashCommandHandler {
   @SlashCommand({ name: 'send-message', description: 'Send a message to the channel' })
   public async onSendMessage(
     @Context() [interaction]: SlashCommandContext,
