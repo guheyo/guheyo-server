@@ -36,10 +36,6 @@ input DeleteSocialAccountInput {
   id: String!
 }
 
-input DeleteUserInput {
-  id: String!
-}
-
 type Edge {
   cursor: String!
   node: UserResponse!
@@ -66,7 +62,7 @@ type Mutation {
   createUser(input: CreateUserInput!): String!
   deleteMember(id: ID!, userId: ID!): String!
   deleteSocialAccount(input: DeleteSocialAccountInput!): String!
-  deleteUser(input: DeleteUserInput!): String!
+  deleteUser(id: String!): String!
   updateMember(input: UpdateMemberInput!): String!
   updateSocialAccount(input: UpdateSocialAccountInput!): String!
   updateUser(input: UpdateUserInput!): String!
@@ -95,8 +91,8 @@ type PaginatedUsersResponse {
 
 type Query {
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
-  findMyUserById(id: String!): MyUserResponse!
-  findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse!
+  findMyUserById(id: String!): MyUserResponse
+  findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   getSocialAccountsByUserId(id: String!): String!
 }
