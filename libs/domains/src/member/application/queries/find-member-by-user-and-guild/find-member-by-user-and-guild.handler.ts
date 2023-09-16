@@ -1,7 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs/dist';
 import { Inject } from '@nestjs/common';
 import { FindMemberByUserAndGuildQuery } from './find-member-by-user-and-guild.query';
-import { MemberLoadPort } from '../../../port/out/member.load.port';
+import { MemberLoadPort } from '../../port/out/member.load.port';
 
 @QueryHandler(FindMemberByUserAndGuildQuery)
 export class FindMemberByUserAndGuildHandler
