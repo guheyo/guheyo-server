@@ -32,11 +32,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-input DeleteMemberInput {
-  id: ID!
-  userId: ID!
-}
-
 input DeleteSocialAccountInput {
   id: String!
 }
@@ -69,7 +64,7 @@ type Mutation {
   createMember(input: CreateMemberInput!): String!
   createSocialAccount(input: CreateSocialAccountInput!): String!
   createUser(input: CreateUserInput!): String!
-  deleteMember(input: DeleteMemberInput!): String!
+  deleteMember(id: ID!, userId: ID!): String!
   deleteSocialAccount(input: DeleteSocialAccountInput!): String!
   deleteUser(input: DeleteUserInput!): String!
   updateMember(input: UpdateMemberInput!): String!
@@ -99,7 +94,7 @@ type PaginatedUsersResponse {
 }
 
 type Query {
-  findMemberByUserAndGuild(guildId: String!, userId: String!): MemberWithRolesResponse!
+  findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: String!): MyUserResponse!
   findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!

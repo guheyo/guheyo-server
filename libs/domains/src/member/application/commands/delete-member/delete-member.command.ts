@@ -1,13 +1,13 @@
 import { ICommand } from '@nestjs/cqrs/dist';
-import { DeleteMemberInput } from './delete-member.input';
+import { DeleteMemberArgs } from './delete-member.args';
 
 export class DeleteMemberCommand implements ICommand {
   id: string;
 
   userId: string;
 
-  constructor(input: DeleteMemberInput) {
-    this.id = input.id;
-    this.userId = input.userId;
+  constructor(args: DeleteMemberArgs) {
+    this.id = args.id;
+    this.userId = args.userId;
   }
 }
