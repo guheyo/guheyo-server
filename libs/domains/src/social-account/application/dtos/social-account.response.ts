@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { SocialAccountWithoutAuthResponse } from './social-account.without-auth.reponse';
+import { SocialAccountWithoutAuthResponse } from './social-account.without-auth.response';
 
 @ObjectType()
 export class SocialAccountResponse extends SocialAccountWithoutAuthResponse {
