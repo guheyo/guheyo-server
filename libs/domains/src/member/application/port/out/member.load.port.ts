@@ -1,4 +1,4 @@
-import { FindMemberByUserAndGuildQuery } from '../../commands/queries/find-member-by-user-and-guild/find-member-by-user-and-guild.query';
+import { FindMemberByUserAndGuildQuery } from '../../queries/find-member-by-user-and-guild/find-member-by-user-and-guild.query';
 import { MemberWithRolesResponse } from '../../dtos/member-with-roles.response';
 
 export interface MemberLoadPort {

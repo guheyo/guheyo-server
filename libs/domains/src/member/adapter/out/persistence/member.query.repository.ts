@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@lib/shared';
 import { MemberLoadPort } from '@lib/domains/member/application/port/out/member.load.port';
-import { FindMemberByUserAndGuildQuery } from '@lib/domains/member/application/commands/queries/find-member-by-user-and-guild/find-member-by-user-and-guild.query';
+import { FindMemberByUserAndGuildQuery } from '@lib/domains/member/application/queries/find-member-by-user-and-guild/find-member-by-user-and-guild.query';
 import { MemberWithRolesResponse } from '@lib/domains/member/application/dtos/member-with-roles.response';
 
 @Injectable()
