@@ -8,7 +8,7 @@ import { MemberResponse } from './member.response';
 export class MemberWithRolesResponse extends MemberResponse {
   @IsOptional()
   @Type(() => RoleResponse)
-  @Field(() => [RoleResponse], { nullable: true })
+  @Field(() => [RoleResponse])
   roles: RoleResponse[];
 
   constructor(partial: Partial<MemberResponse>) {
