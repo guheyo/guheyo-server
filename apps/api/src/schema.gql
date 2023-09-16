@@ -36,14 +36,14 @@ input DeleteUserInput {
 
 type Edge {
   cursor: String!
-  node: UserReponse!
+  node: UserResponse!
 }
 
-type MemberReponse {
+type MemberResponse {
   createdAt: DateTime!
   guildId: String!
   id: ID!
-  roles: [RoleReponse!]
+  roles: [RoleResponse!]
   userId: String!
 }
 
@@ -61,7 +61,7 @@ type MyUserResponse {
   bot: Boolean!
   createdAt: DateTime!
   id: ID!
-  members: [MemberReponse!]
+  members: [MemberResponse!]
   name: String
   socialAccounts: [SocialAccountResponse!]
   username: String!
@@ -84,7 +84,7 @@ type Query {
   getSocialAccountsByUserId(id: String!): String!
 }
 
-type RoleReponse {
+type RoleResponse {
   hexColor: String!
   id: ID!
   name: String!
@@ -124,7 +124,7 @@ input UpdateUserInput {
   name: String
 }
 
-type UserReponse {
+type UserResponse {
   avatarURL: String
   bot: Boolean!
   createdAt: DateTime!
