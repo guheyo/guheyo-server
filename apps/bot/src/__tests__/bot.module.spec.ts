@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigService } from '@nestjs/config';
 import { NecordModule } from 'necord';
 import { ConfigYamlModule } from '../config/config.module';
@@ -12,6 +13,7 @@ describe('BotModule', () => {
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [
+        CqrsModule,
         ConfigYamlModule,
         NecordModule.forRootAsync({
           useFactory: (configService: ConfigService) => ({
