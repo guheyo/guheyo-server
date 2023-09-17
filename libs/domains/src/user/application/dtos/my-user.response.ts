@@ -1,18 +1,18 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
-import { SocialAccountResponse } from '@lib/domains/social-account/application/dtos/social-account.reponse';
-import { MemberReponse } from '@lib/domains/member/application/dtos/member.reponse';
-import { UserReponse } from './user.reponse';
+import { SocialAccountResponse } from '@lib/domains/social-account/application/dtos/social-account.response';
+import { MemberWithRolesResponse } from '@lib/domains/member/application/dtos/member-with-roles.response';
+import { UserResponse } from './user.response';
 
 @ObjectType()
-export class MyUserResponse extends UserReponse {
+export class MyUserResponse extends UserResponse {
   @Type(() => SocialAccountResponse)
   @Field(() => [SocialAccountResponse], { nullable: true })
   socialAccounts: SocialAccountResponse[];
 
-  @Type(() => MemberReponse)
-  @Field(() => [MemberReponse], { nullable: true })
-  members: MemberReponse[];
+  @Type(() => MemberWithRolesResponse)
+  @Field(() => [MemberWithRolesResponse], { nullable: true })
+  members: MemberWithRolesResponse[];
 
   constructor(partial: Partial<MyUserResponse>) {
     super(partial);

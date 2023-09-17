@@ -1,7 +1,7 @@
 import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class UserReponse {
+export class UserResponse {
   @Field(() => ID)
   id: string;
 
@@ -20,7 +20,7 @@ export class UserReponse {
   @Field()
   bot: boolean;
 
-  constructor(partial: Partial<UserReponse>) {
+  constructor(partial: Partial<UserResponse>) {
     Object.assign(this, partial);
   }
 }

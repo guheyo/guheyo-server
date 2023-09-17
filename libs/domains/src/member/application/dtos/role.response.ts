@@ -2,7 +2,7 @@ import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
 @ObjectType()
-export class RoleReponse {
+export class RoleResponse {
   @Field(() => ID)
   id: string;
 
@@ -16,7 +16,7 @@ export class RoleReponse {
   @Field()
   hexColor: string = '#000000';
 
-  constructor(partial: Partial<RoleReponse>) {
+  constructor(partial: Partial<RoleResponse>) {
     Object.assign(this, partial);
   }
 }
