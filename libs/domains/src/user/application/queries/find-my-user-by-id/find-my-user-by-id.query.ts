@@ -1,3 +1,3 @@
-import { FindByIdQuery } from '@lib/shared/cqrs/queries/find-by-id/find-by-id.query';
+import { ByIdQuery } from '@lib/shared/cqrs/queries/by-id/by-id.query';
 
-export class FindMyUserByIdQuery extends FindByIdQuery {}
+export class FindMyUserByIdQuery extends ByIdQuery {}

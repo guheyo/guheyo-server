@@ -2,10 +2,10 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import { MemberEntity } from '@lib/domains/member/domain/member.entity';
 import { SocialAccountWithoutAuthEntity } from '@lib/domains/social-account/domain/social-account.without-auth.entity';
-import { UserReponse } from './user.reponse';
+import { UserResponse } from './user.response';
 
 @ObjectType()
-export class AuthorResponse extends UserReponse {
+export class AuthorResponse extends UserResponse {
   @Type(() => SocialAccountWithoutAuthEntity)
   @Field(() => [SocialAccountWithoutAuthEntity], { nullable: true })
   socialAccounts: SocialAccountWithoutAuthEntity[];
