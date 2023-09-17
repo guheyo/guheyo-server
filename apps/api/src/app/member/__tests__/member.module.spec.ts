@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
-import { MemberCommandRepository } from '@lib/domains/member/adapter/out/persistence/member.command.repository';
+import { MemberRepository } from '@lib/domains/member/adapter/out/persistence/member.repository';
 import { CreateMemberHandler } from '@lib/domains/member/application/commands/create-member/create-member.handler';
 import { UpdateMemberHandler } from '@lib/domains/member/application/commands/update-member/update-member.handler';
 import { DeleteMemberHandler } from '@lib/domains/member/application/commands/delete-member/delete-member.handler';
@@ -66,7 +66,7 @@ describe('MemberModule', () => {
 
   describe('MemberSavePort', () => {
     it('should be instance of UserCommandRepository', async () => {
-      expect(savePort).toBeInstanceOf(MemberCommandRepository);
+      expect(savePort).toBeInstanceOf(MemberRepository);
     });
   });
 
