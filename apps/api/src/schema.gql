@@ -81,7 +81,7 @@ type PaginatedUsersResponse {
 type Query {
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: String!): MyUserResponse
-  findMyUserBySocialAccount: MyUserResponse
+  findMyUserBySocialAccount(provider: String!, socialId: ID!): MyUserResponse
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   getSocialAccountsByUserId(id: String!): String!
 }

@@ -1,9 +1,13 @@
-import { ArgsType } from '@nestjs/graphql';
+import { ArgsType, Field, ID } from '@nestjs/graphql';
+import { IsString, IsUUID } from 'class-validator';
 
 @ArgsType()
 export class FindMyUserBySocialAccountArgs {
-  constructor(
-    public readonly provider: string,
-    public readonly socialId: string,
-  ) {}
+  @IsString()
+  @Field()
+  provider: string;
+
+  @IsUUID()
+  @Field(() => ID)
+  socialId: string;
 }
