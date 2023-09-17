@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input ConnectRolesInput {
+  id: ID!
+  roleIds: [ID!]!
+}
+
 input CreateMemberInput {
   guildId: ID!
   id: ID!
@@ -32,6 +37,11 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input DisconnectRolesInput {
+  id: ID!
+  roleIds: [ID!]!
+}
+
 type Edge {
   cursor: String!
   node: UserResponse!
@@ -46,12 +56,14 @@ type MemberWithRolesResponse {
 }
 
 type Mutation {
+  connectRoles(input: ConnectRolesInput!): String!
   createMember(input: CreateMemberInput!): String!
   createSocialAccount(input: CreateSocialAccountInput!): String!
   createUser(input: CreateUserInput!): String!
   deleteMember(id: ID!, userId: ID!): String!
   deleteSocialAccount(id: String!): String!
   deleteUser(id: String!): String!
+  disconnectRoles(input: DisconnectRolesInput!): String!
   updateMember(input: UpdateMemberInput!): String!
   updateSocialAccount(input: UpdateSocialAccountInput!): String!
   updateUser(input: UpdateUserInput!): String!
