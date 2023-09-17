@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateMemberInput {
+  guildId: ID!
+  id: ID!
+  userId: ID!
+}
+
 input CreateSocialAccountInput {
   accessToken: String
   expiresAt: Int
@@ -26,32 +32,27 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-input DeleteSocialAccountInput {
-  id: String!
-}
-
-input DeleteUserInput {
-  id: String!
-}
-
 type Edge {
   cursor: String!
-  node: UserReponse!
+  node: UserResponse!
 }
 
-type MemberReponse {
+type MemberWithRolesResponse {
   createdAt: DateTime!
   guildId: String!
   id: ID!
-  roles: [RoleReponse!]
+  roles: [RoleResponse!]!
   userId: String!
 }
 
 type Mutation {
+  createMember(input: CreateMemberInput!): String!
   createSocialAccount(input: CreateSocialAccountInput!): String!
   createUser(input: CreateUserInput!): String!
-  deleteSocialAccount(input: DeleteSocialAccountInput!): String!
-  deleteUser(input: DeleteUserInput!): String!
+  deleteMember(id: ID!, userId: ID!): String!
+  deleteSocialAccount(id: String!): String!
+  deleteUser(id: String!): String!
+  updateMember(input: UpdateMemberInput!): String!
   updateSocialAccount(input: UpdateSocialAccountInput!): String!
   updateUser(input: UpdateUserInput!): String!
 }
@@ -61,7 +62,7 @@ type MyUserResponse {
   bot: Boolean!
   createdAt: DateTime!
   id: ID!
-  members: [MemberReponse!]
+  members: [MemberWithRolesResponse!]
   name: String
   socialAccounts: [SocialAccountResponse!]
   username: String!
@@ -78,13 +79,14 @@ type PaginatedUsersResponse {
 }
 
 type Query {
-  findMyUserById(id: String!): MyUserResponse!
-  findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse!
+  findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
+  findMyUserById(id: String!): MyUserResponse
+  findMyUserBySocialAccount(provider: String!, socialId: ID!): MyUserResponse
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   getSocialAccountsByUserId(id: String!): String!
 }
 
-type RoleReponse {
+type RoleResponse {
   hexColor: String!
   id: ID!
   name: String!
@@ -106,6 +108,11 @@ type SocialAccountResponse {
   userId: String!
 }
 
+input UpdateMemberInput {
+  id: ID!
+  userId: ID!
+}
+
 input UpdateSocialAccountInput {
   accessToken: String
   expiresAt: Int
@@ -124,7 +131,7 @@ input UpdateUserInput {
   name: String
 }
 
-type UserReponse {
+type UserResponse {
   avatarURL: String
   bot: Boolean!
   createdAt: DateTime!

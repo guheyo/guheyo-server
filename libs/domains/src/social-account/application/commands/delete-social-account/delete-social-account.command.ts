@@ -1,10 +1,3 @@
-import { ICommand } from '@nestjs/cqrs';
-import { DeleteSocialAccountInput } from './delete-social-account.input';
+import { ByIdCommand } from '@lib/shared/cqrs/commands/by-id/by-id.command';
 
-export class DeleteSocialAccountCommand implements ICommand {
-  id: string;
-
-  constructor(input: DeleteSocialAccountInput) {
-    this.id = input.id;
-  }
-}
+export class DeleteSocialAccountCommand extends ByIdCommand {}

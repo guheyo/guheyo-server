@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigYamlModule } from '@app/api/config/config.module';
 import { UserModule } from './app/user/user.module';
 import { SocialAccountModule } from './app/social-account/social-account.module';
+import { MemberModule } from './app/member/member.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { SocialAccountModule } from './app/social-account/social-account.module'
     }),
     UserModule,
     SocialAccountModule,
+    MemberModule,
   ],
 })
 export class ApiModule {}
