@@ -11,6 +11,7 @@ import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/qu
 import { PaginationArgs } from '@lib/shared/cqrs/queries/pagination/pagination.args';
 import { FindUsersQuery } from '@lib/domains/user/application/queries/find-users/find-users.query';
 import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/find-users/paginated-users.response';
+import { FindMyUserBySocialAccountArgs } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.args';
 
 @Resolver()
 export class UserResolver {
@@ -27,10 +28,9 @@ export class UserResolver {
 
   @Query(() => MyUserResponse, { nullable: true })
   async findMyUserBySocialAccount(
-    @Args('provider') provider: string,
-    @Args('socialId') socialId: string,
+    @Args() args: FindMyUserBySocialAccountArgs,
   ): Promise<MyUserResponse | null> {
-    const query = new FindMyUserBySocialAccountQuery(provider, socialId);
+    const query = new FindMyUserBySocialAccountQuery(args);
     return this.queryBus.execute(query);
   }
 
