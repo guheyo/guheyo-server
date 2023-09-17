@@ -1,14 +1,28 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
+import { PrismaService } from '@lib/shared';
+import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { FindUsersQuery } from './find-users.query';
-import { UserLoadPort } from '../../port/out/user.load.port';
 import { PaginatedUsersResponse } from './paginated-users.response';
+import { UserResponse } from '../../dtos/user.response';
 
 @QueryHandler(FindUsersQuery)
 export class FindUsersHandler implements IQueryHandler<FindUsersQuery> {
-  constructor(@Inject('UserLoadPort') private userLoadPort: UserLoadPort) {}
+  constructor(private prismaService: PrismaService) {}
 
   async execute(query: FindUsersQuery): Promise<PaginatedUsersResponse> {
-    return this.userLoadPort.findUsers(query);
+    const cursor = query.cursor
+      ? {
+          id: query.cursor,
+        }
+      : undefined;
+    const users = await this.prismaService.user.findMany({
+      cursor,
+      take: query.take,
+      skip: query.skip,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    return paginate<UserResponse>(users, 'id', query.take);
   }
 }

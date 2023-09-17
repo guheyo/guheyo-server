@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { mock, verify, instance, anyOfClass } from 'ts-mockito';
-import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
+import { UserRepository } from '@lib/domains/user/adapter/out/persistence/user.repository';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { UpdateUserCommand } from '../update-user.command';
@@ -8,7 +8,7 @@ import { UpdateUserHandler } from '../update-user.handler';
 
 describe('UpdateUserCommand', () => {
   let handler: UpdateUserHandler;
-  const savePort: SavePort<UserEntity> = mock(UserCommandRepository);
+  const savePort: SavePort<UserEntity> = mock(UserRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({

@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
-import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
+import { UserRepository } from '@lib/domains/user/adapter/out/persistence/user.repository';
 import { CreateUserHandler } from '@lib/domains/user/application/commands/create-user/create-user.handler';
 import { UpdateUserHandler } from '@lib/domains/user/application/commands/update-user/update-user.handler';
 import { DeleteUserHandler } from '@lib/domains/user/application/commands/delete-user/delete-user.handler';
@@ -25,7 +25,7 @@ describe('UserModule', () => {
   let findMyUserByIdHandler: FindMyUserByIdHandler;
   let findMyUserBySocialAccountHandler: FindMyUserBySocialAccountHandler;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [
         ConfigYamlModule,
@@ -68,8 +68,8 @@ describe('UserModule', () => {
   });
 
   describe('UserSavePort', () => {
-    it('should be instance of UserCommandRepository', async () => {
-      expect(savePort).toBeInstanceOf(UserCommandRepository);
+    it('should be instance of UserRepository', async () => {
+      expect(savePort).toBeInstanceOf(UserRepository);
     });
   });
 
