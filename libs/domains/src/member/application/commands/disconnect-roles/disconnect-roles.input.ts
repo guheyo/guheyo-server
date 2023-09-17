@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsUUID } from 'class-validator';
+import { IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class DisconnectRolesInput {
@@ -7,7 +7,7 @@ export class DisconnectRolesInput {
   @Field(() => ID)
   id: string;
 
-  @IsUUID()
+  @IsString({ each: true })
   @Field(() => [ID])
   roleIds: string[];
 }
