@@ -23,7 +23,7 @@ describe('MemberModule', () => {
   let memberDeleteHandler: DeleteMemberHandler;
   let findMemberByUserAndGuildHandler: FindMemberByUserAndGuildHandler;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [
         ConfigYamlModule,
@@ -65,7 +65,7 @@ describe('MemberModule', () => {
   });
 
   describe('MemberSavePort', () => {
-    it('should be instance of UserCommandRepository', async () => {
+    it('should be instance of UserRepository', async () => {
       expect(savePort).toBeInstanceOf(MemberRepository);
     });
   });
