@@ -21,7 +21,7 @@ describe('SocialAccountModule', () => {
   let socialAccountUpdateHandler: UpdateSocialAccountHandler;
   let socialAccountDeleteHandler: DeleteSocialAccountHandler;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [
         ConfigYamlModule,

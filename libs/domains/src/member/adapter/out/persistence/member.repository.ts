@@ -4,7 +4,7 @@ import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { MemberEntity } from '@lib/domains/member/domain/member.entity';
 
 @Injectable()
-export class MemberCommandRepository implements SavePort<MemberEntity> {
+export class MemberRepository implements SavePort<MemberEntity> {
   constructor(private prismaService: PrismaService) {}
 
   async create(member: MemberEntity): Promise<void> {
