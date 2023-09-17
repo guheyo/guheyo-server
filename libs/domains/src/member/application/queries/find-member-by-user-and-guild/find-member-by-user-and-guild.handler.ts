@@ -1,16 +1,28 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs/dist';
-import { Inject } from '@nestjs/common';
+import { PrismaService } from '@lib/shared';
 import { FindMemberByUserAndGuildQuery } from './find-member-by-user-and-guild.query';
-import { MemberLoadPort } from '../../port/out/member.load.port';
 import { MemberWithRolesResponse } from '../../dtos/member-with-roles.response';
 
 @QueryHandler(FindMemberByUserAndGuildQuery)
 export class FindMemberByUserAndGuildHandler
   implements IQueryHandler<FindMemberByUserAndGuildQuery>
 {
-  constructor(@Inject('MemberLoadPort') private memberLoadPort: MemberLoadPort) {}
+  constructor(private prismaService: PrismaService) {}
 
-  execute(query: FindMemberByUserAndGuildQuery): Promise<MemberWithRolesResponse | null> {
-    return this.memberLoadPort.findMemberByUserAndGuild(query);
+  async execute(query: FindMemberByUserAndGuildQuery): Promise<MemberWithRolesResponse | null> {
+    const members = await this.prismaService.member.findMany({
+      where: {
+        userId: query.userId,
+        guildId: query.guildId,
+      },
+      include: {
+        roles: {
+          orderBy: {
+            rank: 'asc',
+          },
+        },
+      },
+    });
+    return members.length ? members[0] : null;
   }
 }
