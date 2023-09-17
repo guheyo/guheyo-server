@@ -1,10 +1,3 @@
-import { ICommand } from '@nestjs/cqrs';
-import { DeleteUserInput } from './delete-user.input';
+import { ByIdCommand } from '@lib/shared/cqrs/commands/by-id/by-id.command';
 
-export class DeleteUserCommand implements ICommand {
-  id: string;
-
-  constructor(input: DeleteUserInput) {
-    this.id = input.id;
-  }
-}
+export class DeleteUserCommand extends ByIdCommand {}

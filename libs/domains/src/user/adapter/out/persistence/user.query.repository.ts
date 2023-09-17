@@ -7,7 +7,7 @@ import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.respo
 import { FindUsersQuery } from '@lib/domains/user/application/queries/find-users/find-users.query';
 import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/find-users/paginated-users.response';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
-import { UserReponse } from '@lib/domains/user/application/dtos/user.reponse';
+import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 
 @Injectable()
 export class UserQueryRepository implements UserLoadPort {
@@ -66,6 +66,6 @@ export class UserQueryRepository implements UserLoadPort {
         createdAt: 'desc',
       },
     });
-    return paginate<UserReponse>(users, 'id', query.take);
+    return paginate<UserResponse>(users, 'id', query.take);
   }
 }
