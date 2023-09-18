@@ -11,7 +11,7 @@ export class DeleteMemberHandler implements ICommandHandler<DeleteMemberCommand>
     private savePort: SavePort<MemberEntity>,
   ) {}
 
-  async execute(command: DeleteMemberCommand): Promise<any> {
+  async execute(command: DeleteMemberCommand): Promise<void> {
     const member = new MemberEntity(command);
     await this.savePort.delete(member);
   }
