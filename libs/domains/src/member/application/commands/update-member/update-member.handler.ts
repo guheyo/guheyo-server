@@ -11,7 +11,7 @@ export class UpdateMemberHandler implements ICommandHandler<UpdateMemberCommand>
     private savePort: SavePort<MemberEntity>,
   ) {}
 
-  async execute(command: UpdateMemberCommand): Promise<any> {
+  async execute(command: UpdateMemberCommand): Promise<void> {
     const member = new MemberEntity(command);
     await this.savePort.update(member);
   }

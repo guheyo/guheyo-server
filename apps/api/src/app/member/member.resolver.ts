@@ -9,6 +9,10 @@ import { DeleteMemberCommand } from '@lib/domains/member/application/commands/de
 import { MemberWithRolesResponse } from '@lib/domains/member/application/dtos/member-with-roles.response';
 import { FindMemberByUserAndGuildQuery } from '@lib/domains/member/application/queries/find-member-by-user-and-guild/find-member-by-user-and-guild.query';
 import { FindMemberByUserAndGuildArgs } from '@lib/domains/member/application/queries/find-member-by-user-and-guild/find-member-by-user-and-guild.args';
+import { ConnectRolesInput } from '@lib/domains/member/application/commands/connect-roles/connect-roles.input';
+import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
+import { DisconnectRolesInput } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.input';
+import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
 
 @Resolver()
 export class MemberResolver {
@@ -41,5 +45,17 @@ export class MemberResolver {
   async deleteMember(@Args() args: DeleteMemberArgs): Promise<String> {
     await this.commandBus.execute(new DeleteMemberCommand(args));
     return args.id;
+  }
+
+  @Mutation(() => String)
+  async connectRoles(@Args('input') input: ConnectRolesInput): Promise<String> {
+    await this.commandBus.execute(new ConnectRolesCommand(input));
+    return input.id;
+  }
+
+  @Mutation(() => String)
+  async disconnectRoles(@Args('input') input: DisconnectRolesInput): Promise<String> {
+    await this.commandBus.execute(new DisconnectRolesCommand(input));
+    return input.id;
   }
 }

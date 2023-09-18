@@ -11,7 +11,7 @@ export class CreateMemberHandler implements ICommandHandler<CreateMemberCommand>
     private savePort: SavePort<MemberEntity>,
   ) {}
 
-  async execute(command: CreateMemberCommand): Promise<any> {
+  async execute(command: CreateMemberCommand): Promise<void> {
     const member = new MemberEntity(command);
     await this.savePort.create(member);
   }
