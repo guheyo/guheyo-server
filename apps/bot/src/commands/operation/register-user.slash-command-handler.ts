@@ -2,7 +2,7 @@ import { Injectable, UseGuards } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { v4 as uuid4 } from 'uuid';
-import { UserRegisteredFromDiscordEvent } from '@lib/domains/user/application/events/user-registered-from-discord/user-registered-from-discord.event';
+import { UserjoinedEvent } from '@lib/domains/user/application/events/user-joined/user-joined.event';
 import { GuildSlashCommandGuard } from '@app/bot/guards/guild.slash-command.guard';
 import { OwnerSlashCommandGuard } from '@app/bot/guards/owner.slash-command.guard';
 import { RegisterUserRequest } from './register-user.request';
@@ -19,7 +19,7 @@ export class RegisterUserSlashCommandHandler {
     @Options() { user }: RegisterUserRequest,
   ) {
     this.eventBus.publish(
-      new UserRegisteredFromDiscordEvent({
+      new UserjoinedEvent({
         userId: uuid4(),
         username: user.username,
         socialAccountId: uuid4(),
@@ -30,5 +30,6 @@ export class RegisterUserSlashCommandHandler {
         roleIds: [],
       }),
     );
+    interaction.reply(`User registered`);
   }
 }

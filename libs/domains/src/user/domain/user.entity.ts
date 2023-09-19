@@ -1,6 +1,8 @@
-import { User } from '@prisma/client';
+import { MemberEntity } from '@lib/domains/member/domain/member.entity';
+import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
+import { AggregateRoot } from '@nestjs/cqrs';
 
-export class UserEntity implements User {
+export class UserEntity extends AggregateRoot {
   id: string;
 
   createdAt: Date;
@@ -17,7 +19,12 @@ export class UserEntity implements User {
 
   bot: boolean;
 
+  socialAccounts: SocialAccountEntity[];
+
+  members: MemberEntity[];
+
   constructor(partial: Partial<UserEntity>) {
+    super();
     Object.assign(this, partial);
   }
 }

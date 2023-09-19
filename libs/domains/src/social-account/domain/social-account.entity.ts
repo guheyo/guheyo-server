@@ -1,7 +1,20 @@
-import { SocialAccount } from '@prisma/client';
-import { SocialAccountWithoutAuthEntity } from './social-account.without-auth.entity';
+import { AggregateRoot } from '@nestjs/cqrs/dist';
 
-export class SocialAccountEntity extends SocialAccountWithoutAuthEntity implements SocialAccount {
+export class SocialAccountEntity extends AggregateRoot {
+  id: string;
+
+  createdAt: Date;
+
+  updatedAt: Date;
+
+  deletedAt: Date | null;
+
+  provider: string;
+
+  socialId: string;
+
+  userId: string;
+
   refreshToken: string | null;
 
   accessToken: string | null;
@@ -17,7 +30,7 @@ export class SocialAccountEntity extends SocialAccountWithoutAuthEntity implemen
   sessionState: string | null;
 
   constructor(partial: Partial<SocialAccountEntity>) {
-    super(partial);
+    super();
     Object.assign(this, partial);
   }
 }

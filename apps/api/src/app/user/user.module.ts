@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { UserCommandModule } from '@lib/domains/user/application/commands/user.command.module';
-import { UserQueryModule } from '@lib/domains/user/application/queries/user.query.module';
+import { PrismaModule } from '@lib/shared/prisma/prisma.module';
+import { USER_PROVIDERS } from '@lib/domains/user/user.providers';
 import { UserResolver } from './user.resolver';
 
 @Module({
-  imports: [CqrsModule, UserCommandModule, UserQueryModule],
-  providers: [UserResolver],
+  imports: [CqrsModule, PrismaModule],
+  providers: [UserResolver, ...USER_PROVIDERS],
 })
 export class UserModule {}
