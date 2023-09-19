@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { SocialAccountCommandModule } from '@lib/domains/social-account/application/commands/social-account.command.module';
+import { SocialAccountModule as SocialAccountDomainModule } from '@lib/domains/social-account/social-account.module';
 import { SocialAccountResolver } from './social-account.resolver';
 
 @Module({
-  imports: [CqrsModule, SocialAccountCommandModule],
+  imports: [CqrsModule, SocialAccountDomainModule],
   providers: [SocialAccountResolver],
 })
 export class SocialAccountModule {}
