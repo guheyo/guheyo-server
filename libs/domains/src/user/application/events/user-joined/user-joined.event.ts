@@ -1,6 +1,7 @@
-import { UserRegisteredFromDisocrdInput } from './user-registered-from-discord.input';
+import { IEvent } from '@nestjs/cqrs/dist';
+import { UserJoinedInput } from './user-joined.input';
 
-export class UserRegisteredFromDiscordEvent {
+export class UserjoinedEvent implements IEvent {
   userId: string;
 
   username: string;
@@ -17,7 +18,7 @@ export class UserRegisteredFromDiscordEvent {
 
   roleIds: string[];
 
-  constructor(input: UserRegisteredFromDisocrdInput) {
+  constructor(input: UserJoinedInput) {
     this.userId = input.userId;
     this.username = input.username;
     this.socialAccountId = input.socialAccountId;
