@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { PrismaModule } from '@lib/shared/prisma/prisma.module';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { MemberRepository } from '@lib/domains/member/adapter/out/persistence/member.repository';
 import { CreateMemberHandler } from '@lib/domains/member/application/commands/create-member/create-member.handler';
@@ -30,6 +31,7 @@ describe('MemberModule', () => {
         GraphQLModule.forRoot<ApolloDriverConfig>({
           driver: ApolloDriver,
         }),
+        PrismaModule,
         MemberModule,
       ],
     }).compile();
