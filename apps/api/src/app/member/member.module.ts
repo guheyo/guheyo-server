@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { MemberCommandModule } from '@lib/domains/member/application/commands/member.command.module';
-import { MemberQueryModule } from '@lib/domains/member/application/queries/member.query.module';
+import { PrismaModule } from '@lib/shared/prisma/prisma.module';
+import { MEMBER_PROVIDERS } from '@lib/domains/member/member.providers';
 import { MemberResolver } from './member.resolver';
 
 @Module({
-  imports: [CqrsModule, MemberCommandModule, MemberQueryModule],
-  providers: [MemberResolver],
+  imports: [CqrsModule, PrismaModule],
+  providers: [MemberResolver, ...MEMBER_PROVIDERS],
 })
 export class MemberModule {}

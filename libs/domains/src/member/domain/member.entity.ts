@@ -1,6 +1,7 @@
-import { Member } from '@prisma/client';
+import { AggregateRoot } from '@nestjs/cqrs/dist';
+import { RoleEntity } from './role.entity';
 
-export class MemberEntity implements Member {
+export class MemberEntity extends AggregateRoot {
   id: string;
 
   createdAt: Date;
@@ -13,7 +14,10 @@ export class MemberEntity implements Member {
 
   guildId: string;
 
+  roles: RoleEntity[];
+
   constructor(partial: Partial<MemberEntity>) {
+    super();
     Object.assign(this, partial);
   }
 }
