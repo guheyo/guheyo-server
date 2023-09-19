@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { PrismaModule } from '@lib/shared/prisma/prisma.module';
+import { PrismaService } from '@lib/shared';
 import { CreateUserHandler } from '@lib/domains/user/application/commands/create-user/create-user.handler';
 import { UpdateUserHandler } from '@lib/domains/user/application/commands/update-user/update-user.handler';
 import { DeleteUserHandler } from '@lib/domains/user/application/commands/delete-user/delete-user.handler';
@@ -8,18 +8,15 @@ import { UserRepository } from '@lib/domains/user/adapter/out/persistence/user.r
 const commandHandlers = [CreateUserHandler, UpdateUserHandler, DeleteUserHandler];
 
 @Module({
-  imports: [PrismaModule],
   providers: [
+    PrismaService,
     ...commandHandlers,
     {
       provide: 'UserSavePort',
       useClass: UserRepository,
     },
-  ],
-  exports: [
-    ...commandHandlers,
     {
-      provide: 'UserSavePort',
+      provide: 'UserLoadPort',
       useClass: UserRepository,
     },
   ],
