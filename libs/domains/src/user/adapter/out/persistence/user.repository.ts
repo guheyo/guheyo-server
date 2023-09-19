@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { PrismaService } from '@lib/shared';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
-import { UserLoadPort } from '@lib/domains/user/application/ports/out/user.load';
+import { UserLoadPort } from '@lib/domains/user/application/ports/out/user.load.port';
 import { plainToClass } from 'class-transformer';
 
 @Injectable()
