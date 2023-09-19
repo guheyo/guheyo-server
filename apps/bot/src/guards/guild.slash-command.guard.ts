@@ -8,6 +8,6 @@ export class GuildSlashCommandGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const [interaction]: [Interaction] = context.getArgByIndex(0);
-    return interaction.guildId === this.configService.get('discord.base-guild.id');
+    return interaction.guildId === this.configService.get('discord.server.id');
   }
 }
