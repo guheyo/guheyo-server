@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { mock, verify, instance } from 'ts-mockito';
 import { MemberRepository } from '@lib/domains/member/adapter/out/persistence/member.repository';
-import { MemberRolesSavePort } from '../../../port/out/member-roles.save';
+import { MemberRolesSavePort } from '../../../ports/out/member-roles.save';
 import { DisconnectRolesCommand } from '../disconnect-roles.command';
 import { DisconnectRolesHandler } from '../disconnect-roles.handler';
 

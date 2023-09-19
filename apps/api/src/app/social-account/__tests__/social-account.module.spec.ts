@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { PrismaModule } from '@lib/shared/prisma/prisma.module';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
 import { CreateSocialAccountHandler } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.handler';
@@ -28,6 +29,7 @@ describe('SocialAccountModule', () => {
         GraphQLModule.forRoot<ApolloDriverConfig>({
           driver: ApolloDriver,
         }),
+        PrismaModule,
         SocialAccountModule,
       ],
     }).compile();

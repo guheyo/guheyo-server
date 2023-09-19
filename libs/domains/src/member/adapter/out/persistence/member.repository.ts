@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@lib/shared';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { MemberEntity } from '@lib/domains/member/domain/member.entity';
-import { MemberRolesSavePort } from '@lib/domains/member/application/port/out/member-roles.save';
+import { MemberRolesSavePort } from '@lib/domains/member/application/ports/out/member-roles.save';
+import _ from 'lodash';
 
 @Injectable()
 export class MemberRepository implements SavePort<MemberEntity>, MemberRolesSavePort {
@@ -10,7 +11,7 @@ export class MemberRepository implements SavePort<MemberEntity>, MemberRolesSave
 
   async create(member: MemberEntity): Promise<void> {
     await this.prismaService.member.create({
-      data: member,
+      data: _.omit(member, 'roles'),
     });
   }
 
@@ -21,7 +22,7 @@ export class MemberRepository implements SavePort<MemberEntity>, MemberRolesSave
         id: member.id,
         userId: member.userId,
       },
-      data: member,
+      data: _.omit(member, 'roles'),
     });
   }
 

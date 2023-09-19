@@ -1,4 +1,4 @@
-export class UserRegisteredFromDisocrdInput {
+export class UserJoinedInput {
   userId: string;
 
   username: string;
