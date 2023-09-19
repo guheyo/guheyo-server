@@ -1,10 +1,12 @@
+import { GuildMemberEventGuard } from '@app/bot/guards/guild-member.event.guard';
 import { UserjoinedEvent } from '@lib/domains/user/application/events/user-joined/user-joined.event';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EventBus } from '@nestjs/cqrs';
 import { Context, ContextOf, On } from 'necord';
 import { v4 as uuid4 } from 'uuid';
 
+@UseGuards(GuildMemberEventGuard)
 @Injectable()
 export class JoinHandler {
   private readonly logger = new Logger(JoinHandler.name);
