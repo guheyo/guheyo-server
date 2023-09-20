@@ -1,13 +1,13 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Interaction } from 'discord.js';
+import { GuildMember } from 'discord.js';
 
 @Injectable()
-export class GuildSlashCommandGuard implements CanActivate {
+export class GuildMemberEventGuard implements CanActivate {
   constructor(private configService: ConfigService) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const [interaction]: [Interaction] = context.getArgByIndex(0);
-    return interaction.guildId === this.configService.get('discord.server.id');
+    const [member]: [GuildMember] = context.getArgByIndex(0);
+    return member.guild.id === this.configService.get('discord.server.id');
   }
 }
