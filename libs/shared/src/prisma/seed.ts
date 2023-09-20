@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { v5 as uuid5 } from 'uuid';
 
 const prisma = new PrismaClient();
 
@@ -9,6 +10,7 @@ async function main() {
     },
     update: {},
     create: {
+      id: uuid5('806383744151584779', process.env.NAMESPACE_DISCORD!),
       name: '키보드',
       rank: 0,
       market: {
@@ -17,27 +19,27 @@ async function main() {
           productCategories: {
             create: [
               {
-                id: '7f54bdc5-0fe3-4a80-88b4-e3875a821a7f',
+                id: uuid5('806386907302199296', process.env.NAMESPACE_GUILD!),
                 name: '커스텀',
                 rank: 0,
               },
               {
-                id: '68f4937c-64d6-4cd2-9cb1-220f06448608',
+                id: uuid5('1061611125055180800', process.env.NAMESPACE_GUILD!),
                 name: '기성품',
                 rank: 1,
               },
               {
-                id: '9ec7c65f-efb3-48a8-be76-47d41ea09280',
+                id: uuid5('806388583060733983', process.env.NAMESPACE_GUILD!),
                 name: '키캡',
                 rank: 2,
               },
               {
-                id: 'ff273177-65cb-41c7-8417-9819582abf24',
+                id: uuid5('806388500986855424', process.env.NAMESPACE_GUILD!),
                 name: '아티산',
                 rank: 3,
               },
               {
-                id: '6464eae0-e4d3-4425-b817-42641436ab5f',
+                id: uuid5('806388662564552715', process.env.NAMESPACE_GUILD!),
                 name: '기타',
                 rank: 4,
               },
@@ -51,17 +53,17 @@ async function main() {
           postCategories: {
             create: [
               {
-                id: '8cb545b1-2f69-4164-bc44-e912d1841e34',
+                id: uuid5('1055886716822634568', process.env.NAMESPACE_GUILD!),
                 name: '사진 영상',
                 rank: 0,
               },
               {
-                id: '66fe89c1-c368-4f8d-a757-ecad10dace77',
+                id: uuid5('1055861667772248126', process.env.NAMESPACE_GUILD!),
                 name: '정보 후기',
                 rank: 1,
               },
               {
-                id: '7b82c410-7849-4b95-a14c-5bb213a15b3a',
+                id: uuid5('1056453218567213076', process.env.NAMESPACE_GUILD!),
                 name: '거래 후기',
                 rank: 2,
               },

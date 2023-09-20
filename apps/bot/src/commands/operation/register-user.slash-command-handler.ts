@@ -1,7 +1,7 @@
 import { Injectable, UseGuards } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
-import { v4 as uuid4 } from 'uuid';
+import { v4 as uuid4, v5 as uuid5 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
 import { UserjoinedEvent } from '@lib/domains/user/application/events/user-joined/user-joined.event';
 import { GuildSlashCommandGuard } from '@app/bot/guards/guild.slash-command.guard';
@@ -26,11 +26,11 @@ export class RegisterUserSlashCommandHandler {
       new UserjoinedEvent({
         userId: uuid4(),
         username: user.username,
-        socialAccountId: uuid4(),
+        socialAccountId: uuid5(user.id, this.configService.get('namespace.discord')!),
         provider: 'discord',
         socialId: user.id,
-        guildId: this.configService.get('discord.guild.id')!,
-        memberId: uuid4(),
+        guildId: uuid5(interaction.guildId!, this.configService.get('namespace.discord')!),
+        memberId: uuid5(user.id, this.configService.get('namespace.guild')!),
         roleIds: [],
       }),
     );
