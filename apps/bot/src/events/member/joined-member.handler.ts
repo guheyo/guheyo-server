@@ -25,7 +25,7 @@ export class JoinedMemberHandler {
         socialAccountId: uuid5(member.user.id, this.configService.get('namespace.discord')!),
         provider: 'discord',
         socialId: member.user.id,
-        guildId: this.configService.get('discord.guild.id')!,
+        guildId: uuid5(member.guild.id, this.configService.get('namespace.discord')!),
         memberId: uuid5(member.id, this.configService.get('namespace.guild')!),
         roleIds: [],
       }),

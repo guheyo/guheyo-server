@@ -29,7 +29,7 @@ export class RegisterUserSlashCommandHandler {
         socialAccountId: uuid5(user.id, this.configService.get('namespace.discord')!),
         provider: 'discord',
         socialId: user.id,
-        guildId: this.configService.get('discord.guild.id')!,
+        guildId: uuid5(interaction.guildId!, this.configService.get('namespace.discord')!),
         memberId: uuid5(user.id, this.configService.get('namespace.guild')!),
         roleIds: [],
       }),
