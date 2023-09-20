@@ -13,6 +13,9 @@ discord:
     id:
   guild:
     id:
+namespace:
+  discord:
+  guild:
 document:
   title:
   description:
