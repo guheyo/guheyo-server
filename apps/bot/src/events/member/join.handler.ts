@@ -4,7 +4,7 @@ import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EventBus } from '@nestjs/cqrs';
 import { Context, ContextOf, On } from 'necord';
-import { v4 as uuid4 } from 'uuid';
+import { v4 as uuid4, v5 as uuid5 } from 'uuid';
 
 @UseGuards(GuildMemberEventGuard)
 @Injectable()
@@ -17,16 +17,16 @@ export class JoinHandler {
   ) {}
 
   @On('guildMemberAdd')
-  public async onceReady(@Context() [member]: ContextOf<'guildMemberAdd'>) {
+  public async onJoin(@Context() [member]: ContextOf<'guildMemberAdd'>) {
     this.eventBus.publish(
       new UserjoinedEvent({
         userId: uuid4(),
         username: member.user.username,
-        socialAccountId: uuid4(),
+        socialAccountId: uuid5(member.user.id, this.configService.get('namespace.discord')!),
         provider: 'discord',
         socialId: member.user.id,
         guildId: this.configService.get('discord.guild.id')!,
-        memberId: uuid4(),
+        memberId: uuid5(member.id, this.configService.get('namespace.guild')!),
         roleIds: [],
       }),
     );
