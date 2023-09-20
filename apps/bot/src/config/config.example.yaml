@@ -9,7 +9,9 @@ discord:
     client-id:
     token:
     owner-id:
-  base-guild:
+  server:
+    id:
+  guild:
     id:
 document:
   title:

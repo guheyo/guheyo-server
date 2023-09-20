@@ -21,12 +21,26 @@ export class CreateJoinedUserHandler implements ICommandHandler<CreateJoinedUser
     );
 
     if (user) return;
-
-    const newUser = new UserEntity({
-      id: command.userId,
-      username: command.username,
-    });
-
+    const newUser = this.publisher.mergeObjectContext(
+      new UserEntity({
+        id: command.userId,
+        username: command.username,
+      }),
+    );
     await this.userSavePort.create(newUser);
+
+    newUser.createdJoinedUser(
+      _.pick(
+        command,
+        'userId',
+        'username',
+        'socialAccountId',
+        'provider',
+        'socialId',
+        'guildId',
+        'memberId',
+        'roleIds',
+      ),
+    );
   }
 }

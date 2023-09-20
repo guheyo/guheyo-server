@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
-import { Observable, map } from 'rxjs';
+import { Observable, map, mergeMap, of } from 'rxjs';
 import { CreateSocialAccountCommand } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.command';
+import { CreateMemberCommand } from '@lib/domains/member/application/commands/create-member/create-member.command';
 import { CreateJoinedUserCommand } from '../../commands/create-joined-user/create-joined-user.command';
 import { UserjoinedEvent } from '../../events/user-joined/user-joined.event';
 import { JoinedUserCreatedEvent } from '../../events/joined-user-created/joined-user-created.event';
@@ -19,14 +20,20 @@ export class JoinUserSaga {
   joinedUserCreated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
       ofType(JoinedUserCreatedEvent),
-      map(
-        (event) =>
+      mergeMap((event) =>
+        of(
           new CreateSocialAccountCommand({
             id: event.socialAccountId,
             provider: event.provider,
             socialId: event.socialId,
             userId: event.userId,
           }),
+          new CreateMemberCommand({
+            id: event.memberId,
+            userId: event.userId,
+            guildId: event.guildId,
+          }),
+        ),
       ),
     );
 }
