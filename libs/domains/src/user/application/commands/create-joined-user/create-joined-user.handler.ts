@@ -34,6 +34,7 @@ export class CreateJoinedUserHandler implements ICommandHandler<CreateJoinedUser
         command,
         'userId',
         'username',
+        'avatarURL',
         'socialAccountId',
         'provider',
         'socialId',

@@ -6,6 +6,8 @@ export class CreateJoinedUserCommand implements ICommand {
 
   username: string;
 
+  avatarURL?: string;
+
   socialAccountId: string;
 
   provider: string;
@@ -21,6 +23,7 @@ export class CreateJoinedUserCommand implements ICommand {
   constructor(input: CreateJoinedUserInput) {
     this.userId = input.userId;
     this.username = input.username;
+    this.avatarURL = input.avatarURL;
     this.socialAccountId = input.socialAccountId;
     this.provider = input.provider;
     this.socialId = input.socialId;
