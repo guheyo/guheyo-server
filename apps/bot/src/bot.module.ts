@@ -5,8 +5,11 @@ import { NecordModule } from 'necord';
 import { ConfigService } from '@nestjs/config/dist';
 import { PrismaModule } from '@lib/shared/prisma/prisma.module';
 import { USER_PROVIDERS } from '@lib/domains/user/user.providers';
+import { SOCIAL_ACCOUNT_PROVIDERS } from '@lib/domains/social-account/social-account.providers';
+import { MEMBER_PROVIDERS } from '@lib/domains/member/member.providers';
 import { NecordConfigService } from './necord/necord.config.service';
 import { COMMAND_HANDLERS } from './commands/command-handlers';
+import { EVENT_HANDLERS } from './events/event-handlers';
 
 @Module({
   imports: [
@@ -28,6 +31,12 @@ import { COMMAND_HANDLERS } from './commands/command-handlers';
       useClass: NecordConfigService,
     }),
   ],
-  providers: [...USER_PROVIDERS, ...COMMAND_HANDLERS],
+  providers: [
+    ...USER_PROVIDERS,
+    ...SOCIAL_ACCOUNT_PROVIDERS,
+    ...MEMBER_PROVIDERS,
+    ...COMMAND_HANDLERS,
+    ...EVENT_HANDLERS,
+  ],
 })
 export class BotModule {}
