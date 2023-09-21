@@ -6,6 +6,12 @@ postgresql:
 redis:
   host:
   port:
+s3:
+  region:
+  accessKeyId:
+  secretAccessKey:
+  bucket:
+  domain:
 document:
   title:
   description:

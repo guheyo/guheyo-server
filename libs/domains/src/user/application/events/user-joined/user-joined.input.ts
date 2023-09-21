@@ -1,4 +1,4 @@
-import { IsString, IsUUID } from 'class-validator';
+import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class UserJoinedInput {
   @IsUUID()
@@ -6,6 +6,10 @@ export class UserJoinedInput {
 
   @IsString()
   username: string;
+
+  @IsOptional()
+  @IsString()
+  avatarURL?: string;
 
   @IsUUID()
   socialAccountId: string;
