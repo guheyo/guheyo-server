@@ -16,6 +16,9 @@ export class RoleResponse {
   @Field()
   hexColor: string = '#000000';
 
+  @Field(() => ID)
+  guildId: string;
+
   constructor(partial: Partial<RoleResponse>) {
     Object.assign(this, partial);
   }

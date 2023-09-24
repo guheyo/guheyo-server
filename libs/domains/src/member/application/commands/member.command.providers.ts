@@ -19,4 +19,8 @@ export const MEMBER_COMMAND_PROVIDERS = [
     provide: 'MemberRolesSavePort',
     useClass: MemberRepository,
   },
+  {
+    provide: 'MemberLoadPort',
+    useClass: MemberRepository,
+  },
 ];
