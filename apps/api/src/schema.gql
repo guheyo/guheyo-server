@@ -28,6 +28,7 @@ input CreateSocialAccountInput {
 }
 
 input CreateUserInput {
+  avatarURL: String
   id: String!
   username: String!
 }
@@ -99,6 +100,7 @@ type Query {
 }
 
 type RoleResponse {
+  guildId: ID!
   hexColor: String!
   id: ID!
   name: String!
