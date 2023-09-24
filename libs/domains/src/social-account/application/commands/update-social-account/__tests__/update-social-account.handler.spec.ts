@@ -1,14 +1,32 @@
 import { Test } from '@nestjs/testing';
-import { mock, verify, instance, anyOfClass } from 'ts-mockito';
-import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
+import { mock, verify, instance, anyOfClass, when } from 'ts-mockito';
+import { SocialAccountRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.repository';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
-import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { UpdateSocialAccountCommand } from '../update-social-account.command';
 import { UpdateSocialAccountHandler } from '../update-social-account.handler';
+import { SocialAccountSavePort } from '../../../ports/out/social-account.save.port';
+import { SocialAccountLoadPort } from '../../../ports/out/social-account.load.port';
 
 describe('UpdateSocialAccountCommand', () => {
   let handler: UpdateSocialAccountHandler;
-  const savePort: SavePort<SocialAccountEntity> = mock(SocialAccountCommandRepository);
+  const socialAccountSavePort: SocialAccountSavePort = mock(SocialAccountRepository);
+  const socialAccountLoadPort: SocialAccountLoadPort = mock(SocialAccountRepository);
+  const command: UpdateSocialAccountCommand = {
+    id: '94587c54-4d7d-11ee-be56-0242ac120002',
+    userId: '94587c54-4d7d-11ee-be56-0242ac120002',
+    refreshToken: 'refresh-token',
+    accessToken: 'access-token',
+    expiresAt: 1234,
+    tokenType: 'token-type',
+    scope: 'scope',
+    idToken: 'id-token',
+    sessionState: 'session-state',
+  };
+  when(socialAccountLoadPort.findById(command.id)).thenResolve(
+    new SocialAccountEntity({
+      id: command.id,
+    }),
+  );
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -16,7 +34,11 @@ describe('UpdateSocialAccountCommand', () => {
         UpdateSocialAccountHandler,
         {
           provide: 'SocialAccountSavePort',
-          useValue: instance(savePort),
+          useValue: instance(socialAccountSavePort),
+        },
+        {
+          provide: 'SocialAccountLoadPort',
+          useValue: instance(socialAccountLoadPort),
         },
       ],
     }).compile();
@@ -26,19 +48,8 @@ describe('UpdateSocialAccountCommand', () => {
 
   describe('execute', () => {
     it('should execute update', async () => {
-      const command: UpdateSocialAccountCommand = {
-        id: '94587c54-4d7d-11ee-be56-0242ac120002',
-        userId: '94587c54-4d7d-11ee-be56-0242ac120002',
-        refreshToken: 'refresh-token',
-        accessToken: 'access-token',
-        expiresAt: 1234,
-        tokenType: 'token-type',
-        scope: 'scope',
-        idToken: 'id-token',
-        sessionState: 'session-state',
-      };
       await handler.execute(command);
-      verify(savePort.update(anyOfClass(SocialAccountEntity))).once();
+      verify(socialAccountSavePort.save(anyOfClass(SocialAccountEntity))).once();
     });
   });
 });

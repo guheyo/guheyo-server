@@ -1,14 +1,14 @@
 import { Test } from '@nestjs/testing';
 import { mock, verify, instance, anyOfClass } from 'ts-mockito';
-import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
+import { SocialAccountRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.repository';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
-import { SavePort } from '@lib/shared/cqrs/ports/save.port';
+import { SocialAccountSavePort } from '../../../ports/out/social-account.save.port';
 import { CreateSocialAccountCommand } from '../create-social-account.command';
 import { CreateSocialAccountHandler } from '../create-social-account.handler';
 
 describe('CreateSocialAccountCommand', () => {
   let handler: CreateSocialAccountHandler;
-  const savePort: SavePort<SocialAccountEntity> = mock(SocialAccountCommandRepository);
+  const savePort: SocialAccountSavePort = mock(SocialAccountRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
