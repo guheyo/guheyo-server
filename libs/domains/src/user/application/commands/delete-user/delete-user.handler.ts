@@ -1,15 +1,20 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { UserEntity } from '@lib/domains/user/domain/user.entity';
-import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { DeleteUserCommand } from './delete-user.command';
+import { UserLoadPort } from '../../ports/out/user.load.port';
+import { UserSavePort } from '../../ports/out/user.save.port';
 
 @CommandHandler(DeleteUserCommand)
 export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand> {
-  constructor(@Inject('UserSavePort') private userSavePort: SavePort<UserEntity>) {}
+  constructor(
+    @Inject('UserLoadPort') private userLoadPort: UserLoadPort,
+    @Inject('UserSavePort') private userSavePort: UserSavePort,
+  ) {}
 
   async execute(command: DeleteUserCommand): Promise<void> {
-    const user = new UserEntity(command);
+    const user = await this.userLoadPort.findById(command.id);
+    if (!user) return;
+
     await this.userSavePort.delete(user);
   }
 }
