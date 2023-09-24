@@ -2,13 +2,13 @@ import { Test } from '@nestjs/testing';
 import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { PrismaModule } from '@lib/shared/prisma/prisma.module';
-import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { MemberRepository } from '@lib/domains/member/adapter/out/persistence/member.repository';
 import { CreateMemberHandler } from '@lib/domains/member/application/commands/create-member/create-member.handler';
 import { UpdateMemberHandler } from '@lib/domains/member/application/commands/update-member/update-member.handler';
 import { DeleteMemberHandler } from '@lib/domains/member/application/commands/delete-member/delete-member.handler';
-import { MemberEntity } from '@lib/domains/member/domain/member.entity';
 import { FindMemberByUserAndGuildHandler } from '@lib/domains/member/application/queries/find-member-by-user-and-guild/find-member-by-user-and-guild.handler';
+import { MemberSavePort } from '@lib/domains/member/application/ports/out/member.save.port';
+import { MemberLoadPort } from '@lib/domains/member/application/ports/out/member.load.port';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { MemberModule } from '../member.module';
@@ -18,7 +18,8 @@ describe('MemberModule', () => {
   let apiModule: ApiModule;
   let memberModule: MemberModule;
   let resolver: MemberResolver;
-  let savePort: SavePort<MemberEntity>;
+  let memberSavePort: MemberSavePort;
+  let memberLoadPort: MemberLoadPort;
   let memberCreateHandler: CreateMemberHandler;
   let memberUpdateHandler: UpdateMemberHandler;
   let memberDeleteHandler: DeleteMemberHandler;
@@ -39,7 +40,8 @@ describe('MemberModule', () => {
     apiModule = moduleRef;
     memberModule = moduleRef.get<MemberModule>(MemberModule);
     resolver = moduleRef.get<MemberResolver>(MemberResolver);
-    savePort = moduleRef.get<SavePort<MemberEntity>>('MemberSavePort');
+    memberSavePort = moduleRef.get<MemberSavePort>('MemberSavePort');
+    memberLoadPort = moduleRef.get<MemberLoadPort>('MemberLoadPort');
     memberCreateHandler = moduleRef.get<CreateMemberHandler>(CreateMemberHandler);
     memberUpdateHandler = moduleRef.get<UpdateMemberHandler>(UpdateMemberHandler);
     memberDeleteHandler = moduleRef.get<DeleteMemberHandler>(DeleteMemberHandler);
@@ -68,7 +70,13 @@ describe('MemberModule', () => {
 
   describe('MemberSavePort', () => {
     it('should be instance of UserRepository', async () => {
-      expect(savePort).toBeInstanceOf(MemberRepository);
+      expect(memberSavePort).toBeInstanceOf(MemberRepository);
+    });
+  });
+
+  describe('MemberLoadPort', () => {
+    it('should be instance of UserRepository', async () => {
+      expect(memberLoadPort).toBeInstanceOf(MemberRepository);
     });
   });
 

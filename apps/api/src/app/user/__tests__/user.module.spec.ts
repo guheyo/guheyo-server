@@ -2,12 +2,12 @@ import { Test } from '@nestjs/testing';
 import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { PrismaModule } from '@lib/shared/prisma/prisma.module';
-import { SavePort } from '@lib/shared/cqrs/ports/save.port';
+import { UserSavePort } from '@lib/domains/user/application/ports/out/user.save.port';
+import { UserLoadPort } from '@lib/domains/user/application/ports/out/user.load.port';
 import { UserRepository } from '@lib/domains/user/adapter/out/persistence/user.repository';
 import { CreateUserHandler } from '@lib/domains/user/application/commands/create-user/create-user.handler';
 import { UpdateUserHandler } from '@lib/domains/user/application/commands/update-user/update-user.handler';
 import { DeleteUserHandler } from '@lib/domains/user/application/commands/delete-user/delete-user.handler';
-import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { FindMyUserByIdHandler } from '@lib/domains/user/application/queries/find-my-user-by-id/find-my-user-by-id.handler';
 import { FindMyUserBySocialAccountHandler } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.handler';
 import { ApiModule } from '../../../api.module';
@@ -19,7 +19,8 @@ describe('UserModule', () => {
   let apiModule: ApiModule;
   let userModule: UserModule;
   let resolver: UserResolver;
-  let savePort: SavePort<UserEntity>;
+  let userSavePort: UserSavePort;
+  let userLoadPort: UserLoadPort;
   let userCreateHandler: CreateUserHandler;
   let userUpdateHandler: UpdateUserHandler;
   let userDeleteHandler: DeleteUserHandler;
@@ -41,7 +42,8 @@ describe('UserModule', () => {
     apiModule = moduleRef;
     userModule = moduleRef.get<UserModule>(UserModule);
     resolver = moduleRef.get<UserResolver>(UserResolver);
-    savePort = moduleRef.get<SavePort<UserEntity>>('UserSavePort');
+    userSavePort = moduleRef.get<UserSavePort>('UserSavePort');
+    userLoadPort = moduleRef.get<UserLoadPort>('UserLoadPort');
     userCreateHandler = moduleRef.get<CreateUserHandler>(CreateUserHandler);
     userUpdateHandler = moduleRef.get<UpdateUserHandler>(UpdateUserHandler);
     userDeleteHandler = moduleRef.get<DeleteUserHandler>(DeleteUserHandler);
@@ -71,7 +73,13 @@ describe('UserModule', () => {
 
   describe('UserSavePort', () => {
     it('should be instance of UserRepository', async () => {
-      expect(savePort).toBeInstanceOf(UserRepository);
+      expect(userSavePort).toBeInstanceOf(UserRepository);
+    });
+  });
+
+  describe('UserLoadPort', () => {
+    it('should be instance of UserRepository', async () => {
+      expect(userLoadPort).toBeInstanceOf(UserRepository);
     });
   });
 

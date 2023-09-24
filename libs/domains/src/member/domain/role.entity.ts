@@ -15,6 +15,8 @@ export class RoleEntity implements Role {
 
   hexColor: string = '#000000';
 
+  guildId: string;
+
   constructor(partial: Partial<RoleEntity>) {
     Object.assign(this, partial);
   }

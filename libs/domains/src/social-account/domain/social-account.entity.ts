@@ -1,4 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs/dist';
+import _ from 'lodash';
+import { UpdateSocialAccountProps } from './social-account.types';
 
 export class SocialAccountEntity extends AggregateRoot {
   id: string;
@@ -32,5 +34,9 @@ export class SocialAccountEntity extends AggregateRoot {
   constructor(partial: Partial<SocialAccountEntity>) {
     super();
     Object.assign(this, partial);
+  }
+
+  update(props: UpdateSocialAccountProps) {
+    Object.assign(this, _.pickBy(props, _.identity));
   }
 }

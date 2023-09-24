@@ -6,10 +6,7 @@ import { CreateMemberCommand } from './create-member.command';
 
 @CommandHandler(CreateMemberCommand)
 export class CreateMemberHandler implements ICommandHandler<CreateMemberCommand> {
-  constructor(
-    @Inject('MemberSavePort')
-    private savePort: SavePort<MemberEntity>,
-  ) {}
+  constructor(@Inject('MemberSavePort') private savePort: SavePort<MemberEntity>) {}
 
   async execute(command: CreateMemberCommand): Promise<void> {
     const member = new MemberEntity(command);

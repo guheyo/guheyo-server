@@ -1,14 +1,25 @@
 import { Test } from '@nestjs/testing';
-import { mock, verify, instance, anyOfClass } from 'ts-mockito';
+import { mock, verify, instance, anyOfClass, when } from 'ts-mockito';
 import { UserRepository } from '@lib/domains/user/adapter/out/persistence/user.repository';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
-import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { UpdateUserCommand } from '../update-user.command';
 import { UpdateUserHandler } from '../update-user.handler';
+import { UserSavePort } from '../../../ports/out/user.save.port';
+import { UserLoadPort } from '../../../ports/out/user.load.port';
 
 describe('UpdateUserCommand', () => {
   let handler: UpdateUserHandler;
-  const savePort: SavePort<UserEntity> = mock(UserRepository);
+  const userSavePort: UserSavePort = mock(UserRepository);
+  const userLoadPort: UserLoadPort = mock(UserRepository);
+  const command = new UpdateUserCommand({
+    id: '94587c54-4d7d-11ee-be56-0242ac120002',
+    name: 'changed-name',
+  });
+  when(userLoadPort.findById(command.id)).thenResolve(
+    new UserEntity({
+      id: command.id,
+    }),
+  );
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -16,7 +27,11 @@ describe('UpdateUserCommand', () => {
         UpdateUserHandler,
         {
           provide: 'UserSavePort',
-          useValue: instance(savePort),
+          useValue: instance(userSavePort),
+        },
+        {
+          provide: 'UserLoadPort',
+          useValue: instance(userLoadPort),
         },
       ],
     }).compile();
@@ -25,12 +40,8 @@ describe('UpdateUserCommand', () => {
 
   describe('execute', () => {
     it('should execute update', async () => {
-      const command = new UpdateUserCommand({
-        id: '94587c54-4d7d-11ee-be56-0242ac120002',
-        name: 'changed-name',
-      });
       await handler.execute(command);
-      verify(savePort.update(anyOfClass(UserEntity))).once();
+      verify(userSavePort.save(anyOfClass(UserEntity))).once();
     });
   });
 });

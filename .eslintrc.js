@@ -48,6 +48,10 @@ module.exports = {
         format: ['camelCase', 'UPPER_CASE'],
       },
       {
+        selector: 'parameterProperty ',
+        format: ['camelCase', 'PascalCase'],
+      },
+      {
         selector: 'objectLiteralProperty',
         format: null,
       },

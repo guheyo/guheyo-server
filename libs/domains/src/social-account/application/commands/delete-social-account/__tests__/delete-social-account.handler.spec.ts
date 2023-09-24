@@ -1,14 +1,24 @@
 import { Test } from '@nestjs/testing';
-import { mock, verify, instance, anyOfClass } from 'ts-mockito';
-import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
-import { SavePort } from '@lib/shared/cqrs/ports/save.port';
+import { mock, verify, instance, anyOfClass, when } from 'ts-mockito';
+import { SocialAccountRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.repository';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { DeleteSocialAccountCommand } from '../delete-social-account.command';
 import { DeleteSocialAccountHandler } from '../delete-social-account.handler';
+import { SocialAccountSavePort } from '../../../ports/out/social-account.save.port';
+import { SocialAccountLoadPort } from '../../../ports/out/social-account.load.port';
 
 describe('DeleteSocialAccountCommand', () => {
   let handler: DeleteSocialAccountHandler;
-  const savePort: SavePort<SocialAccountEntity> = mock(SocialAccountCommandRepository);
+  const socialAccountSavePort: SocialAccountSavePort = mock(SocialAccountRepository);
+  const socialAccountLoadPort: SocialAccountLoadPort = mock(SocialAccountRepository);
+  const command: DeleteSocialAccountCommand = {
+    id: 'test-id',
+  };
+  when(socialAccountLoadPort.findById(command.id)).thenResolve(
+    new SocialAccountEntity({
+      id: 'test-id',
+    }),
+  );
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -16,7 +26,11 @@ describe('DeleteSocialAccountCommand', () => {
         DeleteSocialAccountHandler,
         {
           provide: 'SocialAccountSavePort',
-          useValue: instance(savePort),
+          useValue: instance(socialAccountSavePort),
+        },
+        {
+          provide: 'SocialAccountLoadPort',
+          useValue: instance(socialAccountLoadPort),
         },
       ],
     }).compile();
@@ -26,11 +40,8 @@ describe('DeleteSocialAccountCommand', () => {
 
   describe('execute', () => {
     it('should execute delete', async () => {
-      const command: DeleteSocialAccountCommand = {
-        id: 'test-id',
-      };
       await handler.execute(command);
-      verify(savePort.delete(anyOfClass(SocialAccountEntity))).once();
+      verify(socialAccountSavePort.delete(anyOfClass(SocialAccountEntity))).once();
     });
   });
 });

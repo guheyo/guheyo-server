@@ -1,28 +1,47 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@lib/shared';
-import { SavePort } from '@lib/shared/cqrs/ports/save.port';
-import { MemberEntity } from '@lib/domains/member/domain/member.entity';
-import { MemberRolesSavePort } from '@lib/domains/member/application/ports/out/member-roles.save';
 import _ from 'lodash';
+import { Injectable } from '@nestjs/common';
+import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
+import { MemberRolesSavePort } from '@lib/domains/member/application/ports/out/member-roles.save.port';
+import { MemberEntity } from '@lib/domains/member/domain/member.entity';
 
 @Injectable()
-export class MemberRepository implements SavePort<MemberEntity>, MemberRolesSavePort {
-  constructor(private prismaService: PrismaService) {}
+export class MemberRepository
+  extends PrismaRepository<MemberEntity>
+  implements MemberRolesSavePort
+{
+  constructor() {
+    super(MemberEntity);
+  }
+
+  async findById(id: string): Promise<MemberEntity | null> {
+    const member = await this.prismaService.member.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        roles: {
+          orderBy: {
+            rank: 'asc',
+          },
+        },
+      },
+    });
+    return this.toEntity(member);
+  }
 
   async create(member: MemberEntity): Promise<void> {
     await this.prismaService.member.create({
-      data: _.omit(member, 'roles'),
+      data: _.pick(member, ['id', 'userId', 'guildId']),
     });
   }
 
-  async update(member: MemberEntity): Promise<void> {
-    // NOTE: Do not change anything
+  async save(member: MemberEntity): Promise<void> {
     await this.prismaService.member.update({
       where: {
         id: member.id,
         userId: member.userId,
       },
-      data: _.omit(member, 'roles'),
+      data: _.pick(member, 'guildId'),
     });
   }
 

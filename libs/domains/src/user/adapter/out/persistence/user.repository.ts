@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import _ from 'lodash';
-import { PrismaService } from '@lib/shared';
-import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
+import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { UserLoadPort } from '@lib/domains/user/application/ports/out/user.load.port';
-import { plainToClass } from 'class-transformer';
 
 @Injectable()
-export class UserRepository implements UserLoadPort, SavePort<UserEntity> {
-  constructor(readonly prismaService: PrismaService) {}
+export class UserRepository extends PrismaRepository<UserEntity> implements UserLoadPort {
+  constructor() {
+    super(UserEntity);
+  }
 
-  async findUserById(id: string): Promise<UserEntity | null> {
+  async findById(id: string): Promise<UserEntity | null> {
     const user = await this.prismaService.user.findUnique({
       where: { id },
       include: {
@@ -27,10 +27,10 @@ export class UserRepository implements UserLoadPort, SavePort<UserEntity> {
       },
     });
 
-    return user ? plainToClass(UserEntity, user) : null;
+    return this.toEntity(user);
   }
 
-  async findUserBySocialAccount(provider: string, socialId: string): Promise<UserEntity | null> {
+  async findBySocialAccount(provider: string, socialId: string): Promise<UserEntity | null> {
     const users = await this.prismaService.user.findMany({
       where: {
         socialAccounts: {
@@ -54,21 +54,21 @@ export class UserRepository implements UserLoadPort, SavePort<UserEntity> {
       },
     });
 
-    return users.length ? plainToClass(UserEntity, users[0]) : null;
+    return this.toEntity(users[0]);
   }
 
   async create(user: UserEntity): Promise<void> {
     await this.prismaService.user.create({
-      data: _.pick(user, 'id', 'username'),
+      data: _.pick(user, 'id', 'name', 'username', 'avatarURL'),
     });
   }
 
-  async update(user: UserEntity): Promise<void> {
+  async save(user: UserEntity): Promise<void> {
     await this.prismaService.user.update({
       where: {
         id: user.id,
       },
-      data: _.omit(user, ['id', 'socialAccounts', 'members']),
+      data: _.pick(user, ['name', 'avatarURL']),
     });
   }
 
