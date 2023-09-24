@@ -1,6 +1,6 @@
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
+import { LoadPort } from '@lib/shared/cqrs/ports/load.port';
 
-export interface UserLoadPort {
-  findUserById(id: string): Promise<UserEntity | null>;
-  findUserBySocialAccount(provider: string, socialId: string): Promise<UserEntity | null>;
+export interface UserLoadPort extends LoadPort<UserEntity> {
+  findBySocialAccount(provider: string, socialId: string): Promise<UserEntity | null>;
 }

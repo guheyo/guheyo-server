@@ -1,18 +1,32 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
-import { SavePort } from '@lib/shared/cqrs/ports/save.port';
+import _ from 'lodash';
 import { UpdateSocialAccountCommand } from './update-social-account.command';
+import { SocialAccountLoadPort } from '../../ports/out/social-account.load.port';
+import { SocialAccountSavePort } from '../../ports/out/social-account.save.port';
 
 @CommandHandler(UpdateSocialAccountCommand)
 export class UpdateSocialAccountHandler implements ICommandHandler<UpdateSocialAccountCommand> {
   constructor(
-    @Inject('SocialAccountSavePort')
-    private socialAccountSavePort: SavePort<SocialAccountEntity>,
+    @Inject('SocialAccountLoadPort') private socialAccountLoadPort: SocialAccountLoadPort,
+    @Inject('SocialAccountSavePort') private socialAccountSavePort: SocialAccountSavePort,
   ) {}
 
   async execute(command: UpdateSocialAccountCommand): Promise<void> {
-    const socialAccount = new SocialAccountEntity(command);
-    await this.socialAccountSavePort.update(socialAccount);
+    const socialAccount = await this.socialAccountLoadPort.findById(command.id);
+    if (!socialAccount) return;
+
+    socialAccount.update(
+      _.pick(command, [
+        'refreshToken',
+        'accessToken',
+        'expiresAt',
+        'tokenType',
+        'scope',
+        'idToken',
+        'sessionState',
+      ]),
+    );
+    await this.socialAccountSavePort.save(socialAccount);
   }
 }

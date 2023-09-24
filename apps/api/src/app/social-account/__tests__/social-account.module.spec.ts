@@ -2,12 +2,12 @@ import { Test } from '@nestjs/testing';
 import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { PrismaModule } from '@lib/shared/prisma/prisma.module';
-import { SavePort } from '@lib/shared/cqrs/ports/save.port';
-import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
+import { SocialAccountRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.repository';
 import { CreateSocialAccountHandler } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.handler';
 import { UpdateSocialAccountHandler } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.handler';
 import { DeleteSocialAccountHandler } from '@lib/domains/social-account/application/commands/delete-social-account/delete-social-account.handler';
-import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
+import { SocialAccountLoadPort } from '@lib/domains/social-account/application/ports/out/social-account.load.port';
+import { SocialAccountSavePort } from '@lib/domains/social-account/application/ports/out/social-account.save.port';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { SocialAccountModule } from '../social-account.module';
@@ -17,7 +17,8 @@ describe('SocialAccountModule', () => {
   let apiModule: ApiModule;
   let socialAccountModule: SocialAccountModule;
   let resolver: SocialAccountResolver;
-  let savePort: SavePort<SocialAccountEntity>;
+  let socialAccountLoadPort: SocialAccountLoadPort;
+  let socialAccountSavePort: SocialAccountSavePort;
   let socialAccountCreateHandler: CreateSocialAccountHandler;
   let socialAccountUpdateHandler: UpdateSocialAccountHandler;
   let socialAccountDeleteHandler: DeleteSocialAccountHandler;
@@ -37,7 +38,8 @@ describe('SocialAccountModule', () => {
     apiModule = moduleRef;
     socialAccountModule = moduleRef.get<SocialAccountModule>(SocialAccountModule);
     resolver = moduleRef.get<SocialAccountResolver>(SocialAccountResolver);
-    savePort = moduleRef.get<SavePort<SocialAccountEntity>>('SocialAccountSavePort');
+    socialAccountLoadPort = moduleRef.get<SocialAccountLoadPort>('SocialAccountLoadPort');
+    socialAccountSavePort = moduleRef.get<SocialAccountSavePort>('SocialAccountSavePort');
     socialAccountCreateHandler = moduleRef.get<CreateSocialAccountHandler>(
       CreateSocialAccountHandler,
     );
@@ -67,9 +69,15 @@ describe('SocialAccountModule', () => {
     });
   });
 
+  describe('SocialAccountLoadPort', () => {
+    it('should be instance of SocialAccountCommandRepository', async () => {
+      expect(socialAccountLoadPort).toBeInstanceOf(SocialAccountRepository);
+    });
+  });
+
   describe('SocialAccountSavePort', () => {
     it('should be instance of SocialAccountCommandRepository', async () => {
-      expect(savePort).toBeInstanceOf(SocialAccountCommandRepository);
+      expect(socialAccountSavePort).toBeInstanceOf(SocialAccountRepository);
     });
   });
 

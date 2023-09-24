@@ -2,13 +2,13 @@ import { Test } from '@nestjs/testing';
 import { mock, verify, instance, anyOfClass } from 'ts-mockito';
 import { MemberRepository } from '@lib/domains/member/adapter/out/persistence/member.repository';
 import { MemberEntity } from '@lib/domains/member/domain/member.entity';
-import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { CreateMemberCommand } from '../create-member.command';
 import { CreateMemberHandler } from '../create-member.handler';
+import { MemberSavePort } from '../../../ports/out/member.save.port';
 
 describe('CreateMemberHandler', () => {
   let handler: CreateMemberHandler;
-  const savePort: SavePort<MemberEntity> = mock(MemberRepository);
+  const memberSavePort: MemberSavePort = mock(MemberRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -16,7 +16,7 @@ describe('CreateMemberHandler', () => {
         CreateMemberHandler,
         {
           provide: 'MemberSavePort',
-          useValue: instance(savePort),
+          useValue: instance(memberSavePort),
         },
       ],
     }).compile();
@@ -32,7 +32,7 @@ describe('CreateMemberHandler', () => {
         guildId: 'guild-id',
       };
       await handler.execute(command);
-      verify(savePort.create(anyOfClass(MemberEntity))).once();
+      verify(memberSavePort.create(anyOfClass(MemberEntity))).once();
     });
   });
 });
