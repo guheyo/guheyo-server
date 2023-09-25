@@ -1,6 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
+import { Inject, NotFoundException } from '@nestjs/common';
 import _ from 'lodash';
+import { SocialAccountErrorMessage } from '@lib/domains/social-account/domain/social-account.error.message';
 import { UpdateSocialAccountCommand } from './update-social-account.command';
 import { SocialAccountLoadPort } from '../../ports/out/social-account.load.port';
 import { SocialAccountSavePort } from '../../ports/out/social-account.save.port';
@@ -14,7 +15,8 @@ export class UpdateSocialAccountHandler implements ICommandHandler<UpdateSocialA
 
   async execute(command: UpdateSocialAccountCommand): Promise<void> {
     const socialAccount = await this.socialAccountLoadPort.findById(command.id);
-    if (!socialAccount) return;
+    if (!socialAccount)
+      throw new NotFoundException(SocialAccountErrorMessage.SOCIAL_ACCOUNT_IS_NOT_FOUND);
 
     socialAccount.update(
       _.pick(command, [

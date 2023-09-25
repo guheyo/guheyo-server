@@ -48,8 +48,12 @@ module.exports = {
         format: ['camelCase', 'UPPER_CASE'],
       },
       {
-        selector: 'parameterProperty ',
+        selector: 'parameterProperty',
         format: ['camelCase', 'PascalCase'],
+      },
+      {
+        selector: 'enumMember',
+        format: ['UPPER_CASE'],
       },
       {
         selector: 'objectLiteralProperty',
