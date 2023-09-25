@@ -1,5 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs/dist';
-import { Inject } from '@nestjs/common';
+import { Inject, NotFoundException } from '@nestjs/common';
+import { MemberErrorMessage } from '@lib/domains/member/domain/member.error.message';
 import { DeleteMemberCommand } from './delete-member.command';
 import { MemberLoadPort } from '../../ports/out/member.load.port';
 import { MemberSavePort } from '../../ports/out/member.save.port';
@@ -13,7 +14,7 @@ export class DeleteMemberHandler implements ICommandHandler<DeleteMemberCommand>
 
   async execute(command: DeleteMemberCommand): Promise<void> {
     const member = await this.memberLoadPort.findById(command.id);
-    if (!member) return;
+    if (!member) throw new NotFoundException(MemberErrorMessage.MEMBER_IS_NOT_FOUND);
 
     await this.memberSavePort.delete(member);
   }
