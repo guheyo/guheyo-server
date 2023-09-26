@@ -1,9 +1,6 @@
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateJoinedUserInput {
-  @IsUUID()
-  userId: string;
-
   @IsString()
   username: string;
 
@@ -11,19 +8,19 @@ export class CreateJoinedUserInput {
   @IsString()
   avatarURL?: string;
 
-  @IsString()
+  @IsUUID()
   socialAccountId: string;
 
   @IsString()
   provider: string;
 
-  @IsString()
+  @IsUUID()
   socialId: string;
 
-  @IsString()
+  @IsUUID()
   guildId: string;
 
-  @IsString()
+  @IsUUID()
   memberId: string;
 
   @IsString({ each: true })
