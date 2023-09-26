@@ -6,6 +6,7 @@ import { ConfigYamlModule } from '@app/api/config/config.module';
 import { UserModule } from './app/user/user.module';
 import { SocialAccountModule } from './app/social-account/social-account.module';
 import { MemberModule } from './app/member/member.module';
+import { RoleModule } from './app/role/role.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { MemberModule } from './app/member/member.module';
     UserModule,
     SocialAccountModule,
     MemberModule,
+    RoleModule,
   ],
 })
 export class ApiModule {}

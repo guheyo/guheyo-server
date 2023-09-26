@@ -13,6 +13,14 @@ input CreateMemberInput {
   userId: ID!
 }
 
+input CreateRoleInput {
+  guildId: ID!
+  hexColor: String! = "#000000"
+  id: ID!
+  name: String!
+  rank: Int
+}
+
 input CreateSocialAccountInput {
   accessToken: String
   expiresAt: Int
@@ -59,13 +67,16 @@ type MemberWithRolesResponse {
 type Mutation {
   connectRoles(input: ConnectRolesInput!): String!
   createMember(input: CreateMemberInput!): String!
+  createRole(input: CreateRoleInput!): String!
   createSocialAccount(input: CreateSocialAccountInput!): String!
   createUser(input: CreateUserInput!): String!
   deleteMember(id: ID!, userId: ID!): String!
+  deleteRole(id: String!): String!
   deleteSocialAccount(id: String!): String!
   deleteUser(id: String!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!
   updateMember(input: UpdateMemberInput!): String!
+  updateRole(input: UpdateRoleInput!): String!
   updateSocialAccount(input: UpdateSocialAccountInput!): String!
   updateUser(input: UpdateUserInput!): String!
 }
@@ -95,6 +106,7 @@ type Query {
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: ID!): MyUserResponse
+  findRoleById(id: String!): RoleResponse
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   getSocialAccountsByUserId(id: String!): String!
 }
@@ -125,6 +137,14 @@ type SocialAccountResponse {
 input UpdateMemberInput {
   id: ID!
   userId: ID!
+}
+
+input UpdateRoleInput {
+  guildId: ID!
+  hexColor: String
+  id: ID!
+  name: String
+  rank: Int
 }
 
 input UpdateSocialAccountInput {
