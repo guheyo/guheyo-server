@@ -1,5 +1,5 @@
-import { AggregateRoot } from '@nestjs/cqrs/dist';
-import { RoleEntity } from './role.entity';
+import { AggregateRoot } from '@nestjs/cqrs';
+import { RoleEntity } from '@lib/domains/role/domain/role.entity';
 
 export class MemberEntity extends AggregateRoot {
   id: string;
