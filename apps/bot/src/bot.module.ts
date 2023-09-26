@@ -7,6 +7,7 @@ import { PrismaModule } from '@lib/shared/prisma/prisma.module';
 import { USER_PROVIDERS } from '@lib/domains/user/user.providers';
 import { SOCIAL_ACCOUNT_PROVIDERS } from '@lib/domains/social-account/social-account.providers';
 import { MEMBER_PROVIDERS } from '@lib/domains/member/member.providers';
+import { ImageModule } from '@lib/shared/image/image.module';
 import { NecordConfigService } from './necord/necord.config.service';
 import { COMMAND_HANDLERS } from './commands/command-handlers';
 import { EVENT_HANDLERS } from './events/event-handlers';
@@ -16,6 +17,7 @@ import { EVENT_HANDLERS } from './events/event-handlers';
     CqrsModule,
     ConfigYamlModule,
     PrismaModule,
+    ImageModule,
     NecordModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         token: configService.get('discord.bot.token')!,
