@@ -1,5 +1,5 @@
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { IsNumber, IsString, IsUUID } from 'class-validator';
+import { IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class UpdateRoleInput {
@@ -7,17 +7,20 @@ export class UpdateRoleInput {
   @Field(() => ID)
   id: string;
 
+  @IsOptional()
   @IsString()
-  @Field()
-  name: string;
+  @Field(() => String, { nullable: true })
+  name?: string;
 
+  @IsOptional()
   @IsNumber()
   @Field(() => Int, { nullable: true })
   rank?: number;
 
+  @IsOptional()
   @IsString()
-  @Field(() => String, { defaultValue: '#000000' })
-  hexColor: string;
+  @Field(() => String, { nullable: true })
+  hexColor?: string;
 
   @IsUUID()
   @Field(() => ID)
