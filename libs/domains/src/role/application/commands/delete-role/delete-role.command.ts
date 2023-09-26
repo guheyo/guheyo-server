@@ -1,10 +1,3 @@
-import { ICommand } from '@nestjs/cqrs/dist';
-import { DeleteRoleArgs } from './delete-role.args';
+import { ByIdCommand } from '@lib/shared/cqrs/commands/by-id/by-id.command';
 
-export class DeleteRoleCommand implements ICommand {
-  id: string;
-
-  constructor(args: DeleteRoleArgs) {
-    this.id = args.id;
-  }
-}
+export class DeleteRoleCommand extends ByIdCommand {}
