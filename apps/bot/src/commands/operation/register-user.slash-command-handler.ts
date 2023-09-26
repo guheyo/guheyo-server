@@ -1,9 +1,9 @@
 import { Injectable, UseGuards } from '@nestjs/common';
-import { EventBus } from '@nestjs/cqrs';
+import { CommandBus } from '@nestjs/cqrs';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
-import { v4 as uuid4, v5 as uuid5 } from 'uuid';
+import { v5 as uuid5 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
-import { UserjoinedEvent } from '@lib/domains/user/application/events/user-joined/user-joined.event';
+import { CreateJoinedUserCommand } from '@lib/domains/user/application/commands/create-joined-user/create-joined-user.command';
 import { GuildSlashCommandGuard } from '@app/bot/guards/guild.slash-command.guard';
 import { OwnerSlashCommandGuard } from '@app/bot/guards/owner.slash-command.guard';
 import { RegisterUserRequest } from './register-user.request';
@@ -13,7 +13,7 @@ import { RegisterUserRequest } from './register-user.request';
 @Injectable()
 export class RegisterUserSlashCommandHandler {
   constructor(
-    private readonly eventBus: EventBus,
+    private readonly commandBus: CommandBus,
     private readonly configService: ConfigService,
   ) {}
 
@@ -22,10 +22,10 @@ export class RegisterUserSlashCommandHandler {
     @Context() [interaction]: SlashCommandContext,
     @Options() { user }: RegisterUserRequest,
   ) {
-    this.eventBus.publish(
-      new UserjoinedEvent({
-        userId: uuid4(),
+    this.commandBus.execute(
+      new CreateJoinedUserCommand({
         username: user.username,
+        avatarURL: user.avatarURL() || undefined,
         socialAccountId: uuid5(user.id, this.configService.get('namespace.discord')!),
         provider: 'discord',
         socialId: user.id,
