@@ -8,8 +8,8 @@ import { v5 as uuid5 } from 'uuid';
 
 @UseGuards(GuildMemberEventGuard)
 @Injectable()
-export class JoinedMemberHandler {
-  private readonly logger = new Logger(JoinedMemberHandler.name);
+export class DiscordMemberJoinedHandler {
+  private readonly logger = new Logger(DiscordMemberJoinedHandler.name);
 
   constructor(
     private readonly commandBus: CommandBus,

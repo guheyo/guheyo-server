@@ -9,8 +9,8 @@ import { MemberRolesUpdatedEvent } from '@lib/domains/member/application/events/
 
 @UseGuards(GuildMemberEventGuard)
 @Injectable()
-export class UpdatedMemberRolesHandler {
-  private readonly logger = new Logger(UpdatedMemberRolesHandler.name);
+export class DiscordMemberRolesUpdatedHandler {
+  private readonly logger = new Logger(DiscordMemberRolesUpdatedHandler.name);
 
   constructor(
     private readonly eventBus: EventBus,
