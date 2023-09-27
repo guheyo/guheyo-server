@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
-import { RoleResponse } from './role.response';
+import { RoleResponse } from '@lib/domains/role/application/dtos/role.response';
 import { MemberResponse } from './member.response';
 
 @ObjectType()
