@@ -6,12 +6,12 @@ import { ConfigService } from '@nestjs/config';
 import { CreateJoinedUserCommand } from '@lib/domains/user/application/commands/create-joined-user/create-joined-user.command';
 import { GuildSlashCommandGuard } from '@app/bot/guards/guild.slash-command.guard';
 import { OwnerSlashCommandGuard } from '@app/bot/guards/owner.slash-command.guard';
-import { RegisterUserRequest } from './register-user.request';
+import { RegisterDiscordUserRequest } from './register-discord-user.request';
 
 @UseGuards(GuildSlashCommandGuard)
 @UseGuards(OwnerSlashCommandGuard)
 @Injectable()
-export class RegisterUserSlashCommandHandler {
+export class RegisterDiscordUserSlashCommandHandler {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly configService: ConfigService,
@@ -20,7 +20,7 @@ export class RegisterUserSlashCommandHandler {
   @SlashCommand({ name: 'register-user', description: 'Register user in DB' })
   public async onCreateUser(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { user }: RegisterUserRequest,
+    @Options() { user }: RegisterDiscordUserRequest,
   ) {
     this.commandBus.execute(
       new CreateJoinedUserCommand({
