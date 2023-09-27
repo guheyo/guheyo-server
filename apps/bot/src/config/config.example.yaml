@@ -17,8 +17,43 @@ discord:
     owner-id:
   server:
     id:
-  guild:
-    id:
+    market:
+      wts:
+        channels:
+          커스텀:
+          기성품:
+          키캡:
+          아티산:
+          기타:
+      wtb:
+        channels:
+          커스텀:
+          기성품:
+          키캡:
+          아티산:
+          기타:
+      wtt:
+        channels:
+          커스텀:
+          기성품:
+          키캡:
+          아티산:
+          기타:
+      allowed-role-ids:
+      disallowed-role-ids:
+    auction:
+      channels:
+        경매 일정:
+        경매:
+      allowed-role-ids:
+      disallowed-role-ids:
+    community:
+      channels:
+        사진 영상:
+        정보 후기:
+        거래 후기:
+      allowed-role-ids:
+      disallowed-role-ids:
 namespace:
   discord:
   guild:

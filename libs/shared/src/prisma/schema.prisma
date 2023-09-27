@@ -117,36 +117,12 @@ model Guild {
   rank              Int?
   members           Member[]
   roles             Role[]
-  market            Market?
-  community         Community?
   brands            Brand[]
-}
-
-model Market {
-  id                String      @id @default(uuid())
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
-  deletedAt         DateTime?
-  name              String
-  description       String?
-  guildId           String      @unique
-  guild             Guild       @relation(fields: [guildId], references: [id])
   productCategories ProductCategory[]
   offers            Offer[]
   demands           Demand[]
   swaps             Swap[]
   auctions          Auction[]
-}
-
-model Community {
-  id                String      @id @default(uuid())
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
-  deletedAt         DateTime?
-  name              String
-  description       String?
-  guildId           String      @unique
-  guild             Guild       @relation(fields: [guildId], references: [id])
   postCategories    PostCategory[]
   posts             Post[]
 }
@@ -159,8 +135,8 @@ model PostCategory {
   name              String
   description       String?
   rank              Int?
-  communityId       String
-  community         Community   @relation(fields: [communityId], references: [id])
+  guildId           String
+  guild             Guild       @relation(fields: [guildId], references: [id])
   posts Post[]
 }
 
@@ -172,8 +148,8 @@ model ProductCategory {
   name              String
   description       String?
   rank              Int?
-  marketId          String
-  market            Market      @relation(fields: [marketId], references: [id])
+  guildId           String
+  guild             Guild       @relation(fields: [guildId], references: [id])
   offers            Offer[]
   demands           Demand[]
   swap0s            Swap[]      @relation("Swap0Category")
@@ -214,8 +190,8 @@ model Post {
   deletedAt         DateTime?
   title             String
   content           String
-  communityId       String
-  community         Community     @relation(fields: [communityId], references: [id])
+  guildId           String
+  guild             Guild         @relation(fields: [guildId], references: [id])
   postCategoryId    String
   postCategory      PostCategory  @relation(fields: [postCategoryId], references: [id])
   authorId          String
@@ -254,8 +230,8 @@ model Offer {
   price             Int
   priceCurrency     String
   businessFunction  String
-  marketId          String
-  market            Market          @relation(fields: [marketId], references: [id])
+  guildId           String
+  guild             Guild           @relation(fields: [guildId], references: [id])
   brandId           String?
   brand             Brand?          @relation(fields: [brandId], references: [id])
   productCategoryId String
@@ -274,8 +250,8 @@ model Demand {
   price             Int
   priceCurrency     String
   businessFunction  String
-  marketId          String
-  market            Market          @relation(fields: [marketId], references: [id])
+  guildId           String
+  guild             Guild           @relation(fields: [guildId], references: [id])
   brandId           String?
   brand             Brand?          @relation(fields: [brandId], references: [id])
   productCategoryId String
@@ -290,8 +266,8 @@ model Swap {
   createdAt           DateTime        @default(now())
   updatedAt           DateTime        @updatedAt
   deletedAt           DateTime?
-  marketId            String
-  market              Market          @relation(fields: [marketId], references: [id])
+  guildId             String
+  guild               Guild           @relation(fields: [guildId], references: [id])
   price               Int
   priceCurrency       String
   product0            Json
@@ -317,8 +293,8 @@ model Auction {
   endedAt           DateTime
   bids              Bid[]  
   product           Json
-  marketId          String
-  market            Market            @relation(fields: [marketId], references: [id])
+  guildId           String
+  guild             Guild             @relation(fields: [guildId], references: [id])
   brandId           String?
   brand             Brand?            @relation(fields: [brandId], references: [id])
   productCategoryId String
@@ -359,25 +335,10 @@ model Bid {
   status            String
 }
 
-model DiscordChannelLink {
-  discordChannelId  String            @unique
-  discordGuildId    String
-  modelId           String
-  modelName         String
-}
-
-model DiscordMessageLink {
+model DiscordMessageLinker {
   discordMessageId  String            @unique
   discordChannelId  String
   discordGuildId    String
   modelId           String
   modelName         String
-}
-
-model DiscordMarketChannelLink {
-  productCategoryId         String    @unique
-  discordOfferChannelId     String
-  discordDemandChannelId    String
-  discordSwapChannelId      String
-  discordGuildId            String
 }
