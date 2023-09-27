@@ -16,7 +16,6 @@ describe('UpdateRoleHandler', () => {
     name: 'role-name',
     rank: 0,
     hexColor: '#000000',
-    guildId: 'guild-id',
   };
   when(roleLoadPort.findById(command.id)).thenResolve(new RoleEntity(command));
 

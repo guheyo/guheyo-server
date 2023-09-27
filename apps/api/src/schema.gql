@@ -7,6 +7,14 @@ input ConnectRolesInput {
   roleIds: [ID!]!
 }
 
+input CreateGuildInput {
+  description: String
+  icon: String
+  id: ID!
+  name: String!
+  rank: Int
+}
+
 input CreateMemberInput {
   guildId: ID!
   id: ID!
@@ -56,6 +64,15 @@ type Edge {
   node: UserResponse!
 }
 
+type GuildResponse {
+  description: String
+  icon: String
+  id: ID!
+  name: String!
+  rank: Int
+  roles: [RoleResponse!]!
+}
+
 type MemberWithRolesResponse {
   createdAt: DateTime!
   guildId: String!
@@ -66,15 +83,18 @@ type MemberWithRolesResponse {
 
 type Mutation {
   connectRoles(input: ConnectRolesInput!): String!
+  createGuild(input: CreateGuildInput!): String!
   createMember(input: CreateMemberInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSocialAccount(input: CreateSocialAccountInput!): String!
   createUser(input: CreateUserInput!): String!
+  deleteGuild(id: String!): String!
   deleteMember(id: ID!, userId: ID!): String!
   deleteRole(id: String!): String!
   deleteSocialAccount(id: String!): String!
   deleteUser(id: String!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!
+  updateGuild(input: UpdateGuildInput!): String!
   updateMember(input: UpdateMemberInput!): String!
   updateRole(input: UpdateRoleInput!): String!
   updateSocialAccount(input: UpdateSocialAccountInput!): String!
@@ -103,6 +123,7 @@ type PaginatedUsersResponse {
 }
 
 type Query {
+  findGuildById(id: String!): GuildResponse
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: ID!): MyUserResponse
@@ -134,13 +155,20 @@ type SocialAccountResponse {
   userId: String!
 }
 
+input UpdateGuildInput {
+  description: String
+  icon: String
+  id: ID!
+  name: String
+  rank: Int
+}
+
 input UpdateMemberInput {
   id: ID!
   userId: ID!
 }
 
 input UpdateRoleInput {
-  guildId: ID!
   hexColor: String
   id: ID!
   name: String

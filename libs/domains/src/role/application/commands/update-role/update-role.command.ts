@@ -4,19 +4,16 @@ import { UpdateRoleInput } from './update-role.input';
 export class UpdateRoleCommand implements ICommand {
   id: string;
 
-  name: string;
+  name?: string;
 
   rank?: number;
 
-  hexColor: string;
-
-  guildId: string;
+  hexColor?: string;
 
   constructor(input: UpdateRoleInput) {
     this.id = input.id;
     this.name = input.name;
     this.rank = input.rank;
     this.hexColor = input.hexColor;
-    this.guildId = input.guildId;
   }
 }

@@ -8,9 +8,9 @@ export class FindRoleByIdHandler implements IQueryHandler<FindRoleByIdQuery> {
   constructor(private prismaService: PrismaService) {}
 
   async execute(query: FindRoleByIdQuery): Promise<RoleResponse | null> {
-    const user = await this.prismaService.role.findUnique({
+    const role = await this.prismaService.role.findUnique({
       where: { id: query.id },
     });
-    return user ? new RoleResponse(user) : null;
+    return role ? new RoleResponse(role) : null;
   }
 }
