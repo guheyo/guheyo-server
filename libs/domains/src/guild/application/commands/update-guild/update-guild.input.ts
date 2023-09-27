@@ -2,7 +2,7 @@ import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import { IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
-export class UpdateRoleInput {
+export class UpdateGuildInput {
   @IsUUID()
   @Field(() => ID)
   id: string;
@@ -14,11 +14,16 @@ export class UpdateRoleInput {
 
   @IsOptional()
   @IsNumber()
-  @Field(() => Int, { nullable: true })
-  rank?: number;
+  @Field(() => String, { nullable: true })
+  description?: string;
 
   @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
-  hexColor?: string;
+  icon?: string;
+
+  @IsOptional()
+  @IsNumber()
+  @Field(() => Int, { nullable: true })
+  rank?: number;
 }

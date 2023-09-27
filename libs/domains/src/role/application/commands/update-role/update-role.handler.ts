@@ -16,6 +16,7 @@ export class UpdateRoleHandler implements ICommandHandler<UpdateRoleCommand> {
     const role = await this.roleLoadPort.findById(command.id);
     if (!role) throw new NotFoundException(RoleErrorMessage.ROLE_IS_NOT_FOUND);
 
+    role.update(command);
     await this.roleSavePort.save(role);
   }
 }
