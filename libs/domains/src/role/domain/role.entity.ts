@@ -1,6 +1,6 @@
-import { Role } from '@prisma/client';
+import { AggregateRoot } from '@nestjs/cqrs';
 
-export class RoleEntity implements Role {
+export class RoleEntity extends AggregateRoot {
   id: string;
 
   createdAt: Date;
@@ -18,6 +18,7 @@ export class RoleEntity implements Role {
   guildId: string;
 
   constructor(partial: Partial<RoleEntity>) {
+    super();
     Object.assign(this, partial);
   }
 }
