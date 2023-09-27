@@ -21,8 +21,4 @@ export class UpdateRoleInput {
   @IsString()
   @Field(() => String, { nullable: true })
   hexColor?: string;
-
-  @IsUUID()
-  @Field(() => ID)
-  guildId: string;
 }
