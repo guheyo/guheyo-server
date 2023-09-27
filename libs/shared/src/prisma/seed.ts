@@ -3,76 +3,114 @@ import { v5 as uuid5 } from 'uuid';
 
 const prisma = new PrismaClient();
 
+const GUILD_KEYBOARD_ID = uuid5(
+  process.env.DISCORD_GUILD_KEYBOARD_ID!,
+  process.env.NAMESPACE_DISCORD!,
+);
+const PRODUCT_CATEGORY_CUSTOM_ID = uuid5(
+  process.env.DISCORD_CATEGORY_CUSTOM_ID!,
+  process.env.NAMESPACE_GUILD!,
+);
+const PRODUCT_CATEGORY_NORMAL_KEYBOARD_ID = uuid5(
+  process.env.DISCORD_CATEGORY_NORMAL_KEYBOARD_ID!,
+  process.env.NAMESPACE_GUILD!,
+);
+const PRODUCT_CATEGORY_KEYCAP_ID = uuid5(
+  process.env.DISCORD_CATEGORY_KEYCAP_ID!,
+  process.env.NAMESPACE_GUILD!,
+);
+const PRODUCT_CATEGORY_ARTISAN_ID = uuid5(
+  process.env.DISCORD_CATEGORY_ARTISAN_ID!,
+  process.env.NAMESPACE_GUILD!,
+);
+const PRODUCT_CATEGORY_ETC_ID = uuid5(
+  process.env.DISCORD_CATEGORY_ETC_ID!,
+  process.env.NAMESPACE_GUILD!,
+);
+const POST_CATEGORY_PIC_VID_ID = uuid5(
+  process.env.DISCORD_CHANNEL_PIC_VID_ID!,
+  process.env.NAMESPACE_GUILD!,
+);
+const POST_CATEGORY_INFO_REVIEW_ID = uuid5(
+  process.env.DISCORD_CHANNEL_INFO_REVIEW_ID!,
+  process.env.NAMESPACE_GUILD!,
+);
+const POST_CATEGORY_TRADE_REVIEW_ID = uuid5(
+  process.env.DISCORD_CHANNEL_TRADE_REVIEW_ID!,
+  process.env.NAMESPACE_GUILD!,
+);
+
+const KEYBOARD = '키보드';
+const CUSTOM = '커스텀';
+const NORMAL_KEYBOARD = '기성품';
+const KEYCAP = '키캡';
+const ARTISAN = '아티산';
+const ETC = '기타';
+const PIC_VID = '사진 영상';
+const INFO_REVIEW = '정보 후기';
+const TRADE_REVIEW = '거래 후기';
+
 async function main() {
   const guild = await prisma.guild.upsert({
     where: {
-      name: '키보드',
+      name: KEYBOARD,
     },
     update: {},
     create: {
-      id: uuid5('806383744151584779', process.env.NAMESPACE_DISCORD!),
-      name: '키보드',
+      id: GUILD_KEYBOARD_ID,
+      name: KEYBOARD,
       rank: 0,
-      market: {
-        create: {
-          name: '장터',
-          productCategories: {
-            create: [
-              {
-                id: uuid5('806386907302199296', process.env.NAMESPACE_GUILD!),
-                name: '커스텀',
-                rank: 0,
-              },
-              {
-                id: uuid5('1061611125055180800', process.env.NAMESPACE_GUILD!),
-                name: '기성품',
-                rank: 1,
-              },
-              {
-                id: uuid5('806388583060733983', process.env.NAMESPACE_GUILD!),
-                name: '키캡',
-                rank: 2,
-              },
-              {
-                id: uuid5('806388500986855424', process.env.NAMESPACE_GUILD!),
-                name: '아티산',
-                rank: 3,
-              },
-              {
-                id: uuid5('806388662564552715', process.env.NAMESPACE_GUILD!),
-                name: '기타',
-                rank: 4,
-              },
-            ],
+      productCategories: {
+        create: [
+          {
+            id: PRODUCT_CATEGORY_CUSTOM_ID,
+            name: CUSTOM,
+            rank: 0,
           },
-        },
+          {
+            id: PRODUCT_CATEGORY_NORMAL_KEYBOARD_ID,
+            name: NORMAL_KEYBOARD,
+            rank: 1,
+          },
+          {
+            id: PRODUCT_CATEGORY_KEYCAP_ID,
+            name: KEYCAP,
+            rank: 2,
+          },
+          {
+            id: PRODUCT_CATEGORY_ARTISAN_ID,
+            name: ARTISAN,
+            rank: 3,
+          },
+          {
+            id: PRODUCT_CATEGORY_ETC_ID,
+            name: ETC,
+            rank: 4,
+          },
+        ],
       },
-      community: {
-        create: {
-          name: '커뮤니티',
-          postCategories: {
-            create: [
-              {
-                id: uuid5('1055886716822634568', process.env.NAMESPACE_GUILD!),
-                name: '사진 영상',
-                rank: 0,
-              },
-              {
-                id: uuid5('1055861667772248126', process.env.NAMESPACE_GUILD!),
-                name: '정보 후기',
-                rank: 1,
-              },
-              {
-                id: uuid5('1056453218567213076', process.env.NAMESPACE_GUILD!),
-                name: '거래 후기',
-                rank: 2,
-              },
-            ],
+      postCategories: {
+        create: [
+          {
+            id: POST_CATEGORY_PIC_VID_ID,
+            name: PIC_VID,
+            rank: 0,
           },
-        },
+          {
+            id: POST_CATEGORY_INFO_REVIEW_ID,
+            name: INFO_REVIEW,
+            rank: 1,
+          },
+          {
+            id: POST_CATEGORY_TRADE_REVIEW_ID,
+            name: TRADE_REVIEW,
+            rank: 2,
+          },
+        ],
       },
     },
   });
+
   // eslint-disable-next-line no-console
   console.log(guild);
 }
