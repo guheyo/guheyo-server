@@ -1,10 +1,9 @@
 import { GuildMemberEventGuard } from '@app/bot/guards/guild-member.event.guard';
+import { DiscordIdConverter } from '@app/bot/shared/discord-id-converter';
 import { CreateJoinedUserCommand } from '@lib/domains/user/application/commands/create-joined-user/create-joined-user.command';
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { CommandBus } from '@nestjs/cqrs';
 import { Context, ContextOf, On } from 'necord';
-import { v5 as uuid5 } from 'uuid';
 
 @UseGuards(GuildMemberEventGuard)
 @Injectable()
@@ -13,7 +12,7 @@ export class DiscordMemberJoinedHandler {
 
   constructor(
     private readonly commandBus: CommandBus,
-    private readonly configService: ConfigService,
+    private readonly discordIdConverter: DiscordIdConverter,
   ) {}
 
   @On('guildMemberAdd')
@@ -22,11 +21,11 @@ export class DiscordMemberJoinedHandler {
       new CreateJoinedUserCommand({
         username: member.user.username,
         avatarURL: member.user.avatarURL() || undefined,
-        socialAccountId: uuid5(member.user.id, this.configService.get('namespace.discord')!),
+        socialAccountId: this.discordIdConverter.toSocialAccountId(member.user.id),
         provider: 'discord',
         socialId: member.user.id,
-        guildId: uuid5(member.guild.id, this.configService.get('namespace.discord')!),
-        memberId: uuid5(member.id, this.configService.get('namespace.guild')!),
+        guildId: this.discordIdConverter.toGuildId(member.guild.id),
+        memberId: this.discordIdConverter.toMemberId(member.user.id),
         roleIds: [],
       }),
     );
