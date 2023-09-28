@@ -101,7 +101,7 @@ model Role {
   name              String      @unique
   rank              Int?
   hexColor          String      @default("#000000")
-  guildId           String      @unique
+  guildId           String
   guild             Guild       @relation(fields: [guildId], references: [id])
   members           Member[]
 }
