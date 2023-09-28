@@ -25,5 +25,5 @@ export class UpdateGuildInput {
   @IsOptional()
   @IsNumber()
   @Field(() => Int, { nullable: true })
-  rank?: number;
+  position?: number;
 }

@@ -21,8 +21,7 @@ export class CreateGuildInput {
   @Field(() => String, { nullable: true })
   icon?: string;
 
-  @IsOptional()
   @IsNumber()
   @Field(() => Int, { nullable: true })
-  rank?: number;
+  position: number;
 }

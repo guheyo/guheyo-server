@@ -1,5 +1,4 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
-import { IsOptional } from 'class-validator';
 
 @ObjectType()
 export class RoleResponse {
@@ -9,9 +8,8 @@ export class RoleResponse {
   @Field()
   name: string;
 
-  @IsOptional()
   @Field(() => Int, { nullable: true })
-  rank: number | null;
+  position: number;
 
   @Field()
   hexColor: string = '#000000';

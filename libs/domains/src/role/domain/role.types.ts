@@ -1,7 +1,7 @@
 export interface UpdateRoleProps {
   name?: string;
 
-  rank?: number;
+  position?: number;
 
   hexColor?: string;
 }

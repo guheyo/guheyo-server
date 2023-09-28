@@ -6,7 +6,7 @@ export class CreateRoleCommand implements ICommand {
 
   name: string;
 
-  rank?: number;
+  position: number;
 
   hexColor: string;
 
@@ -15,7 +15,7 @@ export class CreateRoleCommand implements ICommand {
   constructor(input: CreateRoleInput) {
     this.id = input.id;
     this.name = input.name;
-    this.rank = input.rank;
+    this.position = input.position;
     this.hexColor = input.hexColor;
     this.guildId = input.guildId;
   }

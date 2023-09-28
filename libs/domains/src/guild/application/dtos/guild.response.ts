@@ -18,9 +18,8 @@ export class GuildResponse {
   @Field(() => String, { nullable: true })
   icon: string | null;
 
-  @IsOptional()
   @Field(() => Int, { nullable: true })
-  rank: number | null;
+  position: number;
 
   @Field(() => [RoleResponse])
   roles: RoleResponse[];

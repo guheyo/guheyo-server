@@ -10,13 +10,13 @@ export class CreateGuildCommand implements ICommand {
 
   icon?: string;
 
-  rank?: number;
+  position: number;
 
   constructor(input: CreateGuildInput) {
     this.id = input.id;
     this.name = input.name;
     this.description = input.description;
     this.icon = input.icon;
-    this.rank = input.rank;
+    this.position = input.position;
   }
 }

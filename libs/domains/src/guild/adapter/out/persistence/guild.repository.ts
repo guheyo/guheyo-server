@@ -17,7 +17,7 @@ export class GuildRepository extends PrismaRepository<GuildEntity> {
       include: {
         roles: {
           orderBy: {
-            rank: 'asc',
+            position: 'asc',
           },
         },
       },
@@ -27,7 +27,7 @@ export class GuildRepository extends PrismaRepository<GuildEntity> {
 
   async create(guild: GuildEntity): Promise<void> {
     await this.prismaService.guild.create({
-      data: _.pick(guild, ['id', 'name', 'description', 'icon', 'rank']),
+      data: _.pick(guild, ['id', 'name', 'description', 'icon', 'position']),
     });
   }
 
@@ -36,7 +36,7 @@ export class GuildRepository extends PrismaRepository<GuildEntity> {
       where: {
         id: guild.id,
       },
-      data: _.pick(guild, ['name', 'description', 'icon', 'rank']),
+      data: _.pick(guild, ['name', 'description', 'icon', 'position']),
     });
   }
 

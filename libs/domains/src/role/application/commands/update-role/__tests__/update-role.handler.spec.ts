@@ -14,7 +14,7 @@ describe('UpdateRoleHandler', () => {
   const command: UpdateRoleCommand = {
     id: '94587c54-4d7d-11ee-be56-0242ac120002',
     name: 'role-name',
-    rank: 0,
+    position: 0,
     hexColor: '#000000',
   };
   when(roleLoadPort.findById(command.id)).thenResolve(new RoleEntity(command));

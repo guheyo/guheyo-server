@@ -6,14 +6,14 @@ export class UpdateRoleCommand implements ICommand {
 
   name?: string;
 
-  rank?: number;
+  position?: number;
 
   hexColor?: string;
 
   constructor(input: UpdateRoleInput) {
     this.id = input.id;
     this.name = input.name;
-    this.rank = input.rank;
+    this.position = input.position;
     this.hexColor = input.hexColor;
   }
 }
