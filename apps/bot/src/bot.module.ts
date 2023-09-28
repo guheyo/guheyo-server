@@ -11,6 +11,8 @@ import { ImageModule } from '@lib/shared/image/image.module';
 import { NecordConfigService } from './necord/necord.config.service';
 import { COMMAND_HANDLERS } from './commands/command-handlers';
 import { EVENT_HANDLERS } from './events/event-handlers';
+import { DiscordIdConverter } from './shared/discord-id-converter';
+import { ROLE_PROVIDERS } from '@lib/domains/role/role.providers';
 
 @Module({
   imports: [
@@ -37,8 +39,10 @@ import { EVENT_HANDLERS } from './events/event-handlers';
     ...USER_PROVIDERS,
     ...SOCIAL_ACCOUNT_PROVIDERS,
     ...MEMBER_PROVIDERS,
+    ...ROLE_PROVIDERS,
     ...COMMAND_HANDLERS,
     ...EVENT_HANDLERS,
+    DiscordIdConverter,
   ],
 })
 export class BotModule {}
