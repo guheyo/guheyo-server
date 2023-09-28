@@ -2,9 +2,10 @@ import _ from 'lodash';
 import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { RoleEntity } from '@lib/domains/role/domain/role.entity';
+import { RoleSavePort } from '@lib/domains/role/application/ports/out/role.save.port';
 
 @Injectable()
-export class RoleRepository extends PrismaRepository<RoleEntity> {
+export class RoleRepository extends PrismaRepository<RoleEntity> implements RoleSavePort {
   constructor() {
     super(RoleEntity);
   }
@@ -39,5 +40,22 @@ export class RoleRepository extends PrismaRepository<RoleEntity> {
         id: role.id,
       },
     });
+  }
+
+  async upsertRoles(roles: RoleEntity[]): Promise<void> {
+    const rolePromises = roles.map((role) =>
+      this.prismaService.role.upsert({
+        where: {
+          id: role.id,
+        },
+        create: {
+          ..._.pick(role, 'id', 'name', 'rank', 'hexColor', 'guildId'),
+        },
+        update: {
+          ..._.pick(role, 'name', 'rank', 'hexColor'),
+        },
+      }),
+    );
+    await Promise.all(rolePromises);
   }
 }
