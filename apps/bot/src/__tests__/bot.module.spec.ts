@@ -1,44 +1,30 @@
 import { Test } from '@nestjs/testing';
-import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigService } from '@nestjs/config';
 import { NecordModule } from 'necord';
-import { ConfigYamlModule } from '../config/config.module';
-import { NecordConfigService } from '../necord/necord.config.service';
-import { EVENT_HANDLERS } from '../events/event-handlers';
-import { COMMAND_HANDLERS } from '../commands/command-handlers';
+import { BotModule } from '../bot.module';
 
 describe('BotModule', () => {
   let necordModule: NecordModule;
+  let configService: ConfigService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [
-        CqrsModule,
-        ConfigYamlModule,
-        NecordModule.forRootAsync({
-          useFactory: (configService: ConfigService) => ({
-            token: configService.get('discord.bot.token')!,
-            intents: [
-              'Guilds',
-              'GuildMembers',
-              'GuildMessages',
-              'GuildMessageReactions',
-              'MessageContent',
-            ],
-          }),
-          inject: [ConfigService],
-          useClass: NecordConfigService,
-        }),
-      ],
-      providers: [...EVENT_HANDLERS, ...COMMAND_HANDLERS],
+      imports: [BotModule],
     }).compile();
 
     necordModule = moduleRef.get<NecordModule>(NecordModule);
+    configService = moduleRef.get<ConfigService>(ConfigService);
   });
 
   describe('NecordModule', () => {
     it('should be defined', async () => {
       expect(necordModule).toBeDefined();
+    });
+  });
+
+  describe('ConfigService', () => {
+    it('should be defined', async () => {
+      expect(configService).toBeDefined();
     });
   });
 });
