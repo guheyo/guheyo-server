@@ -13,7 +13,7 @@ describe('UpdateUserCommand', () => {
   const userLoadPort: UserLoadPort = mock(UserRepository);
   const command = new UpdateUserCommand({
     id: '94587c54-4d7d-11ee-be56-0242ac120002',
-    name: 'changed-name',
+    avatarURL: 'changed-avatar-url',
   });
   when(userLoadPort.findById(command.id)).thenResolve(
     new UserEntity({
