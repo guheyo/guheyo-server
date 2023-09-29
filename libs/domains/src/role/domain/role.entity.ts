@@ -13,7 +13,7 @@ export class RoleEntity extends AggregateRoot {
 
   name: string;
 
-  rank: number | null;
+  position: number;
 
   hexColor: string = '#000000';
 

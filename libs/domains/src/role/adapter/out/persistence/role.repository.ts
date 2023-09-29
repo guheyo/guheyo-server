@@ -21,7 +21,7 @@ export class RoleRepository extends PrismaRepository<RoleEntity> implements Role
 
   async create(role: RoleEntity): Promise<void> {
     await this.prismaService.role.create({
-      data: _.pick(role, ['id', 'name', 'rank', 'hexColor', 'guildId']),
+      data: _.pick(role, ['id', 'name', 'position', 'hexColor', 'guildId']),
     });
   }
 
@@ -30,7 +30,7 @@ export class RoleRepository extends PrismaRepository<RoleEntity> implements Role
       where: {
         id: role.id,
       },
-      data: _.pick(role, 'name', 'rank', 'hexColor'),
+      data: _.pick(role, 'name', 'position', 'hexColor'),
     });
   }
 
@@ -49,10 +49,10 @@ export class RoleRepository extends PrismaRepository<RoleEntity> implements Role
           id: role.id,
         },
         create: {
-          ..._.pick(role, 'id', 'name', 'rank', 'hexColor', 'guildId'),
+          ..._.pick(role, 'id', 'name', 'position', 'hexColor', 'guildId'),
         },
         update: {
-          ..._.pick(role, 'name', 'rank', 'hexColor'),
+          ..._.pick(role, 'name', 'position', 'hexColor'),
         },
       }),
     );

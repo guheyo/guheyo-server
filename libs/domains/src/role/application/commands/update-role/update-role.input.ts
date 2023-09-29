@@ -15,7 +15,7 @@ export class UpdateRoleInput {
   @IsOptional()
   @IsNumber()
   @Field(() => Int, { nullable: true })
-  rank?: number;
+  position?: number;
 
   @IsOptional()
   @IsString()

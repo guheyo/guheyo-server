@@ -21,7 +21,7 @@ export class MemberRepository
       include: {
         roles: {
           orderBy: {
-            rank: 'asc',
+            position: 'asc',
           },
         },
       },

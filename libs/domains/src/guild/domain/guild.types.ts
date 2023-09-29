@@ -5,5 +5,5 @@ export interface UpdateGuildProps {
 
   icon?: string;
 
-  rank?: number;
+  position?: number;
 }
