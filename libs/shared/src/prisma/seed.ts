@@ -59,33 +59,33 @@ async function main() {
     create: {
       id: GUILD_KEYBOARD_ID,
       name: KEYBOARD,
-      rank: 0,
+      position: 0,
       productCategories: {
         create: [
           {
             id: PRODUCT_CATEGORY_CUSTOM_ID,
             name: CUSTOM,
-            rank: 0,
+            position: 0,
           },
           {
             id: PRODUCT_CATEGORY_NORMAL_KEYBOARD_ID,
             name: NORMAL_KEYBOARD,
-            rank: 1,
+            position: 1,
           },
           {
             id: PRODUCT_CATEGORY_KEYCAP_ID,
             name: KEYCAP,
-            rank: 2,
+            position: 2,
           },
           {
             id: PRODUCT_CATEGORY_ARTISAN_ID,
             name: ARTISAN,
-            rank: 3,
+            position: 3,
           },
           {
             id: PRODUCT_CATEGORY_ETC_ID,
             name: ETC,
-            rank: 4,
+            position: 4,
           },
         ],
       },
@@ -94,17 +94,17 @@ async function main() {
           {
             id: POST_CATEGORY_PIC_VID_ID,
             name: PIC_VID,
-            rank: 0,
+            position: 0,
           },
           {
             id: POST_CATEGORY_INFO_REVIEW_ID,
             name: INFO_REVIEW,
-            rank: 1,
+            position: 1,
           },
           {
             id: POST_CATEGORY_TRADE_REVIEW_ID,
             name: TRADE_REVIEW,
-            rank: 2,
+            position: 2,
           },
         ],
       },

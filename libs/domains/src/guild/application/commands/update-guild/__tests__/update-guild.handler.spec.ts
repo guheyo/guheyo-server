@@ -14,7 +14,7 @@ describe('UpdateGuildHandler', () => {
   const command: UpdateGuildCommand = {
     id: '94587c54-4d7d-11ee-be56-0242ac120002',
     name: 'role-name',
-    rank: 0,
+    position: 0,
   };
   when(guildLoadPort.findById(command.id)).thenResolve(new GuildEntity(command));
 

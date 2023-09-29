@@ -12,7 +12,7 @@ input CreateGuildInput {
   icon: String
   id: ID!
   name: String!
-  rank: Int
+  position: Int
 }
 
 input CreateMemberInput {
@@ -26,7 +26,7 @@ input CreateRoleInput {
   hexColor: String! = "#000000"
   id: ID!
   name: String!
-  rank: Int
+  position: Int
 }
 
 input CreateSocialAccountInput {
@@ -69,7 +69,7 @@ type GuildResponse {
   icon: String
   id: ID!
   name: String!
-  rank: Int
+  position: Int
   roles: [RoleResponse!]!
 }
 
@@ -137,7 +137,7 @@ type RoleResponse {
   hexColor: String!
   id: ID!
   name: String!
-  rank: Int
+  position: Int
 }
 
 type SocialAccountResponse {
@@ -160,7 +160,7 @@ input UpdateGuildInput {
   icon: String
   id: ID!
   name: String
-  rank: Int
+  position: Int
 }
 
 input UpdateMemberInput {
@@ -172,7 +172,7 @@ input UpdateRoleInput {
   hexColor: String
   id: ID!
   name: String
-  rank: Int
+  position: Int
 }
 
 input UpdateSocialAccountInput {

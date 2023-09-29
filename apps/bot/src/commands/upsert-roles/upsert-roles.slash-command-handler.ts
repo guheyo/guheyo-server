@@ -26,7 +26,7 @@ export class UpsertRolesSlashCommandHandler {
     const upsertRoleInputs = roleManager.cache.map((role) => ({
       id: uuid5(role.id, this.configService.get('namespace.guild')!),
       ..._.pick(role, ['name', 'hexColor']),
-      rank: highestRole.position - role.position,
+      position: highestRole.position - role.position,
       guildId: uuid5(roleManager.guild.id, this.configService.get('namespace.discord')!),
     }));
     const command = new UpsertRolesCommand({

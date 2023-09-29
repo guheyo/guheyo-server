@@ -18,7 +18,7 @@ export class FindMemberByUserAndGuildHandler
       include: {
         roles: {
           orderBy: {
-            rank: 'asc',
+            position: 'asc',
           },
         },
       },

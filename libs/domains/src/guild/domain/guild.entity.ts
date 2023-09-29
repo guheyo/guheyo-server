@@ -16,7 +16,7 @@ export class GuildEntity extends AggregateRoot {
 
   icon: string | null;
 
-  rank: number | null;
+  position: number;
 
   roles: RoleEntity[];
 

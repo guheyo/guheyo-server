@@ -19,7 +19,7 @@ export class UserRepository extends PrismaRepository<UserEntity> implements User
           include: {
             roles: {
               orderBy: {
-                rank: 'asc',
+                position: 'asc',
               },
             },
           },
@@ -46,7 +46,7 @@ export class UserRepository extends PrismaRepository<UserEntity> implements User
           include: {
             roles: {
               orderBy: {
-                rank: 'asc',
+                position: 'asc',
               },
             },
           },

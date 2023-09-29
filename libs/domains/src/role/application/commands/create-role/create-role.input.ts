@@ -13,7 +13,7 @@ export class CreateRoleInput {
 
   @IsNumber()
   @Field(() => Int, { nullable: true })
-  rank?: number;
+  position: number;
 
   @IsString()
   @Field(() => String, { defaultValue: '#000000' })
