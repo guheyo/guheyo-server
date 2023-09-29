@@ -4,15 +4,15 @@ import { ConfigYamlModule } from '@app/bot/config/config.module';
 import { NecordModule } from 'necord';
 import { ConfigService } from '@nestjs/config/dist';
 import { PrismaModule } from '@lib/shared/prisma/prisma.module';
+import { ImageModule } from '@lib/shared/image/image.module';
 import { USER_PROVIDERS } from '@lib/domains/user/user.providers';
 import { SOCIAL_ACCOUNT_PROVIDERS } from '@lib/domains/social-account/social-account.providers';
 import { MEMBER_PROVIDERS } from '@lib/domains/member/member.providers';
-import { ImageModule } from '@lib/shared/image/image.module';
+import { ROLE_PROVIDERS } from '@lib/domains/role/role.providers';
 import { NecordConfigService } from './necord/necord.config.service';
 import { COMMAND_HANDLERS } from './commands/command-handlers';
 import { EVENT_HANDLERS } from './events/event-handlers';
 import { DiscordIdConverter } from './shared/discord-id-converter';
-import { ROLE_PROVIDERS } from '@lib/domains/role/role.providers';
 
 @Module({
   imports: [
