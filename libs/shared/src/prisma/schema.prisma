@@ -45,8 +45,8 @@ model UserImage {
   deletedAt         DateTime?
   name              String
   url               String
-  height            String
-  width             String
+  height            Int
+  width             Int
   position          Int
   type              String
   refId             String
