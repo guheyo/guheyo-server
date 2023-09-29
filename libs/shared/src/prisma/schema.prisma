@@ -21,13 +21,13 @@ model User {
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
   deletedAt         DateTime?
-  name              String?
   username          String      @unique
   socialAccounts    SocialAccount[]
   avatarURL         String?
   bot               Boolean     @default(false)
   members           Member[]
   sessions          Session[]
+  userImages        UserImage[]
   offers            Offer[]
   demands           Demand[]
   swaps             Swap[]
@@ -36,6 +36,23 @@ model User {
   auctionComments   AuctionComment[]
   posts             Post[]
   postComments      PostComment[]
+}
+
+model UserImage {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  name              String
+  url               String
+  height            String
+  width             String
+  position          Int
+  type              String
+  refId             String
+  tracked           Boolean
+  userId            String
+  user              User          @relation(fields: [userId], references: [id])
 }
 
 model Member {
@@ -152,8 +169,7 @@ model ProductCategory {
   guild             Guild       @relation(fields: [guildId], references: [id])
   offers            Offer[]
   demands           Demand[]
-  swap0s            Swap[]      @relation("Swap0Category")
-  swap1s            Swap[]      @relation("Swap1Category")
+  swaps             Swap[]
   auctions          Auction[]
 }
 
@@ -168,8 +184,7 @@ model Brand {
   position          Int
   offers            Offer[]
   demands           Demand[]
-  swap0s            Swap[]      @relation("Swap0Brand")
-  swap1s            Swap[]      @relation("Swap1Brand")
+  swaps             Swap[]
   auctions          Auction[]
   guilds            Guild[]
 }
@@ -187,22 +202,7 @@ model Post {
   postCategory      PostCategory  @relation(fields: [postCategoryId], references: [id])
   authorId          String
   author            User          @relation(fields: [authorId], references: [id])
-  images            PostImage[]
   comments          PostComment[]
-}
-
-model PostImage {
-  id                String        @id @default(uuid())
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
-  deletedAt         DateTime?
-  name              String
-  url               String
-  height            String
-  width             String
-  position          Int
-  postId            String
-  post              Post          @relation(fields: [postId], references: [id])
 }
 
 model PostComment {
@@ -231,7 +231,6 @@ model Offer {
   priceCurrency     String
   businessFunction  String
   status            String
-  images            OfferImage[]
   guildId           String
   guild             Guild           @relation(fields: [guildId], references: [id])
   productCategoryId String
@@ -240,20 +239,6 @@ model Offer {
   seller            User            @relation(fields: [sellerId], references: [id])
   brandId           String?
   brand             Brand?          @relation(fields: [brandId], references: [id])
-}
-
-model OfferImage {
-  id                String          @id @default(uuid())
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  deletedAt         DateTime?
-  name              String
-  url               String
-  height            String
-  width             String
-  position          Int
-  offerId           String
-  offer             Offer           @relation(fields: [offerId], references: [id])
 }
 
 model Demand {
@@ -266,7 +251,6 @@ model Demand {
   priceCurrency     String
   businessFunction  String
   status            String
-  images            DemandImage[]
   guildId           String
   guild             Guild           @relation(fields: [guildId], references: [id])
   productCategoryId String
@@ -277,27 +261,11 @@ model Demand {
   brand             Brand?          @relation(fields: [brandId], references: [id])
 }
 
-model DemandImage {
-  id                String          @id @default(uuid())
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  deletedAt         DateTime?
-  name              String
-  url               String
-  height            String
-  width             String
-  position          Int
-  demandId          String
-  demand            Demand          @relation(fields: [demandId], references: [id])
-}
-
 model Swap {
   id                  String          @id @default(uuid())
   createdAt           DateTime        @default(now())
   updatedAt           DateTime        @updatedAt
   deletedAt           DateTime?
-  guildId             String
-  guild               Guild           @relation(fields: [guildId], references: [id])
   price               Int
   priceCurrency       String
   name0               String
@@ -305,32 +273,14 @@ model Swap {
   name1               String
   description1        String
   status              String
-  images              SwapImage[]
-  brand0Id            String?
-  brand0              Brand?          @relation("Swap0Brand", fields: [brand0Id], references: [id])
-  brand1Id            String?
-  brand1              Brand?          @relation("Swap1Brand", fields: [brand1Id], references: [id])
-  productCategory0Id  String
-  productCategory0    ProductCategory @relation("Swap0Category", fields: [productCategory0Id], references: [id])
-  productCategory1Id  String
-  productCategory1    ProductCategory @relation("Swap1Category", fields: [productCategory1Id], references: [id])
+  guildId             String
+  guild               Guild           @relation(fields: [guildId], references: [id])
+  productCategoryId   String
+  productCategory     ProductCategory @relation(fields: [productCategoryId], references: [id])
   proposerId          String
   proposer            User            @relation(fields: [proposerId], references: [id])
-}
-
-model SwapImage {
-  id                String            @id @default(uuid())
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  deletedAt         DateTime?
-  name              String
-  url               String
-  height            String
-  width             String
-  position          Int
-  target            Int
-  swapId            String
-  swap              Swap              @relation(fields: [swapId], references: [id])
+  brandId             String?
+  brand               Brand?          @relation(fields: [brandId], references: [id])
 }
 
 model Auction {
@@ -341,7 +291,6 @@ model Auction {
   endedAt           DateTime
   name              String
   description       String
-  images            AuctionImage[]
   bids              Bid[]
   guildId           String
   guild             Guild             @relation(fields: [guildId], references: [id])
@@ -353,20 +302,6 @@ model Auction {
   seller            User              @relation(fields: [sellerId], references: [id])
   comments          AuctionComment[]
   status            String
-}
-
-model AuctionImage {
-  id                String            @id @default(uuid())
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  deletedAt         DateTime?
-  name              String
-  url               String
-  height            String
-  width             String
-  position          Int
-  auctionId         String
-  auction           Auction           @relation(fields: [auctionId], references: [id])
 }
 
 model AuctionComment {
