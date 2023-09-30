@@ -28,7 +28,7 @@ describe('OfferModule', () => {
     it('should be defined', async () => {
       expect(apiModule).toBeDefined();
     });
-  })
+  });
 
   describe('OfferModule', () => {
     it('should be defined', async () => {
