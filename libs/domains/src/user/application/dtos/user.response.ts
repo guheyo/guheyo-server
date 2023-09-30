@@ -8,9 +8,6 @@ export class UserResponse {
   @Field(() => GraphQLISODateTime)
   createdAt: Date;
 
-  @Field(() => String, { nullable: true })
-  name: string | null;
-
   @Field()
   username: string;
 
