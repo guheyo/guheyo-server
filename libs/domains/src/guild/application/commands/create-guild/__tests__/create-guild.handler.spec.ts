@@ -29,6 +29,7 @@ describe('CreateGuildHandler', () => {
       const command: CreateGuildCommand = {
         id: '94587c54-4d7d-11ee-be56-0242ac120002',
         name: 'guild-name',
+        position: 0,
       };
       await handler.execute(command);
       verify(guildSavePort.create(anyOfClass(GuildEntity))).once();

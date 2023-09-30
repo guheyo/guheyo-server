@@ -10,7 +10,7 @@ export class UpdateUserInput {
   @IsOptional()
   @IsString()
   @Field({ nullable: true })
-  name?: string;
+  username?: string;
 
   @IsOptional()
   @IsString()

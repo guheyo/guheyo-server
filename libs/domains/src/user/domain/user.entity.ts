@@ -15,8 +15,6 @@ export class UserEntity extends AggregateRoot {
 
   deletedAt: Date | null;
 
-  name: string | null;
-
   username: string;
 
   avatarURL: string | null;
