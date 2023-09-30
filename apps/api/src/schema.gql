@@ -21,6 +21,20 @@ input CreateMemberInput {
   userId: ID!
 }
 
+input CreateOfferInput {
+  brandId: String
+  businessFunction: String!
+  description: String!
+  guildId: ID!
+  id: ID!
+  name: String!
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  sellerId: String!
+  status: String! = "ON_SALE"
+}
+
 input CreateRoleInput {
   guildId: ID!
   hexColor: String! = "#000000"
@@ -98,12 +112,14 @@ type Mutation {
   connectRoles(input: ConnectRolesInput!): String!
   createGuild(input: CreateGuildInput!): String!
   createMember(input: CreateMemberInput!): String!
+  createOffer(input: CreateOfferInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSocialAccount(input: CreateSocialAccountInput!): String!
   createUser(input: CreateUserInput!): String!
   createUserImage(input: CreateUserImageInput!): String!
   deleteGuild(id: String!): String!
   deleteMember(id: ID!, userId: ID!): String!
+  deleteOffer(id: String!): String!
   deleteRole(id: String!): String!
   deleteSocialAccount(id: String!): String!
   deleteUser(id: String!): String!
@@ -111,6 +127,7 @@ type Mutation {
   disconnectRoles(input: DisconnectRolesInput!): String!
   updateGuild(input: UpdateGuildInput!): String!
   updateMember(input: UpdateMemberInput!): String!
+  updateOffer(input: UpdateOfferInput!): String!
   updateRole(input: UpdateRoleInput!): String!
   updateSocialAccount(input: UpdateSocialAccountInput!): String!
   updateUser(input: UpdateUserInput!): String!
@@ -125,6 +142,24 @@ type MyUserResponse {
   members: [MemberWithRolesResponse!]
   socialAccounts: [SocialAccountResponse!]
   username: String!
+}
+
+type OfferResponse {
+  brandId: String
+  businessFunction: String!
+  createdAt: DateTime!
+  description: String!
+  guildId: String!
+  id: ID!
+  images: [UserImageResponse!]!
+  name: String!
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  seller: UserResponse!
+  sellerId: ID!
+  status: String!
+  updatedAt: DateTime!
 }
 
 type PageInfo {
@@ -142,6 +177,7 @@ type Query {
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: ID!): MyUserResponse
+  findOfferById(id: String!): OfferResponse
   findRoleById(id: String!): RoleResponse
   findUserImageById(id: String!): UserImageResponse
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
@@ -182,6 +218,16 @@ input UpdateGuildInput {
 input UpdateMemberInput {
   id: ID!
   userId: ID!
+}
+
+input UpdateOfferInput {
+  brandId: String
+  businessFunction: String
+  description: String
+  id: ID!
+  name: String
+  price: Int
+  priceCurrency: String
 }
 
 input UpdateRoleInput {

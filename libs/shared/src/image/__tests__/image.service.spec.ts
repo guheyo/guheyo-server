@@ -36,7 +36,6 @@ describe('ImageService', () => {
     it('should generate signed url', async () => {
       const signedUrl = await imageService.generateSignedUrl('tests/0', 'test.jpg');
       expect(typeof signedUrl).toBe('string');
-      console.log(signedUrl);
     });
   });
 });
