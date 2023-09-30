@@ -43,6 +43,19 @@ input CreateSocialAccountInput {
   userId: String!
 }
 
+input CreateUserImageInput {
+  height: Int!
+  id: ID!
+  name: String!
+  position: Int!
+  refId: ID!
+  tracked: Boolean!
+  type: String!
+  url: String!
+  userId: ID!
+  width: Int!
+}
+
 input CreateUserInput {
   avatarURL: String
   id: String!
@@ -88,17 +101,20 @@ type Mutation {
   createRole(input: CreateRoleInput!): String!
   createSocialAccount(input: CreateSocialAccountInput!): String!
   createUser(input: CreateUserInput!): String!
+  createUserImage(input: CreateUserImageInput!): String!
   deleteGuild(id: String!): String!
   deleteMember(id: ID!, userId: ID!): String!
   deleteRole(id: String!): String!
   deleteSocialAccount(id: String!): String!
   deleteUser(id: String!): String!
+  deleteUserImage(id: String!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!
   updateGuild(input: UpdateGuildInput!): String!
   updateMember(input: UpdateMemberInput!): String!
   updateRole(input: UpdateRoleInput!): String!
   updateSocialAccount(input: UpdateSocialAccountInput!): String!
   updateUser(input: UpdateUserInput!): String!
+  updateUserImage(input: UpdateUserImageInput!): String!
 }
 
 type MyUserResponse {
@@ -107,7 +123,6 @@ type MyUserResponse {
   createdAt: DateTime!
   id: ID!
   members: [MemberWithRolesResponse!]
-  name: String
   socialAccounts: [SocialAccountResponse!]
   username: String!
 }
@@ -128,6 +143,7 @@ type Query {
   findMyUserById(id: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: ID!): MyUserResponse
   findRoleById(id: String!): RoleResponse
+  findUserImageById(id: String!): UserImageResponse
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   getSocialAccountsByUserId(id: String!): String!
 }
@@ -187,10 +203,30 @@ input UpdateSocialAccountInput {
   userId: String!
 }
 
+input UpdateUserImageInput {
+  id: ID!
+  position: Int!
+}
+
 input UpdateUserInput {
   avatarURL: String
   id: String!
-  name: String
+  username: String
+}
+
+type UserImageResponse {
+  createdAt: DateTime!
+  height: Int!
+  id: String!
+  name: String!
+  position: Int!
+  refId: ID!
+  tracked: Boolean!
+  type: String!
+  updatedAt: DateTime!
+  url: String!
+  userId: ID!
+  width: Int!
 }
 
 type UserResponse {
@@ -198,6 +234,5 @@ type UserResponse {
   bot: Boolean!
   createdAt: DateTime!
   id: ID!
-  name: String
   username: String!
 }
