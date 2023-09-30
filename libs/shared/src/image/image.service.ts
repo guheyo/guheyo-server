@@ -1,4 +1,4 @@
-import { S3Client, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -21,12 +21,13 @@ export class ImageService {
   }
 
   async generateSignedUrl(path: string, filename: string) {
-    const command = new GetObjectCommand({
+    const command = new PutObjectCommand({
       Bucket: this.configService.get('s3.bucket'),
       Key: `${path}/${filename}`,
+      ContentType: 'image/*',
     });
     return getSignedUrl(this.client, command, {
-      expiresIn: 60,
+      expiresIn: 60 * 30,
     });
   }
 
