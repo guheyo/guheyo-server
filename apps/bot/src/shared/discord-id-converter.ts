@@ -17,4 +17,8 @@ export class DiscordIdConverter {
   toMemberId(discordUserId: string) {
     return uuid5(discordUserId, this.configService.get('namespace.guild')!);
   }
+
+  toRoleId(discordRoleId: string) {
+    return uuid5(discordRoleId, this.configService.get('namespace.guild')!);
+  }
 }
