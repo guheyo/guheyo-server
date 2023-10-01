@@ -1,13 +1,13 @@
-import { GuildMemberEventGuard } from '@app/bot/guards/guild-member.event.guard';
-import { Injectable, Logger, UseGuards } from '@nestjs/common';
+import { Injectable, Logger, UseInterceptors } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EventBus } from '@nestjs/cqrs';
 import { Context, ContextOf, On } from 'necord';
 import { v5 as uuid5 } from 'uuid';
 import _ from 'lodash';
 import { MemberRolesUpdatedEvent } from '@lib/domains/member/application/events/member-roles-updated/member-roles-updated.event';
+import { GuildInterceptor } from '@app/bot/interceptors/guild.interceptor';
 
-@UseGuards(GuildMemberEventGuard)
+@UseInterceptors(GuildInterceptor)
 @Injectable()
 export class DiscordMemberRolesUpdatedHandler {
   private readonly logger = new Logger(DiscordMemberRolesUpdatedHandler.name);

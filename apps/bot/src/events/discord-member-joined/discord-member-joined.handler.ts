@@ -1,11 +1,11 @@
-import { GuildMemberEventGuard } from '@app/bot/guards/guild-member.event.guard';
+import { GuildInterceptor } from '@app/bot/interceptors/guild.interceptor';
 import { DiscordIdConverter } from '@app/bot/shared/discord-id-converter';
 import { CreateJoinedUserCommand } from '@lib/domains/user/application/commands/create-joined-user/create-joined-user.command';
-import { Injectable, Logger, UseGuards } from '@nestjs/common';
+import { Injectable, Logger, UseInterceptors } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Context, ContextOf, On } from 'necord';
 
-@UseGuards(GuildMemberEventGuard)
+@UseInterceptors(GuildInterceptor)
 @Injectable()
 export class DiscordMemberJoinedHandler {
   private readonly logger = new Logger(DiscordMemberJoinedHandler.name);
