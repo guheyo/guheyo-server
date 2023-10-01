@@ -1,7 +1,6 @@
 import { Injectable, Logger, UseInterceptors } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Context, ContextOf, On } from 'necord';
-import _ from 'lodash';
 import { GuildInterceptor } from '@app/bot/interceptors/guild.interceptor';
 import { DiscordIdConverter } from '@app/bot/shared/discord-id-converter';
 import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
