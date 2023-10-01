@@ -1,11 +1,13 @@
 import { ReadyHandler } from './ready/ready.handler';
 import { WarnHandler } from './warn/warn.handler';
 import { DiscordMemberJoinedHandler } from './discord-member-joined/discord-member-joined.handler';
-import { DiscordMemberRolesUpdatedHandler } from './discord-member-roles-updated/discord-member-roles-updated.handler';
+import { DiscordMemberRolesAddedHandler } from './discord-member-roles-added/discord-member-roles-added.handler';
+import { DiscordMemberRolesRemovedHandler } from './discord-member-roles-removed/discord-member-roles-removed.handler';
 
 export const EVENT_HANDLERS = [
   ReadyHandler,
   WarnHandler,
   DiscordMemberJoinedHandler,
-  DiscordMemberRolesUpdatedHandler,
+  DiscordMemberRolesAddedHandler,
+  DiscordMemberRolesRemovedHandler,
 ];
