@@ -19,7 +19,7 @@ export class DiscordMemberRolesRemovedHandler {
   public async onRemovedGuildMemberRoles(
     @Context() [member, role]: ContextOf<'guildMemberRoleRemove'>,
   ) {
-    this.commandBus.execute(
+    await this.commandBus.execute(
       new DisconnectRolesCommand({
         id: this.discordIdConverter.toMemberId(member.id),
         roleIds: [this.discordIdConverter.toRoleId(role.id)],
