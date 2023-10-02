@@ -1,13 +1,13 @@
-import { Injectable, UseInterceptors } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
+import { GuildGuard } from '@app/bot/guards/guild.guard';
+import { OwnerGuard } from '@app/bot/guards/owner.guard';
 import { CreateJoinedUserCommand } from '@lib/domains/user/application/commands/create-joined-user/create-joined-user.command';
-import { GuildInterceptor } from '@app/bot/interceptors/guild.interceptor';
-import { OwnerInterceptor } from '@app/bot/interceptors/owner.interceptor';
 import { DiscordIdConverter } from '@app/bot/shared/discord-id-converter';
 import { RegisterDiscordUserRequest } from './register-discord-user.request';
 
-@UseInterceptors(GuildInterceptor, OwnerInterceptor)
+@UseGuards(GuildGuard, OwnerGuard)
 @Injectable()
 export class RegisterDiscordUserSlashCommandHandler {
   constructor(
