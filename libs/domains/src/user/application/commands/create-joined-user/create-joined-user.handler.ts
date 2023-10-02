@@ -1,5 +1,5 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
-import { Inject, NotFoundException } from '@nestjs/common';
+import { Inject, ConflictException } from '@nestjs/common';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import _ from 'lodash';
 import { UserErrorMessage } from '@lib/domains/user/domain/user.error.message';
@@ -20,7 +20,7 @@ export class CreateJoinedUserHandler implements ICommandHandler<CreateJoinedUser
 
   async execute(command: CreateJoinedUserCommand): Promise<void> {
     const user = await this.userLoadPort.findBySocialAccount(command.provider, command.socialId);
-    if (user) throw new NotFoundException(UserErrorMessage.USER_IS_NOT_FOUND);
+    if (user) throw new ConflictException(UserErrorMessage.USER_ALREADY_EXISTS);
 
     const userId = uuid4();
     const newUser = this.publisher.mergeObjectContext(
