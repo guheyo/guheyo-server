@@ -20,7 +20,7 @@ export class RegisterDiscordUserSlashCommandHandler {
     @Context() [interaction]: SlashCommandContext,
     @Options() { user }: RegisterDiscordUserRequest,
   ) {
-    this.commandBus.execute(
+    await this.commandBus.execute(
       new CreateJoinedUserCommand({
         username: user.username,
         avatarURL: user.avatarURL() || undefined,
