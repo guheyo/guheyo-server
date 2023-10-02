@@ -31,7 +31,7 @@ export class UpsertRolesSlashCommandHandler {
     const command = new UpsertRolesCommand({
       upsertRoleInputs,
     });
-    this.commandBus.execute(command);
+    await this.commandBus.execute(command);
     return interaction.reply('Roles Upserted');
   }
 }

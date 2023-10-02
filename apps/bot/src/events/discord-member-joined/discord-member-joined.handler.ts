@@ -17,7 +17,7 @@ export class DiscordMemberJoinedHandler {
 
   @On('guildMemberAdd')
   public async onJoin(@Context() [member]: ContextOf<'guildMemberAdd'>) {
-    this.commandBus.execute(
+    await this.commandBus.execute(
       new CreateJoinedUserCommand({
         username: member.user.username,
         avatarURL: member.user.avatarURL() || undefined,
