@@ -9,10 +9,12 @@ import { USER_PROVIDERS } from '@lib/domains/user/user.providers';
 import { SOCIAL_ACCOUNT_PROVIDERS } from '@lib/domains/social-account/social-account.providers';
 import { MEMBER_PROVIDERS } from '@lib/domains/member/member.providers';
 import { ROLE_PROVIDERS } from '@lib/domains/role/role.providers';
+import { APP_FILTER } from '@nestjs/core';
 import { NecordConfigService } from './necord/necord.config.service';
 import { COMMAND_HANDLERS } from './commands/command-handlers';
 import { EVENT_HANDLERS } from './events/event-handlers';
 import { DiscordIdConverter } from './shared/discord-id-converter';
+import { BotExceptionFilter } from './filters/bot-exception.filter';
 
 @Module({
   imports: [
@@ -43,6 +45,10 @@ import { DiscordIdConverter } from './shared/discord-id-converter';
     ...COMMAND_HANDLERS,
     ...EVENT_HANDLERS,
     DiscordIdConverter,
+    {
+      provide: APP_FILTER,
+      useClass: BotExceptionFilter,
+    },
   ],
 })
 export class BotModule {}
