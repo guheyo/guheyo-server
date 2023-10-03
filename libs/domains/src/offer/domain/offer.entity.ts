@@ -12,7 +12,7 @@ export class OfferEntity extends AggregateRoot {
 
   name: string;
 
-  description: string;
+  description: string | null;
 
   price: number;
 

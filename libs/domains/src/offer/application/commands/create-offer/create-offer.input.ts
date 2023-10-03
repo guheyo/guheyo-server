@@ -11,9 +11,10 @@ export class CreateOfferInput {
   @Field()
   name: string;
 
+  @IsOptional()
   @IsString()
   @Field()
-  description: string;
+  description?: string;
 
   @IsInt()
   @Field(() => Int)
