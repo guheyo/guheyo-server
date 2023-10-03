@@ -21,8 +21,8 @@ export class DiscordMemberRolesRemovedHandler {
   ) {
     await this.commandBus.execute(
       new DisconnectRolesCommand({
-        id: this.discordIdConverter.toMemberId(member.id),
-        roleIds: [this.discordIdConverter.toRoleId(role.id)],
+        id: this.discordIdConverter.convertIdUsingGuildNamespace(member.id),
+        roleIds: [this.discordIdConverter.convertIdUsingGuildNamespace(role.id)],
       }),
     );
   }

@@ -19,8 +19,8 @@ export class DiscordMemberRolesAddedHandler {
   public async onAddGuildMemberRoles(@Context() [member, role]: ContextOf<'guildMemberRoleAdd'>) {
     await this.commandBus.execute(
       new ConnectRolesCommand({
-        id: this.discordIdConverter.toMemberId(member.id),
-        roleIds: [this.discordIdConverter.toRoleId(role.id)],
+        id: this.discordIdConverter.convertIdUsingGuildNamespace(member.id),
+        roleIds: [this.discordIdConverter.convertIdUsingGuildNamespace(role.id)],
       }),
     );
   }

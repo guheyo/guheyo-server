@@ -24,11 +24,11 @@ export class RegisterDiscordUserSlashCommandHandler {
       new CreateJoinedUserCommand({
         username: user.username,
         avatarURL: user.avatarURL() || undefined,
-        socialAccountId: this.discordIdConverter.toSocialAccountId(user.id),
+        socialAccountId: this.discordIdConverter.convertIdUsingDiscordNamespace(user.id),
         provider: 'discord',
         socialId: user.id,
-        guildId: this.discordIdConverter.toGuildId(interaction.guildId!),
-        memberId: this.discordIdConverter.toMemberId(user.id),
+        guildId: this.discordIdConverter.convertIdUsingDiscordNamespace(interaction.guildId!),
+        memberId: this.discordIdConverter.convertIdUsingGuildNamespace(user.id),
         roleIds: [],
       }),
     );

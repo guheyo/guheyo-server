@@ -21,11 +21,11 @@ export class DiscordMemberJoinedHandler {
       new CreateJoinedUserCommand({
         username: member.user.username,
         avatarURL: member.user.avatarURL() || undefined,
-        socialAccountId: this.discordIdConverter.toSocialAccountId(member.user.id),
+        socialAccountId: this.discordIdConverter.convertIdUsingDiscordNamespace(member.user.id),
         provider: 'discord',
         socialId: member.user.id,
-        guildId: this.discordIdConverter.toGuildId(member.guild.id),
-        memberId: this.discordIdConverter.toMemberId(member.user.id),
+        guildId: this.discordIdConverter.convertIdUsingDiscordNamespace(member.guild.id),
+        memberId: this.discordIdConverter.convertIdUsingGuildNamespace(member.user.id),
         roleIds: [],
       }),
     );
