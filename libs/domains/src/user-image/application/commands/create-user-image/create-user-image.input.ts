@@ -15,13 +15,21 @@ export class CreateUserImageInput {
   @Field()
   url: string;
 
-  @IsInt()
-  @Field(() => Int)
-  height: number;
+  @IsString()
+  @Field(() => String, { nullable: true })
+  contentType?: string;
+
+  @IsString()
+  @Field(() => String, { nullable: true })
+  description?: string;
 
   @IsInt()
-  @Field(() => Int)
-  width: number;
+  @Field(() => Int, { nullable: true })
+  height?: number;
+
+  @IsInt()
+  @Field(() => Int, { nullable: true })
+  width?: number;
 
   @IsInt()
   @Field(() => Int)
