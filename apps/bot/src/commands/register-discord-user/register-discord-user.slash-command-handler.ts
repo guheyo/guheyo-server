@@ -1,8 +1,8 @@
 import { Injectable, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
-import { GuildGuard } from '@app/bot/guards/guild.guard';
-import { OwnerGuard } from '@app/bot/guards/owner.guard';
+import { GuildGuard } from '@app/bot/guards/guilds/guild.guard';
+import { OwnerGuard } from '@app/bot/guards/users/owner.guard';
 import { CreateJoinedUserCommand } from '@lib/domains/user/application/commands/create-joined-user/create-joined-user.command';
 import { DiscordIdConverter } from '@app/bot/shared/discord-id-converter';
 import { RegisterDiscordUserRequest } from './register-discord-user.request';

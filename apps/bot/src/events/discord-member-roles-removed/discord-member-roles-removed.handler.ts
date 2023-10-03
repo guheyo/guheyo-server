@@ -1,7 +1,7 @@
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Context, ContextOf, On } from 'necord';
-import { GuildGuard } from '@app/bot/guards/guild.guard';
+import { GuildGuard } from '@app/bot/guards/guilds/guild.guard';
 import { DiscordIdConverter } from '@app/bot/shared/discord-id-converter';
 import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
 

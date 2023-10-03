@@ -1,4 +1,4 @@
-import { GuildGuard } from '@app/bot/guards/guild.guard';
+import { GuildGuard } from '@app/bot/guards/guilds/guild.guard';
 import { DiscordIdConverter } from '@app/bot/shared/discord-id-converter';
 import { CreateJoinedUserCommand } from '@lib/domains/user/application/commands/create-joined-user/create-joined-user.command';
 import { Injectable, Logger, UseGuards } from '@nestjs/common';

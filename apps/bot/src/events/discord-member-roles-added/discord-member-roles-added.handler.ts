@@ -1,5 +1,5 @@
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
-import { GuildGuard } from '@app/bot/guards/guild.guard';
+import { GuildGuard } from '@app/bot/guards/guilds/guild.guard';
 import { CommandBus } from '@nestjs/cqrs';
 import { Context, ContextOf, On } from 'necord';
 import { DiscordIdConverter } from '@app/bot/shared/discord-id-converter';
