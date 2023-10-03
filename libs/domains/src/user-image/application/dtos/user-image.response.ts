@@ -23,13 +23,21 @@ export class UserImageResponse {
   @Field()
   url: string;
 
-  @IsInt()
-  @Field(() => Int)
-  height: number;
+  @IsString()
+  @Field(() => String, { nullable: true })
+  contentType: string | null;
+
+  @IsString()
+  @Field(() => String, { nullable: true })
+  description: string | null;
 
   @IsInt()
-  @Field(() => Int)
-  width: number;
+  @Field(() => Int, { nullable: true })
+  height: number | null;
+
+  @IsInt()
+  @Field(() => Int, { nullable: true })
+  width: number | null;
 
   @IsInt()
   @Field(() => Int)

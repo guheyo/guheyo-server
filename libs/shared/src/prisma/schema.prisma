@@ -45,8 +45,10 @@ model UserImage {
   deletedAt         DateTime?
   name              String
   url               String
-  height            Int
-  width             Int
+  contentType       String?
+  description       String?
+  height            Int?
+  width             Int?
   position          Int
   type              String
   refId             String
@@ -226,7 +228,7 @@ model Offer {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
   name              String
-  description       String
+  description       String?
   price             Int
   priceCurrency     String
   businessFunction  String
@@ -247,7 +249,7 @@ model Demand {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
   name              String
-  description       String
+  description       String?
   priceCurrency     String
   businessFunction  String
   status            String
@@ -269,9 +271,9 @@ model Swap {
   price               Int
   priceCurrency       String
   name0               String
-  description0        String
+  description0        String?
   name1               String
-  description1        String
+  description1        String?
   status              String
   guildId             String
   guild               Guild           @relation(fields: [guildId], references: [id])
@@ -290,7 +292,7 @@ model Auction {
   deletedAt         DateTime?
   endedAt           DateTime
   name              String
-  description       String
+  description       String?
   bids              Bid[]
   guildId           String
   guild             Guild             @relation(fields: [guildId], references: [id])

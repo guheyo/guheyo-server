@@ -6,7 +6,7 @@ export class CreateOfferCommand implements ICommand {
 
   name: string;
 
-  description: string;
+  description?: string;
 
   price: number;
 
