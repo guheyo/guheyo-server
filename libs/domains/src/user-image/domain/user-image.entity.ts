@@ -9,9 +9,13 @@ export class UserImageEntity {
 
   url: string;
 
-  height: number;
+  contentType: string | null;
 
-  width: number;
+  description: string | null;
+
+  height: number | null;
+
+  width: number | null;
 
   position: number;
 

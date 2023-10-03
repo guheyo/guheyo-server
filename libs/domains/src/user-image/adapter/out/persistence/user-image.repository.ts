@@ -25,6 +25,8 @@ export class UserImageRepository extends PrismaRepository<UserImageEntity> {
         'id',
         'name',
         'url',
+        'contentType',
+        'description',
         'height',
         'width',
         'position',

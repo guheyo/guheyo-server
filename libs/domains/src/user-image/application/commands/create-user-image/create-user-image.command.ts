@@ -8,9 +8,13 @@ export class CreateUserImageCommand implements ICommand {
 
   url: string;
 
-  height: number;
+  contentType?: string;
 
-  width: number;
+  description?: string;
+
+  height?: number;
+
+  width?: number;
 
   position: number;
 
@@ -26,6 +30,8 @@ export class CreateUserImageCommand implements ICommand {
     this.id = input.id;
     this.name = input.name;
     this.url = input.url;
+    this.contentType = input.contentType;
+    this.description = input.description;
     this.height = input.height;
     this.width = input.width;
     this.position = input.position;
