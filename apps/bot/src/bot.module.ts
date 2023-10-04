@@ -15,6 +15,8 @@ import { COMMAND_HANDLERS } from './commands/command-handlers';
 import { EVENT_HANDLERS } from './events/event-handlers';
 import { DiscordIdConverter } from './shared/discord-id-converter';
 import { BotExceptionFilter } from './filters/bot-exception.filter';
+import { CLIENTS } from './clients/clients';
+import { PARSERS } from './pipes/parsers';
 
 @Module({
   imports: [
@@ -49,6 +51,8 @@ import { BotExceptionFilter } from './filters/bot-exception.filter';
       provide: APP_FILTER,
       useClass: BotExceptionFilter,
     },
+    ...CLIENTS,
+    ...PARSERS,
   ],
 })
 export class BotModule {}
