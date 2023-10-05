@@ -52,6 +52,26 @@ export class OfferRepository extends PrismaRepository<OfferEntity> {
     });
   }
 
+  async createMany(offers: OfferEntity[]): Promise<void> {
+    await this.prismaService.offer.createMany({
+      data: offers.map((offer) =>
+        _.pick(offer, [
+          'id',
+          'name',
+          'description',
+          'price',
+          'priceCurrency',
+          'businessFunction',
+          'guildId',
+          'brandId',
+          'productCategoryId',
+          'sellerId',
+          'status',
+        ]),
+      ),
+    });
+  }
+
   async save(offer: OfferEntity): Promise<void> {
     await this.prismaService.offer.update({
       where: {

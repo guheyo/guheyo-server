@@ -38,6 +38,27 @@ export class UserImageRepository extends PrismaRepository<UserImageEntity> {
     });
   }
 
+  async createMany(userImages: UserImageEntity[]): Promise<void> {
+    await this.prismaService.userImage.createMany({
+      data: userImages.map((userImage) =>
+        _.pick(userImage, [
+          'id',
+          'name',
+          'url',
+          'contentType',
+          'description',
+          'height',
+          'width',
+          'position',
+          'type',
+          'refId',
+          'tracked',
+          'userId',
+        ]),
+      ),
+    });
+  }
+
   async save(userImage: UserImageEntity): Promise<void> {
     await this.prismaService.userImage.update({
       where: {
