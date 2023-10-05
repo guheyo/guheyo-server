@@ -1,3 +1,5 @@
+import { CreateManyUserImageCommand } from '@lib/domains/user-image/application/commands/create-many-user-image/create-many-user-image.command';
+import { CreateManyUserImageInput } from '@lib/domains/user-image/application/commands/create-many-user-image/create-many-user-image.input';
 import { CreateUserImageCommand } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.command';
 import { CreateUserImageInput } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.input';
 import { DeleteUserImageCommand } from '@lib/domains/user-image/application/commands/delete-user-image/delete-user-image.command';
@@ -25,6 +27,12 @@ export class UserImageResolver {
   async createUserImage(@Args('input') input: CreateUserImageInput): Promise<String> {
     await this.commandBus.execute(new CreateUserImageCommand(input));
     return input.id;
+  }
+
+  @Mutation(() => String)
+  async createManyUserImage(@Args('input') input: CreateManyUserImageInput): Promise<String> {
+    await this.commandBus.execute(new CreateManyUserImageCommand(input));
+    return '200';
   }
 
   @Mutation(() => String)
