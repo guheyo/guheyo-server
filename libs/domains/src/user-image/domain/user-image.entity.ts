@@ -29,9 +29,18 @@ export class UserImageEntity {
 
   constructor(partial: Partial<UserImageEntity>) {
     Object.assign(this, partial);
+    this.tracked = false;
   }
 
   updatePosition(position: number) {
     this.position = position;
+  }
+
+  trackImage() {
+    this.tracked = true;
+  }
+
+  untrackImage() {
+    this.tracked = false;
   }
 }
