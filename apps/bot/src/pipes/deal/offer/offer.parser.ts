@@ -16,7 +16,7 @@ export class OfferParser extends DealParser {
     const offerId = this.generateUUID();
     return {
       createOfferInput: this.parseCreateDealInput(offerId, userId, message),
-      createUserImagesInput: this.parseCreateUserImagesInput(userId, message, 'offer', offerId),
+      createManyUserImageInput: this.parseCreateUserImagesInput(userId, message, 'offer', offerId),
     };
   }
 
