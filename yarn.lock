@@ -1766,6 +1766,7 @@ __metadata:
     "@nestjs/common": ^10.2.4
     "@nestjs/config": ^3.0.1
     "@nestjs/core": ^10.2.4
+    "@nestjs/cqrs": ^10.2.6
     "@nestjs/graphql": ^12.0.8
     "@nestjs/testing": ^10.2.4
     "@prisma/client": ^4.13.0
@@ -2327,6 +2328,20 @@ __metadata:
     reflect-metadata: 0.1.13
     rxjs: ^7.2.0
   checksum: ab2250a670c08995323c0a6f12869768986ed12aec0911cf97e5f214e6afe23dc3a2e77d147aab902d8afe30b9e5f8f11d5e08d8889df2cfeb0acbf15197ce96
+  languageName: node
+  linkType: hard
+
+"@nestjs/cqrs@npm:^10.2.6":
+  version: 10.2.6
+  resolution: "@nestjs/cqrs@npm:10.2.6"
+  dependencies:
+    uuid: 9.0.0
+  peerDependencies:
+    "@nestjs/common": ^9.0.0 || ^10.0.0
+    "@nestjs/core": ^9.0.0 || ^10.0.0
+    reflect-metadata: 0.1.13
+    rxjs: ^7.2.0
+  checksum: db785539832c9cb852f5cc32b266d0aa14f45c034dd00b56f2f5012c325605a3a9f4ff97066bc63c55a458b6890b4a2ae587a3c9bdc56d51224f9940b81b5bf6
   languageName: node
   linkType: hard
 
