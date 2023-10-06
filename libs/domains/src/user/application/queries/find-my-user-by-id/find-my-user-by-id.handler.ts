@@ -1,14 +1,15 @@
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { PrismaService } from '@lib/shared';
+import { QueryHandler } from '@nestjs/cqrs';
+import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { FindMyUserByIdQuery } from './find-my-user-by-id.query';
-import { UserResponse } from '../../dtos/user.response';
 import { MyUserResponse } from '../../dtos/my-user.response';
 
 @QueryHandler(FindMyUserByIdQuery)
-export class FindMyUserByIdHandler implements IQueryHandler<FindMyUserByIdQuery> {
-  constructor(private prismaService: PrismaService) {}
+export class FindMyUserByIdHandler extends PrismaQueryHandler<FindMyUserByIdQuery, MyUserResponse> {
+  constructor() {
+    super(MyUserResponse);
+  }
 
-  async execute(query: FindMyUserByIdQuery): Promise<UserResponse | null> {
+  async execute(query: FindMyUserByIdQuery): Promise<MyUserResponse | null> {
     const user = await this.prismaService.user.findUnique({
       where: { id: query.id },
       include: {
@@ -20,6 +21,6 @@ export class FindMyUserByIdHandler implements IQueryHandler<FindMyUserByIdQuery>
         socialAccounts: true,
       },
     });
-    return user ? new MyUserResponse(user) : null;
+    return this.parseResponse(user);
   }
 }

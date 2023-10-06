@@ -44,11 +44,11 @@ export class ImageService {
   }
 
   async uploadFile(key: string, file: Buffer) {
-    const mimeType = mimeTypes.lookup(key) || 'image/png';
+    const mimeType = mimeTypes.lookup(key);
     const command = new PutObjectCommand({
       Bucket: this.configService.get('s3.bucket'),
       Key: key,
-      ContentType: mimeType,
+      ContentType: mimeType || undefined,
       Body: file,
     });
     await this.client.send(command);

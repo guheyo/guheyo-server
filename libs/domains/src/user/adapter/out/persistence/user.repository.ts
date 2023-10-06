@@ -63,6 +63,12 @@ export class UserRepository extends PrismaRepository<UserEntity> implements User
     });
   }
 
+  async createMany(users: UserEntity[]): Promise<void> {
+    await this.prismaService.user.createMany({
+      data: users.map((user) => _.pick(user, 'id', 'username', 'avatarURL')),
+    });
+  }
+
   async save(user: UserEntity): Promise<void> {
     await this.prismaService.user.update({
       where: {

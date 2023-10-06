@@ -1,14 +1,15 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { PrismaService } from '@lib/shared';
-import { plainToClass } from 'class-transformer';
+import { QueryHandler } from '@nestjs/cqrs';
+import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { NotFoundException } from '@nestjs/common';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
 import { FindOfferByIdQuery } from './find-offer-by-id.query';
 import { OfferResponse } from '../../dtos/offer.response';
 
 @QueryHandler(FindOfferByIdQuery)
-export class FindOfferByIdHandler implements IQueryHandler<FindOfferByIdQuery> {
-  constructor(private prismaService: PrismaService) {}
+export class FindOfferByIdHandler extends PrismaQueryHandler<FindOfferByIdQuery, OfferResponse> {
+  constructor() {
+    super(OfferResponse);
+  }
 
   async execute(query: FindOfferByIdQuery): Promise<any> {
     const offer = await this.prismaService.offer.findUnique({
@@ -27,12 +28,9 @@ export class FindOfferByIdHandler implements IQueryHandler<FindOfferByIdQuery> {
         position: 'asc',
       },
     });
-
-    return offer
-      ? plainToClass(OfferResponse, {
-          ...offer,
-          images,
-        })
-      : null;
+    return this.parseResponse({
+      ...offer,
+      images,
+    });
   }
 }

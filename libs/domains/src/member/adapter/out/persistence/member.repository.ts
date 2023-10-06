@@ -35,6 +35,12 @@ export class MemberRepository
     });
   }
 
+  async createMany(members: MemberEntity[]): Promise<void> {
+    await this.prismaService.member.createMany({
+      data: members.map((member) => _.pick(member, ['id', 'userId', 'guildId'])),
+    });
+  }
+
   async save(member: MemberEntity): Promise<void> {
     await this.prismaService.member.update({
       where: {

@@ -1,12 +1,16 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { PrismaService } from '@lib/shared';
-import { plainToClass } from 'class-transformer';
+import { QueryHandler } from '@nestjs/cqrs';
+import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { UserImageResponse } from '../../dtos/user-image.response';
 import { FindUserImageByIdQuery } from './find-user-image-by-id.query';
 
 @QueryHandler(FindUserImageByIdQuery)
-export class FindUserImageByIdHandler implements IQueryHandler<FindUserImageByIdQuery> {
-  constructor(private readonly prismaService: PrismaService) {}
+export class FindUserImageByIdHandler extends PrismaQueryHandler<
+  FindUserImageByIdQuery,
+  UserImageResponse
+> {
+  constructor() {
+    super(UserImageResponse);
+  }
 
   async execute(query: FindUserImageByIdQuery): Promise<UserImageResponse | null> {
     const userImage = await this.prismaService.userImage.findUnique({
@@ -14,7 +18,6 @@ export class FindUserImageByIdHandler implements IQueryHandler<FindUserImageById
         id: query.id,
       },
     });
-
-    return userImage ? plainToClass(UserImageResponse, userImage) : null;
+    return this.parseResponse(userImage);
   }
 }

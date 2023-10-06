@@ -31,6 +31,12 @@ export class GuildRepository extends PrismaRepository<GuildEntity> {
     });
   }
 
+  async createMany(guilds: GuildEntity[]): Promise<void> {
+    await this.prismaService.guild.createMany({
+      data: guilds.map((guild) => _.pick(guild, ['id', 'name', 'description', 'icon', 'position'])),
+    });
+  }
+
   async save(guild: GuildEntity): Promise<void> {
     await this.prismaService.guild.update({
       where: {
