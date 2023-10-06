@@ -1,7 +1,7 @@
-import { IEvent } from '@nestjs/cqrs';
+import { ICommand } from '@nestjs/cqrs';
 import { TrackUserImagesArgs } from './track-user-images.args';
 
-export class TrackUserImagesEvent implements IEvent {
+export class TrackUserImagesCommand implements ICommand {
   type: string;
 
   refId: string;
