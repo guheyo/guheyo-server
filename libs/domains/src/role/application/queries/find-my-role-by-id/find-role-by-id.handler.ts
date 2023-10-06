@@ -1,16 +1,18 @@
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { PrismaService } from '@lib/shared';
+import { QueryHandler } from '@nestjs/cqrs';
+import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { FindRoleByIdQuery } from './find-role-by-id.query';
 import { RoleResponse } from '../../dtos/role.response';
 
 @QueryHandler(FindRoleByIdQuery)
-export class FindRoleByIdHandler implements IQueryHandler<FindRoleByIdQuery> {
-  constructor(private prismaService: PrismaService) {}
+export class FindRoleByIdHandler extends PrismaQueryHandler<FindRoleByIdQuery, RoleResponse> {
+  constructor() {
+    super(RoleResponse);
+  }
 
   async execute(query: FindRoleByIdQuery): Promise<RoleResponse | null> {
     const role = await this.prismaService.role.findUnique({
       where: { id: query.id },
     });
-    return role ? new RoleResponse(role) : null;
+    return this.parseResponse(role);
   }
 }

@@ -22,7 +22,6 @@ export class FindUserImagesOfRefHandler extends PrismaQueryHandler<
         position: 'asc',
       },
     });
-
     return this.parseResponses(userImages);
   }
 }
