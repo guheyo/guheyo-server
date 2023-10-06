@@ -69,6 +69,7 @@ input CreateUserImageInput {
   name: String!
   position: Int!
   refId: ID!
+  tracked: Boolean!
   type: String!
   url: String!
   userId: ID!
@@ -186,6 +187,7 @@ type Query {
   findOfferById(id: String!): OfferResponse
   findRoleById(id: String!): RoleResponse
   findUserImageById(id: String!): UserImageResponse
+  findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   getSocialAccountsByUserId(id: String!): String!
 }

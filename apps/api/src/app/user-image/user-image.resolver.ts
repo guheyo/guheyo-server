@@ -6,6 +6,8 @@ import { DeleteUserImageCommand } from '@lib/domains/user-image/application/comm
 import { UpdateUserImageCommand } from '@lib/domains/user-image/application/commands/update-user-image/update-user-image.command';
 import { UpdateUserImageInput } from '@lib/domains/user-image/application/commands/update-user-image/update-user-image.input';
 import { UserImageResponse } from '@lib/domains/user-image/application/dtos/user-image.response';
+import { FindUserImagesOfRefArgs } from '@lib/domains/user-image/application/queries/find-user-iamges-of-ref/find-user-images-of-ref.args';
+import { FindUserImagesOfRefQuery } from '@lib/domains/user-image/application/queries/find-user-iamges-of-ref/find-user-images-of-ref.query';
 import { FindUserImageByIdQuery } from '@lib/domains/user-image/application/queries/find-user-image-by-id/find-user-image-by-id.query';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
@@ -20,6 +22,12 @@ export class UserImageResolver {
   @Query(() => UserImageResponse, { nullable: true })
   async findUserImageById(@Args('id') id: string): Promise<UserImageResponse | null> {
     const query = new FindUserImageByIdQuery(id);
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => [UserImageResponse])
+  async findUserImagesOfRef(@Args() args: FindUserImagesOfRefArgs) {
+    const query = new FindUserImagesOfRefQuery(args);
     return this.queryBus.execute(query);
   }
 
