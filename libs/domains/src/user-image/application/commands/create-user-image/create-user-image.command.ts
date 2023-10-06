@@ -22,6 +22,8 @@ export class CreateUserImageCommand implements ICommand {
 
   refId: string;
 
+  tracked: boolean;
+
   userId: string;
 
   constructor(input: CreateUserImageInput) {
@@ -35,6 +37,7 @@ export class CreateUserImageCommand implements ICommand {
     this.position = input.position;
     this.type = input.type;
     this.refId = input.refId;
+    this.tracked = input.tracked;
     this.userId = input.userId;
   }
 }
