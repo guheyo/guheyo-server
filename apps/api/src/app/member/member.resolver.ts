@@ -30,31 +30,31 @@ export class MemberResolver {
   }
 
   @Mutation(() => String)
-  async createMember(@Args('input') input: CreateMemberInput): Promise<String> {
+  async createMember(@Args('input') input: CreateMemberInput): Promise<string> {
     await this.commandBus.execute(new CreateMemberCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async updateMember(@Args('input') input: UpdateMemberInput): Promise<String> {
+  async updateMember(@Args('input') input: UpdateMemberInput): Promise<string> {
     await this.commandBus.execute(new UpdateMemberCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async deleteMember(@Args() args: DeleteMemberArgs): Promise<String> {
+  async deleteMember(@Args() args: DeleteMemberArgs): Promise<string> {
     await this.commandBus.execute(new DeleteMemberCommand(args));
     return args.id;
   }
 
   @Mutation(() => String)
-  async connectRoles(@Args('input') input: ConnectRolesInput): Promise<String> {
+  async connectRoles(@Args('input') input: ConnectRolesInput): Promise<string> {
     await this.commandBus.execute(new ConnectRolesCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async disconnectRoles(@Args('input') input: DisconnectRolesInput): Promise<String> {
+  async disconnectRoles(@Args('input') input: DisconnectRolesInput): Promise<string> {
     await this.commandBus.execute(new DisconnectRolesCommand(input));
     return input.id;
   }

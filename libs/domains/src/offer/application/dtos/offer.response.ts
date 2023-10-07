@@ -38,7 +38,7 @@ export class OfferResponse {
   guildId: string;
 
   @Field()
-  productCategoryId: String;
+  productCategoryId: string;
 
   @Field(() => ID)
   sellerId: string;
