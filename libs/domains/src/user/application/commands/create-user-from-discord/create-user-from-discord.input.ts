@@ -1,6 +1,9 @@
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 
-export class CreateJoinedUserInput {
+export class CreateUserFromDiscordInput {
+  @IsUUID()
+  id: string;
+
   @IsString()
   username: string;
 

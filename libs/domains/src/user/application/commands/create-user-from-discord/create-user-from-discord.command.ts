@@ -1,7 +1,9 @@
 import { ICommand } from '@nestjs/cqrs/dist';
-import { CreateJoinedUserInput } from './create-joined-user.input';
+import { CreateUserFromDiscordInput } from './create-user-from-discord.input';
 
-export class CreateJoinedUserCommand implements ICommand {
+export class CreateUserFromDiscordCommand implements ICommand {
+  id: string;
+
   username: string;
 
   avatarURL?: string;
@@ -18,7 +20,8 @@ export class CreateJoinedUserCommand implements ICommand {
 
   roleIds: string[];
 
-  constructor(input: CreateJoinedUserInput) {
+  constructor(input: CreateUserFromDiscordInput) {
+    this.id = input.id;
     this.username = input.username;
     this.avatarURL = input.avatarURL;
     this.socialAccountId = input.socialAccountId;

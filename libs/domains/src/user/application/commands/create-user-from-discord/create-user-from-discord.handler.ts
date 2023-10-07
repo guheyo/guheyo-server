@@ -1,0 +1,40 @@
+import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
+import { Inject } from '@nestjs/common';
+import { UserEntity } from '@lib/domains/user/domain/user.entity';
+import { CreateUserFromDiscordCommand } from './create-user-from-discord.command';
+import { UserSavePort } from '../../ports/out/user.save.port';
+import { UserService } from '../../services/user.service';
+
+@CommandHandler(CreateUserFromDiscordCommand)
+export class CreateUserFromDiscordHandler implements ICommandHandler<CreateUserFromDiscordCommand> {
+  constructor(
+    @Inject('UserSavePort') private readonly userSavePort: UserSavePort,
+    private readonly userService: UserService,
+    private readonly publisher: EventPublisher,
+  ) {}
+
+  async execute(command: CreateUserFromDiscordCommand): Promise<void> {
+    const newUser = this.publisher.mergeObjectContext(
+      new UserEntity({
+        id: command.id,
+        username: command.username,
+        avatarURL: command.avatarURL
+          ? await this.userService.uploadAvatar(command.avatarURL, command.id)
+          : undefined,
+      }),
+    );
+    await this.userSavePort.create(newUser);
+    newUser.createUserFromDiscord(
+      [
+        {
+          guildId: command.guildId,
+          roleIds: command.roleIds,
+        },
+      ],
+      command.socialAccountId,
+      command.provider,
+      command.socialId,
+    );
+    newUser.commit();
+  }
+}
