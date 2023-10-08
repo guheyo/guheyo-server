@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config/dist';
 import { PrismaModule } from '@lib/shared/prisma/prisma.module';
 import { ImageModule } from '@lib/shared/image/image.module';
 import { USER_PROVIDERS } from '@lib/domains/user/user.providers';
+import { USER_IMAGE_PROVIDERS } from '@lib/domains/user-image/user-image.providers';
 import { SOCIAL_ACCOUNT_PROVIDERS } from '@lib/domains/social-account/social-account.providers';
 import { MEMBER_PROVIDERS } from '@lib/domains/member/member.providers';
 import { ROLE_PROVIDERS } from '@lib/domains/role/role.providers';
@@ -15,8 +16,9 @@ import { COMMAND_HANDLERS } from './commands/command-handlers';
 import { EVENT_HANDLERS } from './events/event-handlers';
 import { DiscordIdConverter } from './shared/discord-id-converter';
 import { BotExceptionFilter } from './filters/bot-exception.filter';
-import { CLIENTS } from './clients/clients';
-import { PARSERS } from './pipes/parsers';
+import { BOT_USER_PROVIDERS } from './apps/user/user.providers';
+import { BOT_OFFER_PROVIDERS } from './apps/offer/offer.providers';
+import { BOT_USER_IMAGE_PROVIDERS } from './apps/user-image/user-image.providers';
 
 @Module({
   imports: [
@@ -41,6 +43,7 @@ import { PARSERS } from './pipes/parsers';
   ],
   providers: [
     ...USER_PROVIDERS,
+    ...USER_IMAGE_PROVIDERS,
     ...SOCIAL_ACCOUNT_PROVIDERS,
     ...MEMBER_PROVIDERS,
     ...ROLE_PROVIDERS,
@@ -51,8 +54,9 @@ import { PARSERS } from './pipes/parsers';
       provide: APP_FILTER,
       useClass: BotExceptionFilter,
     },
-    ...CLIENTS,
-    ...PARSERS,
+    ...BOT_USER_PROVIDERS,
+    ...BOT_USER_IMAGE_PROVIDERS,
+    ...BOT_OFFER_PROVIDERS,
   ],
 })
 export class BotModule {}
