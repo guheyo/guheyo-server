@@ -1,11 +1,11 @@
-import { User } from 'discord.js';
-import { UserOption } from 'necord';
+import { GuildMember } from 'discord.js';
+import { MemberOption } from 'necord';
 
 export class RegisterDiscordUserRequest {
-  @UserOption({
-    name: 'user',
-    description: 'User',
+  @MemberOption({
+    name: 'member',
+    description: 'Member',
     required: true,
   })
-  user: User;
+  discordMember: GuildMember;
 }
