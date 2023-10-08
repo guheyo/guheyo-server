@@ -3,14 +3,12 @@ import { Inject } from '@nestjs/common';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { CreateUserFromDiscordCommand } from './create-user-from-discord.command';
 import { UserSavePort } from '../../ports/out/user.save.port';
-import { UserService } from '../../services/user.service';
 
 @CommandHandler(CreateUserFromDiscordCommand)
 export class CreateUserFromDiscordHandler implements ICommandHandler<CreateUserFromDiscordCommand> {
   constructor(
-    @Inject('UserSavePort') private readonly userSavePort: UserSavePort,
-    private readonly userService: UserService,
     private readonly publisher: EventPublisher,
+    @Inject('UserSavePort') private readonly userSavePort: UserSavePort,
   ) {}
 
   async execute(command: CreateUserFromDiscordCommand): Promise<void> {
@@ -18,9 +16,7 @@ export class CreateUserFromDiscordHandler implements ICommandHandler<CreateUserF
       new UserEntity({
         id: command.id,
         username: command.username,
-        avatarURL: command.avatarURL
-          ? await this.userService.uploadAvatar(command.avatarURL, command.id)
-          : undefined,
+        avatarURL: command.avatarURL,
       }),
     );
     await this.userSavePort.create(newUser);
