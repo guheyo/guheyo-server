@@ -49,16 +49,23 @@ export class MemberRepository
         position: 'asc',
       },
     });
-    await this.prismaService.member.createMany({
-      data: guilds.map((guild) => ({
-        userId: input.userId,
-        guildId: guild.id,
-        roles: {
-          connect: input.guildIdWithRoleIdsList.find(
-            (guildIdWithRoleIds) => guildIdWithRoleIds.guildId === guild.id,
-          )?.roleIds,
+    await guilds.map((guild) => {
+      const guildIdWithRoleIds = input.guildIdWithRoleIdsList.find(
+        (guildIdWithRoleId) => guildIdWithRoleId.guildId === guild.id,
+      );
+      return this.prismaService.member.create({
+        data: {
+          userId: input.userId,
+          guildId: guild.id,
+          roles: {
+            connect: guildIdWithRoleIds
+              ? guildIdWithRoleIds.roleIds.map((roleId) => ({
+                  id: roleId,
+                }))
+              : [],
+          },
         },
-      })),
+      });
     });
   }
 
