@@ -5,8 +5,8 @@ import { GuildGuard } from '@app/bot/guards/guilds/guild.guard';
 import { MarketChannelGuard } from '@app/bot/guards/channels/market-channel.guard';
 import { Type } from '@app/bot/decorators/type.decorator';
 import { UserWithMessagePipe } from '@app/bot/pipes/user/user-with-message.pipe';
-import { OfferPipe } from '@app/bot/pipes/deal/offer/offer.pipe';
-import { OfferWithUserImagesCreateInput } from '@app/bot/pipes/deal/offer/offer.types';
+import { OfferPipe } from '@app/bot/pipes/offer/offer.pipe';
+import { OfferWithUserImagesCreateInput } from '@app/bot/apps/offer/offer.types';
 
 @UseGuards(GuildGuard, MarketChannelGuard)
 @Type('wts')
