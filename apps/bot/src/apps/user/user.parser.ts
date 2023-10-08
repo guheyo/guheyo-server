@@ -1,18 +1,17 @@
 import { Parser } from '@app/bot/shared/parser';
 import { Injectable } from '@nestjs/common';
 import { GuildMember } from 'discord.js';
+import { CreateUserFromDiscordInput } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.input';
 
 @Injectable()
 export class UserParser extends Parser {
-  async parseCreateUserFromDiscordInput(
+  parseCreateUserFromDiscordInput(
     id: string,
     guildMember: GuildMember,
-    avatarURL: string | undefined,
-  ) {
+  ): CreateUserFromDiscordInput {
     return {
       id,
       username: guildMember.user.username,
-      avatarURL,
       socialAccountId: this.discordIdConverter.convertIdUsingDiscordNamespace(guildMember.id),
       provider: 'discord',
       socialId: guildMember.id,
