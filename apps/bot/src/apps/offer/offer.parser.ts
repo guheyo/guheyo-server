@@ -2,7 +2,7 @@ import { CreateOfferInput } from '@lib/domains/offer/application/commands/create
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Message } from 'discord.js';
-import { DealParser } from '../abstracts/deal.parser';
+import { DealParser } from '../deal/abstracts/deal.parser';
 import { OfferErrorMessage } from './offer.error-message';
 
 @Injectable()
