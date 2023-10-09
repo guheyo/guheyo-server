@@ -1,12 +1,12 @@
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
 import { Context, On } from 'necord';
 import { GuildGuard } from '@app/bot/guards/guilds/guild.guard';
 import { MarketChannelGuard } from '@app/bot/guards/channels/market-channel.guard';
 import { Type } from '@app/bot/decorators/type.decorator';
 import { UserWithMessagePipe } from '@app/bot/pipes/user/user-with-message.pipe';
 import { OfferPipe } from '@app/bot/pipes/offer/offer.pipe';
-import { OfferWithUserImagesCreateInput } from '@app/bot/apps/offer/offer.types';
+import { CreateOfferInputWithUploadUserImageInputList } from '@app/bot/apps/offer/offer.types';
+import { OfferClient } from '@app/bot/apps/offer/offer.client';
 
 @UseGuards(GuildGuard, MarketChannelGuard)
 @Type('wts')
@@ -14,13 +14,14 @@ import { OfferWithUserImagesCreateInput } from '@app/bot/apps/offer/offer.types'
 export class OfferMessageCreatedHandler {
   private readonly logger = new Logger(OfferMessageCreatedHandler.name);
 
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(private readonly offerClient: OfferClient) {}
 
   @On('messageCreate')
   public async onCreateOfferMessage(
     @Context(UserWithMessagePipe, OfferPipe)
-    { createOfferInput, createManyUserImageInput }: OfferWithUserImagesCreateInput,
+    { createOfferInput, uploadUserImageInputList }: CreateOfferInputWithUploadUserImageInputList,
   ) {
-    // TODO: create created offer message
+    await this.offerClient.uploadAndCreateAttachments(uploadUserImageInputList);
+    await this.offerClient.createOffer(createOfferInput);
   }
 }
