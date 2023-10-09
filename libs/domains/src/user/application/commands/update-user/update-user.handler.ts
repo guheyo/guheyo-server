@@ -9,9 +9,9 @@ import { UserSavePort } from '../../ports/out/user.save.port';
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   constructor(
-    private readonly publisher: EventPublisher,
     @Inject('UserLoadPort') private userLoadPort: UserLoadPort,
     @Inject('UserSavePort') private userSavePort: UserSavePort,
+    private readonly publisher: EventPublisher,
   ) {}
 
   async execute(command: UpdateUserCommand): Promise<void> {

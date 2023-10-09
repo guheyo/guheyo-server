@@ -4,6 +4,7 @@ import { RpcException } from '@nestjs/microservices';
 import { Message } from 'discord.js';
 import { DealParser } from '../deal/abstracts/deal.parser';
 import { OfferErrorMessage } from './offer.error-message';
+import { CreateOfferInputWithUploadUserImageInputList } from './offer.types';
 
 @Injectable()
 export class OfferParser extends DealParser {
@@ -12,11 +13,16 @@ export class OfferParser extends DealParser {
     return re.exec(content);
   }
 
-  parse(userId: string, message: Message) {
+  parse(userId: string, message: Message): CreateOfferInputWithUploadUserImageInputList {
     const offerId = this.generateUUID();
     return {
       createOfferInput: this.parseCreateDealInput(offerId, userId, message),
-      createManyUserImageInput: this.parseCreateUserImagesInput(userId, message, 'offer', offerId),
+      uploadUserImageInputList: this.parseUploadUserImageInputList(
+        userId,
+        message,
+        'offer',
+        offerId,
+      ),
     };
   }
 

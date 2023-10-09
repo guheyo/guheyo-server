@@ -5,13 +5,12 @@ import { CreateUserFromDiscordInput } from '@lib/domains/user/application/comman
 
 @Injectable()
 export class UserParser extends Parser {
-  parseCreateUserFromDiscordInput(
-    id: string,
-    guildMember: GuildMember,
-  ): CreateUserFromDiscordInput {
+  parseCreateUserFromDiscordInput(guildMember: GuildMember): CreateUserFromDiscordInput {
+    const id = this.generateUUID();
     return {
       id,
       username: guildMember.user.username,
+      avatarURL: guildMember.avatarURL() || guildMember.displayAvatarURL(),
       socialAccountId: this.discordIdConverter.convertIdUsingDiscordNamespace(guildMember.id),
       provider: 'discord',
       socialId: guildMember.id,

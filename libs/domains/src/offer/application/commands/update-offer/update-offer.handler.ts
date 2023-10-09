@@ -1,4 +1,4 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs/dist';
+import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
 import _ from 'lodash';
@@ -11,13 +11,15 @@ export class UpdateOfferHandler implements ICommandHandler<UpdateOfferCommand> {
   constructor(
     @Inject('OfferSavePort') private offerSavePort: OfferSavePort,
     @Inject('OfferLoadPort') private offerLoadPort: OfferLoadPort,
+    private readonly publisher: EventPublisher,
   ) {}
 
   async execute(command: UpdateOfferCommand): Promise<void> {
-    const offer = await this.offerLoadPort.findById(command.id);
+    let offer = await this.offerLoadPort.findById(command.id);
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
 
-    offer.updateOffer(
+    offer = this.publisher.mergeObjectContext(offer);
+    offer.update(
       _.pick(command, [
         'id',
         'name',
@@ -29,5 +31,6 @@ export class UpdateOfferHandler implements ICommandHandler<UpdateOfferCommand> {
       ]),
     );
     await this.offerSavePort.save(offer);
+    offer.commit();
   }
 }

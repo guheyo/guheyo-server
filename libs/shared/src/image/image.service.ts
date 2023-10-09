@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import mimeTypes from 'mime-types';
+import { ImageErrorMessage } from './image.error.message';
 
 @Injectable()
 export class ImageService {
@@ -75,8 +76,10 @@ export class ImageService {
   }
 
   parseNameFromURL(url: string) {
-    const index = url.lastIndexOf('/');
-    return url.substring(index + 1);
+    const re = /\/([^?/]+)(?=\?|$)/;
+    const match = re.exec(url);
+    if (!match) throw new Error(ImageErrorMessage.INVALID_URL_FORMAT);
+    return match[1];
   }
 
   generateUploadPath(userId: string, type: string, id: string) {
