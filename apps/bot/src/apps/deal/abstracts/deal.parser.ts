@@ -1,12 +1,10 @@
 import { Parser } from '@app/bot/shared/parser';
 import { CreateOfferInput } from '@lib/domains/offer/application/commands/create-offer/create-offer.input';
 import { CreateUserImageInput } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.input';
-import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Message, TextChannel } from 'discord.js';
 import { DealErrorMessage } from '../deal.error-message';
 
-@Injectable()
 export abstract class DealParser extends Parser {
   abstract matchFormat(content: string): RegExpExecArray | null;
 
@@ -22,7 +20,7 @@ export abstract class DealParser extends Parser {
     return message.attachments.size > 0;
   }
 
-  parseCreateUserImagesInput(
+  parseUploadUserImageInputList(
     userId: string,
     message: Message,
     type: string,
