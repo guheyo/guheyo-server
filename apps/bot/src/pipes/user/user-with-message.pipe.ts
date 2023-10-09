@@ -1,7 +1,9 @@
+import { UserClient } from '@app/bot/apps/user/user.client';
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { ContextOf } from 'necord';
-import { UserClient } from '../../clients/user/user.client';
-import { UserWithMessageType } from './user.types';
+import { UserWithMessage } from '@app/bot/apps/user/user.types';
+import { UserErrorMessage } from '@app/bot/apps/user/user.error-message';
 
 @Injectable()
 export class UserWithMessagePipe implements PipeTransform {
@@ -10,9 +12,11 @@ export class UserWithMessagePipe implements PipeTransform {
   async transform(
     [message]: ContextOf<'messageCreate'>,
     metadata: ArgumentMetadata,
-  ): Promise<UserWithMessageType> {
-    const discordUser = message.member!.user;
-    const user = await this.userClient.findUserBySocialAccount('discord', discordUser.id);
+  ): Promise<UserWithMessage> {
+    const discordMember = message.member;
+    if (!discordMember) throw new RpcException(UserErrorMessage.DISOCRD_MEMBER_NOT_FOUND);
+
+    const user = await this.userClient.findUserBySocialAccount('discord', discordMember.id);
     if (user)
       return {
         user: {
@@ -21,15 +25,10 @@ export class UserWithMessagePipe implements PipeTransform {
         message,
       };
 
-    const newUserId = await this.userClient.createUser(
-      discordUser.username,
-      discordUser.avatarURL() || undefined,
-    );
-
-    await this.userClient.linkSocialAccount(discordUser.id, newUserId);
+    const userId = await this.userClient.createUserFromDiscord(discordMember);
     return {
       user: {
-        id: newUserId,
+        id: userId,
       },
       message,
     };

@@ -1,5 +1,5 @@
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { IsBoolean, IsInt, IsString, IsUUID } from 'class-validator';
+import { IsInt, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreateUserImageInput {
@@ -42,10 +42,6 @@ export class CreateUserImageInput {
   @IsUUID()
   @Field(() => ID)
   refId: string;
-
-  @IsBoolean()
-  @Field()
-  tracked: boolean;
 
   @IsUUID()
   @Field(() => ID)

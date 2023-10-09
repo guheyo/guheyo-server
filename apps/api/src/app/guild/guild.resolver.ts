@@ -22,19 +22,19 @@ export class GuildResolver {
   }
 
   @Mutation(() => String)
-  async createGuild(@Args('input') input: CreateGuildInput): Promise<String> {
+  async createGuild(@Args('input') input: CreateGuildInput): Promise<string> {
     await this.commandBus.execute(new CreateGuildCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async updateGuild(@Args('input') input: UpdateGuildInput): Promise<String> {
+  async updateGuild(@Args('input') input: UpdateGuildInput): Promise<string> {
     await this.commandBus.execute(new UpdateGuildCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async deleteGuild(@Args('id') id: string): Promise<String> {
+  async deleteGuild(@Args('id') id: string): Promise<string> {
     await this.commandBus.execute(new DeleteGuildCommand(id));
     return id;
   }

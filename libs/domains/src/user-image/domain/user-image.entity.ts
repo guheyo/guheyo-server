@@ -29,6 +29,7 @@ export class UserImageEntity {
 
   constructor(partial: Partial<UserImageEntity>) {
     Object.assign(this, partial);
+    this.tracked = false;
   }
 
   updatePosition(position: number) {

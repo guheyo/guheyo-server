@@ -30,6 +30,7 @@ module.exports = {
     'no-use-before-define': OFF,
     'no-unused-vars': OFF,
     'no-console': OFF,
+    'no-plusplus': OFF,
     'class-methods-use-this': OFF,
     '@typescript-eslint/no-use-before-define': ERROR,
     '@typescript-eslint/no-unused-vars': [ERROR, { args: 'none' }],

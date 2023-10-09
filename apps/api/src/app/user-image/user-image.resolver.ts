@@ -32,25 +32,25 @@ export class UserImageResolver {
   }
 
   @Mutation(() => String)
-  async createUserImage(@Args('input') input: CreateUserImageInput): Promise<String> {
+  async createUserImage(@Args('input') input: CreateUserImageInput): Promise<string> {
     await this.commandBus.execute(new CreateUserImageCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async createManyUserImage(@Args('input') input: CreateManyUserImageInput): Promise<String> {
+  async createManyUserImage(@Args('input') input: CreateManyUserImageInput): Promise<string> {
     await this.commandBus.execute(new CreateManyUserImageCommand(input));
     return '200';
   }
 
   @Mutation(() => String)
-  async updateUserImage(@Args('input') input: UpdateUserImageInput): Promise<String> {
+  async updateUserImage(@Args('input') input: UpdateUserImageInput): Promise<string> {
     await this.commandBus.execute(new UpdateUserImageCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async deleteUserImage(@Args('id') id: string): Promise<String> {
+  async deleteUserImage(@Args('id') id: string): Promise<string> {
     await this.commandBus.execute(new DeleteUserImageCommand(id));
     return id;
   }

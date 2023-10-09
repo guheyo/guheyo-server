@@ -17,19 +17,19 @@ export class SocialAccountResolver {
   }
 
   @Mutation(() => String)
-  async createSocialAccount(@Args('input') input: CreateSocialAccountInput): Promise<String> {
+  async createSocialAccount(@Args('input') input: CreateSocialAccountInput): Promise<string> {
     await this.commandBus.execute(new CreateSocialAccountCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async updateSocialAccount(@Args('input') input: UpdateSocialAccountInput): Promise<String> {
+  async updateSocialAccount(@Args('input') input: UpdateSocialAccountInput): Promise<string> {
     await this.commandBus.execute(new UpdateSocialAccountCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async deleteSocialAccount(@Args('id') id: string): Promise<String> {
+  async deleteSocialAccount(@Args('id') id: string): Promise<string> {
     await this.commandBus.execute(new DeleteSocialAccountCommand(id));
     return id;
   }

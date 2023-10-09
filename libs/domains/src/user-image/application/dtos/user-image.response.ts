@@ -1,5 +1,5 @@
 import { Field, GraphQLISODateTime, ID, Int, ObjectType } from '@nestjs/graphql';
-import { IsBoolean, IsDate, IsInt, IsString, IsUUID } from 'class-validator';
+import { IsDate, IsInt, IsString, IsUUID } from 'class-validator';
 
 @ObjectType()
 export class UserImageResponse {
@@ -50,10 +50,6 @@ export class UserImageResponse {
   @IsUUID()
   @Field(() => ID)
   refId: string;
-
-  @IsBoolean()
-  @Field(() => Boolean)
-  tracked: boolean;
 
   @IsUUID()
   @Field(() => ID)

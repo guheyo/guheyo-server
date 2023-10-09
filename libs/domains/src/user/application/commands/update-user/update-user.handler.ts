@@ -1,4 +1,4 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
 import _ from 'lodash';
 import { UserErrorMessage } from '@lib/domains/user/domain/user.error.message';
@@ -9,15 +9,18 @@ import { UserSavePort } from '../../ports/out/user.save.port';
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   constructor(
+    private readonly publisher: EventPublisher,
     @Inject('UserLoadPort') private userLoadPort: UserLoadPort,
     @Inject('UserSavePort') private userSavePort: UserSavePort,
   ) {}
 
   async execute(command: UpdateUserCommand): Promise<void> {
-    const user = await this.userLoadPort.findById(command.id);
+    let user = await this.userLoadPort.findById(command.id);
     if (!user) throw new NotFoundException(UserErrorMessage.USER_IS_NOT_FOUND);
 
+    user = this.publisher.mergeObjectContext(user);
     user.update(_.pick(command, ['name', 'avatarURL']));
     await this.userSavePort.save(user);
+    user.commit();
   }
 }
