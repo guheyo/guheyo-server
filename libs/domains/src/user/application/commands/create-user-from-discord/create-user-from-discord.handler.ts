@@ -7,8 +7,8 @@ import { UserSavePort } from '../../ports/out/user.save.port';
 @CommandHandler(CreateUserFromDiscordCommand)
 export class CreateUserFromDiscordHandler implements ICommandHandler<CreateUserFromDiscordCommand> {
   constructor(
-    private readonly publisher: EventPublisher,
     @Inject('UserSavePort') private readonly userSavePort: UserSavePort,
+    private readonly publisher: EventPublisher,
   ) {}
 
   async execute(command: CreateUserFromDiscordCommand): Promise<void> {

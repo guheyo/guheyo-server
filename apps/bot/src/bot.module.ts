@@ -10,6 +10,7 @@ import { USER_IMAGE_PROVIDERS } from '@lib/domains/user-image/user-image.provide
 import { SOCIAL_ACCOUNT_PROVIDERS } from '@lib/domains/social-account/social-account.providers';
 import { MEMBER_PROVIDERS } from '@lib/domains/member/member.providers';
 import { ROLE_PROVIDERS } from '@lib/domains/role/role.providers';
+import { OFFER_PROVIDERS } from '@lib/domains/offer/offer.providers';
 import { APP_FILTER } from '@nestjs/core';
 import { NecordConfigService } from './necord/necord.config.service';
 import { COMMAND_HANDLERS } from './commands/command-handlers';
@@ -47,6 +48,7 @@ import { BOT_USER_IMAGE_PROVIDERS } from './apps/user-image/user-image.providers
     ...SOCIAL_ACCOUNT_PROVIDERS,
     ...MEMBER_PROVIDERS,
     ...ROLE_PROVIDERS,
+    ...OFFER_PROVIDERS,
     ...COMMAND_HANDLERS,
     ...EVENT_HANDLERS,
     DiscordIdConverter,

@@ -2,6 +2,8 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import _ from 'lodash';
 import { UpdateOfferProps } from './offer.types';
+import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
+import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
 
 export class OfferEntity extends AggregateRoot {
   id: string;
@@ -37,7 +39,12 @@ export class OfferEntity extends AggregateRoot {
     Object.assign(this, partial);
   }
 
-  updateOffer(props: UpdateOfferProps) {
+  create() {
+    this.apply(new OfferCreatedEvent(this.id));
+  }
+
+  update(props: UpdateOfferProps) {
     Object.assign(this, _.pickBy(props, _.identity));
+    this.apply(new OfferUpdatedEvent(this.id));
   }
 }
