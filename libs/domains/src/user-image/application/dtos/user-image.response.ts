@@ -1,5 +1,5 @@
 import { Field, GraphQLISODateTime, ID, Int, ObjectType } from '@nestjs/graphql';
-import { IsBoolean, IsDate, IsInt, IsString, IsUUID } from 'class-validator';
+import { IsDate, IsInt, IsString, IsUUID } from 'class-validator';
 
 @ObjectType()
 export class UserImageResponse {
