@@ -4,7 +4,6 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import mimeTypes from 'mime-types';
-import { nanoid } from 'nanoid';
 
 @Injectable()
 export class ImageService {
@@ -36,10 +35,8 @@ export class ImageService {
       responseType: 'arraybuffer',
     });
     const buffer = Buffer.from(res.data, 'binary');
-    const extension = mimeTypes.extension(res.headers['content-type']);
     return {
       buffer,
-      extension,
     };
   }
 
@@ -52,22 +49,37 @@ export class ImageService {
       Body: file,
     });
     await this.client.send(command);
-    const s3url = this.createFileUrl(key);
-    return s3url;
+    const s3URL = this.createFileUrl(key);
+    return {
+      url: s3URL,
+      contentType: mimeType || undefined,
+    };
   }
 
   async uploadFileFromURL(url: string, path: string) {
-    const { buffer, extension } = await this.downloadFile(url);
-    if (!extension) throw new Error('Invalid extension');
-    const key = this.createFileKey(path, extension);
-    return this.uploadFile(key, buffer);
+    const { buffer } = await this.downloadFile(url);
+    const name = this.parseNameFromURL(url);
+    const key = this.createFileKey(path, name);
+    return {
+      name,
+      ...(await this.uploadFile(key, buffer)),
+    };
   }
 
-  createFileKey(path: string, extension: string) {
-    return `${path}/${nanoid()}.${extension}`;
+  createFileKey(path: string, name: string) {
+    return `${path}/${name}`;
   }
 
   createFileUrl(key: string) {
     return `${this.configService.get('s3.domain')}/${key}`;
+  }
+
+  parseNameFromURL(url: string) {
+    const index = url.lastIndexOf('/');
+    return url.substring(index + 1);
+  }
+
+  generateUploadPath(userId: string, type: string, id: string) {
+    return `images/${userId}/${type}/${id}`;
   }
 }

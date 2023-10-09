@@ -41,19 +41,19 @@ export class UserResolver {
   }
 
   @Mutation(() => String)
-  async createUser(@Args('input') input: CreateUserInput): Promise<String> {
+  async createUser(@Args('input') input: CreateUserInput): Promise<string> {
     await this.commandBus.execute(new CreateUserCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async updateUser(@Args('input') input: UpdateUserInput): Promise<String> {
+  async updateUser(@Args('input') input: UpdateUserInput): Promise<string> {
     await this.commandBus.execute(new UpdateUserCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async deleteUser(@Args('id') id: string): Promise<String> {
+  async deleteUser(@Args('id') id: string): Promise<string> {
     await this.commandBus.execute(new DeleteUserCommand(id));
     return id;
   }

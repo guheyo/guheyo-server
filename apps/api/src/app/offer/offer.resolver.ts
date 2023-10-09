@@ -22,19 +22,19 @@ export class OfferResolver {
   }
 
   @Mutation(() => String)
-  async createOffer(@Args('input') input: CreateOfferInput): Promise<String> {
+  async createOffer(@Args('input') input: CreateOfferInput): Promise<string> {
     await this.commandBus.execute(new CreateOfferCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async updateOffer(@Args('input') input: UpdateOfferInput): Promise<String> {
+  async updateOffer(@Args('input') input: UpdateOfferInput): Promise<string> {
     await this.commandBus.execute(new UpdateOfferCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async deleteOffer(@Args('id') id: string): Promise<String> {
+  async deleteOffer(@Args('id') id: string): Promise<string> {
     await this.commandBus.execute(new DeleteOfferCommand(id));
     return id;
   }

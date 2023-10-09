@@ -30,7 +30,7 @@ describe('ImageService', () => {
         'https://i.imgur.com/MKeEzUx.jpeg',
         'tests/0',
       );
-      expect(typeof url).toBe('string');
+      expect(typeof url).toBe('object');
     });
 
     it('should generate signed url', async () => {

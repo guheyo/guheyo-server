@@ -1,37 +1,25 @@
 import { Injectable, UseGuards } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { GuildGuard } from '@app/bot/guards/guilds/guild.guard';
 import { OwnerGuard } from '@app/bot/guards/users/owner.guard';
-import { CreateJoinedUserCommand } from '@lib/domains/user/application/commands/create-joined-user/create-joined-user.command';
-import { DiscordIdConverter } from '@app/bot/shared/discord-id-converter';
+import { UserClient } from '@app/bot/apps/user/user.client';
 import { RegisterDiscordUserRequest } from './register-discord-user.request';
 
 @UseGuards(GuildGuard, OwnerGuard)
 @Injectable()
 export class RegisterDiscordUserSlashCommandHandler {
-  constructor(
-    private readonly commandBus: CommandBus,
-    private readonly discordIdConverter: DiscordIdConverter,
-  ) {}
+  constructor(private readonly userClient: UserClient) {}
 
   @SlashCommand({ name: 'register-user', description: 'Register user in DB' })
   public async onCreateUser(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { user }: RegisterDiscordUserRequest,
+    @Options() { discordMember }: RegisterDiscordUserRequest,
   ) {
-    await this.commandBus.execute(
-      new CreateJoinedUserCommand({
-        username: user.username,
-        avatarURL: user.avatarURL() || undefined,
-        socialAccountId: this.discordIdConverter.convertIdUsingDiscordNamespace(user.id),
-        provider: 'discord',
-        socialId: user.id,
-        guildId: this.discordIdConverter.convertIdUsingDiscordNamespace(interaction.guildId!),
-        memberId: this.discordIdConverter.convertIdUsingGuildNamespace(user.id),
-        roleIds: [],
-      }),
-    );
-    interaction.reply(`User registered`);
+    const user = await this.userClient.findUserBySocialAccount('discord', discordMember.id);
+    if (user) interaction.reply(`${discordMember.user.username}<@${user.id}> already exists`);
+    else {
+      const userId = await this.userClient.createUserFromDiscord(discordMember);
+      interaction.reply(`${discordMember.user.username}<@${userId}> registered`);
+    }
   }
 }

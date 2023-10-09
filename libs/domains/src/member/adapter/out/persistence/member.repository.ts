@@ -3,11 +3,13 @@ import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { MemberRolesSavePort } from '@lib/domains/member/application/ports/out/member-roles.save.port';
 import { MemberEntity } from '@lib/domains/member/domain/member.entity';
+import { MemberSavePort } from '@lib/domains/member/application/ports/out/member.save.port';
+import { CreateMembersOfUserInput } from '@lib/domains/member/application/commands/create-members-of-user/create-members-of-user.input';
 
 @Injectable()
 export class MemberRepository
   extends PrismaRepository<MemberEntity>
-  implements MemberRolesSavePort
+  implements MemberSavePort, MemberRolesSavePort
 {
   constructor() {
     super(MemberEntity);
@@ -38,6 +40,32 @@ export class MemberRepository
   async createMany(members: MemberEntity[]): Promise<void> {
     await this.prismaService.member.createMany({
       data: members.map((member) => _.pick(member, ['id', 'userId', 'guildId'])),
+    });
+  }
+
+  async createMembersOfUser(input: CreateMembersOfUserInput): Promise<void> {
+    const guilds = await this.prismaService.guild.findMany({
+      orderBy: {
+        position: 'asc',
+      },
+    });
+    await guilds.map(async (guild) => {
+      const guildIdWithRoleIds = input.guildIdWithRoleIdsList.find(
+        (guildIdWithRoleId) => guildIdWithRoleId.guildId === guild.id,
+      );
+      return this.prismaService.member.create({
+        data: {
+          userId: input.userId,
+          guildId: guild.id,
+          roles: {
+            connect: guildIdWithRoleIds
+              ? guildIdWithRoleIds.roleIds.map((roleId) => ({
+                  id: roleId,
+                }))
+              : [],
+          },
+        },
+      });
     });
   }
 

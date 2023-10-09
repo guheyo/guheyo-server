@@ -22,19 +22,19 @@ export class RoleResolver {
   }
 
   @Mutation(() => String)
-  async createRole(@Args('input') input: CreateRoleInput): Promise<String> {
+  async createRole(@Args('input') input: CreateRoleInput): Promise<string> {
     await this.commandBus.execute(new CreateRoleCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async updateRole(@Args('input') input: UpdateRoleInput): Promise<String> {
+  async updateRole(@Args('input') input: UpdateRoleInput): Promise<string> {
     await this.commandBus.execute(new UpdateRoleCommand(input));
     return input.id;
   }
 
   @Mutation(() => String)
-  async deleteRole(@Args('id') id: string): Promise<String> {
+  async deleteRole(@Args('id') id: string): Promise<string> {
     await this.commandBus.execute(new DeleteRoleCommand(id));
     return id;
   }
