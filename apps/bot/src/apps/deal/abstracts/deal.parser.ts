@@ -44,7 +44,6 @@ export abstract class DealParser extends Parser {
         position,
         type,
         refId,
-        tracked: false,
         userId,
       };
       position += 1;

@@ -51,10 +51,6 @@ export class UserImageResponse {
   @Field(() => ID)
   refId: string;
 
-  @IsBoolean()
-  @Field(() => Boolean)
-  tracked: boolean;
-
   @IsUUID()
   @Field(() => ID)
   userId: string;

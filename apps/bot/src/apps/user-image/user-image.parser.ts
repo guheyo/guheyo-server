@@ -25,7 +25,6 @@ export class UserImageParser extends Parser {
       position: 0,
       type: 'user-avatar',
       refId: userId,
-      tracked: false,
       userId,
     };
   }
