@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { mock, verify, instance, anyOfClass } from 'ts-mockito';
+import { CqrsModule } from '@nestjs/cqrs';
 import { UserRepository } from '@lib/domains/user/adapter/out/persistence/user.repository';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { CreateUserCommand } from '../create-user.command';
@@ -12,6 +13,7 @@ describe('CreateUserCommand', () => {
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
+      imports: [CqrsModule],
       providers: [
         CreateUserHandler,
         {
