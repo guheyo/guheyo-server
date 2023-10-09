@@ -49,7 +49,7 @@ export class MemberRepository
         position: 'asc',
       },
     });
-    await guilds.map((guild) => {
+    await guilds.map(async (guild) => {
       const guildIdWithRoleIds = input.guildIdWithRoleIdsList.find(
         (guildIdWithRoleId) => guildIdWithRoleId.guildId === guild.id,
       );
