@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { UpdateUserProps } from './user.types';
 import { UserCreatedEvent } from '../application/events/user-created/user-created.event';
 import { SocialAccountLinkedEvent } from '../application/events/social-account-linked/social-account-linked.event';
+import { UserUpdatedEvent } from '../application/events/user-updated/user-updated.event';
 
 export class UserEntity extends AggregateRoot {
   id: string;
@@ -47,6 +48,7 @@ export class UserEntity extends AggregateRoot {
 
   update(props: UpdateUserProps) {
     Object.assign(this, _.pickBy(props, _.identity));
+    this.apply(new UserUpdatedEvent(this.id));
   }
 
   private linkSocialAccount(socialAccountId: string, provider: string, socialId: string) {
