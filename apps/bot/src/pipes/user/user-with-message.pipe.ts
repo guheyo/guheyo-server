@@ -4,10 +4,14 @@ import { RpcException } from '@nestjs/microservices';
 import { ContextOf } from 'necord';
 import { UserWithMessage } from '@app/bot/apps/user/user.types';
 import { UserErrorMessage } from '@app/bot/apps/user/user.error-message';
+import { UserParser } from '@app/bot/apps/user/user.parser';
 
 @Injectable()
 export class UserWithMessagePipe implements PipeTransform {
-  constructor(private readonly userClient: UserClient) {}
+  constructor(
+    private readonly userClient: UserClient,
+    private readonly userParser: UserParser,
+  ) {}
 
   async transform(
     [message]: ContextOf<'messageCreate'>,
@@ -21,15 +25,14 @@ export class UserWithMessagePipe implements PipeTransform {
       return {
         user: {
           id: user.id,
+          username: user.username,
         },
         message,
       };
 
-    const userId = await this.userClient.createUserFromDiscord(discordMember);
+    const input = this.userParser.parseCreateUserFromDiscordInput(discordMember);
     return {
-      user: {
-        id: userId,
-      },
+      user: await this.userClient.createUserFromDiscord(input),
       message,
     };
   }
