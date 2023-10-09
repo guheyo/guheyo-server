@@ -1,16 +1,14 @@
-import { UserParser } from '@app/bot/apps/user/user.parser';
 import { CreateUserFromDiscordCommand } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.command';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.query';
-import { Inject, Injectable } from '@nestjs/common';
-import { GuildMember } from 'discord.js';
+import { Injectable } from '@nestjs/common';
 import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
+import { CreateUserFromDiscordInput } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.input';
 import { UserImageClient } from '../user-image/user-image.client';
+import { SimpleUser } from './user.types';
 
 @Injectable()
 export class UserClient extends UserImageClient {
-  @Inject() private readonly userParser: UserParser;
-
   async findUserBySocialAccount(
     provider: string,
     socialId: string,
@@ -23,36 +21,21 @@ export class UserClient extends UserImageClient {
     );
   }
 
-  async createUserFromDiscord(member: GuildMember): Promise<string> {
-    const userId = this.userParser.generateUUID();
-    const input = this.userParser.parseCreateUserFromDiscordInput(userId, member);
+  async createUserFromDiscord(input: CreateUserFromDiscordInput): Promise<SimpleUser> {
     await this.commandBus.execute(new CreateUserFromDiscordCommand(input));
-
-    const discordAvatarURL = member.avatarURL() || member.displayAvatarURL();
-    if (discordAvatarURL) {
-      await this.uploadAndUpdateAvatar(userId, discordAvatarURL);
-    }
-    return userId;
+    await this.updateUserAvatar(input.id, input.avatarURL);
+    return {
+      id: input.id,
+      username: input.username,
+    };
   }
 
-  async uploadAndUpdateAvatar(userId: string, discordAvatarURL: string) {
-    const imageId = this.userParser.generateUUID();
-    const { url, contentType, name } = await this.uploadAvatar({
-      userId,
-      imageId,
-      discordAvatarURL,
-    });
-    await this.createAvatarImage({
-      id: imageId,
-      name,
-      url,
-      contentType: contentType || undefined,
-      userId,
-    });
+  async updateUserAvatar(userId: string, discordAvatarURL?: string): Promise<void> {
+    const url = await this.uploadAndCreateAvatar({ userId, discordAvatarURL });
     await this.commandBus.execute(
       new UpdateUserCommand({
         id: userId,
-        avatarURL: url,
+        avatarURL: url || undefined,
       }),
     );
   }
