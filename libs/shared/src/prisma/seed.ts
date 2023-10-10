@@ -9,35 +9,35 @@ const GUILD_KEYBOARD_ID = uuid5(
 );
 const PRODUCT_CATEGORY_CUSTOM_ID = uuid5(
   process.env.DISCORD_CATEGORY_CUSTOM_ID!,
-  process.env.NAMESPACE_GUILD!,
+  process.env.NAMESPACE_DISCORD!,
 );
 const PRODUCT_CATEGORY_NORMAL_KEYBOARD_ID = uuid5(
   process.env.DISCORD_CATEGORY_NORMAL_KEYBOARD_ID!,
-  process.env.NAMESPACE_GUILD!,
+  process.env.NAMESPACE_DISCORD!,
 );
 const PRODUCT_CATEGORY_KEYCAP_ID = uuid5(
   process.env.DISCORD_CATEGORY_KEYCAP_ID!,
-  process.env.NAMESPACE_GUILD!,
+  process.env.NAMESPACE_DISCORD!,
 );
 const PRODUCT_CATEGORY_ARTISAN_ID = uuid5(
   process.env.DISCORD_CATEGORY_ARTISAN_ID!,
-  process.env.NAMESPACE_GUILD!,
+  process.env.NAMESPACE_DISCORD!,
 );
 const PRODUCT_CATEGORY_ETC_ID = uuid5(
   process.env.DISCORD_CATEGORY_ETC_ID!,
-  process.env.NAMESPACE_GUILD!,
+  process.env.NAMESPACE_DISCORD!,
 );
 const POST_CATEGORY_PIC_VID_ID = uuid5(
   process.env.DISCORD_CHANNEL_PIC_VID_ID!,
-  process.env.NAMESPACE_GUILD!,
+  process.env.NAMESPACE_DISCORD!,
 );
 const POST_CATEGORY_INFO_REVIEW_ID = uuid5(
   process.env.DISCORD_CHANNEL_INFO_REVIEW_ID!,
-  process.env.NAMESPACE_GUILD!,
+  process.env.NAMESPACE_DISCORD!,
 );
 const POST_CATEGORY_TRADE_REVIEW_ID = uuid5(
   process.env.DISCORD_CHANNEL_TRADE_REVIEW_ID!,
-  process.env.NAMESPACE_GUILD!,
+  process.env.NAMESPACE_DISCORD!,
 );
 
 const KEYBOARD = '키보드';
