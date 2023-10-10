@@ -2,9 +2,10 @@ import { CreateOfferInput } from '@lib/domains/offer/application/commands/create
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Message } from 'discord.js';
+import { pick } from 'lodash';
+import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
 import { DealParser } from '../deal/abstracts/deal.parser';
 import { OfferErrorMessage } from './offer.error-message';
-import { CreateOfferInputWithUploadUserImageInputList } from './offer.types';
 
 @Injectable()
 export class OfferParser extends DealParser {
@@ -13,25 +14,12 @@ export class OfferParser extends DealParser {
     return re.exec(content);
   }
 
-  parse(userId: string, message: Message): CreateOfferInputWithUploadUserImageInputList {
-    const offerId = this.generateUUID();
-    return {
-      createOfferInput: this.parseCreateDealInput(offerId, userId, message),
-      uploadUserImageInputList: this.parseUploadUserImageInputList(
-        userId,
-        message,
-        'offer',
-        offerId,
-      ),
-    };
-  }
-
-  parseCreateDealInput(id: string, userId: string, message: Message): CreateOfferInput {
+  parseCreateDealInput(userId: string, message: Message): CreateOfferInput {
     const match = this.matchFormat(message.content);
     if (!match) throw new RpcException(OfferErrorMessage.INVALID_OFFER_FORMAT);
 
     return {
-      id,
+      id: this.parseDealIdFromMessage(message),
       name: match[1].trim(),
       price: this.parsePrice(match[2]),
       priceCurrency: 'KRW',
@@ -42,5 +30,9 @@ export class OfferParser extends DealParser {
       productCategoryId: this.parseProductCategoryIdFromMessage(message),
       sellerId: userId,
     };
+  }
+
+  parseUpdateDealInput(userId: string, message: Message<boolean>): UpdateOfferInput {
+    return pick(this.parseCreateDealInput(userId, message), ['id', 'name', 'description', 'price']);
   }
 }

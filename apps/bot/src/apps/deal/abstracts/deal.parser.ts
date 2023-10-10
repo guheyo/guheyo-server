@@ -1,6 +1,7 @@
 import { Parser } from '@app/bot/shared/parser';
 import { CreateOfferInput } from '@lib/domains/offer/application/commands/create-offer/create-offer.input';
 import { CreateUserImageInput } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.input';
+import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
 import { RpcException } from '@nestjs/microservices';
 import { Message, TextChannel } from 'discord.js';
 import { DealErrorMessage } from '../deal.error-message';
@@ -8,9 +9,9 @@ import { DealErrorMessage } from '../deal.error-message';
 export abstract class DealParser extends Parser {
   abstract matchFormat(content: string): RegExpExecArray | null;
 
-  abstract parse(userId: string, message: Message): any;
+  abstract parseCreateDealInput(userId: string, message: Message): CreateOfferInput;
 
-  abstract parseCreateDealInput(id: string, userId: string, message: Message): CreateOfferInput;
+  abstract parseUpdateDealInput(userId: string, message: Message): UpdateOfferInput;
 
   isValidFormat(match: RegExpExecArray | null) {
     return !!match;
@@ -24,12 +25,12 @@ export abstract class DealParser extends Parser {
     userId: string,
     message: Message,
     type: string,
-    refId: string,
   ): CreateUserImageInput[] {
     if (!this.hasAttachments(message))
       throw new RpcException(DealErrorMessage.NOT_FOUND_ATTACHMENTS);
 
     let position = 0;
+    const refId = this.parseDealIdFromMessage(message);
     const createUserImageinputs: CreateUserImageInput[] = message.attachments.map((attachment) => {
       const input = {
         id: this.generateUUID(),
@@ -61,5 +62,9 @@ export abstract class DealParser extends Parser {
   parseProductCategoryIdFromMessage(message: Message) {
     const channel = message.channel as TextChannel;
     return this.discordIdConverter.convertIdUsingDiscordNamespace(channel.parentId!);
+  }
+
+  parseDealIdFromMessage(message: Message) {
+    return this.discordIdConverter.convertIdUsingDiscordNamespace(message.id);
   }
 }
