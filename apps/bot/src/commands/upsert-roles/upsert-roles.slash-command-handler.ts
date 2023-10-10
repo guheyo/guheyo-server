@@ -23,7 +23,7 @@ export class UpsertRolesSlashCommandHandler {
 
     const highestRole = roleManager.highest;
     const upsertRoleInputs = roleManager.cache.map((role) => ({
-      id: uuid5(role.id, this.configService.get('namespace.guild')!),
+      id: uuid5(role.id, this.configService.get('namespace.discord')!),
       ..._.pick(role, ['name', 'hexColor']),
       position: highestRole.position - role.position,
       guildId: uuid5(roleManager.guild.id, this.configService.get('namespace.discord')!),
