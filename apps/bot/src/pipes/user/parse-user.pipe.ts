@@ -5,7 +5,7 @@ import { UserParser } from '@app/bot/apps/user/user.parser';
 import { SimpleUser } from '@app/bot/apps/user/user.types';
 
 @Injectable()
-export class UserPipe implements PipeTransform {
+export class ParseUserPipe implements PipeTransform {
   constructor(
     private readonly userClient: UserClient,
     private readonly userParser: UserParser,

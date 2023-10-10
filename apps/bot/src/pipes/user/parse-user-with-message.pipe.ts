@@ -5,18 +5,23 @@ import { ContextOf } from 'necord';
 import { UserWithMessage } from '@app/bot/apps/user/user.types';
 import { UserErrorMessage } from '@app/bot/apps/user/user.error-message';
 import { UserParser } from '@app/bot/apps/user/user.parser';
+import { Message } from 'discord.js';
 
 @Injectable()
-export class UserWithMessagePipe implements PipeTransform {
+export class ParseUserWithMessagePipe implements PipeTransform {
   constructor(
     private readonly userClient: UserClient,
     private readonly userParser: UserParser,
   ) {}
 
   async transform(
-    [message]: ContextOf<'messageCreate'>,
+    [createdOrOldmessage, newMessage]: ContextOf<'messageCreate' | 'messageUpdate'>,
     metadata: ArgumentMetadata,
   ): Promise<UserWithMessage> {
+    let message: Message;
+    if (newMessage) message = await newMessage.fetch();
+    else message = await createdOrOldmessage.fetch();
+
     const discordMember = message.member;
     if (!discordMember) throw new RpcException(UserErrorMessage.DISOCRD_MEMBER_NOT_FOUND);
 
