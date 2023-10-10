@@ -1,7 +1,7 @@
 import { MemberEntity } from '@lib/domains/member/domain/member.entity';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
-import { GuildIdWithRoleIds } from '@lib/domains/member/application/commands/create-members-of-user/create-members-of-user.input';
+import { CreateMembersOfUserInput } from '@lib/domains/member/application/commands/create-members-of-user/create-members-of-user.input';
 import _ from 'lodash';
 import { UpdateUserProps } from './user.types';
 import { UserCreatedEvent } from '../application/events/user-created/user-created.event';
@@ -32,17 +32,17 @@ export class UserEntity extends AggregateRoot {
     Object.assign(this, partial);
   }
 
-  create(guildIdWithRoleIdsList: GuildIdWithRoleIds[]) {
-    this.apply(new UserCreatedEvent(this.id, guildIdWithRoleIdsList));
+  create(createMembersOfUserInput: CreateMembersOfUserInput) {
+    this.apply(new UserCreatedEvent(createMembersOfUserInput));
   }
 
   createUserFromDiscord(
-    guildIdWithRoleIdsList: GuildIdWithRoleIds[],
+    createMembersOfUserInput: CreateMembersOfUserInput,
     socialAccountId: string,
     provider: string,
     socialId: string,
   ) {
-    this.create(guildIdWithRoleIdsList);
+    this.create(createMembersOfUserInput);
     this.linkSocialAccount(socialAccountId, provider, socialId);
   }
 

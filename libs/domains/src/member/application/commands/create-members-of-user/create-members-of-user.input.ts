@@ -1,9 +1,10 @@
-export interface GuildIdWithRoleIds {
+export interface CreateMemberWithRolesInput {
+  id: string;
+  userId: string;
   guildId: string;
   roleIds: string[];
 }
 
 export interface CreateMembersOfUserInput {
-  userId: string;
-  guildIdWithRoleIdsList: GuildIdWithRoleIds[];
+  data: CreateMemberWithRolesInput[];
 }

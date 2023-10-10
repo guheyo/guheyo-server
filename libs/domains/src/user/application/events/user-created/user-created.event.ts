@@ -1,13 +1,10 @@
-import { GuildIdWithRoleIds } from '@lib/domains/member/application/commands/create-members-of-user/create-members-of-user.input';
+import { CreateMembersOfUserInput } from '@lib/domains/member/application/commands/create-members-of-user/create-members-of-user.input';
 import { IEvent } from '@nestjs/cqrs';
 
 export class UserCreatedEvent implements IEvent {
-  id: string;
+  createMembersOfUserInput: CreateMembersOfUserInput;
 
-  guildIdWithRoleIdsList: GuildIdWithRoleIds[];
-
-  constructor(id: string, guildIdWithRoleIdsList: GuildIdWithRoleIds[]) {
-    this.id = id;
-    this.guildIdWithRoleIdsList = guildIdWithRoleIdsList;
+  constructor(createMembersOfUserInput: CreateMembersOfUserInput) {
+    this.createMembersOfUserInput = createMembersOfUserInput;
   }
 }
