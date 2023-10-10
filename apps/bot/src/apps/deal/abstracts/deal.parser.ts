@@ -60,6 +60,6 @@ export abstract class DealParser extends Parser {
 
   parseProductCategoryIdFromMessage(message: Message) {
     const channel = message.channel as TextChannel;
-    return this.discordIdConverter.convertIdUsingGuildNamespace(channel.parentId!);
+    return this.discordIdConverter.convertIdUsingDiscordNamespace(channel.parentId!);
   }
 }

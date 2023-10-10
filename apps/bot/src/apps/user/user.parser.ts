@@ -17,7 +17,7 @@ export class UserParser extends Parser {
       guildId: this.discordIdConverter.convertIdUsingDiscordNamespace(guildMember.guild.id),
       memberId: this.discordIdConverter.convertIdUsingGuildNamespace(guildMember.id),
       roleIds: guildMember.roles.cache.map((role) =>
-        this.discordIdConverter.convertIdUsingGuildNamespace(role.id),
+        this.discordIdConverter.convertIdUsingDiscordNamespace(role.id),
       ),
     };
   }

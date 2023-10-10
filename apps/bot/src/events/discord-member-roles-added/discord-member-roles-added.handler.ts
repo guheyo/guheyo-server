@@ -20,7 +20,7 @@ export class DiscordMemberRolesAddedHandler {
     await this.commandBus.execute(
       new ConnectRolesCommand({
         id: this.discordIdConverter.convertIdUsingGuildNamespace(member.id),
-        roleIds: [this.discordIdConverter.convertIdUsingGuildNamespace(role.id)],
+        roleIds: [this.discordIdConverter.convertIdUsingDiscordNamespace(role.id)],
       }),
     );
   }
