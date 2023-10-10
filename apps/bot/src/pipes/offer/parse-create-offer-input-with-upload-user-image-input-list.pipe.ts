@@ -4,13 +4,20 @@ import { OfferParser } from '../../apps/offer/offer.parser';
 import { CreateOfferInputWithUploadUserImageInputList } from '../../apps/offer/offer.types';
 
 @Injectable()
-export class OfferPipe implements PipeTransform {
+export class ParseCreateOfferInputWithUploadUserImageInputListPipe implements PipeTransform {
   constructor(private readonly offerParser: OfferParser) {}
 
   transform(
     { user, message }: UserWithMessage,
     metadata: ArgumentMetadata,
   ): CreateOfferInputWithUploadUserImageInputList {
-    return this.offerParser.parse(user.id, message);
+    return {
+      createOfferInput: this.offerParser.parseCreateDealInput(user.id, message),
+      uploadUserImageInputList: this.offerParser.parseUploadUserImageInputList(
+        user.id,
+        message,
+        'offer',
+      ),
+    };
   }
 }
