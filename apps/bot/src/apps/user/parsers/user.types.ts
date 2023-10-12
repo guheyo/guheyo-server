@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { Message, PartialMessage } from 'discord.js';
 
 export interface SimpleUser {
   id: string;
@@ -7,5 +7,5 @@ export interface SimpleUser {
 
 export interface UserWithMessage {
   user: SimpleUser;
-  message: Message;
+  message: Message | PartialMessage;
 }

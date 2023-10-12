@@ -15,13 +15,15 @@ export class ParseUserWithMessagePipe implements PipeTransform {
   ) {}
 
   async transform(
-    [createdOrOldmessage, newMessage]: ContextOf<'messageCreate' | 'messageUpdate'>,
+    [createdOrOldmessage, newMessage]: ContextOf<
+      'messageCreate' | 'messageUpdate' | 'messageDelete'
+    >,
     metadata: ArgumentMetadata,
   ): Promise<UserWithMessage> {
     let message: Message | PartialMessage;
 
-    if (newMessage) message = await newMessage.fetch();
-    else message = await createdOrOldmessage.fetch();
+    if (newMessage) message = await newMessage;
+    else message = await createdOrOldmessage;
 
     const discordMember = message.member;
     if (!discordMember) throw new RpcException(UserErrorMessage.DISOCRD_MEMBER_NOT_FOUND);
