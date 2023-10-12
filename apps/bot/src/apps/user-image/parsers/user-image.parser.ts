@@ -1,4 +1,4 @@
-import { Parser } from '@app/bot/shared/parser';
+import { Parser } from '@app/bot/shared/parsers/parser';
 import { CreateUserImageInput } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.input';
 import { Injectable } from '@nestjs/common';
 import { Attachment } from 'discord.js';

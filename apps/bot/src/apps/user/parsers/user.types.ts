@@ -9,3 +9,8 @@ export interface UserWithMessage {
   user: SimpleUser;
   message: Message;
 }
+
+export interface UserWithDeletedModelId {
+  user: SimpleUser;
+  deletedModelId: string;
+}

@@ -4,7 +4,7 @@ import { QueryBus, CommandBus } from '@nestjs/cqrs';
 import { CreateUserImageCommand } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.command';
 import { CreateUserImageInput } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.input';
 import { CreateManyUserImageCommand } from '@lib/domains/user-image/application/commands/create-many-user-image/create-many-user-image.command';
-import { UserImageParser } from './user-image.parser';
+import { UserImageParser } from '../parsers/user-image.parser';
 
 @Injectable()
 export class UserImageClient {

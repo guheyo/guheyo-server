@@ -1,8 +1,8 @@
 import { Injectable, UseGuards } from '@nestjs/common';
 import { UpsertRolesCommand } from '@lib/domains/role/application/commands/upsert-roles/upsert-roles.command';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
-import { GuildGuard } from '@app/bot/guards/guilds/guild.guard';
-import { OwnerGuard } from '@app/bot/guards/users/owner.guard';
+import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
+import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
 import _ from 'lodash';
 import { ConfigService } from '@nestjs/config';
 import { v5 as uuid5 } from 'uuid';
@@ -23,7 +23,7 @@ export class UpsertRolesSlashCommandHandler {
 
     const highestRole = roleManager.highest;
     const upsertRoleInputs = roleManager.cache.map((role) => ({
-      id: uuid5(role.id, this.configService.get('namespace.guild')!),
+      id: uuid5(role.id, this.configService.get('namespace.discord')!),
       ..._.pick(role, ['name', 'hexColor']),
       position: highestRole.position - role.position,
       guildId: uuid5(roleManager.guild.id, this.configService.get('namespace.discord')!),

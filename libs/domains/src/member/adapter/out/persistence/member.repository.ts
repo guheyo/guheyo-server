@@ -44,29 +44,21 @@ export class MemberRepository
   }
 
   async createMembersOfUser(input: CreateMembersOfUserInput): Promise<void> {
-    const guilds = await this.prismaService.guild.findMany({
-      orderBy: {
-        position: 'asc',
-      },
-    });
-    await guilds.map(async (guild) => {
-      const guildIdWithRoleIds = input.guildIdWithRoleIdsList.find(
-        (guildIdWithRoleId) => guildIdWithRoleId.guildId === guild.id,
-      );
-      return this.prismaService.member.create({
+    const membersPromise = input.data.map(async (createMemberWithRolesInput) =>
+      this.prismaService.member.create({
         data: {
-          userId: input.userId,
-          guildId: guild.id,
+          id: createMemberWithRolesInput.id,
+          guildId: createMemberWithRolesInput.guildId,
+          userId: createMemberWithRolesInput.userId,
           roles: {
-            connect: guildIdWithRoleIds
-              ? guildIdWithRoleIds.roleIds.map((roleId) => ({
-                  id: roleId,
-                }))
-              : [],
+            connect: createMemberWithRolesInput.roleIds.map((roleId) => ({
+              id: roleId,
+            })),
           },
         },
-      });
-    });
+      }),
+    );
+    await Promise.all(membersPromise);
   }
 
   async save(member: MemberEntity): Promise<void> {

@@ -7,7 +7,7 @@ import { ConnectRolesHandler } from '../connect-roles.handler';
 
 describe('ConnectRolesHandler', () => {
   let handler: ConnectRolesHandler;
-  const savePort: MemberRolesSavePort = mock(MemberRepository);
+  const memberRolesSavePort: MemberRolesSavePort = mock(MemberRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -15,7 +15,7 @@ describe('ConnectRolesHandler', () => {
         ConnectRolesHandler,
         {
           provide: 'MemberRolesSavePort',
-          useValue: instance(savePort),
+          useValue: instance(memberRolesSavePort),
         },
       ],
     }).compile();
@@ -30,7 +30,7 @@ describe('ConnectRolesHandler', () => {
         roleIds: ['role-id'],
       };
       await handler.execute(command);
-      verify(savePort.connectRoles(command.id, command.roleIds)).once();
+      verify(memberRolesSavePort.connectRoles(command.id, command.roleIds)).once();
     });
   });
 });
