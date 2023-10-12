@@ -9,6 +9,9 @@ import { OfferMessageDeletedHandler } from './offer-message-deleted/offer-messag
 import { DemandMessageCreatedHandler } from './demand-message-created/demand-message-created.handler';
 import { DemandMessageUpdatedHandler } from './demand-message-updated/demand-message-updated.handler';
 import { DemandMessageDeletedHandler } from './demand-message-deleted/demand-message-deleted.handler';
+import { SwapMessageCreatedHandler } from './swap-message-created/swap-message-created.handler';
+import { SwapMessageUpdatedHandler } from './swap-message-updated/swap-message-updated.handler';
+import { SwapMessageDeletedHandler } from './swap-message-deleted/swap-message-deleted.handler';
 
 export const EVENT_HANDLERS = [
   ReadyHandler,
@@ -22,4 +25,7 @@ export const EVENT_HANDLERS = [
   DemandMessageCreatedHandler,
   DemandMessageUpdatedHandler,
   DemandMessageDeletedHandler,
+  SwapMessageCreatedHandler,
+  SwapMessageUpdatedHandler,
+  SwapMessageDeletedHandler,
 ];
