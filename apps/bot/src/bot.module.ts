@@ -11,6 +11,7 @@ import { SOCIAL_ACCOUNT_PROVIDERS } from '@lib/domains/social-account/social-acc
 import { MEMBER_PROVIDERS } from '@lib/domains/member/member.providers';
 import { ROLE_PROVIDERS } from '@lib/domains/role/role.providers';
 import { OFFER_PROVIDERS } from '@lib/domains/offer/offer.providers';
+import { DEMAND_PROVIDERS } from '@lib/domains/demand/demand.providers';
 import { APP_FILTER } from '@nestjs/core';
 import { NecordConfigService } from './necord/necord.config.service';
 import { COMMAND_HANDLERS } from './commands/command-handlers';
@@ -47,6 +48,7 @@ import { BOT_PROVIDERS } from './apps/bot.providers';
     ...MEMBER_PROVIDERS,
     ...ROLE_PROVIDERS,
     ...OFFER_PROVIDERS,
+    ...DEMAND_PROVIDERS,
     ...COMMAND_HANDLERS,
     ...EVENT_HANDLERS,
     DiscordIdConverter,

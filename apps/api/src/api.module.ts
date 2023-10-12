@@ -10,6 +10,7 @@ import { RoleModule } from './app/role/role.module';
 import { GuildModule } from './app/guild/guild.module';
 import { UserImageModule } from './app/user-image/user-image.module';
 import { OfferModule } from './app/offer/offer.module';
+import { DemandModule } from './app/demand/demand.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { OfferModule } from './app/offer/offer.module';
     GuildModule,
     UserImageModule,
     OfferModule,
+    DemandModule,
   ],
 })
 export class ApiModule {}
