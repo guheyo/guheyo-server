@@ -1,8 +1,8 @@
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Context, ContextOf, On } from 'necord';
-import { GuildGuard } from '@app/bot/guards/guilds/guild.guard';
-import { DiscordIdConverter } from '@app/bot/shared/discord-id-converter';
+import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
+import { DiscordIdConverter } from '@app/bot/shared/converters/discord-id-converter';
 import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
 
 @UseGuards(GuildGuard)
@@ -22,7 +22,7 @@ export class DiscordMemberRolesRemovedHandler {
     await this.commandBus.execute(
       new DisconnectRolesCommand({
         id: this.discordIdConverter.convertIdUsingGuildNamespace(member.id),
-        roleIds: [this.discordIdConverter.convertIdUsingGuildNamespace(role.id)],
+        roleIds: [this.discordIdConverter.convertIdUsingDiscordNamespace(role.id)],
       }),
     );
   }

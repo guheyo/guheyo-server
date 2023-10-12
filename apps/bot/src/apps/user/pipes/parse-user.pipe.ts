@@ -1,11 +1,11 @@
-import { UserClient } from '@app/bot/apps/user/user.client';
+import { UserClient } from '@app/bot/apps/user/clients/user.client';
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { ContextOf } from 'necord';
-import { UserParser } from '@app/bot/apps/user/user.parser';
-import { SimpleUser } from '@app/bot/apps/user/user.types';
+import { UserParser } from '@app/bot/apps/user/parsers/user.parser';
+import { SimpleUser } from '@app/bot/apps/user/parsers/user.types';
 
 @Injectable()
-export class UserPipe implements PipeTransform {
+export class ParseUserPipe implements PipeTransform {
   constructor(
     private readonly userClient: UserClient,
     private readonly userParser: UserParser,

@@ -14,14 +14,7 @@ export class UserSagas {
   userCreated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
       ofType(UserCreatedEvent),
-      mergeMap((event) =>
-        of(
-          new CreateMembersOfUserCommand({
-            userId: event.id,
-            guildIdWithRoleIdsList: event.guildIdWithRoleIdsList,
-          }),
-        ),
-      ),
+      mergeMap((event) => of(new CreateMembersOfUserCommand(event.createMembersOfUserInput))),
     );
 
   @Saga()

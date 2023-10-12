@@ -1,14 +1,14 @@
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { Context, On } from 'necord';
-import { GuildGuard } from '@app/bot/guards/guilds/guild.guard';
-import { MarketChannelGuard } from '@app/bot/guards/channels/market-channel.guard';
+import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
+import { DealChannelGuard } from '@app/bot/apps/deal/guards/deal-channel.guard';
 import { Type } from '@app/bot/decorators/type.decorator';
-import { UserWithMessagePipe } from '@app/bot/pipes/user/user-with-message.pipe';
-import { OfferPipe } from '@app/bot/pipes/offer/offer.pipe';
-import { CreateOfferInputWithUploadUserImageInputList } from '@app/bot/apps/offer/offer.types';
-import { OfferClient } from '@app/bot/apps/offer/offer.client';
+import { ParseUserWithMessagePipe } from '@app/bot/apps/user/pipes/parse-user-with-message.pipe';
+import { ParseCreateOfferInputWithUploadUserImageInputListPipe } from '@app/bot/apps/offer/pipes/parse-create-offer-input-with-upload-user-image-input-list.pipe';
+import { CreateOfferInputWithUploadUserImageInputList } from '@app/bot/apps/offer/parsers/offer.types';
+import { OfferClient } from '@app/bot/apps/offer/clients/offer.client';
 
-@UseGuards(GuildGuard, MarketChannelGuard)
+@UseGuards(GuildGuard, DealChannelGuard)
 @Type('wts')
 @Injectable()
 export class OfferMessageCreatedHandler {
@@ -18,10 +18,11 @@ export class OfferMessageCreatedHandler {
 
   @On('messageCreate')
   public async onCreateOfferMessage(
-    @Context(UserWithMessagePipe, OfferPipe)
+    @Context(ParseUserWithMessagePipe, ParseCreateOfferInputWithUploadUserImageInputListPipe)
     { createOfferInput, uploadUserImageInputList }: CreateOfferInputWithUploadUserImageInputList,
   ) {
     await this.offerClient.uploadAndCreateAttachments(uploadUserImageInputList);
     await this.offerClient.createOffer(createOfferInput);
+    this.logger.log(`Offer<@${createOfferInput.id}> created`);
   }
 }

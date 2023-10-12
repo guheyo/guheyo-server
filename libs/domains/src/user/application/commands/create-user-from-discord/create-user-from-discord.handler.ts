@@ -21,12 +21,16 @@ export class CreateUserFromDiscordHandler implements ICommandHandler<CreateUserF
     );
     await this.userSavePort.create(newUser);
     newUser.createUserFromDiscord(
-      [
-        {
-          guildId: command.guildId,
-          roleIds: command.roleIds,
-        },
-      ],
+      {
+        data: [
+          {
+            id: command.memberId,
+            guildId: command.guildId,
+            userId: command.id,
+            roleIds: command.roleIds,
+          },
+        ],
+      },
       command.socialAccountId,
       command.provider,
       command.socialId,

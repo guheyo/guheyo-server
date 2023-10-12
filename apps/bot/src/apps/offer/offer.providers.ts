@@ -1,4 +1,4 @@
-import { OfferClient } from './offer.client';
-import { OfferParser } from './offer.parser';
+import { OfferClient } from './clients/offer.client';
+import { OfferParser } from './parsers/offer.parser';
 
 export const BOT_OFFER_PROVIDERS = [OfferClient, OfferParser];

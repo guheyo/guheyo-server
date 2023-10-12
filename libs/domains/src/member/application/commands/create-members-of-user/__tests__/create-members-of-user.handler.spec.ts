@@ -27,8 +27,14 @@ describe('CreateMembersOfUserHandler', () => {
   describe('createMembersOfUser', () => {
     it('should execute create', async () => {
       const input: CreateMembersOfUserInput = {
-        userId: '94587c54-4d7d-11ee-be56-0242ac120002',
-        guildIdWithRoleIdsList: [],
+        data: [
+          {
+            id: '94587c54-4d7d-11ee-be56-0242ac120002',
+            userId: '94587c54-4d7d-11ee-be56-0242ac120003',
+            guildId: '94587c54-4d7d-11ee-be56-0242ac120004',
+            roleIds: [],
+          },
+        ],
       };
       const command = new CreateMembersOfUserCommand(input);
       await handler.execute(command);

@@ -1,16 +1,19 @@
-import { Parser } from '@app/bot/shared/parser';
-import { CreateOfferInput } from '@lib/domains/offer/application/commands/create-offer/create-offer.input';
+import { Inject, Injectable } from '@nestjs/common';
+import { v4 as uuid4 } from 'uuid';
+import { Message, PartialMessage } from 'discord.js';
+import { DiscordIdConverter } from '@app/bot/shared/converters/discord-id-converter';
 import { CreateUserImageInput } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.input';
 import { RpcException } from '@nestjs/microservices';
-import { Message, TextChannel } from 'discord.js';
-import { DealErrorMessage } from '../deal.error-message';
+import { ParserErrorMessage } from './parser.error.message';
 
-export abstract class DealParser extends Parser {
-  abstract matchFormat(content: string): RegExpExecArray | null;
+@Injectable()
+export abstract class Parser {
+  @Inject()
+  readonly discordIdConverter: DiscordIdConverter;
 
-  abstract parse(userId: string, message: Message): any;
-
-  abstract parseCreateDealInput(id: string, userId: string, message: Message): CreateOfferInput;
+  generateUUID() {
+    return uuid4();
+  }
 
   isValidFormat(match: RegExpExecArray | null) {
     return !!match;
@@ -20,16 +23,24 @@ export abstract class DealParser extends Parser {
     return message.attachments.size > 0;
   }
 
+  parseIdFromMessage(message: Message | PartialMessage) {
+    return this.discordIdConverter.convertIdUsingDiscordNamespace(message.id);
+  }
+
+  parseGuildIdFromMessage(message: Message) {
+    return this.discordIdConverter.convertIdUsingDiscordNamespace(message.guildId!);
+  }
+
   parseUploadUserImageInputList(
     userId: string,
     message: Message,
     type: string,
-    refId: string,
   ): CreateUserImageInput[] {
     if (!this.hasAttachments(message))
-      throw new RpcException(DealErrorMessage.NOT_FOUND_ATTACHMENTS);
+      throw new RpcException(ParserErrorMessage.NOT_FOUND_ATTACHMENTS);
 
     let position = 0;
+    const refId = this.parseIdFromMessage(message);
     const createUserImageinputs: CreateUserImageInput[] = message.attachments.map((attachment) => {
       const input = {
         id: this.generateUUID(),
@@ -48,18 +59,5 @@ export abstract class DealParser extends Parser {
       return input;
     });
     return createUserImageinputs;
-  }
-
-  parsePrice(price: string) {
-    return Number(price) * 10000;
-  }
-
-  parseGuildIdFromMessage(message: Message) {
-    return this.discordIdConverter.convertIdUsingDiscordNamespace(message.guildId!);
-  }
-
-  parseProductCategoryIdFromMessage(message: Message) {
-    const channel = message.channel as TextChannel;
-    return this.discordIdConverter.convertIdUsingGuildNamespace(channel.parentId!);
   }
 }
