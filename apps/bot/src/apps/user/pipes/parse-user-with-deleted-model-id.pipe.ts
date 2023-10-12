@@ -2,27 +2,21 @@ import { UserClient } from '@app/bot/apps/user/clients/user.client';
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { ContextOf } from 'necord';
-import { UserWithMessage } from '@app/bot/apps/user/parsers/user.types';
+import { UserWithDeletedModelId } from '@app/bot/apps/user/parsers/user.types';
 import { UserErrorMessage } from '@app/bot/apps/user/parsers/user.error-message';
 import { UserParser } from '@app/bot/apps/user/parsers/user.parser';
-import { Message } from 'discord.js';
 
 @Injectable()
-export class ParseUserWithMessagePipe implements PipeTransform {
+export class ParseUserWithDeletedModelIdPipe implements PipeTransform {
   constructor(
     private readonly userClient: UserClient,
     private readonly userParser: UserParser,
   ) {}
 
   async transform(
-    [createdOrOldmessage, newMessage]: ContextOf<'messageCreate' | 'messageUpdate'>,
+    [message]: ContextOf<'messageDelete'>,
     metadata: ArgumentMetadata,
-  ): Promise<UserWithMessage> {
-    let message: Message;
-
-    if (newMessage) message = await newMessage.fetch();
-    else message = await createdOrOldmessage.fetch();
-
+  ): Promise<UserWithDeletedModelId> {
     const discordMember = message.member;
     if (!discordMember) throw new RpcException(UserErrorMessage.DISOCRD_MEMBER_NOT_FOUND);
 
@@ -33,13 +27,13 @@ export class ParseUserWithMessagePipe implements PipeTransform {
           id: user.id,
           username: user.username,
         },
-        message,
+        deletedModelId: this.userParser.parseIdFromMessage(message),
       };
 
     const input = this.userParser.parseCreateUserFromDiscordInput(discordMember);
     return {
       user: await this.userClient.createUserFromDiscord(input),
-      message,
+      deletedModelId: this.userParser.parseIdFromMessage(message),
     };
   }
 }

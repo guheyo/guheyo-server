@@ -7,16 +7,15 @@ import { CreateOfferInputWithUploadUserImageInputList } from '../parsers/offer.t
 export class ParseCreateOfferInputWithUploadUserImageInputListPipe implements PipeTransform {
   constructor(private readonly offerParser: OfferParser) {}
 
-  async transform(
+  transform(
     { user, message }: UserWithMessage,
     metadata: ArgumentMetadata,
-  ): Promise<CreateOfferInputWithUploadUserImageInputList> {
-    const fetchedMessage = await message.fetch();
+  ): CreateOfferInputWithUploadUserImageInputList {
     return {
-      createOfferInput: this.offerParser.parseCreateDealInput(user.id, fetchedMessage),
+      createOfferInput: this.offerParser.parseCreateDealInput(user.id, message),
       uploadUserImageInputList: this.offerParser.parseUploadUserImageInputList(
         user.id,
-        fetchedMessage,
+        message,
         'offer',
       ),
     };

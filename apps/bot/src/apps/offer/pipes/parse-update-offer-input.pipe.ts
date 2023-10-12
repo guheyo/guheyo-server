@@ -7,11 +7,7 @@ import { OfferParser } from '../parsers/offer.parser';
 export class ParseUpdateOfferInputPipe implements PipeTransform {
   constructor(private readonly offerParser: OfferParser) {}
 
-  async transform(
-    { user, message }: UserWithMessage,
-    metadata: ArgumentMetadata,
-  ): Promise<UpdateOfferInput> {
-    const fetchedMessage = await message.fetch();
-    return this.offerParser.parseUpdateDealInput(user.id, fetchedMessage);
+  transform({ user, message }: UserWithMessage, metadata: ArgumentMetadata): UpdateOfferInput {
+    return this.offerParser.parseUpdateDealInput(user.id, message);
   }
 }
