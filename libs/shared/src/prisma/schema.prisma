@@ -269,12 +269,13 @@ model Swap {
   createdAt           DateTime        @default(now())
   updatedAt           DateTime        @updatedAt
   deletedAt           DateTime?
-  price               Int
-  priceCurrency       String
   name0               String
   description0        String?
   name1               String
   description1        String?
+  price               Int
+  priceCurrency       String
+  businessFunction    String
   status              String
   guildId             String
   guild               Guild           @relation(fields: [guildId], references: [id])
