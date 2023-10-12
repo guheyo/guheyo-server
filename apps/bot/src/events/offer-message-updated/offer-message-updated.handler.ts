@@ -1,14 +1,14 @@
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { Context, On } from 'necord';
 import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
-import { MarketChannelGuard } from '@app/bot/apps/deal/guards/market-channel.guard';
+import { DealChannelGuard } from '@app/bot/apps/deal/guards/deal-channel.guard';
 import { Type } from '@app/bot/decorators/type.decorator';
 import { ParseUserWithMessagePipe } from '@app/bot/apps/user/pipes/parse-user-with-message.pipe';
 import { OfferClient } from '@app/bot/apps/offer/clients/offer.client';
 import { ParseUpdateOfferInputPipe } from '@app/bot/apps/offer/pipes/parse-update-offer-input.pipe';
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
 
-@UseGuards(GuildGuard, MarketChannelGuard)
+@UseGuards(GuildGuard, DealChannelGuard)
 @Type('wts')
 @Injectable()
 export class OfferMessageUpdatedHandler {
