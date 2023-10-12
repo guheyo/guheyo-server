@@ -15,11 +15,9 @@ import { APP_FILTER } from '@nestjs/core';
 import { NecordConfigService } from './necord/necord.config.service';
 import { COMMAND_HANDLERS } from './commands/command-handlers';
 import { EVENT_HANDLERS } from './events/event-handlers';
-import { DiscordIdConverter } from './shared/discord-id-converter';
+import { DiscordIdConverter } from './shared/converters/discord-id-converter';
 import { BotExceptionFilter } from './filters/bot-exception.filter';
-import { BOT_USER_PROVIDERS } from './apps/user/user.providers';
-import { BOT_OFFER_PROVIDERS } from './apps/offer/offer.providers';
-import { BOT_USER_IMAGE_PROVIDERS } from './apps/user-image/user-image.providers';
+import { BOT_PROVIDERS } from './apps/bot.providers';
 
 @Module({
   imports: [
@@ -56,9 +54,7 @@ import { BOT_USER_IMAGE_PROVIDERS } from './apps/user-image/user-image.providers
       provide: APP_FILTER,
       useClass: BotExceptionFilter,
     },
-    ...BOT_USER_PROVIDERS,
-    ...BOT_USER_IMAGE_PROVIDERS,
-    ...BOT_OFFER_PROVIDERS,
+    ...BOT_PROVIDERS,
   ],
 })
 export class BotModule {}

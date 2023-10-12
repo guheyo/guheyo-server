@@ -1,8 +1,8 @@
 import { Injectable, UseGuards } from '@nestjs/common';
 import { UpsertRolesCommand } from '@lib/domains/role/application/commands/upsert-roles/upsert-roles.command';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
-import { GuildGuard } from '@app/bot/guards/guilds/guild.guard';
-import { OwnerGuard } from '@app/bot/guards/users/owner.guard';
+import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
+import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
 import _ from 'lodash';
 import { ConfigService } from '@nestjs/config';
 import { v5 as uuid5 } from 'uuid';

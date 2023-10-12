@@ -1,5 +1,4 @@
-import { ImageService } from '@lib/shared';
-import { UserImageClient } from './user-image.client';
-import { UserImageParser } from './user-image.parser';
+import { UserImageClient } from './clients/user-image.client';
+import { UserImageParser } from './parsers/user-image.parser';
 
-export const BOT_USER_IMAGE_PROVIDERS = [ImageService, UserImageClient, UserImageParser];
+export const BOT_USER_IMAGE_PROVIDERS = [UserImageClient, UserImageParser];

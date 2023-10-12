@@ -1,9 +1,9 @@
 import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
-import { GuildGuard } from '@app/bot/guards/guilds/guild.guard';
-import { OwnerGuard } from '@app/bot/guards/users/owner.guard';
-import { UserClient } from '@app/bot/apps/user/user.client';
-import { UserParser } from '@app/bot/apps/user/user.parser';
+import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
+import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
+import { UserClient } from '@app/bot/apps/user/clients/user.client';
+import { UserParser } from '@app/bot/apps/user/parsers/user.parser';
 import { RegisterDiscordUserRequest } from './register-discord-user.request';
 
 @UseGuards(GuildGuard, OwnerGuard)

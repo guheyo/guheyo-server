@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { Type } from '@app/bot/decorators/type.decorator';
 import { Message } from 'discord.js';
 import { Observable } from 'rxjs';
-import { ChannelGuard } from './abstracts/channel.guard';
+import { ChannelGuard } from '../../../shared/guards/channel.guard';
 
 @Injectable()
 export class MarketChannelGuard extends ChannelGuard implements CanActivate {

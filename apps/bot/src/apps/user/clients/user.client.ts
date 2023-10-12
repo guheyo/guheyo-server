@@ -4,8 +4,8 @@ import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/qu
 import { Injectable } from '@nestjs/common';
 import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
 import { CreateUserFromDiscordInput } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.input';
-import { UserImageClient } from '../user-image/user-image.client';
-import { SimpleUser } from './user.types';
+import { UserImageClient } from '../../user-image/clients/user-image.client';
+import { SimpleUser } from '../parsers/user.types';
 
 @Injectable()
 export class UserClient extends UserImageClient {

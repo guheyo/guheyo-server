@@ -4,7 +4,7 @@ import { RpcException } from '@nestjs/microservices';
 import { Message } from 'discord.js';
 import { pick } from 'lodash';
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
-import { DealParser } from '../deal/abstracts/deal.parser';
+import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { OfferErrorMessage } from './offer.error-message';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class OfferParser extends DealParser {
     if (!match) throw new RpcException(OfferErrorMessage.INVALID_OFFER_FORMAT);
 
     return {
-      id: this.parseDealIdFromMessage(message),
+      id: this.parseIdFromMessage(message),
       name: match[1].trim(),
       price: this.parsePrice(match[2]),
       priceCurrency: 'KRW',

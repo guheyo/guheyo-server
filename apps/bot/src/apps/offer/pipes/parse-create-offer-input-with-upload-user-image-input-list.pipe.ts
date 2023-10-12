@@ -1,7 +1,7 @@
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
-import { UserWithMessage } from '../../apps/user/user.types';
-import { OfferParser } from '../../apps/offer/offer.parser';
-import { CreateOfferInputWithUploadUserImageInputList } from '../../apps/offer/offer.types';
+import { UserWithMessage } from '../../user/parsers/user.types';
+import { OfferParser } from '../parsers/offer.parser';
+import { CreateOfferInputWithUploadUserImageInputList } from '../parsers/offer.types';
 
 @Injectable()
 export class ParseCreateOfferInputWithUploadUserImageInputListPipe implements PipeTransform {

@@ -1,4 +1,4 @@
-import { Parser } from '@app/bot/shared/parser';
+import { Parser } from '@app/bot/shared/parsers/parser';
 import { Injectable } from '@nestjs/common';
 import { GuildMember } from 'discord.js';
 import { CreateUserFromDiscordInput } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.input';

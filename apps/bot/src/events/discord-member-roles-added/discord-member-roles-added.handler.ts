@@ -1,8 +1,8 @@
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
-import { GuildGuard } from '@app/bot/guards/guilds/guild.guard';
+import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
 import { CommandBus } from '@nestjs/cqrs';
 import { Context, ContextOf, On } from 'necord';
-import { DiscordIdConverter } from '@app/bot/shared/discord-id-converter';
+import { DiscordIdConverter } from '@app/bot/shared/converters/discord-id-converter';
 import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
 
 @UseGuards(GuildGuard)
