@@ -7,6 +7,20 @@ input ConnectRolesInput {
   roleIds: [ID!]!
 }
 
+input CreateDemandInput {
+  brandId: String
+  businessFunction: String!
+  buyerId: String!
+  description: String!
+  guildId: ID!
+  id: ID!
+  name: String!
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  status: String! = "ON_SALE"
+}
+
 input CreateGuildInput {
   description: String
   icon: String
@@ -69,7 +83,6 @@ input CreateUserImageInput {
   name: String!
   position: Int!
   refId: ID!
-  tracked: Boolean!
   type: String!
   url: String!
   userId: ID!
@@ -86,6 +99,24 @@ input CreateUserInput {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type DemandResponse {
+  brandId: String
+  businessFunction: String!
+  createdAt: DateTime!
+  description: String
+  guildId: String!
+  id: ID!
+  images: [UserImageResponse!]!
+  name: String!
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  seller: UserResponse!
+  sellerId: ID!
+  status: String!
+  updatedAt: DateTime!
+}
 
 input DisconnectRolesInput {
   id: ID!
@@ -116,6 +147,7 @@ type MemberWithRolesResponse {
 
 type Mutation {
   connectRoles(input: ConnectRolesInput!): String!
+  createDemand(input: CreateDemandInput!): String!
   createGuild(input: CreateGuildInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
   createMember(input: CreateMemberInput!): String!
@@ -124,6 +156,7 @@ type Mutation {
   createSocialAccount(input: CreateSocialAccountInput!): String!
   createUser(input: CreateUserInput!): String!
   createUserImage(input: CreateUserImageInput!): String!
+  deleteDemand(id: String!): String!
   deleteGuild(id: String!): String!
   deleteMember(id: ID!, userId: ID!): String!
   deleteOffer(id: String!): String!
@@ -132,6 +165,7 @@ type Mutation {
   deleteUser(id: String!): String!
   deleteUserImage(id: String!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!
+  updateDemand(input: UpdateDemandInput!): String!
   updateGuild(input: UpdateGuildInput!): String!
   updateMember(input: UpdateMemberInput!): String!
   updateOffer(input: UpdateOfferInput!): String!
@@ -180,6 +214,7 @@ type PaginatedUsersResponse {
 }
 
 type Query {
+  findDemandById(id: String!): DemandResponse
   findGuildById(id: String!): GuildResponse
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: String!): MyUserResponse
@@ -213,6 +248,16 @@ type SocialAccountResponse {
   socialId: String!
   tokenType: String
   userId: String!
+}
+
+input UpdateDemandInput {
+  brandId: String
+  businessFunction: String
+  description: String
+  id: ID!
+  name: String
+  price: Int
+  priceCurrency: String
 }
 
 input UpdateGuildInput {
@@ -277,7 +322,6 @@ type UserImageResponse {
   name: String!
   position: Int!
   refId: ID!
-  tracked: Boolean!
   type: String!
   updatedAt: DateTime!
   url: String!
