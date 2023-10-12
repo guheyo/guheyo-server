@@ -6,6 +6,9 @@ import { DiscordMemberRolesRemovedHandler } from './discord-member-roles-removed
 import { OfferMessageCreatedHandler } from './offer-message-created/offer-message-created.handler';
 import { OfferMessageUpdatedHandler } from './offer-message-updated/offer-message-updated.handler';
 import { OfferMessageDeletedHandler } from './offer-message-deleted/offer-message-deleted.handler';
+import { DemandMessageCreatedHandler } from './demand-message-created/demand-message-created.handler';
+import { DemandMessageUpdatedHandler } from './demand-message-updated/demand-message-updated.handler';
+import { DemandMessageDeletedHandler } from './demand-message-deleted/demand-message-deleted.handler';
 
 export const EVENT_HANDLERS = [
   ReadyHandler,
@@ -16,4 +19,7 @@ export const EVENT_HANDLERS = [
   OfferMessageCreatedHandler,
   OfferMessageUpdatedHandler,
   OfferMessageDeletedHandler,
+  DemandMessageCreatedHandler,
+  DemandMessageUpdatedHandler,
+  DemandMessageDeletedHandler,
 ];

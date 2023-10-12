@@ -36,9 +36,10 @@ export abstract class Parser {
     message: Message,
     type: string,
   ): CreateUserImageInput[] {
-    if (!this.hasAttachments(message))
+    if (!this.hasAttachments(message)) {
+      if (type === 'demand') return [];
       throw new RpcException(ParserErrorMessage.NOT_FOUND_ATTACHMENTS);
-
+    }
     let position = 0;
     const refId = this.parseIdFromMessage(message);
     const createUserImageinputs: CreateUserImageInput[] = message.attachments.map((attachment) => {
