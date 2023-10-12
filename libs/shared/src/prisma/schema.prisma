@@ -250,6 +250,7 @@ model Demand {
   deletedAt         DateTime?
   name              String
   description       String?
+  price             Int
   priceCurrency     String
   businessFunction  String
   status            String
