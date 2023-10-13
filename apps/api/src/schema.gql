@@ -75,6 +75,22 @@ input CreateSocialAccountInput {
   userId: String!
 }
 
+input CreateSwapInput {
+  brandId: String
+  businessFunction: String!
+  description0: String!
+  description1: String!
+  guildId: ID!
+  id: ID!
+  name0: String!
+  name1: String!
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  proposerId: String!
+  status: String! = "ON_SALE"
+}
+
 input CreateUserImageInput {
   contentType: String
   description: String
@@ -154,6 +170,7 @@ type Mutation {
   createOffer(input: CreateOfferInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSocialAccount(input: CreateSocialAccountInput!): String!
+  createSwap(input: CreateSwapInput!): String!
   createUser(input: CreateUserInput!): String!
   createUserImage(input: CreateUserImageInput!): String!
   deleteDemand(id: String!): String!
@@ -162,6 +179,7 @@ type Mutation {
   deleteOffer(id: String!): String!
   deleteRole(id: String!): String!
   deleteSocialAccount(id: String!): String!
+  deleteSwap(id: String!): String!
   deleteUser(id: String!): String!
   deleteUserImage(id: String!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!
@@ -171,6 +189,7 @@ type Mutation {
   updateOffer(input: UpdateOfferInput!): String!
   updateRole(input: UpdateRoleInput!): String!
   updateSocialAccount(input: UpdateSocialAccountInput!): String!
+  updateSwap(input: UpdateSwapInput!): String!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
 }
@@ -221,6 +240,7 @@ type Query {
   findMyUserBySocialAccount(provider: String!, socialId: ID!): MyUserResponse
   findOfferById(id: String!): OfferResponse
   findRoleById(id: String!): RoleResponse
+  findSwapById(id: String!): SwapResponse
   findUserImageById(id: String!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
@@ -248,6 +268,26 @@ type SocialAccountResponse {
   socialId: String!
   tokenType: String
   userId: String!
+}
+
+type SwapResponse {
+  brandId: String
+  businessFunction: String!
+  createdAt: DateTime!
+  description0: String
+  description1: String
+  guildId: String!
+  id: ID!
+  images: [UserImageResponse!]!
+  name0: String!
+  name1: String!
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  proposer: UserResponse!
+  proposerId: ID!
+  status: String!
+  updatedAt: DateTime!
 }
 
 input UpdateDemandInput {
@@ -300,6 +340,18 @@ input UpdateSocialAccountInput {
   sessionState: String
   tokenType: String
   userId: String!
+}
+
+input UpdateSwapInput {
+  brandId: String
+  businessFunction: String
+  description0: String
+  description1: String
+  id: ID!
+  name0: String
+  name1: String
+  price: Int
+  priceCurrency: String
 }
 
 input UpdateUserImageInput {

@@ -24,7 +24,7 @@ export class DemandParser extends DealParser {
       price: this.parsePrice(match[2]),
       priceCurrency: 'KRW',
       description: match[3].trim(),
-      businessFunction: 'SELL',
+      businessFunction: 'BUY',
       status: 'ON_SALE',
       guildId: this.parseGuildIdFromMessage(message),
       productCategoryId: this.parseProductCategoryIdFromMessage(message),
