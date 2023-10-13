@@ -11,6 +11,7 @@ import { GuildModule } from './app/guild/guild.module';
 import { UserImageModule } from './app/user-image/user-image.module';
 import { OfferModule } from './app/offer/offer.module';
 import { DemandModule } from './app/demand/demand.module';
+import { SwapModule } from './app/swap/swap.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { DemandModule } from './app/demand/demand.module';
     UserImageModule,
     OfferModule,
     DemandModule,
+    SwapModule,
   ],
 })
 export class ApiModule {}
