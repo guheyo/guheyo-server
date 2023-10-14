@@ -1,12 +1,14 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
+import dayjs from 'dayjs';
 import _ from 'lodash';
-import { UpdateAuctionProps } from './auction.types';
+import { AuctionStatus, BidStatus, UpdateAuctionProps } from './auction.types';
 import { AuctionCreatedEvent } from '../application/events/auction-created/auction-created.event';
 import { AuctionUpdatedEvent } from '../application/events/auction-updated/auction-updated.event';
 import { BidEntity } from './bid.entity';
 import { AddBidInput } from '../application/commands/add-bid/add-bid.input';
 import { AuctionErrorMessage } from './auction.error.message';
+import { CancelBidCommand } from '../application/commands/cancel-bid/cancel-bid.command';
 
 export class AuctionEntity extends AggregateRoot {
   id: string;
@@ -40,6 +42,7 @@ export class AuctionEntity extends AggregateRoot {
   constructor(partial: Partial<AuctionEntity>) {
     super();
     Object.assign(this, partial);
+    this.status = AuctionStatus.OPEN;
   }
 
   create() {
@@ -54,7 +57,7 @@ export class AuctionEntity extends AggregateRoot {
   addBid(input: AddBidInput) {
     const bid = new BidEntity({
       ...input,
-      status: '',
+      status: BidStatus.BID,
     });
     if (this.isBidBelowTheCurrentPrice(bid.price))
       throw new Error(AuctionErrorMessage.BID_BELOW_THE_CURRENT_PRICE);
@@ -63,10 +66,27 @@ export class AuctionEntity extends AggregateRoot {
     this.bids.push(bid);
   }
 
+  cancelBid(input: CancelBidCommand): BidEntity {
+    if (this.hasEnded()) throw new Error(AuctionErrorMessage.AUCTION_HAS_ENDED);
+
+    const bidToBeCanceled = this.bids.find((bid) => bid.bidderId === input.bidderId);
+    if (!bidToBeCanceled) throw new Error(AuctionErrorMessage.BID_IS_NOT_FOUND);
+
+    if (this.cancellationTimeout(bidToBeCanceled.createdAt))
+      throw new Error(AuctionErrorMessage.BID_CANCELLATION_TIMEOUT);
+
+    bidToBeCanceled.canceledAt = new Date();
+    return bidToBeCanceled;
+  }
+
   getLastBid(): BidEntity {
     const lastBid = this.bids.at(-1);
     if (!lastBid) throw new Error(AuctionErrorMessage.BID_IS_NOT_FOUND);
     return lastBid;
+  }
+
+  hasEnded() {
+    return this.status === AuctionStatus.END;
   }
 
   isBidBelowTheCurrentPrice(price: number) {
@@ -75,5 +95,9 @@ export class AuctionEntity extends AggregateRoot {
 
   isCanceler(bidderId: string) {
     return this.bids.some((bid) => bid.canceledAt && bid.bidderId === bidderId);
+  }
+
+  cancellationTimeout(createdAt: Date) {
+    return dayjs().diff(createdAt, 'minutes') > 10;
   }
 }

@@ -41,6 +41,11 @@ type BidResponse {
   status: String!
 }
 
+input CancelBidInput {
+  auctionId: String!
+  bidderId: String!
+}
+
 input ConnectRolesInput {
   id: ID!
   roleIds: [ID!]!
@@ -216,6 +221,7 @@ type MemberWithRolesResponse {
 
 type Mutation {
   addBid(input: AddBidInput!): String!
+  cancelBid(input: CancelBidInput!): String!
   connectRoles(input: ConnectRolesInput!): String!
   createAuction(input: CreateAuctionInput!): String!
   createDemand(input: CreateDemandInput!): String!

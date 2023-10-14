@@ -1750,6 +1750,7 @@ __metadata:
     "@prisma/client": ^4.13.0
     class-transformer: ^0.5.1
     class-validator: ^0.14.0
+    dayjs: ^1.11.10
     graphql: ^16.8.0
     lodash: ^4.17.21
     reflect-metadata: ^0.1.13
@@ -6032,6 +6033,13 @@ __metadata:
   version: 3.0.1
   resolution: "data-uri-to-buffer@npm:3.0.1"
   checksum: c59c3009686a78c071806b72f4810856ec28222f0f4e252aa495ec027ed9732298ceea99c50328cf59b151dd34cbc3ad6150bbb43e41fc56fa19f48c99e9fc30
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.10":
+  version: 1.11.10
+  resolution: "dayjs@npm:1.11.10"
+  checksum: a6b5a3813b8884f5cd557e2e6b7fa569f4c5d0c97aca9558e38534af4f2d60daafd3ff8c2000fed3435cfcec9e805bcebd99f90130c6d1c5ef524084ced588c4
   languageName: node
   linkType: hard
 

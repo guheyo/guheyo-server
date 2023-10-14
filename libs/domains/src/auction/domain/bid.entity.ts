@@ -3,9 +3,9 @@ import { UserEntity } from '@lib/domains/user/domain/user.entity';
 export class BidEntity {
   id: string;
 
-  createdAt: string;
+  createdAt: Date;
 
-  canceledAt: string;
+  canceledAt: Date;
 
   price: number;
 

@@ -13,3 +13,13 @@ export interface UpdateAuctionProps {
 
   brandId?: string;
 }
+
+export enum AuctionStatus {
+  OPEN = 'OPEN',
+  END = 'END',
+}
+
+export enum BidStatus {
+  BID = 'BID',
+  WINNING_BID = 'WINNING_BID',
+}

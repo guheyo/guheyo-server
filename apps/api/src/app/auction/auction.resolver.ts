@@ -9,6 +9,8 @@ import { FindAuctionByIdQuery } from '@lib/domains/auction/application/queries/f
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AddBidCommand } from '@lib/domains/auction/application/commands/add-bid/add-bid.command';
+import { CancelBidInput } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.input';
+import { CancelBidCommand } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.command';
 
 @Resolver()
 export class AuctionResolver {
@@ -44,6 +46,12 @@ export class AuctionResolver {
   @Mutation(() => String)
   async addBid(@Args('input') input: AddBidInput): Promise<string> {
     await this.commandBus.execute(new AddBidCommand(input));
-    return input.id;
+    return input.auctionId;
+  }
+
+  @Mutation(() => String)
+  async cancelBid(@Args('input') input: CancelBidInput): Promise<string> {
+    await this.commandBus.execute(new CancelBidCommand(input));
+    return input.auctionId;
   }
 }
