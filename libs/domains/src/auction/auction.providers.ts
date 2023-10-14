@@ -13,6 +13,10 @@ export const AUCTION_PROVIDERS = [
     provide: 'AuctionSavePort',
     useClass: AuctionRepository,
   },
+  {
+    provide: 'BidSavePort',
+    useClass: AuctionRepository,
+  },
   ...AUCTION_COMMAND_PROVIDERS,
   ...AUCTION_QUERY_PROVIDERS,
   ...AUCTION_EVENT_PROVIDERS,

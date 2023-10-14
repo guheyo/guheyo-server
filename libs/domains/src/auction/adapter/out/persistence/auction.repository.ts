@@ -2,9 +2,11 @@ import _ from 'lodash';
 import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { AuctionEntity } from '@lib/domains/auction/domain/auction.entity';
+import { BidSavePort } from '@lib/domains/auction/application/ports/out/bid.save.port';
+import { BidEntity } from '@lib/domains/auction/domain/bid.entity';
 
 @Injectable()
-export class AuctionRepository extends PrismaRepository<AuctionEntity> {
+export class AuctionRepository extends PrismaRepository<AuctionEntity> implements BidSavePort {
   constructor() {
     super(AuctionEntity);
   }
@@ -29,6 +31,11 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> {
             },
           },
         },
+        bids: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
     });
     return this.toEntity(auction);
@@ -42,8 +49,6 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> {
         'endedAt',
         'name',
         'description',
-        'price',
-        'priceCurrency',
         'businessFunction',
         'guildId',
         'brandId',
@@ -63,8 +68,6 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> {
           'endedAt',
           'name',
           'description',
-          'price',
-          'priceCurrency',
           'businessFunction',
           'guildId',
           'brandId',
@@ -84,8 +87,6 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> {
       data: _.pick(auction, [
         'name',
         'description',
-        'price',
-        'priceCurrency',
         'businessFunction',
         'guildId',
         'brandId',
@@ -100,6 +101,37 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> {
     await this.prismaService.auction.delete({
       where: {
         id: auction.id,
+      },
+    });
+  }
+
+  async addBid(bid: BidEntity): Promise<void> {
+    await this.prismaService.auction.update({
+      where: {
+        id: bid.auctionId,
+      },
+      data: {
+        bids: {
+          create: _.pick(bid, ['id', 'price', 'priceCurrency', 'bidderId', 'status']),
+        },
+      },
+    });
+  }
+
+  async cancelBid(bid: BidEntity): Promise<void> {
+    await this.prismaService.auction.update({
+      where: {
+        id: bid.auctionId,
+      },
+      data: {
+        bids: {
+          update: {
+            where: {
+              id: bid.id,
+            },
+            data: _.pick(bid, 'canceledAt'),
+          },
+        },
       },
     });
   }

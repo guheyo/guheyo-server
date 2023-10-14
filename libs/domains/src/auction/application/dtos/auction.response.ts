@@ -1,6 +1,7 @@
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { Field, ID, GraphQLISODateTime, ObjectType, Int } from '@nestjs/graphql';
 import { UserImageResponse } from '@lib/domains/user-image/application/dtos/user-image.response';
+import { BidResponse } from './bid.response';
 
 @ObjectType()
 export class AuctionResponse {
@@ -23,7 +24,7 @@ export class AuctionResponse {
   description: string | null;
 
   @Field(() => Int)
-  price: Number;
+  price: number;
 
   @Field()
   priceCurrency: string;
@@ -51,6 +52,9 @@ export class AuctionResponse {
 
   @Field(() => String, { nullable: true })
   brandId: string | null;
+
+  @Field(() => [BidResponse])
+  bids: BidResponse[];
 
   constructor(partial: Partial<AuctionResponse>) {
     Object.assign(this, partial);

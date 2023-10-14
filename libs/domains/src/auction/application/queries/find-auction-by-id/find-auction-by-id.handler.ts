@@ -19,6 +19,17 @@ export class FindAuctionByIdHandler extends PrismaQueryHandler<
       where: {
         id: query.id,
       },
+      include: {
+        seller: true,
+        bids: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+          include: {
+            bidder: true,
+          },
+        },
+      },
     });
     if (!auction) throw new NotFoundException(AuctionErrorMessage.AUCTION_IS_NOT_FOUND);
 
