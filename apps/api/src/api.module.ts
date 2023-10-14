@@ -12,6 +12,7 @@ import { UserImageModule } from './app/user-image/user-image.module';
 import { OfferModule } from './app/offer/offer.module';
 import { DemandModule } from './app/demand/demand.module';
 import { SwapModule } from './app/swap/swap.module';
+import { AuctionModule } from './app/auction/auction.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { SwapModule } from './app/swap/swap.module';
     OfferModule,
     DemandModule,
     SwapModule,
+    AuctionModule,
   ],
 })
 export class ApiModule {}

@@ -2,9 +2,67 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AddBidInput {
+  auctionId: String!
+  bidderId: String!
+  id: ID!
+  price: Int!
+  priceCurrency: String!
+}
+
+type AuctionResponse {
+  bids: [BidResponse!]!
+  brandId: String
+  businessFunction: String!
+  createdAt: DateTime!
+  description: String
+  endedAt: DateTime!
+  guildId: String!
+  id: ID!
+  images: [UserImageResponse!]!
+  name: String!
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  seller: UserResponse!
+  sellerId: ID!
+  status: String!
+  updatedAt: DateTime!
+}
+
+type BidResponse {
+  auctionId: ID!
+  bidder: UserResponse!
+  canceledAt: DateTime!
+  createdAt: DateTime!
+  id: ID!
+  price: Int!
+  priceCurrency: String!
+  status: String!
+}
+
+input CancelBidInput {
+  auctionId: String!
+  bidderId: String!
+}
+
 input ConnectRolesInput {
   id: ID!
   roleIds: [ID!]!
+}
+
+input CreateAuctionInput {
+  brandId: String
+  businessFunction: String!
+  createdAt: DateTime!
+  description: String!
+  endedAt: DateTime!
+  guildId: ID!
+  id: ID!
+  name: String!
+  productCategoryId: String!
+  sellerId: String!
+  status: String! = "ON_SALE"
 }
 
 input CreateDemandInput {
@@ -162,7 +220,10 @@ type MemberWithRolesResponse {
 }
 
 type Mutation {
+  addBid(input: AddBidInput!): String!
+  cancelBid(input: CancelBidInput!): String!
   connectRoles(input: ConnectRolesInput!): String!
+  createAuction(input: CreateAuctionInput!): String!
   createDemand(input: CreateDemandInput!): String!
   createGuild(input: CreateGuildInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
@@ -173,6 +234,7 @@ type Mutation {
   createSwap(input: CreateSwapInput!): String!
   createUser(input: CreateUserInput!): String!
   createUserImage(input: CreateUserImageInput!): String!
+  deleteAuction(id: String!): String!
   deleteDemand(id: String!): String!
   deleteGuild(id: String!): String!
   deleteMember(id: ID!, userId: ID!): String!
@@ -183,6 +245,7 @@ type Mutation {
   deleteUser(id: String!): String!
   deleteUserImage(id: String!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!
+  updateAuction(input: UpdateAuctionInput!): String!
   updateDemand(input: UpdateDemandInput!): String!
   updateGuild(input: UpdateGuildInput!): String!
   updateMember(input: UpdateMemberInput!): String!
@@ -233,6 +296,7 @@ type PaginatedUsersResponse {
 }
 
 type Query {
+  findAuctionById(id: String!): AuctionResponse
   findDemandById(id: String!): DemandResponse
   findGuildById(id: String!): GuildResponse
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
@@ -288,6 +352,14 @@ type SwapResponse {
   proposerId: ID!
   status: String!
   updatedAt: DateTime!
+}
+
+input UpdateAuctionInput {
+  brandId: String
+  businessFunction: String
+  description: String
+  id: ID!
+  name: String
 }
 
 input UpdateDemandInput {

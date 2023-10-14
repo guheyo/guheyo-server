@@ -295,6 +295,7 @@ model Auction {
   endedAt           DateTime
   name              String
   description       String?
+  businessFunction  String
   bids              Bid[]
   guildId           String
   guild             Guild             @relation(fields: [guildId], references: [id])
