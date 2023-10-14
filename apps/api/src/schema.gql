@@ -2,7 +2,16 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AddBidInput {
+  auctionId: String!
+  bidderId: String!
+  id: ID!
+  price: Int!
+  priceCurrency: String!
+}
+
 type AuctionResponse {
+  bids: [BidResponse!]!
   brandId: String
   businessFunction: String!
   createdAt: DateTime!
@@ -19,6 +28,17 @@ type AuctionResponse {
   sellerId: ID!
   status: String!
   updatedAt: DateTime!
+}
+
+type BidResponse {
+  auctionId: ID!
+  bidder: UserResponse!
+  canceledAt: DateTime!
+  createdAt: DateTime!
+  id: ID!
+  price: Int!
+  priceCurrency: String!
+  status: String!
 }
 
 input ConnectRolesInput {
@@ -195,6 +215,7 @@ type MemberWithRolesResponse {
 }
 
 type Mutation {
+  addBid(input: AddBidInput!): String!
   connectRoles(input: ConnectRolesInput!): String!
   createAuction(input: CreateAuctionInput!): String!
   createDemand(input: CreateDemandInput!): String!
