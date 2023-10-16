@@ -339,7 +339,7 @@ model Bid {
   status            String
 }
 
-model DiscordMessageLinker {
+model DiscordMessage {
   discordMessageId  String            @unique
   discordChannelId  String
   discordGuildId    String
