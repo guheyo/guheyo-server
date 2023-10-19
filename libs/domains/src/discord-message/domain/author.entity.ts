@@ -1,4 +1,4 @@
-export class AuthorInput {
+export class AuthorEntity {
   name: string;
 
   iconURL?: string;

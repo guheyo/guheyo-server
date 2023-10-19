@@ -1,6 +1,6 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsNumber, IsString, IsUUID } from 'class-validator';
-import { AuthorInput } from '../../dtos/author.input';
+import { AuthorEntity } from '@lib/domains/discord-message/domain/author.entity';
 
 @InputType()
 export class SendEmbedInput {
@@ -32,8 +32,8 @@ export class SendEmbedInput {
   @Field()
   title: string;
 
-  @Field(() => AuthorInput)
-  authorInput: AuthorInput;
+  @Field(() => AuthorEntity)
+  author: AuthorEntity;
 
   @IsString()
   @Field()

@@ -1,6 +1,6 @@
 import { ICommand } from '@nestjs/cqrs';
+import { AuthorEntity } from '@lib/domains/discord-message/domain/author.entity';
 import { SendEmbedInput } from './send-embed.input';
-import { AuthorInput } from '../../dtos/author.input';
 
 export class SendEmbedCommand implements ICommand {
   discordChannelId: string;
@@ -17,7 +17,7 @@ export class SendEmbedCommand implements ICommand {
 
   title: string;
 
-  authorInput: AuthorInput;
+  author: AuthorEntity;
 
   description: string;
 
@@ -29,7 +29,7 @@ export class SendEmbedCommand implements ICommand {
     this.guildId = input.guildId;
     this.color = input.color;
     this.title = input.title;
-    this.authorInput = input.authorInput;
+    this.author = input.author;
     this.description = input.description;
   }
 }

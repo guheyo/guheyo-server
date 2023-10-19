@@ -22,8 +22,8 @@ export class SendEmbedHandler implements ICommandHandler<SendEmbedCommand> {
       .setColor(command.color)
       .setTitle(command.title)
       .setAuthor({
-        name: command.authorInput.name,
-        iconURL: command.authorInput.iconURL,
+        name: command.author.name,
+        iconURL: command.author.iconURL,
       })
       .setDescription(command.description);
     const message = await channel.send({ embeds: [embed] });
