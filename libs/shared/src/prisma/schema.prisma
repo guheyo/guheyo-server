@@ -343,6 +343,7 @@ model DiscordMessage {
   discordMessageId  String            @unique
   discordChannelId  String
   discordGuildId    String
-  modelId           String
   modelName         String
+  modelId           String
+  guildId           String
 }
