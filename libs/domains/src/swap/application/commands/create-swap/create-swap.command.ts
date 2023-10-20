@@ -28,6 +28,8 @@ export class CreateSwapCommand implements ICommand {
 
   brandId?: string;
 
+  source: string;
+
   constructor(input: CreateSwapInput) {
     this.id = input.id;
     this.name0 = input.name0;
@@ -42,5 +44,6 @@ export class CreateSwapCommand implements ICommand {
     this.productCategoryId = input.productCategoryId;
     this.proposerId = input.proposerId;
     this.brandId = input.brandId;
+    this.source = input.source;
   }
 }
