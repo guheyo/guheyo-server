@@ -27,6 +27,8 @@ export class DiscordMessageRepository extends PrismaRepository<DiscordMessageEnt
         'modelName',
         'modelId',
         'guildId',
+        'userId',
+        'system',
       ]),
     });
   }
@@ -41,6 +43,8 @@ export class DiscordMessageRepository extends PrismaRepository<DiscordMessageEnt
           'modelName',
           'modelId',
           'guildId',
+          'userId',
+          'system',
         ]),
       ),
     });

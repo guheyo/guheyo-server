@@ -34,6 +34,8 @@ export class SendEmbedHandler implements ICommandHandler<SendEmbedCommand> {
       modelName: command.modelName,
       modelId: command.discordGuildId,
       guildId: command.guildId,
+      userId: command.userId,
+      system: true,
     });
     await this.discordMessageSavePort.create(discordMessage);
   }

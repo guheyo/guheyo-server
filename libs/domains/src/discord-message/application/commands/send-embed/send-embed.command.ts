@@ -13,6 +13,8 @@ export class SendEmbedCommand implements ICommand {
 
   guildId: string;
 
+  userId: string;
+
   color: number;
 
   title: string;
@@ -27,6 +29,7 @@ export class SendEmbedCommand implements ICommand {
     this.modelName = input.modelName;
     this.modelId = input.modelId;
     this.guildId = input.guildId;
+    this.userId = input.userId;
     this.color = input.color;
     this.title = input.title;
     this.author = input.author;

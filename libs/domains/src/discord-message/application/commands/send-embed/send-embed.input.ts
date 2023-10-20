@@ -24,6 +24,10 @@ export class SendEmbedInput {
   @Field(() => ID)
   guildId: string;
 
+  @IsUUID()
+  @Field()
+  userId: string;
+
   @IsNumber()
   @Field()
   color: number;

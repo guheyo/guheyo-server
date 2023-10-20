@@ -1,7 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { DiscordMessageEntity } from '@lib/domains/discord-message/domain/discord-message.entity';
-import { Client, TextChannel } from 'discord.js';
+import { Client } from 'discord.js';
 import { CreateDiscordMessageCommand } from './create-discord-message.command';
 import { DiscordMessageSavePort } from '../../ports/discord-message.save.port';
 

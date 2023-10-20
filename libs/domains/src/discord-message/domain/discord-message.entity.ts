@@ -13,6 +13,10 @@ export class DiscordMessageEntity extends AggregateRoot {
 
   guildId: string;
 
+  userId: string;
+
+  system: boolean;
+
   constructor(partial: Partial<DiscordMessageEntity>) {
     super();
     Object.assign(this, partial);
