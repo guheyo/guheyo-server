@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { Inject, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Inject, NotFoundException } from '@nestjs/common';
 import { DemandErrorMessage } from '@lib/domains/demand/domain/demand.error.message';
 import _ from 'lodash';
 import { UpdateDemandCommand } from './update-demand.command';
@@ -17,6 +17,8 @@ export class UpdateDemandHandler implements ICommandHandler<UpdateDemandCommand>
   async execute(command: UpdateDemandCommand): Promise<void> {
     let demand = await this.demandLoadPort.findById(command.id);
     if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_IS_NOT_FOUND);
+    if (!demand.isCompatibleSource(command.source))
+      throw new ForbiddenException(DemandErrorMessage.DEMAND_CHANGES_FROM_INCOMPATIBLE_PLATFORMS);
 
     demand = this.publisher.mergeObjectContext(demand);
     demand.update(

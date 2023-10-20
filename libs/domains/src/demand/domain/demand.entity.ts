@@ -34,6 +34,8 @@ export class DemandEntity extends AggregateRoot {
 
   buyer: UserEntity;
 
+  source: string;
+
   constructor(partial: Partial<DemandEntity>) {
     super();
     Object.assign(this, partial);
@@ -41,6 +43,10 @@ export class DemandEntity extends AggregateRoot {
 
   create() {
     this.apply(new DemandCreatedEvent(this.id));
+  }
+
+  isCompatibleSource(source: string) {
+    return this.source === source;
   }
 
   update(props: UpdateDemandProps) {
