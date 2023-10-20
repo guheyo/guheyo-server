@@ -36,6 +36,7 @@ model User {
   auctionComments   AuctionComment[]
   posts             Post[]
   postComments      PostComment[]
+  discordMessages   DiscordMessage[]
 }
 
 model UserImage {
@@ -355,4 +356,7 @@ model DiscordMessage {
   modelName         String
   modelId           String
   guildId           String
+  userId            String
+  user              User              @relation(fields: [userId], references: [id])
+  system            Boolean
 }
