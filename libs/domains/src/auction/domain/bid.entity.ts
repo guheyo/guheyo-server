@@ -19,6 +19,8 @@ export class BidEntity {
 
   status: string;
 
+  source: string;
+
   constructor(partial: Partial<BidEntity>) {
     Object.assign(this, partial);
   }
