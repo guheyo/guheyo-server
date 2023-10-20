@@ -53,6 +53,7 @@ model UserImage {
   type              String
   refId             String
   tracked           Boolean
+  source            String
   userId            String
   user              User          @relation(fields: [userId], references: [id])
 }
@@ -198,6 +199,7 @@ model Post {
   deletedAt         DateTime?
   title             String
   content           String
+  source            String
   guildId           String
   guild             Guild         @relation(fields: [guildId], references: [id])
   postCategoryId    String
@@ -212,6 +214,7 @@ model PostComment {
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
   deletedAt         DateTime?
+  source            String
   authorId          String
   author            User          @relation(fields: [authorId], references: [id])
   content           String
@@ -233,6 +236,7 @@ model Offer {
   priceCurrency     String
   businessFunction  String
   status            String
+  source            String
   guildId           String
   guild             Guild           @relation(fields: [guildId], references: [id])
   productCategoryId String
@@ -254,6 +258,7 @@ model Demand {
   priceCurrency     String
   businessFunction  String
   status            String
+  source            String
   guildId           String
   guild             Guild           @relation(fields: [guildId], references: [id])
   productCategoryId String
@@ -277,6 +282,7 @@ model Swap {
   priceCurrency       String
   businessFunction    String
   status              String
+  source              String
   guildId             String
   guild               Guild           @relation(fields: [guildId], references: [id])
   productCategoryId   String
@@ -296,6 +302,7 @@ model Auction {
   name              String
   description       String?
   businessFunction  String
+  source            String
   bids              Bid[]
   guildId           String
   guild             Guild             @relation(fields: [guildId], references: [id])
@@ -314,6 +321,7 @@ model AuctionComment {
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
   deletedAt         DateTime?
+  source            String
   authorId          String
   author            User              @relation(fields: [authorId], references: [id])
   content           String
@@ -337,6 +345,7 @@ model Bid {
   bidderId          String
   bidder            User              @relation(fields: [bidderId], references: [id])
   status            String
+  source            String
 }
 
 model DiscordMessage {
