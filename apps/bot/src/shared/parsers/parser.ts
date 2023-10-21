@@ -55,6 +55,7 @@ export abstract class Parser {
         type,
         refId,
         userId,
+        source: 'discord',
       };
       position += 1;
       return input;

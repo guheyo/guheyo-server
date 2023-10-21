@@ -27,6 +27,7 @@ export class SwapParser extends DealParser {
       priceCurrency: 'KRW',
       businessFunction: 'TRADE',
       status: 'ON_SALE',
+      source: 'discord',
       guildId: this.parseGuildIdFromMessage(message),
       productCategoryId: this.parseProductCategoryIdFromMessage(message),
       proposerId: userId,
@@ -34,12 +35,15 @@ export class SwapParser extends DealParser {
   }
 
   parseUpdateDealInput(userId: string, message: Message<boolean>): UpdateSwapInput {
-    return pick(this.parseCreateDealInput(userId, message), [
-      'id',
-      'name0',
-      'name1',
-      'description0',
-      'price',
-    ]);
+    return {
+      ...pick(this.parseCreateDealInput(userId, message), [
+        'id',
+        'name0',
+        'name1',
+        'description0',
+        'price',
+      ]),
+      source: 'discord',
+    };
   }
 }
