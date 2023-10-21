@@ -38,6 +38,8 @@ export class SwapEntity extends AggregateRoot {
 
   proposer: UserEntity;
 
+  source: string;
+
   constructor(partial: Partial<SwapEntity>) {
     super();
     Object.assign(this, partial);
@@ -45,6 +47,10 @@ export class SwapEntity extends AggregateRoot {
 
   create() {
     this.apply(new SwapCreatedEvent(this.id));
+  }
+
+  isCompatibleSource(source: string) {
+    return this.source === source;
   }
 
   update(props: UpdateSwapProps) {

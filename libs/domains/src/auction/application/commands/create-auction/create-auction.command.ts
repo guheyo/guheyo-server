@@ -16,6 +16,8 @@ export class CreateAuctionCommand implements ICommand {
 
   status: string;
 
+  source: string;
+
   guildId: string;
 
   productCategoryId: string;
@@ -32,6 +34,7 @@ export class CreateAuctionCommand implements ICommand {
     this.description = input.description;
     this.businessFunction = input.businessFunction;
     this.status = input.status;
+    this.source = input.source;
     this.guildId = input.guildId;
     this.productCategoryId = input.productCategoryId;
     this.sellerId = input.sellerId;

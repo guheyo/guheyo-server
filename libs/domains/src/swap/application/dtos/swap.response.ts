@@ -55,6 +55,9 @@ export class SwapResponse {
   @Field(() => String, { nullable: true })
   brandId: string | null;
 
+  @Field()
+  source: string;
+
   constructor(partial: Partial<SwapResponse>) {
     Object.assign(this, partial);
   }

@@ -22,4 +22,8 @@ export class AddBidInput {
   @IsUUID()
   @Field()
   bidderId: string;
+
+  @IsString()
+  @Field()
+  source: string;
 }

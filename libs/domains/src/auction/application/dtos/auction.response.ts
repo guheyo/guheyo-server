@@ -35,6 +35,9 @@ export class AuctionResponse {
   @Field()
   status: string;
 
+  @Field()
+  source: string;
+
   @Field(() => [UserImageResponse])
   images: UserImageResponse[];
 

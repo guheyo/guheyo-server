@@ -31,6 +31,9 @@ export class OfferResponse {
   @Field()
   status: string;
 
+  @Field()
+  source: string;
+
   @Field(() => [UserImageResponse])
   images: UserImageResponse[];
 

@@ -13,6 +13,7 @@ import { OfferModule } from './app/offer/offer.module';
 import { DemandModule } from './app/demand/demand.module';
 import { SwapModule } from './app/swap/swap.module';
 import { AuctionModule } from './app/auction/auction.module';
+import { DiscordMessageModule } from './app/discord-message/discord-message.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AuctionModule } from './app/auction/auction.module';
     DemandModule,
     SwapModule,
     AuctionModule,
+    DiscordMessageModule,
   ],
 })
 export class ApiModule {}

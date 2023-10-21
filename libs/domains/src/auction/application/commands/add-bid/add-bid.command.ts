@@ -12,11 +12,14 @@ export class AddBidCommand implements ICommand {
 
   bidderId: string;
 
+  source: string;
+
   constructor(input: AddBidInput) {
     this.id = input.id;
     this.price = input.price;
     this.priceCurrency = input.priceCurrency;
     this.auctionId = input.auctionId;
     this.bidderId = input.bidderId;
+    this.source = input.source;
   }
 }

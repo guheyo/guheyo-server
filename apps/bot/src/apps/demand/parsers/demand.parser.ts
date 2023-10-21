@@ -26,6 +26,7 @@ export class DemandParser extends DealParser {
       description: match[3].trim(),
       businessFunction: 'BUY',
       status: 'ON_SALE',
+      source: 'discord',
       guildId: this.parseGuildIdFromMessage(message),
       productCategoryId: this.parseProductCategoryIdFromMessage(message),
       buyerId: userId,
@@ -33,6 +34,9 @@ export class DemandParser extends DealParser {
   }
 
   parseUpdateDealInput(userId: string, message: Message<boolean>): UpdateDemandInput {
-    return pick(this.parseCreateDealInput(userId, message), ['id', 'name', 'description', 'price']);
+    return {
+      ...pick(this.parseCreateDealInput(userId, message), ['id', 'name', 'description', 'price']),
+      source: 'discord',
+    };
   }
 }

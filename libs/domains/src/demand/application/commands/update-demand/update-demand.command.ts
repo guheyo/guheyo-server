@@ -16,6 +16,8 @@ export class UpdateDemandCommand implements ICommand {
 
   brandId?: string;
 
+  source: string;
+
   constructor(input: UpdateDemandInput) {
     this.id = input.id;
     this.name = input.name;
@@ -24,5 +26,6 @@ export class UpdateDemandCommand implements ICommand {
     this.priceCurrency = input.priceCurrency;
     this.businessFunction = input.businessFunction;
     this.brandId = input.brandId;
+    this.source = input.source;
   }
 }

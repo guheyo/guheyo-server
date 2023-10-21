@@ -24,6 +24,8 @@ export class OfferEntity extends AggregateRoot {
 
   status: string;
 
+  source: string;
+
   guildId: string;
 
   brandId: string | null;
@@ -41,6 +43,10 @@ export class OfferEntity extends AggregateRoot {
 
   create() {
     this.apply(new OfferCreatedEvent(this.id));
+  }
+
+  isCompatibleSource(source: string) {
+    return this.source === source;
   }
 
   update(props: UpdateOfferProps) {
