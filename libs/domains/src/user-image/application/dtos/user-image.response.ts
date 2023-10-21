@@ -55,6 +55,10 @@ export class UserImageResponse {
   @Field(() => ID)
   userId: string;
 
+  @IsString()
+  @Field()
+  source: string;
+
   constructor(partial: Partial<UserImageResponse>) {
     Object.assign(this, partial);
   }

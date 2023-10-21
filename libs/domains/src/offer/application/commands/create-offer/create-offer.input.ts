@@ -32,6 +32,10 @@ export class CreateOfferInput {
   @Field(() => String, { defaultValue: 'ON_SALE' })
   status: string;
 
+  @IsString()
+  @Field()
+  source: string;
+
   @IsUUID()
   @Field(() => ID)
   guildId: string;

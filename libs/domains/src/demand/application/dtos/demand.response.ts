@@ -49,6 +49,9 @@ export class DemandResponse {
   @Field(() => String, { nullable: true })
   brandId: string | null;
 
+  @Field()
+  source: string;
+
   constructor(partial: Partial<DemandResponse>) {
     Object.assign(this, partial);
   }

@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { Inject, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Inject, NotFoundException } from '@nestjs/common';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
 import _ from 'lodash';
 import { UpdateOfferCommand } from './update-offer.command';
@@ -17,6 +17,8 @@ export class UpdateOfferHandler implements ICommandHandler<UpdateOfferCommand> {
   async execute(command: UpdateOfferCommand): Promise<void> {
     let offer = await this.offerLoadPort.findById(command.id);
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
+    if (!offer.isCompatibleSource(command.source))
+      throw new ForbiddenException(OfferErrorMessage.OFFER_CHANGES_FROM_INCOMPATIBLE_PLATFORMS);
 
     offer = this.publisher.mergeObjectContext(offer);
     offer.update(

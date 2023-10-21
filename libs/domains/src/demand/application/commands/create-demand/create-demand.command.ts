@@ -24,6 +24,8 @@ export class CreateDemandCommand implements ICommand {
 
   brandId?: string;
 
+  source: string;
+
   constructor(input: CreateDemandInput) {
     this.id = input.id;
     this.name = input.name;
@@ -36,5 +38,6 @@ export class CreateDemandCommand implements ICommand {
     this.productCategoryId = input.productCategoryId;
     this.buyerId = input.buyerId;
     this.brandId = input.brandId;
+    this.source = input.source;
   }
 }

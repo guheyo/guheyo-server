@@ -19,6 +19,10 @@ export enum AuctionStatus {
   END = 'END',
 }
 
+export enum AuctionBusinessFunction {
+  AUCTION = 'AUCTION',
+}
+
 export enum BidStatus {
   BID = 'BID',
   WINNING_BID = 'WINNING_BID',

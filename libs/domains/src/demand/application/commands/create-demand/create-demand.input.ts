@@ -48,4 +48,8 @@ export class CreateDemandInput {
   @IsUUID()
   @Field(() => String, { nullable: true })
   brandId?: string;
+
+  @IsString()
+  @Field()
+  source: string;
 }

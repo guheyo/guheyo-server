@@ -55,6 +55,7 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> implement
         'productCategoryId',
         'sellerId',
         'status',
+        'source',
       ]),
     });
   }
@@ -74,6 +75,7 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> implement
           'productCategoryId',
           'sellerId',
           'status',
+          'source',
         ]),
       ),
     });
@@ -112,7 +114,7 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> implement
       },
       data: {
         bids: {
-          create: _.pick(bid, ['id', 'price', 'priceCurrency', 'bidderId', 'status']),
+          create: _.pick(bid, ['id', 'price', 'priceCurrency', 'bidderId', 'status', 'source']),
         },
       },
     });

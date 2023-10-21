@@ -48,6 +48,7 @@ export class DemandRepository extends PrismaRepository<DemandEntity> {
         'productCategoryId',
         'buyerId',
         'status',
+        'source',
       ]),
     });
   }
@@ -67,6 +68,7 @@ export class DemandRepository extends PrismaRepository<DemandEntity> {
           'productCategoryId',
           'buyerId',
           'status',
+          'source',
         ]),
       ),
     });

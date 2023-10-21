@@ -39,6 +39,8 @@ export class AuctionEntity extends AggregateRoot {
 
   bids: BidEntity[];
 
+  source: string;
+
   constructor(partial: Partial<AuctionEntity>) {
     super();
     Object.assign(this, partial);

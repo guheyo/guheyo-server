@@ -36,4 +36,8 @@ export class UpdateOfferInput {
   @IsUUID()
   @Field(() => String, { nullable: true })
   brandId?: string;
+
+  @IsString()
+  @Field()
+  source: string;
 }

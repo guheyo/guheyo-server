@@ -50,6 +50,7 @@ export class SwapRepository extends PrismaRepository<SwapEntity> {
         'productCategoryId',
         'proposerId',
         'status',
+        'source',
       ]),
     });
   }
@@ -71,6 +72,7 @@ export class SwapRepository extends PrismaRepository<SwapEntity> {
           'productCategoryId',
           'proposerId',
           'status',
+          'source',
         ]),
       ),
     });

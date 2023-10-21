@@ -46,4 +46,8 @@ export class UpdateSwapInput {
   @IsUUID()
   @Field(() => String, { nullable: true })
   brandId?: string;
+
+  @IsString()
+  @Field()
+  source: string;
 }

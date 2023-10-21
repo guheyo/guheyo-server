@@ -27,6 +27,7 @@ export class UserImageParser extends Parser {
       type: 'user-avatar',
       refId: userId,
       userId,
+      source: 'discord',
     };
   }
 
@@ -59,6 +60,7 @@ export class UserImageParser extends Parser {
       type,
       refId,
       userId,
+      source: 'discord',
     };
   }
 }

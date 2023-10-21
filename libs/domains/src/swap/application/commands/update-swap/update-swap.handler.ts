@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { Inject, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Inject, NotFoundException } from '@nestjs/common';
 import { SwapErrorMessage } from '@lib/domains/swap/domain/swap.error.message';
 import _ from 'lodash';
 import { UpdateSwapCommand } from './update-swap.command';
@@ -17,6 +17,8 @@ export class UpdateSwapHandler implements ICommandHandler<UpdateSwapCommand> {
   async execute(command: UpdateSwapCommand): Promise<void> {
     let swap = await this.swapLoadPort.findById(command.id);
     if (!swap) throw new NotFoundException(SwapErrorMessage.SWAP_IS_NOT_FOUND);
+    if (!swap.isCompatibleSource(command.source))
+      throw new ForbiddenException(SwapErrorMessage.SWAP_CHANGES_FROM_INCOMPATIBLE_PLATFORMS);
 
     swap = this.publisher.mergeObjectContext(swap);
     swap.update(
