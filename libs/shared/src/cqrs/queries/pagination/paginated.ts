@@ -6,7 +6,7 @@ import { IPaginatedResponse } from './paginated.response.interface';
 import { IEdge } from './edge.interface';
 
 export function paginated<T>(classRef: Type<T>): Type<IPaginatedResponse<T>> {
-  @ObjectType()
+  @ObjectType(`${classRef.name}Edge`, { isAbstract: true })
   abstract class Edge implements IEdge<T> {
     @Field(() => classRef)
     node: T;
