@@ -1,6 +1,6 @@
-import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { Field, ID, GraphQLISODateTime, ObjectType, Int } from '@nestjs/graphql';
 import { UserImageResponse } from '@lib/domains/user-image/application/dtos/user-image.response';
+import { UserWithMembersResponse } from '@lib/domains/user/application/dtos/user-with-members';
 
 @ObjectType()
 export class OfferResponse {
@@ -46,8 +46,8 @@ export class OfferResponse {
   @Field(() => ID)
   sellerId: string;
 
-  @Field(() => UserResponse)
-  seller: UserResponse;
+  @Field(() => UserWithMembersResponse)
+  seller: UserWithMembersResponse;
 
   @Field(() => String, { nullable: true })
   brandId: string | null;
