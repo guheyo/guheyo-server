@@ -328,7 +328,7 @@ type Query {
   findMyUserById(id: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: ID!): MyUserResponse
   findOfferById(id: String!): OfferResponse!
-  findOffers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedOffersResponse!
+  findOffers(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedOffersResponse!
   findRoleById(id: String!): RoleResponse
   findSwapById(id: String!): SwapResponse
   findUserImageById(id: String!): UserImageResponse
