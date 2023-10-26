@@ -16,6 +16,21 @@ export class FindOfferByIdHandler extends PrismaQueryHandler<FindOfferByIdQuery,
       where: {
         id: query.id,
       },
+      include: {
+        seller: {
+          include: {
+            members: {
+              include: {
+                roles: {
+                  orderBy: {
+                    position: 'asc',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     });
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
 
