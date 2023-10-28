@@ -7,6 +7,7 @@ import { CreateGuildCommand } from '@lib/domains/guild/application/commands/crea
 import { UpdateGuildInput } from '@lib/domains/guild/application/commands/update-guild/update-guild.input';
 import { UpdateGuildCommand } from '@lib/domains/guild/application/commands/update-guild/update-guild.command';
 import { DeleteGuildCommand } from '@lib/domains/guild/application/commands/delete-guild/delete-guild.command';
+import { FindGuildsQuery } from '@lib/domains/guild/application/queries/find-guilds/find-guilds.query';
 
 @Resolver()
 export class GuildResolver {
@@ -18,6 +19,12 @@ export class GuildResolver {
   @Query(() => GuildResponse, { nullable: true })
   async findGuildById(@Args('id') id: string): Promise<GuildResponse | null> {
     const query = new FindGuildByIdQuery(id);
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => [GuildResponse])
+  async findGuilds() {
+    const query = new FindGuildsQuery();
     return this.queryBus.execute(query);
   }
 

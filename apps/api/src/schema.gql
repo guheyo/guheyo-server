@@ -221,6 +221,8 @@ type GuildResponse {
   id: ID!
   name: String!
   position: Int
+  postCategories: [PostCategoryResponse!]!
+  productCategories: [ProductCategoryResponse!]!
   roles: [RoleResponse!]!
 }
 
@@ -320,10 +322,25 @@ type PaginatedUsersResponse {
   pageInfo: PageInfo!
 }
 
+type PostCategoryResponse {
+  description: String
+  id: ID!
+  name: String!
+  position: Int
+}
+
+type ProductCategoryResponse {
+  description: String
+  id: ID!
+  name: String!
+  position: Int
+}
+
 type Query {
   findAuctionById(id: String!): AuctionResponse
   findDemandById(id: String!): DemandResponse
   findGuildById(id: String!): GuildResponse
+  findGuilds: [GuildResponse!]!
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: ID!): MyUserResponse
