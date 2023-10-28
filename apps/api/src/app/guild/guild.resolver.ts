@@ -8,6 +8,8 @@ import { UpdateGuildInput } from '@lib/domains/guild/application/commands/update
 import { UpdateGuildCommand } from '@lib/domains/guild/application/commands/update-guild/update-guild.command';
 import { DeleteGuildCommand } from '@lib/domains/guild/application/commands/delete-guild/delete-guild.command';
 import { FindGuildsQuery } from '@lib/domains/guild/application/queries/find-guilds/find-guilds.query';
+import { PaginatedGuildsResponse } from '@lib/domains/guild/application/queries/find-guilds/paginated-guilds.response';
+import { FindGuildsArgs } from '@lib/domains/guild/application/queries/find-guilds/find-guilds.args';
 
 @Resolver()
 export class GuildResolver {
@@ -22,9 +24,9 @@ export class GuildResolver {
     return this.queryBus.execute(query);
   }
 
-  @Query(() => [GuildResponse])
-  async findGuilds() {
-    const query = new FindGuildsQuery();
+  @Query(() => PaginatedGuildsResponse)
+  async findGuilds(@Args() findGuildsArgs: FindGuildsArgs): Promise<PaginatedGuildsResponse> {
+    const query = new FindGuildsQuery(findGuildsArgs);
     return this.queryBus.execute(query);
   }
 

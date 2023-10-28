@@ -1,7 +1,9 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
+import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { FindGuildsQuery } from './find-guilds.query';
 import { GuildResponse } from '../../dtos/guild.response';
+import { PaginatedGuildsResponse } from './paginated-guilds.response';
 
 @QueryHandler(FindGuildsQuery)
 export class FindGuildsHandler extends PrismaQueryHandler<FindGuildsQuery, GuildResponse> {
@@ -9,7 +11,7 @@ export class FindGuildsHandler extends PrismaQueryHandler<FindGuildsQuery, Guild
     super(GuildResponse);
   }
 
-  async execute(query: FindGuildsQuery): Promise<GuildResponse[]> {
+  async execute(query: FindGuildsQuery): Promise<PaginatedGuildsResponse> {
     const guilds = await this.prismaService.guild.findMany({
       orderBy: {
         position: 'asc',
@@ -27,6 +29,6 @@ export class FindGuildsHandler extends PrismaQueryHandler<FindGuildsQuery, Guild
         },
       },
     });
-    return this.parseResponses(guilds);
+    return paginate<GuildResponse>(this.parseResponses(guilds), 'id', query.take);
   }
 }

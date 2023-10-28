@@ -236,6 +236,11 @@ type GuildResponse {
   roles: [RoleResponse!]!
 }
 
+type GuildResponseEdge {
+  cursor: String!
+  node: GuildResponse!
+}
+
 type MemberWithRolesResponse {
   createdAt: DateTime!
   guildId: String!
@@ -332,6 +337,11 @@ type PaginatedDemandsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedGuildsResponse {
+  edges: [GuildResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedOffersResponse {
   edges: [OfferResponseEdge!]!
   pageInfo: PageInfo!
@@ -367,7 +377,7 @@ type Query {
   findDemandById(id: String!): DemandResponse
   findDemands(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedDemandsResponse!
   findGuildById(id: String!): GuildResponse
-  findGuilds: [GuildResponse!]!
+  findGuilds(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGuildsResponse!
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: ID!): MyUserResponse
