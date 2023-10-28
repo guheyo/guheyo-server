@@ -1,6 +1,8 @@
 import { RoleResponse } from '@lib/domains/role/application/dtos/role.response';
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
+import { ProductCategoryResponse } from './product-category.response';
+import { PostCategoryResponse } from './post-category.response';
 
 @ObjectType()
 export class GuildResponse {
@@ -23,6 +25,12 @@ export class GuildResponse {
 
   @Field(() => [RoleResponse])
   roles: RoleResponse[];
+
+  @Field(() => [ProductCategoryResponse])
+  productCategories: ProductCategoryResponse[];
+
+  @Field(() => [PostCategoryResponse])
+  postCategories: PostCategoryResponse[];
 
   constructor(partial: Partial<GuildResponse>) {
     Object.assign(this, partial);
