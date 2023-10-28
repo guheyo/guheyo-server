@@ -194,6 +194,8 @@ scalar DateTime
 type DemandResponse {
   brandId: String
   businessFunction: String!
+  buyer: UserResponse!
+  buyerId: ID!
   createdAt: DateTime!
   description: String
   guildId: String!
@@ -203,11 +205,14 @@ type DemandResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  seller: UserResponse!
-  sellerId: ID!
   source: String!
   status: String!
   updatedAt: DateTime!
+}
+
+type DemandResponseEdge {
+  cursor: String!
+  node: DemandResponse!
 }
 
 input DisconnectRolesInput {
@@ -312,6 +317,11 @@ type PageInfo {
   hasNextPage: Boolean!
 }
 
+type PaginatedDemandsResponse {
+  edges: [DemandResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedOffersResponse {
   edges: [OfferResponseEdge!]!
   pageInfo: PageInfo!
@@ -344,6 +354,7 @@ type ProductCategoryResponse {
 type Query {
   findAuctionById(id: String!): AuctionResponse
   findDemandById(id: String!): DemandResponse
+  findDemands(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedDemandsResponse!
   findGuildById(id: String!): GuildResponse
   findGuilds: [GuildResponse!]!
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
