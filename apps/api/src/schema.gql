@@ -32,6 +32,11 @@ type AuctionResponse {
   updatedAt: DateTime!
 }
 
+type AuctionResponseEdge {
+  cursor: String!
+  node: AuctionResponse!
+}
+
 type BidResponse {
   auctionId: ID!
   bidder: UserResponse!
@@ -317,6 +322,11 @@ type PageInfo {
   hasNextPage: Boolean!
 }
 
+type PaginatedAuctionsResponse {
+  edges: [AuctionResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedDemandsResponse {
   edges: [DemandResponseEdge!]!
   pageInfo: PageInfo!
@@ -353,6 +363,7 @@ type ProductCategoryResponse {
 
 type Query {
   findAuctionById(id: String!): AuctionResponse
+  findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
   findDemandById(id: String!): DemandResponse
   findDemands(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedDemandsResponse!
   findGuildById(id: String!): GuildResponse
