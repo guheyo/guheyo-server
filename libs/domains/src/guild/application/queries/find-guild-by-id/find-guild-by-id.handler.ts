@@ -12,6 +12,18 @@ export class FindGuildByIdHandler extends PrismaQueryHandler<FindGuildByIdQuery,
   async execute(query: FindGuildByIdQuery): Promise<GuildResponse | null> {
     const guild = await this.prismaService.guild.findUnique({
       where: { id: query.id },
+      include: {
+        productCategories: {
+          orderBy: {
+            position: 'asc',
+          },
+        },
+        postCategories: {
+          orderBy: {
+            position: 'asc',
+          },
+        },
+      },
     });
     return this.parseResponse(guild);
   }

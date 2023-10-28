@@ -20,7 +20,19 @@ export class FindAuctionByIdHandler extends PrismaQueryHandler<
         id: query.id,
       },
       include: {
-        seller: true,
+        seller: {
+          include: {
+            members: {
+              include: {
+                roles: {
+                  orderBy: {
+                    position: 'asc',
+                  },
+                },
+              },
+            },
+          },
+        },
         bids: {
           orderBy: {
             createdAt: 'desc',

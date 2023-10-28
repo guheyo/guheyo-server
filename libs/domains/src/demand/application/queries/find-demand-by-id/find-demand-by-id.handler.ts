@@ -16,6 +16,21 @@ export class FindDemandByIdHandler extends PrismaQueryHandler<FindDemandByIdQuer
       where: {
         id: query.id,
       },
+      include: {
+        buyer: {
+          include: {
+            members: {
+              include: {
+                roles: {
+                  orderBy: {
+                    position: 'asc',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     });
     if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_IS_NOT_FOUND);
 
