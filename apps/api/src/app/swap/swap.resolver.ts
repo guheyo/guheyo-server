@@ -5,6 +5,9 @@ import { UpdateSwapCommand } from '@lib/domains/swap/application/commands/update
 import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-swap/update-swap.input';
 import { SwapResponse } from '@lib/domains/swap/application/dtos/swap.response';
 import { FindSwapByIdQuery } from '@lib/domains/swap/application/queries/find-swap-by-id/find-swap-by-id.query';
+import { FindSwapsArgs } from '@lib/domains/swap/application/queries/find-swaps/find-swaps.args';
+import { FindSwapsQuery } from '@lib/domains/swap/application/queries/find-swaps/find-swaps.query';
+import { PaginatedSwapsResponse } from '@lib/domains/swap/application/queries/find-swaps/paginated-swaps.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
@@ -18,6 +21,12 @@ export class SwapResolver {
   @Query(() => SwapResponse, { nullable: true })
   async findSwapById(@Args('id') id: string): Promise<SwapResponse | null> {
     const query = new FindSwapByIdQuery(id);
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => PaginatedSwapsResponse)
+  async findSwaps(@Args() findSwapsArgs: FindSwapsArgs) {
+    const query = new FindSwapsQuery(findSwapsArgs);
     return this.queryBus.execute(query);
   }
 

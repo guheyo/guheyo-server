@@ -32,6 +32,11 @@ type AuctionResponse {
   updatedAt: DateTime!
 }
 
+type AuctionResponseEdge {
+  cursor: String!
+  node: AuctionResponse!
+}
+
 type BidResponse {
   auctionId: ID!
   bidder: UserResponse!
@@ -194,6 +199,8 @@ scalar DateTime
 type DemandResponse {
   brandId: String
   businessFunction: String!
+  buyer: UserResponse!
+  buyerId: ID!
   createdAt: DateTime!
   description: String
   guildId: String!
@@ -203,11 +210,14 @@ type DemandResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  seller: UserResponse!
-  sellerId: ID!
   source: String!
   status: String!
   updatedAt: DateTime!
+}
+
+type DemandResponseEdge {
+  cursor: String!
+  node: DemandResponse!
 }
 
 input DisconnectRolesInput {
@@ -221,7 +231,14 @@ type GuildResponse {
   id: ID!
   name: String!
   position: Int
+  postCategories: [PostCategoryResponse!]!
+  productCategories: [ProductCategoryResponse!]!
   roles: [RoleResponse!]!
+}
+
+type GuildResponseEdge {
+  cursor: String!
+  node: GuildResponse!
 }
 
 type MemberWithRolesResponse {
@@ -310,8 +327,28 @@ type PageInfo {
   hasNextPage: Boolean!
 }
 
+type PaginatedAuctionsResponse {
+  edges: [AuctionResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PaginatedDemandsResponse {
+  edges: [DemandResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PaginatedGuildsResponse {
+  edges: [GuildResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedOffersResponse {
   edges: [OfferResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PaginatedSwapsResponse {
+  edges: [SwapResponseEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -320,10 +357,27 @@ type PaginatedUsersResponse {
   pageInfo: PageInfo!
 }
 
+type PostCategoryResponse {
+  description: String
+  id: ID!
+  name: String!
+  position: Int
+}
+
+type ProductCategoryResponse {
+  description: String
+  id: ID!
+  name: String!
+  position: Int
+}
+
 type Query {
   findAuctionById(id: String!): AuctionResponse
+  findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
   findDemandById(id: String!): DemandResponse
+  findDemands(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedDemandsResponse!
   findGuildById(id: String!): GuildResponse
+  findGuilds(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGuildsResponse!
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: ID!): MyUserResponse
@@ -331,6 +385,7 @@ type Query {
   findOffers(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedOffersResponse!
   findRoleById(id: String!): RoleResponse
   findSwapById(id: String!): SwapResponse
+  findSwaps(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedSwapsResponse!
   findUserImageById(id: String!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
@@ -379,6 +434,11 @@ type SwapResponse {
   source: String!
   status: String!
   updatedAt: DateTime!
+}
+
+type SwapResponseEdge {
+  cursor: String!
+  node: SwapResponse!
 }
 
 input UpdateAuctionInput {

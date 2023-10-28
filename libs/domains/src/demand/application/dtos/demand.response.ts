@@ -41,10 +41,10 @@ export class DemandResponse {
   productCategoryId: string;
 
   @Field(() => ID)
-  sellerId: string;
+  buyerId: string;
 
   @Field(() => UserResponse)
-  seller: UserResponse;
+  buyer: UserResponse;
 
   @Field(() => String, { nullable: true })
   brandId: string | null;
