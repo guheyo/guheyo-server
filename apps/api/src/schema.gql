@@ -317,6 +317,11 @@ type PaginatedOffersResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedSwapsResponse {
+  edges: [SwapResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedUsersResponse {
   edges: [UserResponseEdge!]!
   pageInfo: PageInfo!
@@ -348,6 +353,7 @@ type Query {
   findOffers(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedOffersResponse!
   findRoleById(id: String!): RoleResponse
   findSwapById(id: String!): SwapResponse
+  findSwaps(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedSwapsResponse!
   findUserImageById(id: String!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
@@ -396,6 +402,11 @@ type SwapResponse {
   source: String!
   status: String!
   updatedAt: DateTime!
+}
+
+type SwapResponseEdge {
+  cursor: String!
+  node: SwapResponse!
 }
 
 input UpdateAuctionInput {
