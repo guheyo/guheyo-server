@@ -8,13 +8,7 @@ import { ApiModule } from '@app/api/api.module';
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
   const app = await NestFactory.create<NestFastifyApplication>(ApiModule, fastifyAdapter, {
-    // cors: process.env.NODE_ENV === 'dev',
-    cors: {
-      origin: '*',
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      preflightContinue: false,
-      optionsSuccessStatus: 204,
-    },
+    cors: process.env.NODE_ENV === 'dev',
   });
 
   const configService = app.get(ConfigService);
