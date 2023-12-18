@@ -6,7 +6,7 @@ import { UserResponse } from './user.response';
 @ObjectType()
 export class UserWithMembersResponse extends UserResponse {
   @Type(() => MemberWithRolesResponse)
-  @Field(() => [MemberWithRolesResponse], { nullable: true })
+  @Field(() => [MemberWithRolesResponse])
   members: MemberWithRolesResponse[];
 
   constructor(partial: Partial<UserWithMembersResponse>) {
