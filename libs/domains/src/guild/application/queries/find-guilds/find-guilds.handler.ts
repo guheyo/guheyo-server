@@ -27,6 +27,11 @@ export class FindGuildsHandler extends PrismaQueryHandler<FindGuildsQuery, Guild
             position: 'asc',
           },
         },
+        roles: {
+          orderBy: {
+            position: 'asc',
+          },
+        },
       },
     });
     return paginate<GuildResponse>(this.parseResponses(guilds), 'id', query.take);

@@ -1,17 +1,20 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { FindGuildByIdQuery } from './find-guild-by-id.query';
+import { FindGuildByNameQuery } from './find-guild-by-name.query';
 import { GuildResponse } from '../../dtos/guild.response';
 
-@QueryHandler(FindGuildByIdQuery)
-export class FindGuildByIdHandler extends PrismaQueryHandler<FindGuildByIdQuery, GuildResponse> {
+@QueryHandler(FindGuildByNameQuery)
+export class FindGuildByNameHandler extends PrismaQueryHandler<
+  FindGuildByNameQuery,
+  GuildResponse
+> {
   constructor() {
     super(GuildResponse);
   }
 
-  async execute(query: FindGuildByIdQuery): Promise<GuildResponse | null> {
+  async execute(query: FindGuildByNameQuery): Promise<GuildResponse | null> {
     const guild = await this.prismaService.guild.findUnique({
-      where: { id: query.id },
+      where: { name: query.name },
       include: {
         productCategories: {
           orderBy: {
