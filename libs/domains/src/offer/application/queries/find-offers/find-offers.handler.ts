@@ -37,6 +37,7 @@ export class FindOffersHandler extends PrismaQueryHandler<FindOffersQuery, Offer
                 },
               },
             },
+            socialAccounts: true,
           },
         },
       },

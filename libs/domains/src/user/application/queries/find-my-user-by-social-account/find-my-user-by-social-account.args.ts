@@ -1,5 +1,5 @@
-import { ArgsType, Field, ID } from '@nestjs/graphql';
-import { IsString, IsUUID } from 'class-validator';
+import { ArgsType, Field } from '@nestjs/graphql';
+import { IsString } from 'class-validator';
 
 @ArgsType()
 export class FindMyUserBySocialAccountArgs {
@@ -7,7 +7,7 @@ export class FindMyUserBySocialAccountArgs {
   @Field()
   provider: string;
 
-  @IsUUID()
-  @Field(() => ID)
+  @IsString()
+  @Field(() => String)
   socialId: string;
 }

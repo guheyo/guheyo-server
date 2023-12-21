@@ -37,6 +37,16 @@ type AuctionResponseEdge {
   node: AuctionResponse!
 }
 
+type AuthorResponse {
+  avatarURL: String
+  bot: Boolean!
+  createdAt: DateTime!
+  id: ID!
+  members: [MemberWithRolesResponse!]!
+  socialAccounts: [SocialAccountWithoutAuthResponse!]!
+  username: String!
+}
+
 type BidResponse {
   auctionId: ID!
   bidder: UserResponse!
@@ -293,8 +303,8 @@ type MyUserResponse {
   bot: Boolean!
   createdAt: DateTime!
   id: ID!
-  members: [MemberWithRolesResponse!]
-  socialAccounts: [SocialAccountResponse!]
+  members: [MemberWithRolesResponse!]!
+  socialAccounts: [SocialAccountResponse!]!
   username: String!
 }
 
@@ -310,8 +320,7 @@ type OfferResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  seller: UserWithMembersResponse!
-  sellerId: ID!
+  seller: AuthorResponse!
   source: String!
   status: String!
   updatedAt: DateTime!
@@ -377,10 +386,11 @@ type Query {
   findDemandById(id: String!): DemandResponse
   findDemands(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedDemandsResponse!
   findGuildById(id: String!): GuildResponse
+  findGuildByName(name: String!): GuildResponse
   findGuilds(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGuildsResponse!
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: String!): MyUserResponse
-  findMyUserBySocialAccount(provider: String!, socialId: ID!): MyUserResponse
+  findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse
   findOfferById(id: String!): OfferResponse!
   findOffers(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedOffersResponse!
   findRoleById(id: String!): RoleResponse
@@ -412,6 +422,14 @@ type SocialAccountResponse {
   sessionState: String
   socialId: String!
   tokenType: String
+  userId: String!
+}
+
+type SocialAccountWithoutAuthResponse {
+  createdAt: DateTime!
+  id: ID!
+  provider: String!
+  socialId: String!
   userId: String!
 }
 
@@ -555,13 +573,4 @@ type UserResponse {
 type UserResponseEdge {
   cursor: String!
   node: UserResponse!
-}
-
-type UserWithMembersResponse {
-  avatarURL: String
-  bot: Boolean!
-  createdAt: DateTime!
-  id: ID!
-  members: [MemberWithRolesResponse!]
-  username: String!
 }
