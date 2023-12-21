@@ -7,11 +7,11 @@ import { UserResponse } from './user.response';
 @ObjectType()
 export class MyUserResponse extends UserResponse {
   @Type(() => SocialAccountResponse)
-  @Field(() => [SocialAccountResponse], { nullable: true })
+  @Field(() => [SocialAccountResponse])
   socialAccounts: SocialAccountResponse[];
 
   @Type(() => MemberWithRolesResponse)
-  @Field(() => [MemberWithRolesResponse], { nullable: true })
+  @Field(() => [MemberWithRolesResponse])
   members: MemberWithRolesResponse[];
 
   constructor(partial: Partial<MyUserResponse>) {
