@@ -401,6 +401,7 @@ type Query {
   findGuilds(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGuildsResponse!
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: String!): MyUserResponse
+  findMyUserBySession(sessionToken: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse
   findOfferById(id: String!): OfferResponse!
   findOffers(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedOffersResponse!
