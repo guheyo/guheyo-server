@@ -1,7 +1,4 @@
 import { SessionEntity } from '@lib/domains/session/domain/session.entity';
+import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 
-export interface SessionSavePort {
-  create(session: SessionEntity): Promise<SessionEntity>;
-  update(session: SessionEntity): Promise<SessionEntity>;
-  delete(sessionToken: string): Promise<SessionEntity>;
-}
+export interface SessionSavePort extends SavePort<SessionEntity> {}

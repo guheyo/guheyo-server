@@ -1,30 +1,28 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Session } from '@prisma/client';
-import { Exclude } from 'class-transformer';
+import { AggregateRoot } from '@nestjs/cqrs';
+import _ from 'lodash';
+import { UpdateSessionProps } from './session.types';
 
-export class SessionEntity implements Session {
+export class SessionEntity extends AggregateRoot {
+  id: string;
+
+  createdAt: Date;
+
+  updatedAt: Date;
+
+  deletedAt: Date | null;
+
+  sessionToken: string;
+
+  expires: Date;
+
+  userId: string;
+
   constructor(partial: Partial<SessionEntity>) {
+    super();
     Object.assign(this, partial);
   }
 
-  @ApiProperty({ type: String })
-  id: string;
-
-  @ApiProperty({ type: Date })
-  createdAt: Date;
-
-  @ApiProperty({ type: Date })
-  updatedAt: Date;
-
-  @Exclude()
-  deletedAt: Date | null;
-
-  @ApiProperty({ type: String })
-  sessionToken: string;
-
-  @ApiProperty({ type: Date })
-  expires: Date;
-
-  @ApiProperty({ type: String })
-  userId: string;
+  update(props: UpdateSessionProps) {
+    Object.assign(this, _.pickBy(props, _.identity));
+  }
 }
