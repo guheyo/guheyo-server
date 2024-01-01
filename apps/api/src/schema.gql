@@ -282,6 +282,7 @@ type Mutation {
   deleteOffer(id: String!): String!
   deleteRole(id: String!): String!
   deleteSocialAccount(id: String!): String!
+  deleteSocialAccountByProvider(provider: String!, socialId: String!): String!
   deleteSwap(id: String!): String!
   deleteUser(id: String!): String!
   deleteUserImage(id: String!): String!

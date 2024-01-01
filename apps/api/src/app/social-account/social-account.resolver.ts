@@ -5,6 +5,7 @@ import { CreateSocialAccountCommand } from '@lib/domains/social-account/applicat
 import { UpdateSocialAccountCommand } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.command';
 import { UpdateSocialAccountInput } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.input';
 import { DeleteSocialAccountCommand } from '@lib/domains/social-account/application/commands/delete-social-account/delete-social-account.command';
+import { DeleteSocialAccountByProviderCommand } from '@lib/domains/social-account/application/commands/delete-social-account-by-provider/delete-social-account-by-provider.command';
 
 @Resolver()
 export class SocialAccountResolver {
@@ -32,5 +33,14 @@ export class SocialAccountResolver {
   async deleteSocialAccount(@Args('id') id: string): Promise<string> {
     await this.commandBus.execute(new DeleteSocialAccountCommand(id));
     return id;
+  }
+
+  @Mutation(() => String)
+  async deleteSocialAccountByProvider(
+    @Args('provider') provider: string,
+    @Args('socialId') socialId: string,
+  ): Promise<string> {
+    await this.commandBus.execute(new DeleteSocialAccountByProviderCommand(provider, socialId));
+    return socialId;
   }
 }
