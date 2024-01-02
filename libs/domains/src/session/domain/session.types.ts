@@ -1,7 +1,7 @@
 export interface UpdateSessionProps {
-  sessionToken?: string;
+  sessionToken: string;
 
   expires?: Date;
 
-  userId: string;
+  userId?: string;
 }

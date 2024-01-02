@@ -529,9 +529,9 @@ input UpdateRoleInput {
 }
 
 input UpdateSessionInput {
-  expires: DateTime!
+  expires: DateTime
   sessionToken: String!
-  userId: String!
+  userId: String
 }
 
 input UpdateSocialAccountInput {

@@ -4,9 +4,9 @@ import { UpdateSessionInput } from './update-session.input';
 export class UpdateSessionCommand implements ICommand {
   sessionToken: string;
 
-  expires: Date;
+  expires?: Date;
 
-  userId: string;
+  userId?: string;
 
   constructor(input: UpdateSessionInput) {
     this.sessionToken = input.sessionToken;
