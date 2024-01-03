@@ -1,4 +1,4 @@
-import { Field, GraphQLISODateTime, ID, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
@@ -8,11 +8,11 @@ export class CreateAuctionInput {
   id: string;
 
   @IsDate()
-  @Field(() => GraphQLISODateTime)
+  @Field()
   createdAt: Date;
 
   @IsDate()
-  @Field(() => GraphQLISODateTime)
+  @Field()
   endedAt: Date;
 
   @IsString()

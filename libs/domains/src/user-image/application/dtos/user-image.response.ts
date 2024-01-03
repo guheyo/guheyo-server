@@ -1,4 +1,4 @@
-import { Field, GraphQLISODateTime, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { IsDate, IsInt, IsString, IsUUID } from 'class-validator';
 
 @ObjectType()
@@ -8,11 +8,11 @@ export class UserImageResponse {
   id: string;
 
   @IsDate()
-  @Field(() => GraphQLISODateTime)
+  @Field()
   createdAt: Date;
 
   @IsDate()
-  @Field(() => GraphQLISODateTime)
+  @Field()
   updatedAt: Date;
 
   @IsString()

@@ -22,7 +22,7 @@ export class SessionRepository extends PrismaRepository<SessionEntity> implement
     const session = await this.prismaService.session.findUnique({
       where: {
         sessionToken,
-      }
+      },
     });
     return this.toEntity(session);
   }

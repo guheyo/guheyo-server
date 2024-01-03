@@ -1,5 +1,5 @@
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
-import { Field, ID, GraphQLISODateTime, ObjectType, Int } from '@nestjs/graphql';
+import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { UserImageResponse } from '@lib/domains/user-image/application/dtos/user-image.response';
 import { BidResponse } from './bid.response';
 
@@ -8,13 +8,13 @@ export class AuctionResponse {
   @Field(() => ID)
   id: string;
 
-  @Field(() => GraphQLISODateTime)
+  @Field()
   createdAt: Date;
 
-  @Field(() => GraphQLISODateTime)
+  @Field()
   updatedAt: Date;
 
-  @Field(() => GraphQLISODateTime)
+  @Field()
   endedAt: Date;
 
   @Field()

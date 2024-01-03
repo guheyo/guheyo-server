@@ -1,15 +1,15 @@
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
-import { Field, GraphQLISODateTime, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class BidResponse {
   @Field(() => ID)
   id: string;
 
-  @Field(() => GraphQLISODateTime)
+  @Field()
   createdAt: Date;
 
-  @Field(() => GraphQLISODateTime)
+  @Field()
   canceledAt: Date;
 
   @Field(() => Int)

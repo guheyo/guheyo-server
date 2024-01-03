@@ -13,7 +13,7 @@ describe('DeleteSocialAccountByProviderCommand', () => {
   const socialAccountLoadPort: SocialAccountLoadPort = mock(SocialAccountRepository);
   const command: DeleteSocialAccountByProviderCommand = {
     provider: 'discord',
-    socialId: '1234'
+    socialId: '1234',
   };
   when(socialAccountLoadPort.findByProvider(command.provider, command.socialId)).thenResolve(
     new SocialAccountEntity({
