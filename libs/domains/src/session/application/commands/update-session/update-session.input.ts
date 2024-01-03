@@ -1,4 +1,4 @@
-import { Field, GraphQLISODateTime, ID, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsDate, IsOptional, IsString } from 'class-validator';
 
 @InputType()
@@ -9,7 +9,7 @@ export class UpdateSessionInput {
 
   @IsOptional()
   @IsDate()
-  @Field(() => GraphQLISODateTime, { nullable: true })
+  @Field({ nullable: true })
   expires?: Date;
 
   @IsOptional()
