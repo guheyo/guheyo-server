@@ -149,6 +149,13 @@ input CreateRoleInput {
   position: Int
 }
 
+input CreateSessionInput {
+  expires: DateTime!
+  id: ID!
+  sessionToken: String!
+  userId: ID!
+}
+
 input CreateSocialAccountInput {
   accessToken: String
   expiresAt: Int
@@ -271,6 +278,7 @@ type Mutation {
   createMember(input: CreateMemberInput!): String!
   createOffer(input: CreateOfferInput!): String!
   createRole(input: CreateRoleInput!): String!
+  createSession(input: CreateSessionInput!): String!
   createSocialAccount(input: CreateSocialAccountInput!): String!
   createSwap(input: CreateSwapInput!): String!
   createUser(input: CreateUserInput!): String!
@@ -281,6 +289,7 @@ type Mutation {
   deleteMember(id: ID!, userId: ID!): String!
   deleteOffer(id: String!): String!
   deleteRole(id: String!): String!
+  deleteSession(sessionToken: String!): String!
   deleteSocialAccount(id: String!): String!
   deleteSocialAccountByProvider(provider: String!, socialId: String!): String!
   deleteSwap(id: String!): String!
@@ -293,6 +302,7 @@ type Mutation {
   updateMember(input: UpdateMemberInput!): String!
   updateOffer(input: UpdateOfferInput!): String!
   updateRole(input: UpdateRoleInput!): String!
+  updateSession(input: UpdateSessionInput!): String!
   updateSocialAccount(input: UpdateSocialAccountInput!): String!
   updateSwap(input: UpdateSwapInput!): String!
   updateUser(input: UpdateUserInput!): String!
@@ -391,10 +401,12 @@ type Query {
   findGuilds(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGuildsResponse!
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: String!): MyUserResponse
+  findMyUserBySession(sessionToken: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse
   findOfferById(id: String!): OfferResponse!
   findOffers(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedOffersResponse!
   findRoleById(id: String!): RoleResponse
+  findSession(sessionToken: String!): SessionResponse!
   findSwapById(id: String!): SwapResponse
   findSwaps(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedSwapsResponse!
   findUserImageById(id: String!): UserImageResponse
@@ -409,6 +421,12 @@ type RoleResponse {
   id: ID!
   name: String!
   position: Int
+}
+
+type SessionResponse {
+  expires: DateTime!
+  sessionToken: String!
+  userId: String!
 }
 
 type SocialAccountResponse {
@@ -508,6 +526,12 @@ input UpdateRoleInput {
   id: ID!
   name: String
   position: Int
+}
+
+input UpdateSessionInput {
+  expires: DateTime
+  sessionToken: String!
+  userId: ID
 }
 
 input UpdateSocialAccountInput {

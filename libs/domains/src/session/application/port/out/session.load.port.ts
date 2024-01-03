@@ -1,5 +1,6 @@
-import { SessionWithUserEntity } from '@lib/domains/session/domain/session-with-user.entity';
+import { SessionEntity } from '@lib/domains/session/domain/session.entity';
+import { LoadPort } from '@lib/shared/cqrs/ports/load.port';
 
-export interface SessionLoadPort {
-  getSessionWithUser(sessionToken: string): Promise<SessionWithUserEntity | null>;
+export interface SessionLoadPort extends LoadPort<SessionEntity> {
+  findBySessionToken(sessionToken: string): Promise<SessionEntity | null>;
 }
