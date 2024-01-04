@@ -1,6 +1,6 @@
-import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { UserImageResponse } from '@lib/domains/user-image/application/dtos/user-image.response';
+import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
 import { BidResponse } from './bid.response';
 
 @ObjectType()
@@ -50,8 +50,8 @@ export class AuctionResponse {
   @Field(() => ID)
   sellerId: string;
 
-  @Field(() => UserResponse)
-  seller: UserResponse;
+  @Field(() => AuthorResponse)
+  seller: AuthorResponse;
 
   @Field(() => String, { nullable: true })
   brandId: string | null;

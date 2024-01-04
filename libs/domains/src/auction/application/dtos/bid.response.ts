@@ -1,4 +1,4 @@
-import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
+import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
@@ -21,8 +21,8 @@ export class BidResponse {
   @Field(() => ID)
   auctionId: string;
 
-  @Field(() => UserResponse)
-  bidder: UserResponse;
+  @Field(() => AuthorResponse)
+  bidder: AuthorResponse;
 
   @Field()
   status: string;
