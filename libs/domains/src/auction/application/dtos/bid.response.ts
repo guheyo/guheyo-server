@@ -1,15 +1,15 @@
-import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
-import { Field, GraphQLISODateTime, ID, Int, ObjectType } from '@nestjs/graphql';
+import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class BidResponse {
   @Field(() => ID)
   id: string;
 
-  @Field(() => GraphQLISODateTime)
+  @Field()
   createdAt: Date;
 
-  @Field(() => GraphQLISODateTime)
+  @Field()
   canceledAt: Date;
 
   @Field(() => Int)
@@ -21,8 +21,8 @@ export class BidResponse {
   @Field(() => ID)
   auctionId: string;
 
-  @Field(() => UserResponse)
-  bidder: UserResponse;
+  @Field(() => AuthorResponse)
+  bidder: AuthorResponse;
 
   @Field()
   status: string;

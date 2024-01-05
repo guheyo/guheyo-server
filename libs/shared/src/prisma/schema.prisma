@@ -22,6 +22,8 @@ model User {
   updatedAt         DateTime    @updatedAt
   deletedAt         DateTime?
   username          String      @unique
+  name              String?
+  phoneNumber       String?     @unique
   socialAccounts    SocialAccount[]
   avatarURL         String?
   bot               Boolean     @default(false)
