@@ -6,11 +6,17 @@ export class UpdateUserCommand implements ICommand {
 
   username?: string;
 
+  name?: string;
+
+  phoneNumber?: string;
+
   avatarURL?: string;
 
   constructor(input: UpdateUserInput) {
     this.id = input.id;
     this.username = input.username;
+    this.name = input.name;
+    this.phoneNumber = input.phoneNumber;
     this.avatarURL = input.avatarURL;
   }
 }

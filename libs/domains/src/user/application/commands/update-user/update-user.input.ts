@@ -13,6 +13,14 @@ export class UpdateUserInput {
   username?: string;
 
   @IsOptional()
+  @Field({ nullable: true })
+  name?: string;
+
+  @IsOptional()
+  @Field({ nullable: true })
+  phoneNumber?: string;
+
+  @IsOptional()
   @IsString()
   @Field({ nullable: true })
   avatarURL?: string;

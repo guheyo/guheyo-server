@@ -19,6 +19,10 @@ export class UserEntity extends AggregateRoot {
 
   username: string;
 
+  name: string | null;
+
+  phoneNumber: string | null;
+
   avatarURL: string | null;
 
   bot: boolean;
