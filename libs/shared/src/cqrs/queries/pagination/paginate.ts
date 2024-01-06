@@ -5,7 +5,8 @@ export function paginate<T = Record<string, any>>(
   cursorKey: keyof T,
   take: number,
 ): IPaginatedResponse<T> {
-  const edges = nodes.map((node) => ({
+  const hasNextPage = nodes.length > take;
+  const edges = (hasNextPage ? nodes.slice(0, -1) : nodes).map((node) => ({
     node,
     cursor: node[cursorKey] as string,
   }));
@@ -13,8 +14,8 @@ export function paginate<T = Record<string, any>>(
   return {
     edges,
     pageInfo: {
-      endCursor: nodes.length ? (nodes.slice(-1)[0][cursorKey] as string) : null,
-      hasNextPage: nodes.length < take,
+      endCursor: edges[edges.length - 1]?.cursor || null,
+      hasNextPage,
     },
   };
 }
