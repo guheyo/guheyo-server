@@ -20,7 +20,7 @@ export class FindOffersHandler extends PrismaQueryHandler<FindOffersQuery, Offer
     const offers = await this.prismaService.offer.findMany({
       where: query.where,
       cursor,
-      take: query.take,
+      take: query.take + 1,
       skip: query.skip,
       orderBy: {
         createdAt: 'desc',
