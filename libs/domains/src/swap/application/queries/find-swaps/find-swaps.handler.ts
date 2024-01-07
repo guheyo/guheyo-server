@@ -20,7 +20,7 @@ export class FindSwapsHandler extends PrismaQueryHandler<FindSwapsQuery, SwapRes
     const swaps = await this.prismaService.swap.findMany({
       where: query.where,
       cursor,
-      take: query.take,
+      take: query.take + 1,
       skip: query.skip,
       orderBy: {
         createdAt: 'desc',

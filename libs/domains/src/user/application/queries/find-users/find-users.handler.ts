@@ -19,7 +19,7 @@ export class FindUsersHandler extends PrismaQueryHandler<FindUsersQuery, UserRes
       : undefined;
     const users = await this.prismaService.user.findMany({
       cursor,
-      take: query.take,
+      take: query.take + 1,
       skip: query.skip,
       orderBy: {
         createdAt: 'desc',
