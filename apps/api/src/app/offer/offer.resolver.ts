@@ -32,7 +32,6 @@ export class OfferResolver {
 
   @Mutation(() => String)
   async createOffer(@Args('input') input: CreateOfferInput): Promise<string> {
-    console.log(input);
     await this.commandBus.execute(new CreateOfferCommand(input));
     return input.id;
   }

@@ -26,7 +26,6 @@ type AuctionResponse {
   priceCurrency: String!
   productCategoryId: String!
   seller: AuthorResponse!
-  sellerId: ID!
   source: String!
   status: String!
   updatedAt: DateTime!
@@ -219,7 +218,6 @@ type DemandResponse {
   brandId: String
   businessFunction: String!
   buyer: AuthorResponse!
-  buyerId: ID!
   createdAt: DateTime!
   description: String
   guildId: String!
@@ -471,7 +469,6 @@ type SwapResponse {
   priceCurrency: String!
   productCategoryId: String!
   proposer: AuthorResponse!
-  proposerId: ID!
   source: String!
   status: String!
   updatedAt: DateTime!

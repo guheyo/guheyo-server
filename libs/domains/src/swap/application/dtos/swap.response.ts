@@ -46,9 +46,6 @@ export class SwapResponse {
   @Field()
   productCategoryId: string;
 
-  @Field(() => ID)
-  proposerId: string;
-
   @Field(() => AuthorResponse)
   proposer: AuthorResponse;
 
