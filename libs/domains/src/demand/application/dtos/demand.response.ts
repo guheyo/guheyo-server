@@ -40,9 +40,6 @@ export class DemandResponse {
   @Field()
   productCategoryId: string;
 
-  @Field(() => ID)
-  buyerId: string;
-
   @Field(() => AuthorResponse)
   buyer: AuthorResponse;
 

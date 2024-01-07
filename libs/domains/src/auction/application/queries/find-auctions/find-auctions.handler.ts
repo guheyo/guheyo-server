@@ -20,7 +20,7 @@ export class FindAuctionsHandler extends PrismaQueryHandler<FindAuctionsQuery, A
     const auctions = await this.prismaService.auction.findMany({
       where: query.where,
       cursor,
-      take: query.take,
+      take: query.take + 1,
       skip: query.skip,
       orderBy: {
         createdAt: 'desc',
@@ -37,6 +37,7 @@ export class FindAuctionsHandler extends PrismaQueryHandler<FindAuctionsQuery, A
                 },
               },
             },
+            socialAccounts: true,
           },
         },
         bids: {

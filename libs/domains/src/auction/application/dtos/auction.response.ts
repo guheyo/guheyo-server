@@ -47,9 +47,6 @@ export class AuctionResponse {
   @Field()
   productCategoryId: string;
 
-  @Field(() => ID)
-  sellerId: string;
-
   @Field(() => AuthorResponse)
   seller: AuthorResponse;
 
