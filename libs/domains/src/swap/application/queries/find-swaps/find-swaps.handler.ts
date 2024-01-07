@@ -37,6 +37,7 @@ export class FindSwapsHandler extends PrismaQueryHandler<FindSwapsQuery, SwapRes
                 },
               },
             },
+            socialAccounts: true,
           },
         },
       },

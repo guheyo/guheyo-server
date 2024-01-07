@@ -37,6 +37,7 @@ export class FindAuctionsHandler extends PrismaQueryHandler<FindAuctionsQuery, A
                 },
               },
             },
+            socialAccounts: true,
           },
         },
         bids: {

@@ -37,10 +37,12 @@ export class FindDemandsHandler extends PrismaQueryHandler<FindDemandsQuery, Dem
                 },
               },
             },
+            socialAccounts: true,
           },
         },
       },
     });
+
     const demandWithImagesPromises = demands.map(async (demand) => ({
       ...demand,
       images: await this.prismaService.userImage.findMany({
