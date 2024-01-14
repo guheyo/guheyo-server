@@ -1,111 +1,51 @@
 {
   "compilerOptions": {
-    /* Visit https://aka.ms/tsconfig to read more about this file */
+    /* 기본 옵션 */
+    "target": "es2021", // es2021 버전 자바스크립트로 컴파일
+    "module": "commonjs",
+    "declaration": true, // 컴파일시 .d.ts 파일도 자동으로 함께생성 (현재쓰는 모든 타입이 정의된 파일)
+    "declarationMap": false, // '.d.ts'파일에 대한 소스 맵 생성
+    "sourceMap": true, // 소스맵 '.map' 파일 생성  (webpack 디버깅시 오류 코드 위치 추적)
+    "removeComments": true, // 컴파일시 주석제거
+    "isolatedModules": true, // 각 파일을 별도 모듈로 변환
 
-    /* Projects */
-    // "incremental": true,                              /* Save .tsbuildinfo files to allow for incremental compilation of projects. */
-    // "composite": true,                                /* Enable constraints that allow a TypeScript project to be used with project references. */
-    // "tsBuildInfoFile": "./.tsbuildinfo",              /* Specify the path to .tsbuildinfo incremental compilation file. */
-    // "disableSourceOfProjectReferenceRedirect": true,  /* Disable preferring source files instead of declaration files when referencing composite projects. */
-    // "disableSolutionSearching": true,                 /* Opt a project out of multi-project reference checking when editing. */
-    // "disableReferencedProjectLoad": true,             /* Reduce the number of projects loaded automatically by TypeScript. */
+    /* 엄격한 유형 검사 옵션 */
+    "strict": true, // 모든 엄격한 유형 검사 옵션 활성화
+    "noImplicitAny": true, // 'any' 유형으로 표현식 및 선언 사용 시 오류 발생
+    "strictNullChecks": false, // 엄격한 null 검사 사용
+    "strictFunctionTypes": true, // 엄격한 함수 유형 검사 사용
+    "strictBindCallApply": true, // 엄격한 'bind', 'call', 'apply' 함수 메서드 사용
+    "strictPropertyInitialization": false, // 클래스에서 속성 초기화 엄격 검사 사용
+    "noImplicitThis": true, // 'any'유형으로 'this' 표현식 사용 시 오류 발생
+    "alwaysStrict": true, // 엄격모드에서 구문 분석 후, 각 소스 파일에 "use strict" 코드를 출력
 
-    /* Language and Environment */
-    "target": "ES2022",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    // "lib": [],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
-    // "jsx": "preserve",                                /* Specify what JSX code is generated. */
-    "experimentalDecorators": true,                      /* Enable experimental support for legacy experimental decorators. */
-    // "emitDecoratorMetadata": true,                    /* Emit design-type metadata for decorated declarations in source files. */
-    // "jsxFactory": "",                                 /* Specify the JSX factory function used when targeting React JSX emit, e.g. 'React.createElement' or 'h'. */
-    // "jsxFragmentFactory": "",                         /* Specify the JSX Fragment reference used for fragments when targeting React JSX emit e.g. 'React.Fragment' or 'Fragment'. */
-    // "jsxImportSource": "",                            /* Specify module specifier used to import the JSX factory functions when using 'jsx: react-jsx*'. */
-    // "reactNamespace": "",                             /* Specify the object invoked for 'createElement'. This only applies when targeting 'react' JSX emit. */
-    // "noLib": true,                                    /* Disable including any library files, including the default lib.d.ts. */
-    // "useDefineForClassFields": true,                  /* Emit ECMAScript-standard-compliant class fields. */
-    // "moduleDetection": "auto",                        /* Control what method is used to detect module-format JS files. */
+    /* 추가 검사 옵션 */
+    "noUnusedLocals": false, // 사용되지 않은 지역 변수가 있으면 오류 발생
+    "noUnusedParameters": false, // 사용되지 않은 매개변수가 있을 경우 오류 발생
+    "noImplicitReturns": true, // 함수가 값을 반환하지 않을 경우 오류 발생
+    "noFallthroughCasesInSwitch": true, // switch 문 오류 유형에 대한 오류 발생
 
-    /* Modules */
-    "module": "CommonJS",                                /* Specify what module code is generated. */
-    "rootDir": "./src",                                  /* Specify the root folder within your source files. */
-    // "moduleResolution": "node10",                     /* Specify how TypeScript looks up a file from a given module specifier. */
-    // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
-    // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
-    // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
-    // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
-    // "types": ["node"],                                      /* Specify type package names to be included without being referenced in a source file. */
-    // "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
-    // "moduleSuffixes": [],                             /* List of file name suffixes to search when resolving a module. */
-    // "allowImportingTsExtensions": true,               /* Allow imports to include TypeScript file extensions. Requires '--moduleResolution bundler' and either '--noEmit' or '--emitDeclarationOnly' to be set. */
-    // "resolvePackageJsonExports": true,                /* Use the package.json 'exports' field when resolving package imports. */
-    // "resolvePackageJsonImports": true,                /* Use the package.json 'imports' field when resolving imports. */
-    // "customConditions": [],                           /* Conditions to set in addition to the resolver-specific defaults when resolving imports. */
-    "resolveJsonModule": true,                        /* Enable importing .json files. */
-    // "allowArbitraryExtensions": true,                 /* Enable importing files with any extension, provided a declaration file is present. */
-    // "noResolve": true,                                /* Disallow 'import's, 'require's or '<reference>'s from expanding the number of files TypeScript should add to a project. */
+    /* 모듈 분석 옵션 */
+    "moduleResolution": "node", // 'node' (Node.js) 방법으로 모듈 분석
+    "baseUrl": "./", // 모듈이 기본적으로 위치한 디렉토리 설정
+    "esModuleInterop": true, // 모든 import에 대한  CommonJS와 ES 모듈 간의 상호 운용성을 설정
 
-    /* JavaScript Support */
-    // "allowJs": true,                                  /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
-    // "checkJs": true,                                  /* Enable error reporting in type-checked JavaScript files. */
-    // "maxNodeModuleJsDepth": 1,                        /* Specify the maximum folder depth used for checking JavaScript files from 'node_modules'. Only applicable with 'allowJs'. */
+    /* 고급 옵션 */
+    "skipLibCheck": true, // 선언 파일 유형 검사 스킵
+    "forceConsistentCasingInFileNames": true, // 동일한 파일에 대한 일관되지 않은 참조 비허용
 
-    /* Emit */
-    // "declaration": true,                              /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
-    // "declarationMap": true,                           /* Create sourcemaps for d.ts files. */
-    // "emitDeclarationOnly": true,                      /* Only output d.ts files and not JavaScript files. */
-    // "sourceMap": true,                                /* Create source map files for emitted JavaScript files. */
-    // "inlineSourceMap": true,                          /* Include sourcemap files inside the emitted JavaScript. */
-    // "outFile": "./",                                  /* Specify a file that bundles all outputs into one JavaScript file. If 'declaration' is true, also designates a file that bundles all .d.ts output. */
-    "outDir": "./dist",                                   /* Specify an output folder for all emitted files. */
-    // "removeComments": true,                           /* Disable emitting comments. */
-    // "noEmit": true,                                   /* Disable emitting files from a compilation. */
-    // "importHelpers": true,                            /* Allow importing helper functions from tslib once per project, instead of including them per-file. */
-    // "importsNotUsedAsValues": "remove",               /* Specify emit/checking behavior for imports that are only used for types. */
-    // "downlevelIteration": true,                       /* Emit more compliant, but verbose and less performant JavaScript for iteration. */
-    // "sourceRoot": "",                                 /* Specify the root path for debuggers to find the reference source code. */
-    // "mapRoot": "",                                    /* Specify the location where debugger should locate map files instead of generated locations. */
-    // "inlineSources": true,                            /* Include source code in the sourcemaps inside the emitted JavaScript. */
-    // "emitBOM": true,                                  /* Emit a UTF-8 Byte Order Mark (BOM) in the beginning of output files. */
-    // "newLine": "crlf",                                /* Set the newline character for emitting files. */
-    // "stripInternal": true,                            /* Disable emitting declarations that have '@internal' in their JSDoc comments. */
-    // "noEmitHelpers": true,                            /* Disable generating custom helper functions like '__extends' in compiled output. */
-    // "noEmitOnError": true,                            /* Disable emitting files if any type checking errors are reported. */
-    // "preserveConstEnums": true,                       /* Disable erasing 'const enum' declarations in generated code. */
-    // "declarationDir": "./",                           /* Specify the output directory for generated declaration files. */
-    // "preserveValueImports": true,                     /* Preserve unused imported values in the JavaScript output that would otherwise be removed. */
+    /* Nest.js 추가 항목 */
+    "outDir": "./dist", // 출력 구조를 디렉토리로 리다이렉트
+    "emitDecoratorMetadata": true, // @decorator 소스에 데코레이터 선언에 대한 설계-타입 메타 데이터를 내보냄
+    "experimentalDecorators": true, // ES 데코레이터에 대한 실험적인 지원을 사용하도록 활성화
+    "allowSyntheticDefaultImports": true, // default export가 없는 모듈에서 default imports를 허용. 코드 방출에는 영향을 주지 않으며, 타입 검사만 수행
+    "incremental": true,
 
-    /* Interop Constraints */
-    // "isolatedModules": true,                          /* Ensure that each file can be safely transpiled without relying on other imports. */
-    // "verbatimModuleSyntax": true,                     /* Do not transform or elide any imports or exports not marked as type-only, ensuring they are written in the output file's format based on the 'module' setting. */
-    // "allowSyntheticDefaultImports": true,             /* Allow 'import x from y' when a module doesn't have a default export. */
-    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-    // "preserveSymlinks": true,                         /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */
-    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-
-    /* Type Checking */
-    "strict": true,                                      /* Enable all strict type-checking options. */
-    // "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
-    // "strictNullChecks": true,                         /* When type checking, take into account 'null' and 'undefined'. */
-    // "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
-    // "strictBindCallApply": true,                      /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
-    // "strictPropertyInitialization": true,             /* Check for class properties that are declared but not set in the constructor. */
-    // "noImplicitThis": true,                           /* Enable error reporting when 'this' is given the type 'any'. */
-    // "useUnknownInCatchVariables": true,               /* Default catch clause variables as 'unknown' instead of 'any'. */
-    // "alwaysStrict": true,                             /* Ensure 'use strict' is always emitted. */
-    // "noUnusedLocals": true,                           /* Enable error reporting when local variables aren't read. */
-    // "noUnusedParameters": true,                       /* Raise an error when a function parameter isn't read. */
-    // "exactOptionalPropertyTypes": true,               /* Interpret optional property types as written, rather than adding 'undefined'. */
-    // "noImplicitReturns": true,                        /* Enable error reporting for codepaths that do not explicitly return in a function. */
-    // "noFallthroughCasesInSwitch": true,               /* Enable error reporting for fallthrough cases in switch statements. */
-    // "noUncheckedIndexedAccess": true,                 /* Add 'undefined' to a type when accessed using an index. */
-    // "noImplicitOverride": true,                       /* Ensure overriding members in derived classes are marked with an override modifier. */
-    // "noPropertyAccessFromIndexSignature": true,       /* Enforces using indexed accessors for keys declared using an indexed type. */
-    // "allowUnusedLabels": true,                        /* Disable error reporting for unused labels. */
-    // "allowUnreachableCode": true,                     /* Disable error reporting for unreachable code. */
-
-    /* Completeness */
-    // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  },
-  "include": ["./src/**/*", ".eslintrc.js"],
-  "exclude": ["prisma/**/*.ts"]
+    /* Alias Path 옵션 */
+    "paths": {
+      "~apis/*": ["apps/apis/*"],
+      "~bot/*": ["apps/bot/*"],
+      "@lib/*": ["libs/*"]
+    }
+  }
 }
