@@ -45,7 +45,8 @@
     "paths": {
       "~apis/*": ["apps/apis/*"],
       "~bot/*": ["apps/bot/*"],
-      "@lib/*": ["libs/*"]
-    }
-  }
+      "@lib/*": ["libs/*"],
+    },
+  },
+  "include": ["apps/**/*.ts", "libs/**/*.ts"],
 }

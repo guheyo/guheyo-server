@@ -1,4 +1,4 @@
-import { HttpStatus } from "@nestjs/common";
+import { HttpStatus } from '@nestjs/common';
 
 export class HttpResponse<T> {
   statusCode: HttpStatus = HttpStatus.OK;
