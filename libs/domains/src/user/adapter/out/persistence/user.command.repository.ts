@@ -5,7 +5,7 @@ import { UserSavePort } from '@lib/domains/user/application/port/out/user.save.p
 import { SocialAccountSavePort } from '@lib/domains/user/application/port/out/social-account.save.port';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { SocialAccountEntity } from '@lib/domains/user/domain/social-account.entity';
-import { SocialAccountDeleteCommand } from '@lib/domains/user/application/command/social-account-delete/social-account.delete.command';
+import { SocialAccountDeleteCommand } from '@lib/domains/user/application/commands/social-account-delete/social-account.delete.command';
 
 @Injectable()
 export class UserCommandRepository implements UserSavePort, SocialAccountSavePort {
