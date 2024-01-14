@@ -15,6 +15,10 @@ input CreateGuildInput {
   position: Int
 }
 
+input CreateManyUserImageInput {
+  data: [CreateUserImageInput!]!
+}
+
 input CreateMemberInput {
   guildId: ID!
   id: ID!
@@ -58,7 +62,9 @@ input CreateSocialAccountInput {
 }
 
 input CreateUserImageInput {
-  height: Int!
+  contentType: String
+  description: String
+  height: Int
   id: ID!
   name: String!
   position: Int!
@@ -67,7 +73,7 @@ input CreateUserImageInput {
   type: String!
   url: String!
   userId: ID!
-  width: Int!
+  width: Int
 }
 
 input CreateUserInput {
@@ -111,6 +117,7 @@ type MemberWithRolesResponse {
 type Mutation {
   connectRoles(input: ConnectRolesInput!): String!
   createGuild(input: CreateGuildInput!): String!
+  createManyUserImage(input: CreateManyUserImageInput!): String!
   createMember(input: CreateMemberInput!): String!
   createOffer(input: CreateOfferInput!): String!
   createRole(input: CreateRoleInput!): String!
@@ -148,7 +155,7 @@ type OfferResponse {
   brandId: String
   businessFunction: String!
   createdAt: DateTime!
-  description: String!
+  description: String
   guildId: String!
   id: ID!
   images: [UserImageResponse!]!
@@ -180,6 +187,7 @@ type Query {
   findOfferById(id: String!): OfferResponse
   findRoleById(id: String!): RoleResponse
   findUserImageById(id: String!): UserImageResponse
+  findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   getSocialAccountsByUserId(id: String!): String!
 }
@@ -261,8 +269,10 @@ input UpdateUserInput {
 }
 
 type UserImageResponse {
+  contentType: String
   createdAt: DateTime!
-  height: Int!
+  description: String
+  height: Int
   id: String!
   name: String!
   position: Int!
@@ -272,7 +282,7 @@ type UserImageResponse {
   updatedAt: DateTime!
   url: String!
   userId: ID!
-  width: Int!
+  width: Int
 }
 
 type UserResponse {

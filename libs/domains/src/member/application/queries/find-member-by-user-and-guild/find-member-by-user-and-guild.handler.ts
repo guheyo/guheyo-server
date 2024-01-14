@@ -1,13 +1,16 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs/dist';
-import { PrismaService } from '@lib/shared';
+import { QueryHandler } from '@nestjs/cqrs/dist';
+import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { FindMemberByUserAndGuildQuery } from './find-member-by-user-and-guild.query';
 import { MemberWithRolesResponse } from '../../dtos/member-with-roles.response';
 
 @QueryHandler(FindMemberByUserAndGuildQuery)
-export class FindMemberByUserAndGuildHandler
-  implements IQueryHandler<FindMemberByUserAndGuildQuery>
-{
-  constructor(private prismaService: PrismaService) {}
+export class FindMemberByUserAndGuildHandler extends PrismaQueryHandler<
+  FindMemberByUserAndGuildQuery,
+  MemberWithRolesResponse
+> {
+  constructor() {
+    super(MemberWithRolesResponse);
+  }
 
   async execute(query: FindMemberByUserAndGuildQuery): Promise<MemberWithRolesResponse | null> {
     const members = await this.prismaService.member.findMany({
@@ -23,6 +26,6 @@ export class FindMemberByUserAndGuildHandler
         },
       },
     });
-    return members.length ? members[0] : null;
+    return this.parseResponse(members[0]);
   }
 }

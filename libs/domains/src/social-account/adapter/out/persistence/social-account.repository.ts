@@ -24,6 +24,12 @@ export class SocialAccountRepository extends PrismaRepository<SocialAccountEntit
     });
   }
 
+  async createMany(socialAccounts: SocialAccountEntity[]): Promise<void> {
+    await this.prismaService.socialAccount.createMany({
+      data: socialAccounts,
+    });
+  }
+
   async save(socialAccount: SocialAccountEntity): Promise<void> {
     await this.prismaService.socialAccount.updateMany({
       where: {

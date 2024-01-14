@@ -1,4 +1,3 @@
-import { MemberRepository } from '../../adapter/out/persistence/member.repository';
 import { CreateMemberHandler } from './create-member/create-member.handler';
 import { UpdateMemberHandler } from './update-member/update-member.handler';
 import { DeleteMemberHandler } from './delete-member/delete-member.handler';
@@ -11,16 +10,4 @@ export const MEMBER_COMMAND_PROVIDERS = [
   DeleteMemberHandler,
   ConnectRolesHandler,
   DisconnectRolesHandler,
-  {
-    provide: 'MemberSavePort',
-    useClass: MemberRepository,
-  },
-  {
-    provide: 'MemberRolesSavePort',
-    useClass: MemberRepository,
-  },
-  {
-    provide: 'MemberLoadPort',
-    useClass: MemberRepository,
-  },
 ];

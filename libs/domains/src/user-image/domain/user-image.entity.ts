@@ -34,4 +34,12 @@ export class UserImageEntity {
   updatePosition(position: number) {
     this.position = position;
   }
+
+  trackImage() {
+    this.tracked = true;
+  }
+
+  untrackImage() {
+    this.tracked = false;
+  }
 }

@@ -11,6 +11,8 @@ export abstract class BaseRepository<T> implements LoadPort<T>, SavePort<T> {
 
   abstract create(entity: T): Promise<void>;
 
+  abstract createMany(entities: T[]): Promise<void>;
+
   abstract save(entity: T): Promise<void>;
 
   abstract delete(entity: T): Promise<void>;

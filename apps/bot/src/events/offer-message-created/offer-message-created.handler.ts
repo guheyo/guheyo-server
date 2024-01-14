@@ -19,7 +19,7 @@ export class OfferMessageCreatedHandler {
   @On('messageCreate')
   public async onCreateOfferMessage(
     @Context(UserWithMessagePipe, OfferPipe)
-    { createOfferInput, createUserImagesInput }: OfferWithUserImagesCreateInput,
+    { createOfferInput, createManyUserImageInput }: OfferWithUserImagesCreateInput,
   ) {
     // TODO: create created offer message
   }

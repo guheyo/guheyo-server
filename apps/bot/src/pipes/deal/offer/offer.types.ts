@@ -4,5 +4,5 @@ import { CreateUserImageInput } from '@lib/domains/user-image/application/comman
 export interface OfferWithUserImagesCreateInput {
   createOfferInput: CreateOfferInput;
 
-  createUserImagesInput: CreateUserImageInput[];
+  createManyUserImageInput: CreateUserImageInput[];
 }

@@ -44,7 +44,7 @@ export class CreateUserImageInput {
   refId: string;
 
   @IsBoolean()
-  @Field(() => Boolean)
+  @Field()
   tracked: boolean;
 
   @IsUUID()
