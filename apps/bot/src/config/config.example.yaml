@@ -1,6 +1,8 @@
 server:
   version:
   port:
+postgresql:
+  url:
 discord:
   bot:
     name:

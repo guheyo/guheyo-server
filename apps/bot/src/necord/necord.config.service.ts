@@ -17,6 +17,7 @@ export class NecordConfigService {
         GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.MessageContent,
       ],
+      development: [this.configService.get('discord.base-guild.id')!],
     };
   }
 }
