@@ -1,13 +1,14 @@
 import { Test } from '@nestjs/testing';
-import { mock, verify, instance } from 'ts-mockito';
+import { mock, verify, instance, anyOfClass } from 'ts-mockito';
 import { SocialAccountCommandRepository } from '@lib/domains/social-account/adapter/out/persistence/social-account.command.repository';
-import { SocialAccountSavePort } from '@lib/domains/social-account/application/port/out/social-account.save.port';
+import { SavePort } from '@lib/shared/cqrs/ports/save.port';
+import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { SocialAccountDeleteCommand } from '../social-account.delete.command';
 import { SocialAccountDeleteHandler } from '../social-account.delete.handler';
 
 describe('SocialAccountDeleteCommand', () => {
   let handler: SocialAccountDeleteHandler;
-  const savePort: SocialAccountSavePort = mock(SocialAccountCommandRepository);
+  const savePort: SavePort<SocialAccountEntity> = mock(SocialAccountCommandRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -29,7 +30,7 @@ describe('SocialAccountDeleteCommand', () => {
         id: 'test-id',
       };
       await handler.execute(command);
-      verify(savePort.delete(command)).once();
+      verify(savePort.delete(anyOfClass(SocialAccountEntity))).once();
     });
   });
 });

@@ -1,11 +1,12 @@
 import { Test } from '@nestjs/testing';
 import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { UserSavePort } from '@lib/domains/user/application/port/out/user.save.port';
+import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 import { UserCommandRepository } from '@lib/domains/user/adapter/out/persistence/user.command.repository';
 import { UserCreateHandler } from '@lib/domains/user/application/commands/user-create/user.create.handler';
 import { UserUpdateHandler } from '@lib/domains/user/application/commands/user-update/user.update.handler';
 import { UserDeleteHandler } from '@lib/domains/user/application/commands/user-delete/user.delete.handler';
+import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { UserModule } from '../user.module';
@@ -15,7 +16,7 @@ describe('UserModule', () => {
   let apiModule: ApiModule;
   let userModule: UserModule;
   let resolver: UserResolver;
-  let savePort: UserSavePort;
+  let savePort: SavePort<UserEntity>;
   let userCreateHandler: UserCreateHandler;
   let userUpdateHandler: UserUpdateHandler;
   let userDeleteHandler: UserDeleteHandler;
@@ -34,7 +35,7 @@ describe('UserModule', () => {
     apiModule = moduleRef;
     userModule = moduleRef.get<UserModule>(UserModule);
     resolver = moduleRef.get<UserResolver>(UserResolver);
-    savePort = moduleRef.get<UserSavePort>('UserSavePort');
+    savePort = moduleRef.get<SavePort<UserEntity>>('UserSavePort');
     userCreateHandler = moduleRef.get<UserCreateHandler>(UserCreateHandler);
     userUpdateHandler = moduleRef.get<UserUpdateHandler>(UserUpdateHandler);
     userDeleteHandler = moduleRef.get<UserDeleteHandler>(UserDeleteHandler);
