@@ -3,7 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
-import { HttpExceptionFilter } from '@lib/core';
+import { HttpExceptionFilter } from '@lib/shared';
 import { ApiModule } from '@app/api/api.module';
 
 function swagger(app: NestFastifyApplication) {

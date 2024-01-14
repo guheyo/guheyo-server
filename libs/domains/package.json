@@ -1,0 +1,10 @@
+{
+  "name": "@guheyo/domains",
+  "packageManager": "yarn@3.6.1",
+  "dependencies": {
+    "@nestjs/common": "^10.2.1"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^10.2.1"
+  }
+}
