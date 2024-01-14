@@ -10,7 +10,7 @@ import { FindUserImagesOfRefArgs } from '@lib/domains/user-image/application/que
 import { FindUserImagesOfRefQuery } from '@lib/domains/user-image/application/queries/find-user-iamges-of-ref/find-user-images-of-ref.query';
 import { FindUserImageByIdQuery } from '@lib/domains/user-image/application/queries/find-user-image-by-id/find-user-image-by-id.query';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 @Resolver()
 export class UserImageResolver {
@@ -20,7 +20,9 @@ export class UserImageResolver {
   ) {}
 
   @Query(() => UserImageResponse, { nullable: true })
-  async findUserImageById(@Args('id') id: string): Promise<UserImageResponse | null> {
+  async findUserImageById(
+    @Args('id', { type: () => ID }) id: string,
+  ): Promise<UserImageResponse | null> {
     const query = new FindUserImageByIdQuery(id);
     return this.queryBus.execute(query);
   }
@@ -50,7 +52,7 @@ export class UserImageResolver {
   }
 
   @Mutation(() => String)
-  async deleteUserImage(@Args('id') id: string): Promise<string> {
+  async deleteUserImage(@Args('id', { type: () => ID }) id: string): Promise<string> {
     await this.commandBus.execute(new DeleteUserImageCommand(id));
     return id;
   }

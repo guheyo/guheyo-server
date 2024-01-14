@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserInput } from '@lib/domains/user/application/commands/create-user/create-user.input';
 import { CreateUserCommand } from '@lib/domains/user/application/commands/create-user/create-user.command';
@@ -23,7 +23,7 @@ export class UserResolver {
   ) {}
 
   @Query(() => MyUserResponse, { nullable: true })
-  async findMyUserById(@Args('id') id: string): Promise<MyUserResponse | null> {
+  async findMyUserById(@Args('id', { type: () => ID }) id: string): Promise<MyUserResponse | null> {
     const query = new FindMyUserByIdQuery(id);
     return this.queryBus.execute(query);
   }
@@ -61,7 +61,7 @@ export class UserResolver {
   }
 
   @Mutation(() => String)
-  async deleteUser(@Args('id') id: string): Promise<string> {
+  async deleteUser(@Args('id', { type: () => ID }) id: string): Promise<string> {
     await this.commandBus.execute(new DeleteUserCommand(id));
     return id;
   }

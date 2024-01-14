@@ -7,7 +7,7 @@ import { UpdateAuctionInput } from '@lib/domains/auction/application/commands/up
 import { AuctionResponse } from '@lib/domains/auction/application/dtos/auction.response';
 import { FindAuctionByIdQuery } from '@lib/domains/auction/application/queries/find-auction-by-id/find-auction-by-id.query';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AddBidCommand } from '@lib/domains/auction/application/commands/add-bid/add-bid.command';
 import { CancelBidInput } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.input';
 import { CancelBidCommand } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.command';
@@ -23,7 +23,9 @@ export class AuctionResolver {
   ) {}
 
   @Query(() => AuctionResponse, { nullable: true })
-  async findAuctionById(@Args('id') id: string): Promise<AuctionResponse | null> {
+  async findAuctionById(
+    @Args('id', { type: () => ID }) id: string,
+  ): Promise<AuctionResponse | null> {
     const query = new FindAuctionByIdQuery(id);
     return this.queryBus.execute(query);
   }
@@ -49,7 +51,7 @@ export class AuctionResolver {
   }
 
   @Mutation(() => String)
-  async deleteAuction(@Args('id') id: string): Promise<string> {
+  async deleteAuction(@Args('id', { type: () => ID }) id: string): Promise<string> {
     await this.commandBus.execute(new DeleteAuctionCommand(id));
     return id;
   }

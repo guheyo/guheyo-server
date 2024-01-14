@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GuildResponse } from '@lib/domains/guild/application/dtos/guild.response';
 import { FindGuildByIdQuery } from '@lib/domains/guild/application/queries/find-guild-by-id/find-guild-by-id.query';
@@ -20,7 +20,7 @@ export class GuildResolver {
   ) {}
 
   @Query(() => GuildResponse, { nullable: true })
-  async findGuildById(@Args('id') id: string): Promise<GuildResponse | null> {
+  async findGuildById(@Args('id', { type: () => ID }) id: string): Promise<GuildResponse | null> {
     const query = new FindGuildByIdQuery(id);
     return this.queryBus.execute(query);
   }
@@ -50,7 +50,7 @@ export class GuildResolver {
   }
 
   @Mutation(() => String)
-  async deleteGuild(@Args('id') id: string): Promise<string> {
+  async deleteGuild(@Args('id', { type: () => ID }) id: string): Promise<string> {
     await this.commandBus.execute(new DeleteGuildCommand(id));
     return id;
   }

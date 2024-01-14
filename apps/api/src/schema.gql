@@ -283,18 +283,18 @@ type Mutation {
   createSwap(input: CreateSwapInput!): String!
   createUser(input: CreateUserInput!): String!
   createUserImage(input: CreateUserImageInput!): String!
-  deleteAuction(id: String!): String!
-  deleteDemand(id: String!): String!
-  deleteGuild(id: String!): String!
+  deleteAuction(id: ID!): String!
+  deleteDemand(id: ID!): String!
+  deleteGuild(id: ID!): String!
   deleteMember(id: ID!, userId: ID!): String!
-  deleteOffer(id: String!): String!
-  deleteRole(id: String!): String!
+  deleteOffer(id: ID!): String!
+  deleteRole(id: ID!): String!
   deleteSession(sessionToken: String!): String!
-  deleteSocialAccount(id: String!): String!
+  deleteSocialAccount(id: ID!): String!
   deleteSocialAccountByProvider(provider: String!, socialId: String!): String!
-  deleteSwap(id: String!): String!
-  deleteUser(id: String!): String!
-  deleteUserImage(id: String!): String!
+  deleteSwap(id: ID!): String!
+  deleteUser(id: ID!): String!
+  deleteUserImage(id: ID!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!
   updateAuction(input: UpdateAuctionInput!): String!
   updateDemand(input: UpdateDemandInput!): String!
@@ -394,27 +394,27 @@ type ProductCategoryResponse {
 }
 
 type Query {
-  findAuctionById(id: String!): AuctionResponse
+  findAuctionById(id: ID!): AuctionResponse
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
-  findDemandById(id: String!): DemandResponse
+  findDemandById(id: ID!): DemandResponse
   findDemands(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedDemandsResponse!
-  findGuildById(id: String!): GuildResponse
+  findGuildById(id: ID!): GuildResponse
   findGuildByName(name: String!): GuildResponse
   findGuilds(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGuildsResponse!
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
-  findMyUserById(id: String!): MyUserResponse
+  findMyUserById(id: ID!): MyUserResponse
   findMyUserBySession(sessionToken: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse
-  findOfferById(id: String!): OfferResponse!
+  findOfferById(id: ID!): OfferResponse!
   findOffers(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedOffersResponse!
-  findRoleById(id: String!): RoleResponse
+  findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse!
-  findSwapById(id: String!): SwapResponse
+  findSwapById(id: ID!): SwapResponse
   findSwaps(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedSwapsResponse!
-  findUserImageById(id: String!): UserImageResponse
+  findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
-  getSocialAccountsByUserId(id: String!): String!
+  getSocialAccountsByUserId(id: ID!): String!
 }
 
 type RoleResponse {

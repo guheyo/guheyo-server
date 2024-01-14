@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateSocialAccountInput } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.input';
 import { CreateSocialAccountCommand } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.command';
@@ -13,7 +13,7 @@ export class SocialAccountResolver {
 
   // TODO: implement getSocialAccountsByUserId using SocialAccountQueryService
   @Query(() => String)
-  async getSocialAccountsByUserId(@Args('id') id: string) {
+  async getSocialAccountsByUserId(@Args('id', { type: () => ID }) id: string) {
     return 'hello world';
   }
 
@@ -30,7 +30,7 @@ export class SocialAccountResolver {
   }
 
   @Mutation(() => String)
-  async deleteSocialAccount(@Args('id') id: string): Promise<string> {
+  async deleteSocialAccount(@Args('id', { type: () => ID }) id: string): Promise<string> {
     await this.commandBus.execute(new DeleteSocialAccountCommand(id));
     return id;
   }

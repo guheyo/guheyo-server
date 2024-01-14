@@ -9,7 +9,7 @@ import { FindOffersArgs } from '@lib/domains/offer/application/queries/find-offe
 import { FindOffersQuery } from '@lib/domains/offer/application/queries/find-offers/find-offers.query';
 import { PaginatedOffersResponse } from '@lib/domains/offer/application/queries/find-offers/paginated-offers.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 @Resolver()
 export class OfferResolver {
@@ -19,7 +19,7 @@ export class OfferResolver {
   ) {}
 
   @Query(() => OfferResponse)
-  async findOfferById(@Args('id') id: string): Promise<OfferResponse | null> {
+  async findOfferById(@Args('id', { type: () => ID }) id: string): Promise<OfferResponse | null> {
     const query = new FindOfferByIdQuery(id);
     return this.queryBus.execute(query);
   }
@@ -43,7 +43,7 @@ export class OfferResolver {
   }
 
   @Mutation(() => String)
-  async deleteOffer(@Args('id') id: string): Promise<string> {
+  async deleteOffer(@Args('id', { type: () => ID }) id: string): Promise<string> {
     await this.commandBus.execute(new DeleteOfferCommand(id));
     return id;
   }
