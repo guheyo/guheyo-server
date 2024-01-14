@@ -1,7 +1,7 @@
 import { Controller, Get, HttpStatus, Inject, Param, Version } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { HttpResponse } from '@lib/response/http.response';
-import { IBotService } from '~bot/src/interfaces';
+import { HttpResponse } from '@lib/core';
+import { IBotService } from '@app/bot/interfaces/services/bot-service.interface';
 
 @ApiTags('bot')
 @Controller('bot')

@@ -1,6 +1,6 @@
 # compiled output
-/dist
-/node_modules
+dist
+node_modules
 
 #env
 .env*
@@ -55,3 +55,6 @@ lerna-debug.log*
 !.elasticbeanstalk/*.global.yml
 
 *.zip
+
+# prisma client
+**/prisma/client

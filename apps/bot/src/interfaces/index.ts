@@ -1,5 +1,5 @@
-import { BotRepository } from '~bot/src/repositories/bot.repository';
-import { BotService } from '~bot/src/services/bot.service';
+import { BotRepository } from '@app/bot/repositories/bot.repository';
+import { BotService } from '@app/bot/services/bot.service';
 
 export * from './repositories/bot-repository.interface';
 export * from './services/bot-service.interface';

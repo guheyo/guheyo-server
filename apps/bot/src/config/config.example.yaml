@@ -1,0 +1,21 @@
+server:
+  version:
+  port:
+discord:
+  bot:
+    client-id:
+    token:
+    owner-id:
+  base-guild:
+    id:
+document:
+  title:
+  description:
+  version:
+  path:
+logger:
+  path:
+  filename:
+  pretty:
+  level:
+  stdout:
