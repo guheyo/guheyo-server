@@ -28,6 +28,7 @@ export class FindDemandByIdHandler extends PrismaQueryHandler<FindDemandByIdQuer
                 },
               },
             },
+            socialAccounts: true,
           },
         },
       },
