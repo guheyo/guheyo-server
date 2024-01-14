@@ -1,3 +1,3 @@
 # api
 
-wtb.kr api server
+guheyo.com api server
