@@ -3,6 +3,12 @@ server:
   port:
 postgresql:
   url:
+s3:
+  region:
+  accessKeyId:
+  secretAccessKey:
+  bucket:
+  domain:
 discord:
   bot:
     name:

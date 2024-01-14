@@ -6,8 +6,11 @@ export class CreateUserCommand implements ICommand {
 
   username: string;
 
+  avatarURL?: string;
+
   constructor(input: CreateUserInput) {
     this.id = input.id;
     this.username = input.username;
+    this.avatarURL = input.avatarURL;
   }
 }
