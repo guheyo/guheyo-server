@@ -1,4 +1,4 @@
-import { FindSwapByIdQuery } from './find-swap-by-id/find-swap-by-id.query';
+import { FindSwapByIdHandler } from './find-swap-by-id/find-swap-by-id.handler';
 import { FindSwapsHandler } from './find-swaps/find-swaps.handler';
 
-export const SWAP_QUERY_PROVIDERS = [FindSwapByIdQuery, FindSwapsHandler];
+export const SWAP_QUERY_PROVIDERS = [FindSwapByIdHandler, FindSwapsHandler];
