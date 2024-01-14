@@ -28,6 +28,7 @@ export class FindSwapByIdHandler extends PrismaQueryHandler<FindSwapByIdQuery, S
                 },
               },
             },
+            socialAccounts: true,
           },
         },
       },

@@ -9,7 +9,7 @@ import { FindDemandsArgs } from '@lib/domains/demand/application/queries/find-de
 import { FindDemandsQuery } from '@lib/domains/demand/application/queries/find-demands/find-demands.query';
 import { PaginatedDemandsResponse } from '@lib/domains/demand/application/queries/find-demands/paginated-demands.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 @Resolver()
 export class DemandResolver {
@@ -19,7 +19,7 @@ export class DemandResolver {
   ) {}
 
   @Query(() => DemandResponse, { nullable: true })
-  async findDemandById(@Args('id') id: string): Promise<DemandResponse | null> {
+  async findDemandById(@Args('id', { type: () => ID }) id: string): Promise<DemandResponse | null> {
     const query = new FindDemandByIdQuery(id);
     return this.queryBus.execute(query);
   }
@@ -43,7 +43,7 @@ export class DemandResolver {
   }
 
   @Mutation(() => String)
-  async deleteDemand(@Args('id') id: string): Promise<string> {
+  async deleteDemand(@Args('id', { type: () => ID }) id: string): Promise<string> {
     await this.commandBus.execute(new DeleteDemandCommand(id));
     return id;
   }

@@ -9,7 +9,7 @@ import { FindSwapsArgs } from '@lib/domains/swap/application/queries/find-swaps/
 import { FindSwapsQuery } from '@lib/domains/swap/application/queries/find-swaps/find-swaps.query';
 import { PaginatedSwapsResponse } from '@lib/domains/swap/application/queries/find-swaps/paginated-swaps.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 @Resolver()
 export class SwapResolver {
@@ -19,7 +19,7 @@ export class SwapResolver {
   ) {}
 
   @Query(() => SwapResponse, { nullable: true })
-  async findSwapById(@Args('id') id: string): Promise<SwapResponse | null> {
+  async findSwapById(@Args('id', { type: () => ID }) id: string): Promise<SwapResponse | null> {
     const query = new FindSwapByIdQuery(id);
     return this.queryBus.execute(query);
   }
@@ -43,7 +43,7 @@ export class SwapResolver {
   }
 
   @Mutation(() => String)
-  async deleteSwap(@Args('id') id: string): Promise<string> {
+  async deleteSwap(@Args('id', { type: () => ID }) id: string): Promise<string> {
     await this.commandBus.execute(new DeleteSwapCommand(id));
     return id;
   }
