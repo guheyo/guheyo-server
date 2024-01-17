@@ -19,7 +19,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
     if (!user) throw new NotFoundException(UserErrorMessage.USER_IS_NOT_FOUND);
 
     user = this.publisher.mergeObjectContext(user);
-    user.update(_.pick(command, ['name', 'avatarURL']));
+    user.update(_.pick(command, ['name', 'phoneNumber']));
     await this.userSavePort.save(user);
     user.commit();
   }
