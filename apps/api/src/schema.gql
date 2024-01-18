@@ -409,7 +409,7 @@ type Query {
   findOfferById(id: ID!): OfferResponse!
   findOffers(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedOffersResponse!
   findRoleById(id: ID!): RoleResponse
-  findSession(sessionToken: String!): SessionResponse!
+  findSession(sessionToken: String!): SessionResponse
   findSwapById(id: ID!): SwapResponse
   findSwaps(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedSwapsResponse!
   findUserImageById(id: ID!): UserImageResponse
