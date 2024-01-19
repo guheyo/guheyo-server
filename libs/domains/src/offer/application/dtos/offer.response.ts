@@ -17,6 +17,9 @@ export class OfferResponse {
   name: string;
 
   @Field(() => String, { nullable: true })
+  slug: string | null;
+
+  @Field(() => String, { nullable: true })
   description: string | null;
 
   @Field(() => Int)

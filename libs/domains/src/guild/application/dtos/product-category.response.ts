@@ -9,6 +9,9 @@ export class ProductCategoryResponse {
   @Field()
   name: string;
 
+  @Field(() => String, { nullable: true })
+  slug: string | null;
+
   @IsOptional()
   @Field(() => String, { nullable: true })
   description: string | null;
