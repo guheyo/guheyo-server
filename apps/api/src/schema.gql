@@ -402,6 +402,7 @@ type ProductCategoryResponse {
 type Query {
   findAuctionById(id: ID!): AuctionResponse
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
+  findDemand(slug: String!): DemandResponse
   findDemandById(id: ID!): DemandResponse
   findDemands(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedDemandsResponse!
   findGuild(slug: String): GuildResponse
@@ -412,10 +413,12 @@ type Query {
   findMyUserBySession(sessionToken: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse
   findMyUserByUsername(username: ID!): MyUserResponse
-  findOfferById(id: ID!): OfferResponse!
+  findOffer(slug: String!): OfferResponse
+  findOfferById(id: ID!): OfferResponse
   findOffers(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedOffersResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
+  findSwap(slug: String!): SwapResponse
   findSwapById(id: ID!): SwapResponse
   findSwaps(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedSwapsResponse!
   findUserImageById(id: ID!): UserImageResponse

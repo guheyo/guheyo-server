@@ -5,6 +5,7 @@ import { UpdateOfferCommand } from '@lib/domains/offer/application/commands/upda
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
 import { OfferResponse } from '@lib/domains/offer/application/dtos/offer.response';
 import { FindOfferByIdQuery } from '@lib/domains/offer/application/queries/find-offer-by-id/find-offer-by-id.query';
+import { FindOfferQuery } from '@lib/domains/offer/application/queries/find-offer/find-offer.query';
 import { FindOffersArgs } from '@lib/domains/offer/application/queries/find-offers/find-offers.args';
 import { FindOffersQuery } from '@lib/domains/offer/application/queries/find-offers/find-offers.query';
 import { PaginatedOffersResponse } from '@lib/domains/offer/application/queries/find-offers/paginated-offers.response';
@@ -18,9 +19,15 @@ export class OfferResolver {
     private readonly commandBus: CommandBus,
   ) {}
 
-  @Query(() => OfferResponse)
+  @Query(() => OfferResponse, { nullable: true })
   async findOfferById(@Args('id', { type: () => ID }) id: string): Promise<OfferResponse | null> {
     const query = new FindOfferByIdQuery(id);
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => OfferResponse, { nullable: true })
+  async findOffer(@Args('slug') slug: string): Promise<OfferResponse | null> {
+    const query = new FindOfferQuery(slug);
     return this.queryBus.execute(query);
   }
 
