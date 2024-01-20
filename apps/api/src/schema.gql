@@ -412,7 +412,8 @@ type Query {
   findMyUserBySession(sessionToken: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse
   findMyUserByUsername(username: ID!): MyUserResponse
-  findOfferById(id: ID!): OfferResponse!
+  findOffer(slug: String!): OfferResponse
+  findOfferById(id: ID!): OfferResponse
   findOffers(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedOffersResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
