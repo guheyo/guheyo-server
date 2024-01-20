@@ -15,7 +15,7 @@ export class SessionResolver {
     private readonly queryBus: QueryBus,
   ) {}
 
-  @Query(() => SessionResponse)
+  @Query(() => SessionResponse, { nullable: true })
   async findSession(@Args('sessionToken') sessionToken: string) {
     return this.queryBus.execute(new FindSessionQuery(sessionToken));
   }

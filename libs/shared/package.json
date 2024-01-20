@@ -5,12 +5,12 @@
     "schema": "./src/prisma/schema.prisma"
   },
   "scripts": {
-    "migrate:dev": "dotenv -e ./src/prisma/.env.dev prisma migrate dev",
-    "migrate:test": "dotenv -e ./src/prisma/.env.test prisma migrate dev",
-    "migrate:deploy": "dotenv -e ./src/prisma/.env.prod prisma migrate deploy",
-    "seed:dev": "dotenv -e ./src/prisma/.env.dev ts-node ./src/prisma/seed.ts",
-    "seed:test": "dotenv -e ./src/prisma/.env.test ts-node ./src/prisma/seed.ts",
-    "seed:prod": "dotenv -e ./src/prisma/.env.prod ts-node ./src/prisma/seed.ts",
+    "migrate:dev": "dotenv -e ./src/prisma/config/.env.dev prisma migrate dev",
+    "migrate:test": "dotenv -e ./src/prisma/config/.env.test prisma migrate dev",
+    "migrate:deploy": "dotenv -e ./src/prisma/config/.env.prod prisma migrate deploy",
+    "seed:dev": "dotenv -e ./src/prisma/config/.env.dev ts-node ./src/prisma/seeds/seed.ts",
+    "seed:test": "dotenv -e ./src/prisma/config/.env.test ts-node ./src/prisma/seeds/seed.ts",
+    "seed:prod": "dotenv -e ./src/prisma/config/.env.prod ts-node ./src/prisma/seeds/seed.ts",
     "prisma:generate": "prisma generate"
   },
   "dependencies": {

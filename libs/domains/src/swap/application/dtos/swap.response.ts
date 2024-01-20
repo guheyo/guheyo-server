@@ -13,6 +13,9 @@ export class SwapResponse {
   @Field()
   updatedAt: Date;
 
+  @Field(() => String, { nullable: true })
+  slug: string | null;
+
   @Field()
   name0: string;
 

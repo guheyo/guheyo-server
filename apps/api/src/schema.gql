@@ -26,6 +26,7 @@ type AuctionResponse {
   priceCurrency: String!
   productCategoryId: String!
   seller: AuthorResponse!
+  slug: String
   source: String!
   status: String!
   updatedAt: DateTime!
@@ -227,6 +228,7 @@ type DemandResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
+  slug: String
   source: String!
   status: String!
   updatedAt: DateTime!
@@ -251,6 +253,7 @@ type GuildResponse {
   postCategories: [PostCategoryResponse!]!
   productCategories: [ProductCategoryResponse!]!
   roles: [RoleResponse!]!
+  slug: String
 }
 
 type GuildResponseEdge {
@@ -334,6 +337,7 @@ type OfferResponse {
   priceCurrency: String!
   productCategoryId: String!
   seller: AuthorResponse!
+  slug: String
   source: String!
   status: String!
   updatedAt: DateTime!
@@ -384,6 +388,7 @@ type PostCategoryResponse {
   id: ID!
   name: String!
   position: Int
+  slug: String
 }
 
 type ProductCategoryResponse {
@@ -391,6 +396,7 @@ type ProductCategoryResponse {
   id: ID!
   name: String!
   position: Int
+  slug: String
 }
 
 type Query {
@@ -398,17 +404,18 @@ type Query {
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
   findDemandById(id: ID!): DemandResponse
   findDemands(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedDemandsResponse!
+  findGuild(slug: String): GuildResponse
   findGuildById(id: ID!): GuildResponse
-  findGuildByName(name: String!): GuildResponse
   findGuilds(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGuildsResponse!
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: ID!): MyUserResponse
   findMyUserBySession(sessionToken: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse
+  findMyUserByUsername(username: ID!): MyUserResponse
   findOfferById(id: ID!): OfferResponse!
   findOffers(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedOffersResponse!
   findRoleById(id: ID!): RoleResponse
-  findSession(sessionToken: String!): SessionResponse!
+  findSession(sessionToken: String!): SessionResponse
   findSwapById(id: ID!): SwapResponse
   findSwaps(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedSwapsResponse!
   findUserImageById(id: ID!): UserImageResponse
@@ -469,6 +476,7 @@ type SwapResponse {
   priceCurrency: String!
   productCategoryId: String!
   proposer: AuthorResponse!
+  slug: String
   source: String!
   status: String!
   updatedAt: DateTime!

@@ -10,7 +10,8 @@ import { DeleteGuildCommand } from '@lib/domains/guild/application/commands/dele
 import { FindGuildsQuery } from '@lib/domains/guild/application/queries/find-guilds/find-guilds.query';
 import { PaginatedGuildsResponse } from '@lib/domains/guild/application/queries/find-guilds/paginated-guilds.response';
 import { FindGuildsArgs } from '@lib/domains/guild/application/queries/find-guilds/find-guilds.args';
-import { FindGuildByNameQuery } from '@lib/domains/guild/application/queries/find-guild-by-name/find-guild-by-name.query';
+import { FindGuildQuery } from '@lib/domains/guild/application/queries/find-guild/find-guild.query';
+import { FindGuildArgs } from '@lib/domains/guild/application/queries/find-guild/find-guild.args';
 
 @Resolver()
 export class GuildResolver {
@@ -26,8 +27,8 @@ export class GuildResolver {
   }
 
   @Query(() => GuildResponse, { nullable: true })
-  async findGuildByName(@Args('name') name: string): Promise<GuildResponse | null> {
-    const query = new FindGuildByNameQuery(name);
+  async findGuild(@Args() args: FindGuildArgs): Promise<GuildResponse | null> {
+    const query = new FindGuildQuery(args);
     return this.queryBus.execute(query);
   }
 

@@ -135,6 +135,7 @@ model Guild {
   updatedAt         DateTime    @updatedAt
   deletedAt         DateTime?
   name              String      @unique
+  slug              String?
   description       String?
   icon              String?
   position          Int
@@ -156,6 +157,7 @@ model PostCategory {
   updatedAt         DateTime    @updatedAt
   deletedAt         DateTime?
   name              String
+  slug              String?
   description       String?
   position          Int
   guildId           String
@@ -169,6 +171,7 @@ model ProductCategory {
   updatedAt         DateTime    @updatedAt
   deletedAt         DateTime?
   name              String
+  slug              String?
   description       String?
   position          Int
   guildId           String
@@ -185,6 +188,7 @@ model Brand {
   updatedAt         DateTime    @updatedAt
   deletedAt         DateTime?
   name              String
+  slug              String?
   description       String?
   logo              String?
   position          Int
@@ -201,6 +205,7 @@ model Post {
   updatedAt         DateTime      @updatedAt
   deletedAt         DateTime?
   title             String
+  slug              String?
   content           String
   source            String
   guildId           String
@@ -234,6 +239,7 @@ model Offer {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
   name              String
+  slug              String?
   description       String?
   price             Int
   priceCurrency     String
@@ -256,6 +262,7 @@ model Demand {
   updatedAt         DateTime        @updatedAt
   deletedAt         DateTime?
   name              String
+  slug              String?
   description       String?
   price             Int
   priceCurrency     String
@@ -277,6 +284,7 @@ model Swap {
   createdAt           DateTime        @default(now())
   updatedAt           DateTime        @updatedAt
   deletedAt           DateTime?
+  slug                String?
   name0               String
   description0        String?
   name1               String
@@ -303,6 +311,7 @@ model Auction {
   deletedAt         DateTime?
   endedAt           DateTime
   name              String
+  slug              String?
   description       String?
   businessFunction  String
   source            String
@@ -360,5 +369,5 @@ model DiscordMessage {
   guildId           String
   userId            String
   user              User              @relation(fields: [userId], references: [id])
-  system            Boolean
+  bot               Boolean           @default(false)
 }

@@ -14,6 +14,7 @@ import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/fi
 import { FindMyUserBySocialAccountArgs } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.args';
 import { FindMyUserBySessionArgs } from '@lib/domains/user/application/queries/find-my-user-by-session/find-my-user-by-session.args';
 import { FindMyUserBySessionQuery } from '@lib/domains/user/application/queries/find-my-user-by-session/find-my-user-by-session.query';
+import { FindMyUserByUsernameQuery } from '@lib/domains/user/application/queries/find-my-user-by-username/find-my-user-by-username.query';
 
 @Resolver()
 export class UserResolver {
@@ -39,6 +40,14 @@ export class UserResolver {
   @Query(() => MyUserResponse, { nullable: true })
   async findMyUserBySession(@Args() args: FindMyUserBySessionArgs): Promise<MyUserResponse | null> {
     const query = new FindMyUserBySessionQuery(args);
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => MyUserResponse, { nullable: true })
+  async findMyUserByUsername(
+    @Args('username', { type: () => ID }) username: string,
+  ): Promise<MyUserResponse | null> {
+    const query = new FindMyUserByUsernameQuery(username);
     return this.queryBus.execute(query);
   }
 
