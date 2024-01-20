@@ -5,6 +5,7 @@ import { UpdateDemandCommand } from '@lib/domains/demand/application/commands/up
 import { UpdateDemandInput } from '@lib/domains/demand/application/commands/update-demand/update-demand.input';
 import { DemandResponse } from '@lib/domains/demand/application/dtos/demand.response';
 import { FindDemandByIdQuery } from '@lib/domains/demand/application/queries/find-demand-by-id/find-demand-by-id.query';
+import { FindDemandQuery } from '@lib/domains/demand/application/queries/find-demand/find-demand.query';
 import { FindDemandsArgs } from '@lib/domains/demand/application/queries/find-demands/find-demands.args';
 import { FindDemandsQuery } from '@lib/domains/demand/application/queries/find-demands/find-demands.query';
 import { PaginatedDemandsResponse } from '@lib/domains/demand/application/queries/find-demands/paginated-demands.response';
@@ -21,6 +22,12 @@ export class DemandResolver {
   @Query(() => DemandResponse, { nullable: true })
   async findDemandById(@Args('id', { type: () => ID }) id: string): Promise<DemandResponse | null> {
     const query = new FindDemandByIdQuery(id);
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => DemandResponse, { nullable: true })
+  async findDemand(@Args('slug') slug: string): Promise<DemandResponse | null> {
+    const query = new FindDemandQuery(slug);
     return this.queryBus.execute(query);
   }
 
