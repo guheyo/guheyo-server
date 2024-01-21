@@ -47,7 +47,7 @@ export class FindGuildPreviewsHandler extends PrismaQueryHandler<
       },
     });
     const guildPreviews = guilds.map(async (guild) => {
-      const offersWithImage = guild.offers.map(async (offer) => ({
+      const offerWithImagePromises = guild.offers.map(async (offer) => ({
         ...offer,
         image: await this.prismaService.userImage.findFirst({
           where: {
@@ -62,7 +62,7 @@ export class FindGuildPreviewsHandler extends PrismaQueryHandler<
       }));
       return {
         ...guild,
-        offers: await Promise.all(offersWithImage),
+        offers: await Promise.all(offerWithImagePromises),
       };
     });
     return this.parseResponses(guildPreviews);
