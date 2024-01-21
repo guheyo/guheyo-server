@@ -42,16 +42,23 @@ export class FindSwapsHandler extends PrismaQueryHandler<FindSwapsQuery, SwapRes
         },
       },
     });
-    const swapWithImagesPromises = swaps.map(async (swap) => ({
-      ...swap,
-      images: await this.prismaService.userImage.findMany({
+    const swapWithImagesPromises = swaps.map(async (swap) => {
+      const images = await this.prismaService.userImage.findMany({
         where: {
           type: 'swap',
           refId: swap.id,
           tracked: true,
         },
-      }),
-    }));
+        orderBy: {
+          createdAt: 'asc',
+        },
+      });
+      return {
+        ...swap,
+        images,
+        thumbnail: images[0],
+      };
+    });
     return paginate<SwapResponse>(
       this.parseResponses(await Promise.all(swapWithImagesPromises)),
       'id',
