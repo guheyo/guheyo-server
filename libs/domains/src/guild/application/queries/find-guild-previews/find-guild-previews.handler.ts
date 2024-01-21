@@ -42,7 +42,7 @@ export class FindGuildPreviewsHandler extends PrismaQueryHandler<
           orderBy: {
             createdAt: 'desc',
           },
-          take: 5,
+          take: 3,
         },
       },
     });
