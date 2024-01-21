@@ -49,7 +49,7 @@ export class FindGuildPreviewsHandler extends PrismaQueryHandler<
     const guildPreviews = guilds.map(async (guild) => {
       const offerWithImagePromises = guild.offers.map(async (offer) => ({
         ...offer,
-        image: await this.prismaService.userImage.findFirst({
+        thumbnail: await this.prismaService.userImage.findFirst({
           where: {
             type: 'offer',
             refId: offer.id,
