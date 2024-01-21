@@ -244,6 +244,17 @@ input DisconnectRolesInput {
   roleIds: [ID!]!
 }
 
+type GuildPreviewResponse {
+  demands: [DemandResponse!]!
+  description: String
+  icon: String
+  id: ID!
+  name: String!
+  offers: [OfferResponse!]!
+  position: Int
+  slug: String
+}
+
 type GuildResponse {
   description: String
   icon: String
@@ -340,6 +351,7 @@ type OfferResponse {
   slug: String
   source: String!
   status: String!
+  thumbnail: UserImageResponse
   updatedAt: DateTime!
 }
 
@@ -407,6 +419,7 @@ type Query {
   findDemands(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedDemandsResponse!
   findGuild(slug: String): GuildResponse
   findGuildById(id: ID!): GuildResponse
+  findGuildPreviews: [GuildPreviewResponse!]!
   findGuilds(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGuildsResponse!
   findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: ID!): MyUserResponse
@@ -482,6 +495,7 @@ type SwapResponse {
   slug: String
   source: String!
   status: String!
+  thumbnail: UserImageResponse
   updatedAt: DateTime!
 }
 
