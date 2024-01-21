@@ -43,6 +43,9 @@ export class SwapResponse {
   @Field(() => [UserImageResponse])
   images: UserImageResponse[];
 
+  @Field(() => UserImageResponse, { nullable: true })
+  thumbnail: UserImageResponse | null;
+
   @Field()
   guildId: string;
 

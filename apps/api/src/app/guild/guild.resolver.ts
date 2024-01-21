@@ -12,6 +12,8 @@ import { PaginatedGuildsResponse } from '@lib/domains/guild/application/queries/
 import { FindGuildsArgs } from '@lib/domains/guild/application/queries/find-guilds/find-guilds.args';
 import { FindGuildQuery } from '@lib/domains/guild/application/queries/find-guild/find-guild.query';
 import { FindGuildArgs } from '@lib/domains/guild/application/queries/find-guild/find-guild.args';
+import { GuildPreviewResponse } from '@lib/domains/guild/application/dtos/guild-preview.response';
+import { FindGuildPreviewsQuery } from '@lib/domains/guild/application/queries/find-guild-previews/find-guild-previews.query';
 
 @Resolver()
 export class GuildResolver {
@@ -35,6 +37,12 @@ export class GuildResolver {
   @Query(() => PaginatedGuildsResponse)
   async findGuilds(@Args() findGuildsArgs: FindGuildsArgs): Promise<PaginatedGuildsResponse> {
     const query = new FindGuildsQuery(findGuildsArgs);
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => [GuildPreviewResponse])
+  async findGuildPreviews(): Promise<GuildPreviewResponse[]> {
+    const query = new FindGuildPreviewsQuery();
     return this.queryBus.execute(query);
   }
 

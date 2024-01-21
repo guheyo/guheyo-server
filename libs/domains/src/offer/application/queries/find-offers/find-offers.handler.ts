@@ -42,16 +42,23 @@ export class FindOffersHandler extends PrismaQueryHandler<FindOffersQuery, Offer
         },
       },
     });
-    const offerWithImagesPromises = offers.map(async (offer) => ({
-      ...offer,
-      images: await this.prismaService.userImage.findMany({
+    const offerWithImagesPromises = offers.map(async (offer) => {
+      const images = await this.prismaService.userImage.findMany({
         where: {
           type: 'offer',
           refId: offer.id,
           tracked: true,
         },
-      }),
-    }));
+        orderBy: {
+          createdAt: 'asc',
+        },
+      });
+      return {
+        ...offer,
+        images,
+        thumbnail: images[0],
+      };
+    });
     return paginate<OfferResponse>(
       this.parseResponses(await Promise.all(offerWithImagesPromises)),
       'id',
