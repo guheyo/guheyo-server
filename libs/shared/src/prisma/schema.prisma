@@ -371,3 +371,15 @@ model DiscordMessage {
   user              User              @relation(fields: [userId], references: [id])
   bot               Boolean           @default(false)
 }
+
+model Term {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  name              String
+  title             String
+  content           String
+  metaTitle         String
+  metaDescription   String
+}

@@ -434,6 +434,7 @@ type Query {
   findSwap(slug: String!): SwapResponse
   findSwapById(id: ID!): SwapResponse
   findSwaps(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedSwapsResponse!
+  findTerm(name: String!): TermResponse
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
@@ -502,6 +503,17 @@ type SwapResponse {
 type SwapResponseEdge {
   cursor: String!
   node: SwapResponse!
+}
+
+type TermResponse {
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  metaDescription: String!
+  metaTitle: String!
+  name: String!
+  title: String!
+  updatedAt: DateTime!
 }
 
 input UpdateAuctionInput {
