@@ -16,6 +16,7 @@ import { SwapModule } from './app/swap/swap.module';
 import { AuctionModule } from './app/auction/auction.module';
 import { DiscordMessageModule } from './app/discord-message/discord-message.module';
 import { SessionModule } from './app/session/session.module';
+import { TermModule } from './app/term/term.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { SessionModule } from './app/session/session.module';
     AuctionModule,
     DiscordMessageModule,
     SessionModule,
+    TermModule,
   ],
 })
 export class ApiModule {}
