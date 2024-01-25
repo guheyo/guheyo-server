@@ -1,0 +1,54 @@
+import { Prisma } from '@prisma/client';
+import _ from 'lodash';
+
+export const softDelete = Prisma.defineExtension({
+  name: 'softDelete',
+  model: {
+    $allModels: {
+      delete<M, A>(
+        this: M,
+        args: Prisma.Args<M, 'delete'>,
+      ): Promise<Prisma.Result<M, A, 'update'>> {
+        const context = Prisma.getExtensionContext(this);
+        return (context as any).update({
+          where: args.where,
+          data: {
+            deletedAt: new Date(),
+          },
+        });
+      },
+    },
+  },
+});
+
+export const hardDelete = Prisma.defineExtension({
+  name: 'hardDelete',
+  model: {
+    $allModels: {
+      hardDelete<M, A>(
+        this: M,
+        args: Prisma.Args<M, 'delete'>,
+      ): Promise<Prisma.Result<M, A, 'delete'>> {
+        const context = Prisma.getExtensionContext(this);
+        return (context as any).delete({
+          where: args.where,
+        });
+      },
+    },
+  },
+});
+
+export const filterSoftDeleted = Prisma.defineExtension({
+  name: 'filterSoftDeleted',
+  query: {
+    $allModels: {
+      async $allOperations({ model, operation, args, query }) {
+        if (operation === 'findUnique' || operation === 'findFirst' || operation === 'findMany') {
+          args.where = { ...args.where, deletedAt: null };
+          return query(args);
+        }
+        return query(args);
+      },
+    },
+  },
+});
