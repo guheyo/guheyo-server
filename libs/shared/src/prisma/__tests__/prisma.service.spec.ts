@@ -3,9 +3,10 @@ import { Test } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import { loadYaml } from '@lib/shared/config';
 import { PrismaService } from '../prisma.service';
+import { ExtendedPrismaService } from '../extensions/prisma.extension.factory';
 
 describe('PrismaService', () => {
-  let prismaService: PrismaService;
+  let prismaService: ExtendedPrismaService;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -17,7 +18,7 @@ describe('PrismaService', () => {
       providers: [PrismaService],
     }).compile();
 
-    prismaService = moduleRef.get<PrismaService>(PrismaService);
+    prismaService = moduleRef.get<ExtendedPrismaService>(PrismaService);
   });
 
   it('should be defined', async () => {
