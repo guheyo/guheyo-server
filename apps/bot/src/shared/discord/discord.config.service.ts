@@ -5,7 +5,7 @@ import { DiscordMarket, DiscordServer } from '../interfaces/discord-server.inter
 import { MarketChannelType } from '../types/market-channel.type';
 
 @Injectable()
-export class ConfigParser {
+export class DiscordConfigService {
   constructor(private readonly configService: ConfigService) {}
 
   getDiscordBotToken(): string {
@@ -45,11 +45,6 @@ export class ConfigParser {
     return (
       servers.find((server) => this.findAllChannelIds(server).includes(message.channelId)) || null
     );
-  }
-
-  findDiscordServerByServerId(serverId: string): DiscordServer | null {
-    const servers = this.getDiscordServers();
-    return servers.find((server) => server.id === serverId) || null;
   }
 
   findAllChannelIds(server: DiscordServer): string[] {

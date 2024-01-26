@@ -5,12 +5,15 @@ import { DiscordIdConverter } from '@app/bot/shared/converters/discord-id-conver
 import { CreateUserImageInput } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.input';
 import { RpcException } from '@nestjs/microservices';
 import { ParserErrorMessage } from './parser.error.message';
-import { ConfigParser } from './config.parser';
+import { DiscordConfigService } from '../discord/discord.config.service';
 
 @Injectable()
-export abstract class Parser extends ConfigParser {
+export abstract class Parser {
   @Inject()
   readonly discordIdConverter: DiscordIdConverter;
+
+  @Inject()
+  readonly discordConfigService: DiscordConfigService;
 
   generateUUID() {
     return uuid4();
@@ -29,13 +32,12 @@ export abstract class Parser extends ConfigParser {
   }
 
   parseGuildIdFromMessage(message: Message) {
-    const server = this.findDiscordServerByMessage(message);
+    const server = this.discordConfigService.findDiscordServerByMessage(message);
     return this.discordIdConverter.convertIdUsingDiscordNamespace(server?.name || '');
   }
 
-  parseGuildIdFromServerId(serverId: string) {
-    const server = this.findDiscordServerByServerId(serverId);
-    return this.discordIdConverter.convertIdUsingDiscordNamespace(server?.name || '');
+  parseRootGuildId() {
+    return this.discordIdConverter.convertIdUsingDiscordNamespace('root');
   }
 
   parseUploadUserImageInputList(

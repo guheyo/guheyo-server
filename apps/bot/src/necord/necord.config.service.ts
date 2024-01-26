@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { NecordModuleOptions } from 'necord';
 import { GatewayIntentBits } from 'discord.js';
 import _ from 'lodash';
-import { ConfigParser } from '../shared/parsers/config.parser';
+import { DiscordConfigService } from '../shared/discord/discord.config.service';
 
 @Injectable()
 export class NecordConfigService {
-  constructor(private readonly configParser: ConfigParser) {}
+  constructor(private readonly discordConfigService: DiscordConfigService) {}
 
   createNecordOptions(): NecordModuleOptions {
     return {
-      token: this.configParser.getDiscordBotToken(),
+      token: this.discordConfigService.getDiscordBotToken(),
       intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
@@ -18,7 +18,7 @@ export class NecordConfigService {
         GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.MessageContent,
       ],
-      development: _.uniq(this.configParser.getDiscordServerIds()),
+      development: _.uniq(this.discordConfigService.getDiscordServerIds()),
     };
   }
 }

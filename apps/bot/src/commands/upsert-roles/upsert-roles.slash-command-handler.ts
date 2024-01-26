@@ -3,16 +3,14 @@ import { UpsertRolesCommand } from '@lib/domains/role/application/commands/upser
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
 import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
 import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
-import _ from 'lodash';
-import { ConfigService } from '@nestjs/config';
-import { v5 as uuid5 } from 'uuid';
 import { CommandBus } from '@nestjs/cqrs';
+import { UserParser } from '@app/bot/apps/user/parsers/user.parser';
 
 @UseGuards(GuildGuard, OwnerGuard)
 @Injectable()
 export class UpsertRolesSlashCommandHandler {
   constructor(
-    private readonly configService: ConfigService,
+    private readonly userParser: UserParser,
     private readonly commandBus: CommandBus,
   ) {}
 
@@ -21,13 +19,7 @@ export class UpsertRolesSlashCommandHandler {
     const roleManager = interaction.guild?.roles;
     if (!roleManager) return interaction.reply('Role Manager is not found');
 
-    const highestRole = roleManager.highest;
-    const upsertRoleInputs = roleManager.cache.map((role) => ({
-      id: uuid5(role.id, this.configService.get('namespace.discord')!),
-      ..._.pick(role, ['name', 'hexColor']),
-      position: highestRole.position - role.position,
-      guildId: uuid5(roleManager.guild.id, this.configService.get('namespace.discord')!),
-    }));
+    const upsertRoleInputs = this.userParser.parseUpsertRolesInput(roleManager);
     const command = new UpsertRolesCommand({
       upsertRoleInputs,
     });

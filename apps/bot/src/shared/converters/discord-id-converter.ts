@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { v5 as uuid5 } from 'uuid';
-import { ConfigParser } from '../parsers/config.parser';
+import { DiscordConfigService } from '../discord/discord.config.service';
 
 @Injectable()
 export class DiscordIdConverter {
-  constructor(private readonly configParser: ConfigParser) {}
+  constructor(private readonly discordConfigService: DiscordConfigService) {}
 
   convertIdUsingDiscordNamespace(discordId: string) {
-    return uuid5(discordId, this.configParser.getDiscordNamespace());
+    return uuid5(discordId, this.discordConfigService.getDiscordNamespace());
   }
 
   convertIdUsingGuildNamespace(discordId: string) {
-    return uuid5(discordId, this.configParser.getGuildNamespace());
+    return uuid5(discordId, this.discordConfigService.getGuildNamespace());
   }
 }
