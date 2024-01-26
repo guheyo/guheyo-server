@@ -40,7 +40,7 @@ export class ConfigParser {
     return server?.market || null;
   }
 
-  findDiscordServer(message: Message): DiscordServer | null {
+  findDiscordServerByMessage(message: Message): DiscordServer | null {
     const servers = this.getDiscordServers();
     return (
       servers.find((server) => this.findAllChannelIds(server).includes(message.channelId)) || null

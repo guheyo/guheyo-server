@@ -20,6 +20,7 @@ import { EVENT_HANDLERS } from './events/event-handlers';
 import { DiscordIdConverter } from './shared/converters/discord-id-converter';
 import { BotExceptionFilter } from './filters/bot-exception.filter';
 import { BOT_PROVIDERS } from './apps/bot.providers';
+import { ConfigParser } from './shared/parsers/config.parser';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { BOT_PROVIDERS } from './apps/bot.providers';
     ...DEMAND_PROVIDERS,
     ...COMMAND_HANDLERS,
     ...EVENT_HANDLERS,
+    ConfigParser,
     DiscordIdConverter,
     {
       provide: APP_FILTER,
