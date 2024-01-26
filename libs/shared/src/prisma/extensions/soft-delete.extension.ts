@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client';
-import _ from 'lodash';
 
 export const softDelete = Prisma.defineExtension({
   name: 'softDelete',
