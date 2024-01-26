@@ -33,13 +33,13 @@ export async function seedKeyboard(prisma: PrismaClient) {
     update: {
       id: GUILD_KEYBOARD_ID,
       slug: GUILD_SLUG,
-      position: 0,
+      position: 1,
     },
     create: {
       id: GUILD_KEYBOARD_ID,
       name: GUILD_NAME,
       slug: GUILD_SLUG,
-      position: 0,
+      position: 1,
       productCategories: {
         create: [
           {
