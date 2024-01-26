@@ -5,9 +5,10 @@ import { DiscordIdConverter } from '@app/bot/shared/converters/discord-id-conver
 import { CreateUserImageInput } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.input';
 import { RpcException } from '@nestjs/microservices';
 import { ParserErrorMessage } from './parser.error.message';
+import { ConfigParser } from './config.parser';
 
 @Injectable()
-export abstract class Parser {
+export abstract class Parser extends ConfigParser {
   @Inject()
   readonly discordIdConverter: DiscordIdConverter;
 
@@ -28,7 +29,13 @@ export abstract class Parser {
   }
 
   parseGuildIdFromMessage(message: Message) {
-    return this.discordIdConverter.convertIdUsingDiscordNamespace(message.guildId!);
+    const server = this.findDiscordServerByMessage(message);
+    return this.discordIdConverter.convertIdUsingDiscordNamespace(server?.name || '');
+  }
+
+  parseGuildIdFromServerId(serverId: string) {
+    const server = this.findDiscordServerByServerId(serverId);
+    return this.discordIdConverter.convertIdUsingDiscordNamespace(server?.name || '');
   }
 
   parseUploadUserImageInputList(
