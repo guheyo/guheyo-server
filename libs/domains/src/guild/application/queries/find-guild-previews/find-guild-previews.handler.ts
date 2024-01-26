@@ -14,6 +14,11 @@ export class FindGuildPreviewsHandler extends PrismaQueryHandler<
 
   async execute(query: FindGuildPreviewsQuery): Promise<GuildPreviewResponse[]> {
     const guilds = await this.prismaService.guild.findMany({
+      where: {
+        position: {
+          gt: 0,
+        },
+      },
       orderBy: {
         position: 'asc',
       },
