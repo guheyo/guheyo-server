@@ -17,13 +17,13 @@ export async function seedAudio(prisma: PrismaClient) {
     update: {
       id: GUILD_AUDIO_ID,
       slug: GUILD_SLUG,
-      position: 0,
+      position: 3,
     },
     create: {
       id: GUILD_AUDIO_ID,
       name: GUILD_NAME,
       slug: GUILD_SLUG,
-      position: 0,
+      position: 3,
       productCategories: {
         create: [
           {

@@ -25,7 +25,7 @@ export class OfferParser extends DealParser {
       priceCurrency: 'KRW',
       description: match[3].trim(),
       businessFunction: 'SELL',
-      status: 'ON_SALE',
+      status: 'OPEN',
       source: 'discord',
       guildId: this.parseGuildIdFromMessage(message),
       productCategoryId: this.parseProductCategoryIdFromMessage(message),

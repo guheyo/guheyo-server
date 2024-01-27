@@ -17,13 +17,13 @@ export async function seedMouse(prisma: PrismaClient) {
     update: {
       id: GUILD_MOUSE_ID,
       slug: GUILD_SLUG,
-      position: 0,
+      position: 2,
     },
     create: {
       id: GUILD_MOUSE_ID,
       name: GUILD_NAME,
       slug: GUILD_SLUG,
-      position: 0,
+      position: 2,
       productCategories: {
         create: [
           {

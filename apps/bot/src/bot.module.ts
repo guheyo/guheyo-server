@@ -5,6 +5,7 @@ import { NecordModule } from 'necord';
 import { ConfigService } from '@nestjs/config/dist';
 import { PrismaModule } from '@lib/shared/prisma/prisma.module';
 import { ImageModule } from '@lib/shared/image/image.module';
+import { GUILD_PROVIDERS } from '@lib/domains/guild/guild.providers';
 import { USER_PROVIDERS } from '@lib/domains/user/user.providers';
 import { USER_IMAGE_PROVIDERS } from '@lib/domains/user-image/user-image.providers';
 import { SOCIAL_ACCOUNT_PROVIDERS } from '@lib/domains/social-account/social-account.providers';
@@ -20,6 +21,7 @@ import { EVENT_HANDLERS } from './events/event-handlers';
 import { DiscordIdConverter } from './shared/converters/discord-id-converter';
 import { BotExceptionFilter } from './filters/bot-exception.filter';
 import { BOT_PROVIDERS } from './apps/bot.providers';
+import { DiscordConfigService } from './shared/discord/discord.config.service';
 
 @Module({
   imports: [
@@ -43,6 +45,7 @@ import { BOT_PROVIDERS } from './apps/bot.providers';
     }),
   ],
   providers: [
+    ...GUILD_PROVIDERS,
     ...USER_PROVIDERS,
     ...USER_IMAGE_PROVIDERS,
     ...SOCIAL_ACCOUNT_PROVIDERS,
@@ -53,6 +56,7 @@ import { BOT_PROVIDERS } from './apps/bot.providers';
     ...DEMAND_PROVIDERS,
     ...COMMAND_HANDLERS,
     ...EVENT_HANDLERS,
+    DiscordConfigService,
     DiscordIdConverter,
     {
       provide: APP_FILTER,

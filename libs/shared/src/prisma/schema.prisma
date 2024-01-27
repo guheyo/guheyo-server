@@ -361,12 +361,15 @@ model Bid {
 }
 
 model DiscordMessage {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
   discordMessageId  String            @unique
   discordChannelId  String
   discordGuildId    String
   modelName         String
   modelId           String
-  guildId           String
   userId            String
   user              User              @relation(fields: [userId], references: [id])
   bot               Boolean           @default(false)

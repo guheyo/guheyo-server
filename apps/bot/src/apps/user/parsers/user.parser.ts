@@ -1,10 +1,12 @@
-import { Parser } from '@app/bot/shared/parsers/parser';
 import { Injectable } from '@nestjs/common';
-import { GuildMember } from 'discord.js';
+import { GuildMember, RoleManager } from 'discord.js';
+import _ from 'lodash';
 import { CreateUserFromDiscordInput } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.input';
+import { CreateRoleInput } from '@lib/domains/role/application/commands/create-role/create-role.input';
+import { GuildParser } from '../../guild/parsers/guild.parser';
 
 @Injectable()
-export class UserParser extends Parser {
+export class UserParser extends GuildParser {
   parseCreateUserFromDiscordInput(guildMember: GuildMember): CreateUserFromDiscordInput {
     const id = this.generateUUID();
     return {
@@ -14,11 +16,22 @@ export class UserParser extends Parser {
       socialAccountId: this.discordIdConverter.convertIdUsingDiscordNamespace(guildMember.id),
       provider: 'discord',
       socialId: guildMember.id,
-      guildId: this.discordIdConverter.convertIdUsingDiscordNamespace(guildMember.guild.id),
+      // NOTE: 임시로 root guildId 지정
+      guildId: this.parseRootGuildId(),
       memberId: this.discordIdConverter.convertIdUsingGuildNamespace(guildMember.id),
       roleIds: guildMember.roles.cache.map((role) =>
         this.discordIdConverter.convertIdUsingDiscordNamespace(role.id),
       ),
     };
+  }
+
+  parseUpsertRolesInput(roleManager: RoleManager): CreateRoleInput[] {
+    const highestRole = roleManager.highest;
+    return roleManager.cache.map((role) => ({
+      id: this.discordIdConverter.convertIdUsingDiscordNamespace(role.id),
+      ..._.pick(role, ['name', 'hexColor']),
+      position: highestRole.position - role.position,
+      guildId: this.parseRootGuildId(),
+    }));
   }
 }

@@ -29,7 +29,7 @@ export class CreateDemandInput {
   businessFunction: string;
 
   @IsString()
-  @Field(() => String, { defaultValue: 'ON_SALE' })
+  @Field(() => String, { defaultValue: 'OPEN' })
   status: string;
 
   @IsUUID()

@@ -26,7 +26,7 @@ export class SwapParser extends DealParser {
       price: 0,
       priceCurrency: 'KRW',
       businessFunction: 'TRADE',
-      status: 'ON_SALE',
+      status: 'OPEN',
       source: 'discord',
       guildId: this.parseGuildIdFromMessage(message),
       productCategoryId: this.parseProductCategoryIdFromMessage(message),
