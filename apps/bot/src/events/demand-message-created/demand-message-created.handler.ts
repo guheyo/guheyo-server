@@ -37,7 +37,7 @@ export class DemandMessageCreatedHandler {
       message,
       'demand',
     );
-    const createDemandInput = this.demandParser.parseCreateDealInput(user.id, message, guild.id);
+    const createDemandInput = this.demandParser.parseCreateDealInput(user.id, message, guild);
     await this.demandClient.uploadAndCreateAttachments(uploadUserImageInputList);
     await this.demandClient.createDemand(createDemandInput);
     this.logger.log(`Demand<@${createDemandInput.id}> created`);

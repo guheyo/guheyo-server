@@ -7,6 +7,7 @@ import { UpdateDemandInput } from '@lib/domains/demand/application/commands/upda
 import { CreateSwapInput } from '@lib/domains/swap/application/commands/create-swap/create-swap.input';
 import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-swap/update-swap.input';
 import { GuildParser } from '@app/bot/apps/guild/parsers/guild.parser';
+import { GuildResponse } from '@lib/domains/guild/application/dtos/guild.response';
 import { DealErrorMessage } from './deal.error-message';
 
 export abstract class DealParser extends GuildParser {
@@ -21,7 +22,7 @@ export abstract class DealParser extends GuildParser {
   abstract parseCreateDealInput(
     userId: string,
     message: Message,
-    guildId: string,
+    guild: GuildResponse,
   ): CreateOfferInput | CreateDemandInput | CreateSwapInput;
 
   abstract parseUpdateDealInput(
@@ -32,11 +33,18 @@ export abstract class DealParser extends GuildParser {
     return Number(price) * 10000;
   }
 
-  parseProductCategoryIdFromMessage(message: Message) {
-    const channel = message.channel as TextChannel;
-    const categoryName = this.matchProductCategoryName(channel.name);
+  parseProductCategoryName(channelName: string): string {
+    const categoryName = this.matchProductCategoryName(channelName);
     if (!categoryName)
       throw new RpcException(DealErrorMessage.INVALID_PRODUCT_CATEGORY_NAME_FORMAT);
-    return this.discordIdConverter.convertIdUsingDiscordNamespace(categoryName);
+    return categoryName;
+  }
+
+  parseProductCategoryId(message: Message, guild: GuildResponse): string {
+    const channel = message.channel as TextChannel;
+    const categoryName = this.parseProductCategoryName(channel.name);
+    const category = guild.productCategories.find((c) => c.name === categoryName);
+    if (!category) throw new RpcException(DealErrorMessage.NOT_FOUND_PRODUCT_CATEGORY);
+    return category.id;
   }
 }

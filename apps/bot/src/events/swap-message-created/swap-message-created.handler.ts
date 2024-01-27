@@ -37,7 +37,7 @@ export class SwapMessageCreatedHandler {
       message,
       'swap',
     );
-    const createSwapInput = this.swapParser.parseCreateDealInput(user.id, message, guild.id);
+    const createSwapInput = this.swapParser.parseCreateDealInput(user.id, message, guild);
     await this.swapClient.uploadAndCreateAttachments(uploadUserImageInputList);
     await this.swapClient.createSwap(createSwapInput);
     this.logger.log(`Swap<@${createSwapInput.id}> created`);

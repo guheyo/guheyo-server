@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Message } from 'discord.js';
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
+import { GuildResponse } from '@lib/domains/guild/application/dtos/guild.response';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { OfferErrorMessage } from './offer.error-message';
 
@@ -26,7 +27,7 @@ export class OfferParser extends DealParser {
     };
   }
 
-  parseCreateDealInput(userId: string, message: Message, guildId: string): CreateOfferInput {
+  parseCreateDealInput(userId: string, message: Message, guild: GuildResponse): CreateOfferInput {
     const dealSummary = this.parseDealSummary(message);
 
     return {
@@ -34,8 +35,8 @@ export class OfferParser extends DealParser {
       priceCurrency: 'KRW',
       businessFunction: 'SELL',
       status: 'OPEN',
-      guildId,
-      productCategoryId: this.parseProductCategoryIdFromMessage(message),
+      guildId: guild.id,
+      productCategoryId: this.parseProductCategoryId(message, guild),
       sellerId: userId,
     };
   }

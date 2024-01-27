@@ -37,7 +37,7 @@ export class OfferMessageCreatedHandler {
       message,
       'offer',
     );
-    const createOfferInput = this.offerParser.parseCreateDealInput(user.id, message, guild.id);
+    const createOfferInput = this.offerParser.parseCreateDealInput(user.id, message, guild);
     await this.offerClient.uploadAndCreateAttachments(uploadUserImageInputList);
     await this.offerClient.createOffer(createOfferInput);
     this.logger.log(`Offer<@${createOfferInput.id}> created`);
