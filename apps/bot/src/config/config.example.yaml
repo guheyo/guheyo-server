@@ -17,6 +17,7 @@ discord:
     ownerId:
   servers:
     - name:
+      slug:
       id:
       market:
         wts:

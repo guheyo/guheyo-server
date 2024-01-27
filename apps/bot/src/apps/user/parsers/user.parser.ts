@@ -1,12 +1,12 @@
-import { Parser } from '@app/bot/shared/parsers/parser';
 import { Injectable } from '@nestjs/common';
 import { GuildMember, RoleManager } from 'discord.js';
 import _ from 'lodash';
 import { CreateUserFromDiscordInput } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.input';
 import { CreateRoleInput } from '@lib/domains/role/application/commands/create-role/create-role.input';
+import { GuildParser } from '../../guild/parsers/guild.parser';
 
 @Injectable()
-export class UserParser extends Parser {
+export class UserParser extends GuildParser {
   parseCreateUserFromDiscordInput(guildMember: GuildMember): CreateUserFromDiscordInput {
     const id = this.generateUUID();
     return {
