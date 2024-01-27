@@ -21,10 +21,10 @@ export abstract class DealParser extends GuildParser {
   abstract parseCreateDealInput(
     userId: string,
     message: Message,
+    guildId: string,
   ): CreateOfferInput | CreateDemandInput | CreateSwapInput;
 
   abstract parseUpdateDealInput(
-    userId: string,
     message: Message,
   ): UpdateOfferInput | UpdateDemandInput | UpdateSwapInput;
 
