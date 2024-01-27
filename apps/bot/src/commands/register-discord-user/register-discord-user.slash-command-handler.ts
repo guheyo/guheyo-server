@@ -23,8 +23,8 @@ export class RegisterDiscordUserSlashCommandHandler {
     if (user) interaction.reply(`${discordMember.user.username}<@${user.id}> already exists`);
     else {
       const input = this.userParser.parseCreateUserFromDiscordInput(discordMember);
-      const newUser = await this.userClient.createUserFromDiscord(input);
-      interaction.reply(`${newUser.username}<@${newUser.id}> registered`);
+      await this.userClient.createUserFromDiscord(input);
+      interaction.reply(`${input.username}<@${input.id}> registered`);
     }
   }
 }

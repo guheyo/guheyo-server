@@ -31,8 +31,12 @@ export class ParseUserWithDeletedModelIdPipe implements PipeTransform {
       };
 
     const input = this.userParser.parseCreateUserFromDiscordInput(discordMember);
+    await this.userClient.createUserFromDiscord(input);
     return {
-      user: await this.userClient.createUserFromDiscord(input),
+      user: {
+        id: input.id,
+        username: input.username,
+      },
       deletedModelId: this.userParser.parseIdFromMessage(message),
     };
   }

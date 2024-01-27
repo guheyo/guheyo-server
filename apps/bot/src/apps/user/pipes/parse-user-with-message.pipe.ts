@@ -37,8 +37,12 @@ export class ParseUserWithMessagePipe implements PipeTransform {
       };
 
     const input = this.userParser.parseCreateUserFromDiscordInput(discordMember);
+    await this.userClient.createUserFromDiscord(input)
     return {
-      user: await this.userClient.createUserFromDiscord(input),
+      user: {
+        id: input.id,
+        username: input.username,
+      },
       message,
     };
   }

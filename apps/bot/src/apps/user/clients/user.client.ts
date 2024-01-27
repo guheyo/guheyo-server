@@ -5,7 +5,6 @@ import { Injectable } from '@nestjs/common';
 import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
 import { CreateUserFromDiscordInput } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.input';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
-import { SimpleUser } from '../parsers/user.types';
 
 @Injectable()
 export class UserClient extends UserImageClient {
@@ -21,13 +20,9 @@ export class UserClient extends UserImageClient {
     );
   }
 
-  async createUserFromDiscord(input: CreateUserFromDiscordInput): Promise<SimpleUser> {
+  async createUserFromDiscord(input: CreateUserFromDiscordInput): Promise<void> {
     await this.commandBus.execute(new CreateUserFromDiscordCommand(input));
     await this.updateUserAvatar(input.id, input.avatarURL);
-    return {
-      id: input.id,
-      username: input.username,
-    };
   }
 
   async updateUserAvatar(userId: string, discordAvatarURL?: string): Promise<void> {
