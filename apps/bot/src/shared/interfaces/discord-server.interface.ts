@@ -1,5 +1,6 @@
 export interface DiscordServer {
   name: string;
+  slug: string;
   id: string;
   market: DiscordMarket;
   auction: DiscordAuction;

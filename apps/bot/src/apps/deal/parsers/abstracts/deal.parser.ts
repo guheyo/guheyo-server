@@ -6,10 +6,10 @@ import { CreateDemandInput } from '@lib/domains/demand/application/commands/crea
 import { UpdateDemandInput } from '@lib/domains/demand/application/commands/update-demand/update-demand.input';
 import { CreateSwapInput } from '@lib/domains/swap/application/commands/create-swap/create-swap.input';
 import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-swap/update-swap.input';
-import { Parser } from '../../../../shared/parsers/parser';
+import { GuildParser } from '@app/bot/apps/guild/parsers/guild.parser';
 import { DealErrorMessage } from './deal.error-message';
 
-export abstract class DealParser extends Parser {
+export abstract class DealParser extends GuildParser {
   abstract matchFormat(content: string): RegExpExecArray | null;
 
   matchProductCategoryName(channelName: string): string | null {
