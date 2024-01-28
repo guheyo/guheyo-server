@@ -24,6 +24,6 @@ export class DemandMessageCreatedHandler {
     @Context()
     [message]: ContextOf<'messageCreate'>,
   ) {
-    this.demandClient.createDemandFromMessage(user.id, message, guild);
+    this.demandClient.createDealFromMessage(user.id, message, guild);
   }
 }

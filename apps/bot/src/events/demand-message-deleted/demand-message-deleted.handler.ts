@@ -20,7 +20,6 @@ export class DemandMessageDeletedHandler {
     @Context(ParseUserWithDeletedModelIdPipe)
     { user, deletedModelId }: UserWithDeletedModelId,
   ) {
-    await this.demandClient.deleteDemand(deletedModelId);
-    this.logger.log(`Demand<@${deletedModelId}> deleted`);
+    await this.demandClient.deleteDealFromMessage(deletedModelId);
   }
 }

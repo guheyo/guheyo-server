@@ -15,10 +15,10 @@ export class UserImageClient {
   protected readonly imageService: ImageService;
 
   @Inject()
-  readonly queryBus: QueryBus;
+  protected readonly queryBus: QueryBus;
 
   @Inject()
-  readonly commandBus: CommandBus;
+  protected readonly commandBus: CommandBus;
 
   async uploadAndCreateAvatar({
     userId,
