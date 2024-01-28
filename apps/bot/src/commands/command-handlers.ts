@@ -3,6 +3,8 @@ import { SendMessageSlashCommandHandler } from './send-message/send-message.slas
 import { UpsertRolesSlashCommandHandler } from './upsert-roles/upsert-roles.slash-command-handler';
 import { RegisterDiscordUserSlashCommandHandler } from './register-discord-user/register-discord-user.slash-command-handler';
 import { BulkSaveOffersSlashCommandHandler } from './bulk-save/bulk-save-offers.slash-command.handler';
+import { BulkSaveDemandsSlashCommandHandler } from './bulk-save/bulk-save-demands.slash-command.handler';
+import { BulkSaveSwapsSlashCommandHandler } from './bulk-save/bulk-save-swaps.slash-command.handler';
 
 export const COMMAND_HANDLERS = [
   PingSlashCommandHandler,
@@ -10,4 +12,6 @@ export const COMMAND_HANDLERS = [
   UpsertRolesSlashCommandHandler,
   RegisterDiscordUserSlashCommandHandler,
   BulkSaveOffersSlashCommandHandler,
+  BulkSaveDemandsSlashCommandHandler,
+  BulkSaveSwapsSlashCommandHandler,
 ];
