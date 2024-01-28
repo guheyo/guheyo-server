@@ -1,4 +1,4 @@
-import { GuildMember } from 'discord.js';
+import { GuildMember, RoleManager } from 'discord.js';
 import { CreateUserFromDiscordCommand } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.command';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.query';
@@ -8,6 +8,7 @@ import { CreateUserFromDiscordInput } from '@lib/domains/user/application/comman
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { SimpleUser } from '../parsers/user.types';
 import { UserParser } from '../parsers/user.parser';
+import { UpsertRolesCommand } from '@lib/domains/role/application/commands/upsert-roles/upsert-roles.command';
 
 @Injectable()
 export class UserClient extends UserImageClient {
@@ -56,5 +57,13 @@ export class UserClient extends UserImageClient {
         avatarURL: url || undefined,
       }),
     );
+  }
+
+  async upsertRoles(roleManager: RoleManager) {
+    const upsertRoleInputs = this.userParser.parseUpsertRolesInput(roleManager);
+    const command = new UpsertRolesCommand({
+      upsertRoleInputs,
+    });
+    await this.commandBus.execute(command);
   }
 }
