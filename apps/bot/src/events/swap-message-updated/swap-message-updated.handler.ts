@@ -1,12 +1,10 @@
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
-import { Context, On } from 'necord';
+import { Context, ContextOf, On } from 'necord';
 import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
 import { DealChannelGuard } from '@app/bot/apps/deal/guards/deal-channel.guard';
 import { Type } from '@app/bot/decorators/type.decorator';
-import { ParseUserWithMessagePipe } from '@app/bot/apps/user/pipes/parse-user-with-message.pipe';
 import { SwapClient } from '@app/bot/apps/swap/clients/swap.client';
-import { ParseUpdateSwapInputPipe } from '@app/bot/apps/swap/pipes/parse-update-swap-input.pipe';
-import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-swap/update-swap.input';
+import { SwapParser } from '@app/bot/apps/swap/parsers/swap.parser';
 
 @UseGuards(GuildGuard, DealChannelGuard)
 @Type('wtt')
@@ -14,13 +12,18 @@ import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-s
 export class SwapMessageUpdatedHandler {
   private readonly logger = new Logger(SwapMessageUpdatedHandler.name);
 
-  constructor(private readonly swapClient: SwapClient) {}
+  constructor(
+    private readonly swapParser: SwapParser,
+    private readonly swapClient: SwapClient,
+  ) {}
 
   @On('messageUpdate')
   public async onUpdateSwapMessage(
-    @Context(ParseUserWithMessagePipe, ParseUpdateSwapInputPipe)
-    updateSwapInput: UpdateSwapInput,
+    @Context()
+    [oldMessage, newMessage]: ContextOf<'messageUpdate'>,
   ) {
+    const message = await newMessage.fetch();
+    const updateSwapInput = this.swapParser.parseUpdateDealInput(message);
     await this.swapClient.updateSwap(updateSwapInput);
     this.logger.log(`Swap<@${updateSwapInput.id}> updated`);
   }

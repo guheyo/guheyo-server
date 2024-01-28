@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Message } from 'discord.js';
-import { pick } from 'lodash';
 import { CreateDemandInput } from '@lib/domains/demand/application/commands/create-demand/create-demand.input';
 import { UpdateDemandInput } from '@lib/domains/demand/application/commands/update-demand/update-demand.input';
+import { GuildResponse } from '@lib/domains/guild/application/dtos/guild.response';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { DemandErrorMessage } from './demand.error-message';
 
@@ -14,7 +14,7 @@ export class DemandParser extends DealParser {
     return re.exec(content);
   }
 
-  parseCreateDealInput(userId: string, message: Message): CreateDemandInput {
+  parseDealSummary(message: Message) {
     const match = this.matchFormat(message.content);
     if (!match) throw new RpcException(DemandErrorMessage.INVALID_DEMAND_FORMAT);
 
@@ -22,21 +22,26 @@ export class DemandParser extends DealParser {
       id: this.parseIdFromMessage(message),
       name: match[1].trim(),
       price: this.parsePrice(match[2]),
-      priceCurrency: 'KRW',
       description: match[3].trim(),
+      source: 'discord',
+    };
+  }
+
+  parseCreateDealInput(userId: string, message: Message, guild: GuildResponse): CreateDemandInput {
+    const dealSummary = this.parseDealSummary(message);
+
+    return {
+      ...dealSummary,
+      priceCurrency: 'KRW',
       businessFunction: 'BUY',
       status: 'OPEN',
-      source: 'discord',
-      guildId: this.parseGuildIdFromMessage(message),
-      productCategoryId: this.parseProductCategoryIdFromMessage(message),
+      guildId: guild.id,
+      productCategoryId: this.parseProductCategoryId(message, guild),
       buyerId: userId,
     };
   }
 
-  parseUpdateDealInput(userId: string, message: Message<boolean>): UpdateDemandInput {
-    return {
-      ...pick(this.parseCreateDealInput(userId, message), ['id', 'name', 'description', 'price']),
-      source: 'discord',
-    };
+  parseUpdateDealInput(message: Message<boolean>): UpdateDemandInput {
+    return this.parseDealSummary(message);
   }
 }

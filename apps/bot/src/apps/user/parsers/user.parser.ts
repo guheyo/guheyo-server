@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { GuildMember, RoleManager } from 'discord.js';
-import _ from 'lodash';
 import { CreateUserFromDiscordInput } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.input';
 import { CreateRoleInput } from '@lib/domains/role/application/commands/create-role/create-role.input';
 import { GuildParser } from '../../guild/parsers/guild.parser';
@@ -29,7 +28,8 @@ export class UserParser extends GuildParser {
     const highestRole = roleManager.highest;
     return roleManager.cache.map((role) => ({
       id: this.discordIdConverter.convertIdUsingDiscordNamespace(role.id),
-      ..._.pick(role, ['name', 'hexColor']),
+      name: role.name,
+      hexColor: role.hexColor === '#000000' ? '#7f838e' : role.hexColor,
       position: highestRole.position - role.position,
       guildId: this.parseRootGuildId(),
     }));

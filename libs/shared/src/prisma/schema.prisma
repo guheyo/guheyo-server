@@ -123,7 +123,7 @@ model Role {
   deletedAt         DateTime?
   name              String      @unique
   position          Int
-  hexColor          String      @default("#000000")
+  hexColor          String      @default("#7f838e")
   guildId           String
   guild             Guild       @relation(fields: [guildId], references: [id])
   members           Member[]

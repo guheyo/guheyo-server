@@ -2,8 +2,8 @@ import { CreateOfferInput } from '@lib/domains/offer/application/commands/create
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Message } from 'discord.js';
-import { pick } from 'lodash';
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
+import { GuildResponse } from '@lib/domains/guild/application/dtos/guild.response';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { OfferErrorMessage } from './offer.error-message';
 
@@ -14,7 +14,7 @@ export class OfferParser extends DealParser {
     return re.exec(content);
   }
 
-  parseCreateDealInput(userId: string, message: Message): CreateOfferInput {
+  parseDealSummary(message: Message) {
     const match = this.matchFormat(message.content);
     if (!match) throw new RpcException(OfferErrorMessage.INVALID_OFFER_FORMAT);
 
@@ -22,21 +22,26 @@ export class OfferParser extends DealParser {
       id: this.parseIdFromMessage(message),
       name: match[1].trim(),
       price: this.parsePrice(match[2]),
-      priceCurrency: 'KRW',
       description: match[3].trim(),
+      source: 'discord',
+    };
+  }
+
+  parseCreateDealInput(userId: string, message: Message, guild: GuildResponse): CreateOfferInput {
+    const dealSummary = this.parseDealSummary(message);
+
+    return {
+      ...dealSummary,
+      priceCurrency: 'KRW',
       businessFunction: 'SELL',
       status: 'OPEN',
-      source: 'discord',
-      guildId: this.parseGuildIdFromMessage(message),
-      productCategoryId: this.parseProductCategoryIdFromMessage(message),
+      guildId: guild.id,
+      productCategoryId: this.parseProductCategoryId(message, guild),
       sellerId: userId,
     };
   }
 
-  parseUpdateDealInput(userId: string, message: Message<boolean>): UpdateOfferInput {
-    return {
-      ...pick(this.parseCreateDealInput(userId, message), ['id', 'name', 'description', 'price']),
-      source: 'discord',
-    };
+  parseUpdateDealInput(message: Message<boolean>): UpdateOfferInput {
+    return this.parseDealSummary(message);
   }
 }
