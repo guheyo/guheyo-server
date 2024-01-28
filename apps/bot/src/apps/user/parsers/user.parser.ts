@@ -17,7 +17,7 @@ export class UserParser extends GuildParser {
       socialId: guildMember.id,
       // NOTE: 임시로 root guildId 지정
       guildId: this.parseRootGuildId(),
-      memberId: this.discordIdConverter.convertIdUsingGuildNamespace(guildMember.id),
+      memberId: this.parseMemberId(guildMember.id),
       roleIds: guildMember.roles.cache.map((role) =>
         this.discordIdConverter.convertIdUsingDiscordNamespace(role.id),
       ),
@@ -33,5 +33,13 @@ export class UserParser extends GuildParser {
       position: highestRole.position - role.position,
       guildId: this.parseRootGuildId(),
     }));
+  }
+
+  parseMemberId(discordMemberId: string): string {
+    return this.discordIdConverter.convertIdUsingGuildNamespace(discordMemberId);
+  }
+
+  parseRoleId(discordRoleId: string): string {
+    return this.discordIdConverter.convertIdUsingDiscordNamespace(discordRoleId);
   }
 }

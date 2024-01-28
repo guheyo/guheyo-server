@@ -9,6 +9,8 @@ import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { SimpleUser } from '../parsers/user.types';
 import { UserParser } from '../parsers/user.parser';
 import { UpsertRolesCommand } from '@lib/domains/role/application/commands/upsert-roles/upsert-roles.command';
+import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
+import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
 
 @Injectable()
 export class UserClient extends UserImageClient {
@@ -65,5 +67,23 @@ export class UserClient extends UserImageClient {
       upsertRoleInputs,
     });
     await this.commandBus.execute(command);
+  }
+
+  async connectRoles(memberId: string, roleId: string) {
+    await this.commandBus.execute(
+      new ConnectRolesCommand({
+        id: this.userParser.parseMemberId(memberId),
+        roleIds: [this.userParser.parseRoleId(roleId)],
+      }),
+    );
+  }
+
+  async disconnectRoles(memberId: string, roleId: string) {
+    await this.commandBus.execute(
+      new DisconnectRolesCommand({
+        id: this.userParser.parseMemberId(memberId),
+        roleIds: [this.userParser.parseRoleId(roleId)],
+      }),
+    );
   }
 }
