@@ -1,6 +1,6 @@
 import { NumberOption, StringOption } from 'necord';
 
-export class BulkSaveOffersRequest {
+export class BulkSaveRequest {
   @StringOption({
     name: 'guild-name',
     description: 'guild name',
