@@ -1,9 +1,7 @@
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
 import { Context, ContextOf, On } from 'necord';
 import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
-import { DiscordIdConverter } from '@app/bot/shared/converters/discord-id-converter';
-import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
+import { UserClient } from '@app/bot/apps/user/clients/user.client';
 
 @UseGuards(GuildGuard)
 @Injectable()
@@ -11,19 +9,13 @@ export class DiscordMemberRolesRemovedHandler {
   private readonly logger = new Logger(DiscordMemberRolesRemovedHandler.name);
 
   constructor(
-    private readonly discordIdConverter: DiscordIdConverter,
-    private readonly commandBus: CommandBus,
+    private readonly userClient: UserClient,
   ) {}
 
   @On('guildMemberRoleRemove')
   public async onRemovedGuildMemberRoles(
     @Context() [member, role]: ContextOf<'guildMemberRoleRemove'>,
   ) {
-    await this.commandBus.execute(
-      new DisconnectRolesCommand({
-        id: this.discordIdConverter.convertIdUsingGuildNamespace(member.id),
-        roleIds: [this.discordIdConverter.convertIdUsingDiscordNamespace(role.id)],
-      }),
-    );
+    await this.userClient.disconnectRoles(member.id, role.id);
   }
 }

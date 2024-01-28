@@ -3,7 +3,6 @@ import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
 import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
 import { UserClient } from '@app/bot/apps/user/clients/user.client';
-import { UserParser } from '@app/bot/apps/user/parsers/user.parser';
 import { RegisterDiscordUserRequest } from './register-discord-user.request';
 
 @UseGuards(GuildGuard, OwnerGuard)
@@ -11,7 +10,6 @@ import { RegisterDiscordUserRequest } from './register-discord-user.request';
 export class RegisterDiscordUserSlashCommandHandler {
   constructor(
     private readonly userClient: UserClient,
-    private readonly userParser: UserParser,
   ) {}
 
   @SlashCommand({ name: 'register-user', description: 'Register user in DB' })
@@ -19,12 +17,7 @@ export class RegisterDiscordUserSlashCommandHandler {
     @Context() [interaction]: SlashCommandContext,
     @Options() { discordMember }: RegisterDiscordUserRequest,
   ) {
-    const user = await this.userClient.findUserBySocialAccount('discord', discordMember.id);
-    if (user) interaction.reply(`${discordMember.user.username}<@${user.id}> already exists`);
-    else {
-      const input = this.userParser.parseCreateUserFromDiscordInput(discordMember);
-      await this.userClient.createUserFromDiscord(input);
-      interaction.reply(`${input.username}<@${input.id}> registered`);
-    }
+    const user = await this.userClient.fetchSimpleUser('discord', discordMember);
+    interaction.reply(`${user.username}<@${user.id}> registered`);
   }
 }
