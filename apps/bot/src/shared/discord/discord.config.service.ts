@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Message } from 'discord.js';
-import { DiscordMarket, DiscordServer } from '../interfaces/discord-server.interface';
 import { MarketChannelType } from '../types/market-channel.type';
+import {
+  DiscordMarket,
+  DiscordServer,
+} from '../interfaces/discord-server.interface';
 
 @Injectable()
 export class DiscordConfigService {
@@ -47,6 +50,11 @@ export class DiscordConfigService {
     );
   }
 
+  findDiscordServer(guildName: string): DiscordServer | null {
+    const servers = this.getDiscordServers();
+    return servers.find((server) => server.name === guildName) || null;
+  }
+
   findAllChannelIds(server: DiscordServer): string[] {
     const channelIds = [
       ...server.market.wts.channels.map((channel) => channel.id),
@@ -56,5 +64,11 @@ export class DiscordConfigService {
       ...server.community.channels.map((channel) => channel.id),
     ];
     return channelIds;
+  }
+
+  findMarketChannelIds(guildName: string, marketChannelType: MarketChannelType): string[] {
+    const server = this.findDiscordServer(guildName);
+    const channels = server?.market[marketChannelType].channels || [];
+    return channels.map((c) => c.id);
   }
 }
