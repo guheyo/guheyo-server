@@ -3,16 +3,12 @@ import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { ContextOf } from 'necord';
 import { UserErrorMessage } from '@app/bot/apps/user/parsers/user.error-message';
-import { UserParser } from '@app/bot/apps/user/parsers/user.parser';
 import { Message } from 'discord.js';
 import { SimpleUser } from '../parsers/user.types';
 
 @Injectable()
 export class ParseUserFromMessagePipe implements PipeTransform {
-  constructor(
-    private readonly userClient: UserClient,
-    private readonly userParser: UserParser,
-  ) {}
+  constructor(private readonly userClient: UserClient) {}
 
   async transform(
     [createdOrOldmessage, newMessage]: ContextOf<'messageCreate' | 'messageUpdate'>,
@@ -24,19 +20,6 @@ export class ParseUserFromMessagePipe implements PipeTransform {
 
     const discordMember = message.member;
     if (!discordMember) throw new RpcException(UserErrorMessage.DISOCRD_MEMBER_NOT_FOUND);
-
-    const user = await this.userClient.findUserBySocialAccount('discord', discordMember.id);
-    if (user)
-      return {
-        id: user.id,
-        username: user.username,
-      };
-
-    const input = this.userParser.parseCreateUserFromDiscordInput(discordMember);
-    await this.userClient.createUserFromDiscord(input);
-    return {
-      id: input.id,
-      username: input.username,
-    };
+    return this.userClient.fetchSimpleUser('discord', discordMember);
   }
 }
