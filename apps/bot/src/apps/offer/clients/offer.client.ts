@@ -4,19 +4,24 @@ import { CreateOfferCommand } from '@lib/domains/offer/application/commands/crea
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
 import { UpdateOfferCommand } from '@lib/domains/offer/application/commands/update-offer/update-offer.command';
 import { DeleteOfferCommand } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.command';
-import { UserImageClient } from '../../user-image/clients/user-image.client';
+import { DealClient } from '../../deal/clients/deal.client';
+import { OfferParser } from '../parsers/offer.parser';
 
 @Injectable()
-export class OfferClient extends UserImageClient {
-  async createOffer(input: CreateOfferInput) {
+export class OfferClient extends DealClient {
+  constructor(protected readonly dealParser: OfferParser) {
+    super('offer', dealParser);
+  }
+
+  async createDeal(input: CreateOfferInput) {
     await this.commandBus.execute(new CreateOfferCommand(input));
   }
 
-  async updateOffer(input: UpdateOfferInput) {
+  async updateDeal(input: UpdateOfferInput) {
     await this.commandBus.execute(new UpdateOfferCommand(input));
   }
 
-  async deleteOffer(id: string) {
+  async deleteDeal(id: string) {
     await this.commandBus.execute(new DeleteOfferCommand(id));
   }
 }

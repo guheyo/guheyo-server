@@ -1,4 +1,4 @@
-import { Injectable, Logger, UseGuards } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, On } from 'necord';
 import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
 import { DealChannelGuard } from '@app/bot/apps/deal/guards/deal-channel.guard';
@@ -11,8 +11,6 @@ import { UserWithDeletedModelId } from '@app/bot/apps/user/parsers/user.types';
 @Type('wts')
 @Injectable()
 export class OfferMessageDeletedHandler {
-  private readonly logger = new Logger(OfferMessageDeletedHandler.name);
-
   constructor(private readonly offerClient: OfferClient) {}
 
   @On('messageDelete')
@@ -20,7 +18,6 @@ export class OfferMessageDeletedHandler {
     @Context(ParseUserWithDeletedModelIdPipe)
     { user, deletedModelId }: UserWithDeletedModelId,
   ) {
-    await this.offerClient.deleteOffer(deletedModelId);
-    this.logger.log(`Offer<@${deletedModelId}> deleted`);
+    await this.offerClient.deleteDealFromMessage(deletedModelId);
   }
 }

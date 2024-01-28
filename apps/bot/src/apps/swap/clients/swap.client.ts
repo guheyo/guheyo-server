@@ -4,19 +4,24 @@ import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-s
 import { CreateSwapCommand } from '@lib/domains/swap/application/commands/create-swap/create-swap.command';
 import { UpdateSwapCommand } from '@lib/domains/swap/application/commands/update-swap/update-swap.command';
 import { DeleteSwapCommand } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.command';
-import { UserImageClient } from '../../user-image/clients/user-image.client';
+import { DealClient } from '../../deal/clients/deal.client';
+import { SwapParser } from '../parsers/swap.parser';
 
 @Injectable()
-export class SwapClient extends UserImageClient {
-  async createSwap(input: CreateSwapInput) {
+export class SwapClient extends DealClient {
+  constructor(protected readonly dealParser: SwapParser) {
+    super('swap', dealParser);
+  }
+
+  async createDeal(input: CreateSwapInput) {
     await this.commandBus.execute(new CreateSwapCommand(input));
   }
 
-  async updateSwap(input: UpdateSwapInput) {
+  async updateDeal(input: UpdateSwapInput) {
     await this.commandBus.execute(new UpdateSwapCommand(input));
   }
 
-  async deleteSwap(id: string) {
+  async deleteDeal(id: string) {
     await this.commandBus.execute(new DeleteSwapCommand(id));
   }
 }

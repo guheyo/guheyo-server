@@ -1,4 +1,4 @@
-import { Injectable, Logger, UseGuards } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, On } from 'necord';
 import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
 import { DealChannelGuard } from '@app/bot/apps/deal/guards/deal-channel.guard';
@@ -11,8 +11,6 @@ import { SwapClient } from '@app/bot/apps/swap/clients/swap.client';
 @Type('wtt')
 @Injectable()
 export class SwapMessageDeletedHandler {
-  private readonly logger = new Logger(SwapMessageDeletedHandler.name);
-
   constructor(private readonly swapClient: SwapClient) {}
 
   @On('messageDelete')
@@ -20,7 +18,6 @@ export class SwapMessageDeletedHandler {
     @Context(ParseUserWithDeletedModelIdPipe)
     { user, deletedModelId }: UserWithDeletedModelId,
   ) {
-    await this.swapClient.deleteSwap(deletedModelId);
-    this.logger.log(`Swap<@${deletedModelId}> deleted`);
+    await this.swapClient.deleteDealFromMessage(deletedModelId);
   }
 }
