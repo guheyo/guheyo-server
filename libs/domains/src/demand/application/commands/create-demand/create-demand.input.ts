@@ -34,7 +34,7 @@ export class CreateDemandInput {
 
   @IsUUID()
   @Field(() => ID)
-  guildId: string;
+  groupId: string;
 
   @IsUUID()
   @Field()

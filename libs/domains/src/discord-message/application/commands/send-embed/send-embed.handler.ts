@@ -33,7 +33,7 @@ export class SendEmbedHandler implements ICommandHandler<SendEmbedCommand> {
       discordGuildId: message.guildId,
       modelName: command.modelName,
       modelId: command.discordGuildId,
-      guildId: command.guildId,
+      groupId: command.groupId,
       userId: command.userId,
       system: true,
     });

@@ -29,7 +29,7 @@ describe('CreateMemberHandler', () => {
       const command: CreateMemberCommand = {
         id: '94587c54-4d7d-11ee-be56-0242ac120002',
         userId: 'user-id',
-        guildId: 'guild-id',
+        groupId: 'guild-id',
       };
       await handler.execute(command);
       verify(memberSavePort.create(anyOfClass(MemberEntity))).once();

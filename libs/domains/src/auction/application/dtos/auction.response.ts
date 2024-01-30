@@ -45,7 +45,7 @@ export class AuctionResponse {
   images: UserImageResponse[];
 
   @Field()
-  guildId: string;
+  groupId: string;
 
   @Field()
   productCategoryId: string;

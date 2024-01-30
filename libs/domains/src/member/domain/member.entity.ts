@@ -12,7 +12,7 @@ export class MemberEntity extends AggregateRoot {
 
   userId: string;
 
-  guildId: string;
+  groupId: string;
 
   roles: RoleEntity[];
 

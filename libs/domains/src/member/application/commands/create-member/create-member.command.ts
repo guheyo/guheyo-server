@@ -6,11 +6,11 @@ export class CreateMemberCommand implements ICommand {
 
   userId: string;
 
-  guildId: string;
+  groupId: string;
 
   constructor(input: CreateMemberInput) {
     this.id = input.id;
     this.userId = input.userId;
-    this.guildId = input.guildId;
+    this.groupId = input.groupId;
   }
 }

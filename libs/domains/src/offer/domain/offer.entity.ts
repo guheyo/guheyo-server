@@ -26,7 +26,7 @@ export class OfferEntity extends AggregateRoot {
 
   source: string;
 
-  guildId: string;
+  groupId: string;
 
   brandId: string | null;
 

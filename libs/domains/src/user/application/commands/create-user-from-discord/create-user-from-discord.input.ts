@@ -21,7 +21,7 @@ export class CreateUserFromDiscordInput {
   socialId: string;
 
   @IsUUID()
-  guildId: string;
+  groupId: string;
 
   @IsUUID()
   memberId: string;

@@ -17,7 +17,7 @@ export class RoleEntity extends AggregateRoot {
 
   hexColor: string = '#7f838e';
 
-  guildId: string;
+  groupId: string;
 
   constructor(partial: Partial<RoleEntity>) {
     super();

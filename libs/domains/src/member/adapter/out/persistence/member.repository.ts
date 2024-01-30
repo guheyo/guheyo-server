@@ -33,13 +33,13 @@ export class MemberRepository
 
   async create(member: MemberEntity): Promise<void> {
     await this.prismaService.member.create({
-      data: _.pick(member, ['id', 'userId', 'guildId']),
+      data: _.pick(member, ['id', 'userId', 'groupId']),
     });
   }
 
   async createMany(members: MemberEntity[]): Promise<void> {
     await this.prismaService.member.createMany({
-      data: members.map((member) => _.pick(member, ['id', 'userId', 'guildId'])),
+      data: members.map((member) => _.pick(member, ['id', 'userId', 'groupId'])),
     });
   }
 
@@ -48,7 +48,7 @@ export class MemberRepository
       this.prismaService.member.create({
         data: {
           id: createMemberWithRolesInput.id,
-          guildId: createMemberWithRolesInput.guildId,
+          groupId: createMemberWithRolesInput.groupId,
           userId: createMemberWithRolesInput.userId,
           roles: {
             connect: createMemberWithRolesInput.roleIds.map((roleId) => ({
@@ -67,7 +67,7 @@ export class MemberRepository
         id: member.id,
         userId: member.userId,
       },
-      data: _.pick(member, 'guildId'),
+      data: _.pick(member, 'groupId'),
     });
   }
 

@@ -25,7 +25,7 @@ export class CreateUserFromDiscordHandler implements ICommandHandler<CreateUserF
         data: [
           {
             id: command.memberId,
-            guildId: command.guildId,
+            groupId: command.groupId,
             userId: command.id,
             roleIds: command.roleIds,
           },

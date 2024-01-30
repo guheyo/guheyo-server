@@ -14,7 +14,7 @@ export class CreateUserFromDiscordCommand implements ICommand {
 
   socialId: string;
 
-  guildId: string;
+  groupId: string;
 
   memberId: string;
 
@@ -27,7 +27,7 @@ export class CreateUserFromDiscordCommand implements ICommand {
     this.socialAccountId = input.socialAccountId;
     this.provider = input.provider;
     this.socialId = input.socialId;
-    this.guildId = input.guildId;
+    this.groupId = input.groupId;
     this.memberId = input.memberId;
     this.roleIds = input.roleIds;
   }

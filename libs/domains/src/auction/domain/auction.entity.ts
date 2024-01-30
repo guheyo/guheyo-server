@@ -27,7 +27,7 @@ export class AuctionEntity extends AggregateRoot {
 
   status: string;
 
-  guildId: string;
+  groupId: string;
 
   brandId: string | null;
 

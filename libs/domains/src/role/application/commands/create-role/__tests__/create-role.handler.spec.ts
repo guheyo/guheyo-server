@@ -31,7 +31,7 @@ describe('CreateRoleHandler', () => {
         name: 'role-name',
         position: 0,
         hexColor: '#000000',
-        guildId: 'guild-id',
+        groupId: 'guild-id',
       };
       await handler.execute(command);
       verify(roleSavePort.create(anyOfClass(RoleEntity))).once();

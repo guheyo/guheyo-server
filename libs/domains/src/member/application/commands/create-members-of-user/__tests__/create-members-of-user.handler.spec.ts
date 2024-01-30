@@ -31,7 +31,7 @@ describe('CreateMembersOfUserHandler', () => {
           {
             id: '94587c54-4d7d-11ee-be56-0242ac120002',
             userId: '94587c54-4d7d-11ee-be56-0242ac120003',
-            guildId: '94587c54-4d7d-11ee-be56-0242ac120004',
+            groupId: '94587c54-4d7d-11ee-be56-0242ac120004',
             roleIds: [],
           },
         ],

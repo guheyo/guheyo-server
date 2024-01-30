@@ -20,7 +20,7 @@ export class CreateSwapCommand implements ICommand {
 
   status: string;
 
-  guildId: string;
+  groupId: string;
 
   productCategoryId: string;
 
@@ -40,7 +40,7 @@ export class CreateSwapCommand implements ICommand {
     this.priceCurrency = input.priceCurrency;
     this.businessFunction = input.businessFunction;
     this.status = input.status;
-    this.guildId = input.guildId;
+    this.groupId = input.groupId;
     this.productCategoryId = input.productCategoryId;
     this.proposerId = input.proposerId;
     this.brandId = input.brandId;

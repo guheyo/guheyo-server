@@ -11,7 +11,7 @@ export class SendEmbedCommand implements ICommand {
 
   modelId: string;
 
-  guildId: string;
+  groupId: string;
 
   userId: string;
 
@@ -28,7 +28,7 @@ export class SendEmbedCommand implements ICommand {
     this.discordGuildId = input.discordGuildId;
     this.modelName = input.modelName;
     this.modelId = input.modelId;
-    this.guildId = input.guildId;
+    this.groupId = input.groupId;
     this.userId = input.userId;
     this.color = input.color;
     this.title = input.title;

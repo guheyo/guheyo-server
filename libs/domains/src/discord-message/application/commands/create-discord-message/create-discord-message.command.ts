@@ -12,7 +12,7 @@ export class CreateDiscordMessageCommand implements ICommand {
 
   modelId: string;
 
-  guildId: string;
+  groupId: string;
 
   constructor(input: CreateDiscordMessageInput) {
     this.discordMessageId = input.discordMessageId;
@@ -20,6 +20,6 @@ export class CreateDiscordMessageCommand implements ICommand {
     this.discordGuildId = input.discordGuildId;
     this.modelName = input.modelName;
     this.modelId = input.modelId;
-    this.guildId = input.guildId;
+    this.groupId = input.groupId;
   }
 }

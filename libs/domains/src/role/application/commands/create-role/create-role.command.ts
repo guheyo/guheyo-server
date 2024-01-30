@@ -10,13 +10,13 @@ export class CreateRoleCommand implements ICommand {
 
   hexColor: string;
 
-  guildId: string;
+  groupId: string;
 
   constructor(input: CreateRoleInput) {
     this.id = input.id;
     this.name = input.name;
     this.position = input.position;
     this.hexColor = input.hexColor;
-    this.guildId = input.guildId;
+    this.groupId = input.groupId;
   }
 }

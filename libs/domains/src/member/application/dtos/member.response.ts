@@ -12,7 +12,7 @@ export class MemberResponse {
   userId: string;
 
   @Field()
-  guildId: string;
+  groupId: string;
 
   constructor(partial: Partial<MemberResponse>) {
     Object.assign(this, partial);

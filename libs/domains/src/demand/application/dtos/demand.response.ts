@@ -38,7 +38,7 @@ export class DemandResponse {
   images: UserImageResponse[];
 
   @Field()
-  guildId: string;
+  groupId: string;
 
   @Field()
   productCategoryId: string;
