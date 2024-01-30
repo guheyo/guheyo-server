@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { v5 as uuid5 } from 'uuid';
 
-const GUILD_NAME = '커스텀 키보드';
+const GROUP_NAME = '커스텀 키보드';
 const CUSTOM_NAME = '커스텀';
 const NORMAL_KEYBOARD_NAME = '기성품';
 const KEYCAP_NAME = '키캡';
@@ -12,7 +12,7 @@ const PIC_VID_NAME = '사진 영상';
 const INFO_REVIEW_NAME = '정보 후기';
 const TRADE_REVIEW_NAME = '거래 후기';
 
-const GUILD_SLUG = 'custom-keyboard';
+const GROUP_SLUG = 'custom-keyboard';
 const CUSTOM_SLUG = 'custom-keyboard';
 const NORMAL_KEYBOARD_SLUG = 'mechanical-keyboard';
 const KEYCAP_SLUG = 'keycap';
@@ -23,22 +23,22 @@ const PIC_VID_SLUG = 'pic-vid';
 const INFO_REVIEW_SLUG = 'info-review';
 const TRADE_REVIEW_SLUG = 'trade-review';
 
-const GUILD_KEYBOARD_ID = uuid5(GUILD_NAME, process.env.NAMESPACE_DISCORD!);
+const GROUP_KEYBOARD_ID = uuid5(GROUP_NAME, process.env.NAMESPACE_DISCORD!);
 
 export async function seedKeyboard(prisma: PrismaClient) {
-  const guild = await prisma.guild.upsert({
+  const group = await prisma.group.upsert({
     where: {
-      name: GUILD_NAME,
+      name: GROUP_NAME,
     },
     update: {
-      id: GUILD_KEYBOARD_ID,
-      slug: GUILD_SLUG,
+      id: GROUP_KEYBOARD_ID,
+      slug: GROUP_SLUG,
       position: 1,
     },
     create: {
-      id: GUILD_KEYBOARD_ID,
-      name: GUILD_NAME,
-      slug: GUILD_SLUG,
+      id: GROUP_KEYBOARD_ID,
+      name: GROUP_NAME,
+      slug: GROUP_SLUG,
       position: 1,
       productCategories: {
         create: [
@@ -97,5 +97,5 @@ export async function seedKeyboard(prisma: PrismaClient) {
   });
 
   // eslint-disable-next-line no-console
-  console.log(guild);
+  console.log(group);
 }

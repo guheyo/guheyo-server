@@ -1,28 +1,28 @@
 import { PrismaClient } from '@prisma/client';
 import { v5 as uuid5 } from 'uuid';
 
-const GUILD_NAME = '마우스';
+const GROUP_NAME = '마우스';
 const CATEGORY_MOUSE_NAME = '마우스';
 
-const GUILD_SLUG = 'mouse';
+const GROUP_SLUG = 'mouse';
 const CATEGORY_MOUSE_SLUG = 'mouse';
 
-const GUILD_MOUSE_ID = uuid5(GUILD_NAME, process.env.NAMESPACE_DISCORD!);
+const GROUP_MOUSE_ID = uuid5(GROUP_NAME, process.env.NAMESPACE_DISCORD!);
 
 export async function seedMouse(prisma: PrismaClient) {
-  const guild = await prisma.guild.upsert({
+  const group = await prisma.group.upsert({
     where: {
-      name: GUILD_NAME,
+      name: GROUP_NAME,
     },
     update: {
-      id: GUILD_MOUSE_ID,
-      slug: GUILD_SLUG,
+      id: GROUP_MOUSE_ID,
+      slug: GROUP_SLUG,
       position: 2,
     },
     create: {
-      id: GUILD_MOUSE_ID,
-      name: GUILD_NAME,
-      slug: GUILD_SLUG,
+      id: GROUP_MOUSE_ID,
+      name: GROUP_NAME,
+      slug: GROUP_SLUG,
       position: 2,
       productCategories: {
         create: [
@@ -37,5 +37,5 @@ export async function seedMouse(prisma: PrismaClient) {
   });
 
   // eslint-disable-next-line no-console
-  console.log(guild);
+  console.log(group);
 }

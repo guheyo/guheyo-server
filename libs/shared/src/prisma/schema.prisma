@@ -68,8 +68,8 @@ model Member {
   deletedAt         DateTime?
   userId            String
   user              User        @relation(fields: [userId], references: [id])
-  guildId           String
-  guild             Guild       @relation(fields: [guildId], references: [id])
+  groupId           String
+  group             Group       @relation(fields: [groupId], references: [id])
   roles             Role[]
 }
 
@@ -124,12 +124,12 @@ model Role {
   name              String      @unique
   position          Int
   hexColor          String      @default("#7f838e")
-  guildId           String
-  guild             Guild       @relation(fields: [guildId], references: [id])
+  groupId           String
+  group             Group       @relation(fields: [groupId], references: [id])
   members           Member[]
 }
 
-model Guild {
+model Group {
   id                String      @id @default(uuid())
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
@@ -160,8 +160,8 @@ model PostCategory {
   slug              String?
   description       String?
   position          Int
-  guildId           String
-  guild             Guild       @relation(fields: [guildId], references: [id])
+  groupId           String
+  group             Group       @relation(fields: [groupId], references: [id])
   posts Post[]
 }
 
@@ -174,8 +174,8 @@ model ProductCategory {
   slug              String?
   description       String?
   position          Int
-  guildId           String
-  guild             Guild       @relation(fields: [guildId], references: [id])
+  groupId           String
+  group             Group       @relation(fields: [groupId], references: [id])
   offers            Offer[]
   demands           Demand[]
   swaps             Swap[]
@@ -196,7 +196,7 @@ model Brand {
   demands           Demand[]
   swaps             Swap[]
   auctions          Auction[]
-  guilds            Guild[]
+  groups            Group[]
 }
 
 model Post {
@@ -208,8 +208,8 @@ model Post {
   slug              String?
   content           String
   source            String
-  guildId           String
-  guild             Guild         @relation(fields: [guildId], references: [id])
+  groupId           String
+  group             Group         @relation(fields: [groupId], references: [id])
   postCategoryId    String
   postCategory      PostCategory  @relation(fields: [postCategoryId], references: [id])
   authorId          String
@@ -246,8 +246,8 @@ model Offer {
   businessFunction  String
   status            String
   source            String
-  guildId           String
-  guild             Guild           @relation(fields: [guildId], references: [id])
+  groupId           String
+  group             Group           @relation(fields: [groupId], references: [id])
   productCategoryId String
   productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
   sellerId          String
@@ -269,8 +269,8 @@ model Demand {
   businessFunction  String
   status            String
   source            String
-  guildId           String
-  guild             Guild           @relation(fields: [guildId], references: [id])
+  groupId           String
+  group             Group           @relation(fields: [groupId], references: [id])
   productCategoryId String
   productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
   buyerId           String
@@ -294,8 +294,8 @@ model Swap {
   businessFunction    String
   status              String
   source              String
-  guildId             String
-  guild               Guild           @relation(fields: [guildId], references: [id])
+  groupId             String
+  group               Group           @relation(fields: [groupId], references: [id])
   productCategoryId   String
   productCategory     ProductCategory @relation(fields: [productCategoryId], references: [id])
   proposerId          String
@@ -316,8 +316,8 @@ model Auction {
   businessFunction  String
   source            String
   bids              Bid[]
-  guildId           String
-  guild             Guild             @relation(fields: [guildId], references: [id])
+  groupId           String
+  group             Group             @relation(fields: [groupId], references: [id])
   brandId           String?
   brand             Brand?            @relation(fields: [brandId], references: [id])
   productCategoryId String

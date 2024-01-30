@@ -1,28 +1,28 @@
 import { PrismaClient } from '@prisma/client';
 import { v5 as uuid5 } from 'uuid';
 
-const GUILD_NAME = '음향기기';
+const GROUP_NAME = '음향기기';
 const CATEGORY_AUDIO_NAME = '음향기기';
 
-const GUILD_SLUG = 'audio';
+const GROUP_SLUG = 'audio';
 const CATEGORY_AUDIO_SLUG = 'audio';
 
-const GUILD_AUDIO_ID = uuid5(GUILD_NAME, process.env.NAMESPACE_DISCORD!);
+const GROUP_AUDIO_ID = uuid5(GROUP_NAME, process.env.NAMESPACE_DISCORD!);
 
 export async function seedAudio(prisma: PrismaClient) {
-  const guild = await prisma.guild.upsert({
+  const group = await prisma.group.upsert({
     where: {
-      name: GUILD_NAME,
+      name: GROUP_NAME,
     },
     update: {
-      id: GUILD_AUDIO_ID,
-      slug: GUILD_SLUG,
+      id: GROUP_AUDIO_ID,
+      slug: GROUP_SLUG,
       position: 3,
     },
     create: {
-      id: GUILD_AUDIO_ID,
-      name: GUILD_NAME,
-      slug: GUILD_SLUG,
+      id: GROUP_AUDIO_ID,
+      name: GROUP_NAME,
+      slug: GROUP_SLUG,
       position: 3,
       productCategories: {
         create: [
@@ -37,5 +37,5 @@ export async function seedAudio(prisma: PrismaClient) {
   });
 
   // eslint-disable-next-line no-console
-  console.log(guild);
+  console.log(group);
 }
