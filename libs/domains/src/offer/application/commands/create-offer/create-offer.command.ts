@@ -18,7 +18,7 @@ export class CreateOfferCommand implements ICommand {
 
   source: string;
 
-  guildId: string;
+  groupId: string;
 
   productCategoryId: string;
 
@@ -35,7 +35,7 @@ export class CreateOfferCommand implements ICommand {
     this.businessFunction = input.businessFunction;
     this.status = input.status;
     this.source = input.source;
-    this.guildId = input.guildId;
+    this.groupId = input.groupId;
     this.productCategoryId = input.productCategoryId;
     this.sellerId = input.sellerId;
     this.brandId = input.brandId;

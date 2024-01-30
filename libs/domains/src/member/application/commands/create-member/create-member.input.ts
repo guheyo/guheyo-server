@@ -13,5 +13,5 @@ export class CreateMemberInput {
 
   @IsUUID()
   @Field(() => ID)
-  guildId: string;
+  groupId: string;
 }

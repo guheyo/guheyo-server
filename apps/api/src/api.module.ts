@@ -8,7 +8,7 @@ import { UserModule } from './app/user/user.module';
 import { SocialAccountModule } from './app/social-account/social-account.module';
 import { MemberModule } from './app/member/member.module';
 import { RoleModule } from './app/role/role.module';
-import { GuildModule } from './app/guild/guild.module';
+import { GroupModule } from './app/group/group.module';
 import { UserImageModule } from './app/user-image/user-image.module';
 import { OfferModule } from './app/offer/offer.module';
 import { DemandModule } from './app/demand/demand.module';
@@ -35,7 +35,7 @@ import { TermModule } from './app/term/term.module';
     SocialAccountModule,
     MemberModule,
     RoleModule,
-    GuildModule,
+    GroupModule,
     UserImageModule,
     OfferModule,
     DemandModule,

@@ -38,7 +38,7 @@ export class CreateAuctionInput {
 
   @IsUUID()
   @Field(() => ID)
-  guildId: string;
+  groupId: string;
 
   @IsUUID()
   @Field()

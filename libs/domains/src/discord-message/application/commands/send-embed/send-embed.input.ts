@@ -22,7 +22,7 @@ export class SendEmbedInput {
 
   @IsUUID()
   @Field(() => ID)
-  guildId: string;
+  groupId: string;
 
   @IsUUID()
   @Field()

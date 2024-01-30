@@ -1,15 +1,15 @@
 import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, ContextOf, On } from 'necord';
-import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
+import { GroupGuard } from '@app/bot/apps/group/guards/group.guard';
 import { DealChannelGuard } from '@app/bot/apps/deal/guards/deal-channel.guard';
 import { Type } from '@app/bot/decorators/type.decorator';
 import { DemandClient } from '@app/bot/apps/demand/clients/demand.client';
 import { SimpleUser } from '@app/bot/apps/user/parsers/user.types';
-import { ParseGuildPipe } from '@app/bot/apps/guild/pipes/parse-guild.pipe';
-import { GuildResponse } from '@lib/domains/guild/application/dtos/guild.response';
+import { ParseGroupPipe } from '@app/bot/apps/group/pipes/parse-group.pipe';
+import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { ParseUserFromMessagePipe } from '@app/bot/apps/user/pipes/parse-user-from-message.pipe';
 
-@UseGuards(GuildGuard, DealChannelGuard)
+@UseGuards(GroupGuard, DealChannelGuard)
 @Type('wtb')
 @Injectable()
 export class DemandMessageCreatedHandler {
@@ -19,11 +19,11 @@ export class DemandMessageCreatedHandler {
   public async onCreateDemandMessage(
     @Context(ParseUserFromMessagePipe)
     user: SimpleUser,
-    @Context(ParseGuildPipe)
-    guild: GuildResponse,
+    @Context(ParseGroupPipe)
+    group: GroupResponse,
     @Context()
     [message]: ContextOf<'messageCreate'>,
   ) {
-    this.demandClient.createDealFromMessage(user.id, message, guild);
+    this.demandClient.createDealFromMessage(user.id, message, group);
   }
 }

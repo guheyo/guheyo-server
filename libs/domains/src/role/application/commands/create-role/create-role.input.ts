@@ -21,5 +21,5 @@ export class CreateRoleInput {
 
   @IsUUID()
   @Field(() => ID)
-  guildId: string;
+  groupId: string;
 }

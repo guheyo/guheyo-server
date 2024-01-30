@@ -7,8 +7,8 @@ import { UpdateMemberCommand } from '@lib/domains/member/application/commands/up
 import { DeleteMemberArgs } from '@lib/domains/member/application/commands/delete-member/delete-member.args';
 import { DeleteMemberCommand } from '@lib/domains/member/application/commands/delete-member/delete-member.command';
 import { MemberWithRolesResponse } from '@lib/domains/member/application/dtos/member-with-roles.response';
-import { FindMemberByUserAndGuildQuery } from '@lib/domains/member/application/queries/find-member-by-user-and-guild/find-member-by-user-and-guild.query';
-import { FindMemberByUserAndGuildArgs } from '@lib/domains/member/application/queries/find-member-by-user-and-guild/find-member-by-user-and-guild.args';
+import { FindMemberByUserAndGroupQuery } from '@lib/domains/member/application/queries/find-member-by-user-and-group/find-member-by-user-and-group.query';
+import { FindMemberByUserAndGroupArgs } from '@lib/domains/member/application/queries/find-member-by-user-and-group/find-member-by-user-and-group.args';
 import { ConnectRolesInput } from '@lib/domains/member/application/commands/connect-roles/connect-roles.input';
 import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
 import { DisconnectRolesInput } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.input';
@@ -22,10 +22,10 @@ export class MemberResolver {
   ) {}
 
   @Query(() => MemberWithRolesResponse, { nullable: true })
-  async findMemberByUserAndGuild(
-    @Args() args: FindMemberByUserAndGuildArgs,
+  async findMemberByUserAndGroup(
+    @Args() args: FindMemberByUserAndGroupArgs,
   ): Promise<MemberWithRolesResponse | null> {
-    const query = new FindMemberByUserAndGuildQuery(args);
+    const query = new FindMemberByUserAndGroupQuery(args);
     return this.queryBus.execute(query);
   }
 

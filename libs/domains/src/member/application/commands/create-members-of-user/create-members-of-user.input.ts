@@ -1,7 +1,7 @@
 export interface CreateMemberWithRolesInput {
   id: string;
   userId: string;
-  guildId: string;
+  groupId: string;
   roleIds: string[];
 }
 

@@ -28,5 +28,5 @@ export class CreateDiscordMessageInput {
 
   @IsUUID()
   @Field(() => ID)
-  guildId: string;
+  groupId: string;
 }

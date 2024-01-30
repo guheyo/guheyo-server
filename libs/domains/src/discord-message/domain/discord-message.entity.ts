@@ -11,7 +11,7 @@ export class DiscordMessageEntity extends AggregateRoot {
 
   modelId: string;
 
-  guildId: string;
+  groupId: string;
 
   userId: string;
 

@@ -3,7 +3,7 @@ import { RpcException } from '@nestjs/microservices';
 import { Message } from 'discord.js';
 import { CreateSwapInput } from '@lib/domains/swap/application/commands/create-swap/create-swap.input';
 import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-swap/update-swap.input';
-import { GuildResponse } from '@lib/domains/guild/application/dtos/guild.response';
+import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { SwapErrorMessage } from './swap.error-message';
 
@@ -28,7 +28,7 @@ export class SwapParser extends DealParser {
     };
   }
 
-  parseCreateDealInput(userId: string, message: Message, guild: GuildResponse): CreateSwapInput {
+  parseCreateDealInput(userId: string, message: Message, group: GroupResponse): CreateSwapInput {
     const dealSummary = this.parseDealSummary(message);
 
     return {
@@ -36,8 +36,8 @@ export class SwapParser extends DealParser {
       priceCurrency: 'KRW',
       businessFunction: 'TRADE',
       status: 'OPEN',
-      guildId: guild.id,
-      productCategoryId: this.parseProductCategoryId(message, guild),
+      groupId: group.id,
+      productCategoryId: this.parseProductCategoryId(message, group),
       proposerId: userId,
     };
   }

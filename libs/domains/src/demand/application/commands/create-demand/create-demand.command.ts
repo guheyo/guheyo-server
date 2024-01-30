@@ -16,7 +16,7 @@ export class CreateDemandCommand implements ICommand {
 
   status: string;
 
-  guildId: string;
+  groupId: string;
 
   productCategoryId: string;
 
@@ -34,7 +34,7 @@ export class CreateDemandCommand implements ICommand {
     this.priceCurrency = input.priceCurrency;
     this.businessFunction = input.businessFunction;
     this.status = input.status;
-    this.guildId = input.guildId;
+    this.groupId = input.groupId;
     this.productCategoryId = input.productCategoryId;
     this.buyerId = input.buyerId;
     this.brandId = input.brandId;

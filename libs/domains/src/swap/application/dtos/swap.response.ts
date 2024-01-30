@@ -47,7 +47,7 @@ export class SwapResponse {
   thumbnail: UserImageResponse | null;
 
   @Field()
-  guildId: string;
+  groupId: string;
 
   @Field()
   productCategoryId: string;

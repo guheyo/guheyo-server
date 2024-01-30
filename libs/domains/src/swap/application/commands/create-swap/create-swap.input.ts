@@ -43,7 +43,7 @@ export class CreateSwapInput {
 
   @IsUUID()
   @Field(() => ID)
-  guildId: string;
+  groupId: string;
 
   @IsUUID()
   @Field()

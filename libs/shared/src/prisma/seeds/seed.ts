@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
-import { seedKeyboard } from './guilds/seed-keyboard';
-import { seedMouse } from './guilds/seed-mouse';
-import { seedAudio } from './guilds/seed-audio';
-import { seedRoot } from './guilds/seed-root';
+import { seedKeyboard } from './groups/seed-keyboard';
+import { seedMouse } from './groups/seed-mouse';
+import { seedAudio } from './groups/seed-audio';
+import { seedRoot } from './groups/seed-root';
 
 const prisma = new PrismaClient();
 
