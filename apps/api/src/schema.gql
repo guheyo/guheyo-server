@@ -18,7 +18,7 @@ type AuctionResponse {
   createdAt: DateTime!
   description: String
   endedAt: DateTime!
-  guildId: String!
+  groupId: String!
   id: ID!
   images: [UserImageResponse!]!
   name: String!
@@ -75,7 +75,7 @@ input CreateAuctionInput {
   createdAt: DateTime!
   description: String!
   endedAt: DateTime!
-  guildId: ID!
+  groupId: ID!
   id: ID!
   name: String!
   productCategoryId: String!
@@ -89,7 +89,7 @@ input CreateDemandInput {
   businessFunction: String!
   buyerId: String!
   description: String!
-  guildId: ID!
+  groupId: ID!
   id: ID!
   name: String!
   price: Int!
@@ -103,12 +103,12 @@ input CreateDiscordMessageInput {
   discordChannelId: String
   discordGuildId: String
   discordMessageId: String
-  guildId: ID!
+  groupId: ID!
   modelId: ID!
   modelName: String!
 }
 
-input CreateGuildInput {
+input CreateGroupInput {
   description: String
   icon: String
   id: ID!
@@ -121,7 +121,7 @@ input CreateManyUserImageInput {
 }
 
 input CreateMemberInput {
-  guildId: ID!
+  groupId: ID!
   id: ID!
   userId: ID!
 }
@@ -130,7 +130,7 @@ input CreateOfferInput {
   brandId: String
   businessFunction: String!
   description: String!
-  guildId: ID!
+  groupId: ID!
   id: ID!
   name: String!
   price: Int!
@@ -142,7 +142,7 @@ input CreateOfferInput {
 }
 
 input CreateRoleInput {
-  guildId: ID!
+  groupId: ID!
   hexColor: String! = "#000000"
   id: ID!
   name: String!
@@ -175,7 +175,7 @@ input CreateSwapInput {
   businessFunction: String!
   description0: String!
   description1: String!
-  guildId: ID!
+  groupId: ID!
   id: ID!
   name0: String!
   name1: String!
@@ -221,7 +221,7 @@ type DemandResponse {
   buyer: AuthorResponse!
   createdAt: DateTime!
   description: String
-  guildId: String!
+  groupId: String!
   id: ID!
   images: [UserImageResponse!]!
   name: String!
@@ -244,7 +244,7 @@ input DisconnectRolesInput {
   roleIds: [ID!]!
 }
 
-type GuildPreviewResponse {
+type GroupPreviewResponse {
   demands: [DemandResponse!]!
   description: String
   icon: String
@@ -255,7 +255,7 @@ type GuildPreviewResponse {
   slug: String
 }
 
-type GuildResponse {
+type GroupResponse {
   description: String
   icon: String
   id: ID!
@@ -267,14 +267,14 @@ type GuildResponse {
   slug: String
 }
 
-type GuildResponseEdge {
+type GroupResponseEdge {
   cursor: String!
-  node: GuildResponse!
+  node: GroupResponse!
 }
 
 type MemberWithRolesResponse {
   createdAt: DateTime!
-  guildId: String!
+  groupId: String!
   id: ID!
   roles: [RoleResponse!]!
   userId: String!
@@ -287,7 +287,7 @@ type Mutation {
   createAuction(input: CreateAuctionInput!): String!
   createDemand(input: CreateDemandInput!): String!
   createDiscordMessage(input: CreateDiscordMessageInput!): String!
-  createGuild(input: CreateGuildInput!): String!
+  createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
   createMember(input: CreateMemberInput!): String!
   createOffer(input: CreateOfferInput!): String!
@@ -299,7 +299,7 @@ type Mutation {
   createUserImage(input: CreateUserImageInput!): String!
   deleteAuction(id: ID!): String!
   deleteDemand(id: ID!): String!
-  deleteGuild(id: ID!): String!
+  deleteGroup(id: ID!): String!
   deleteMember(id: ID!, userId: ID!): String!
   deleteOffer(id: ID!): String!
   deleteRole(id: ID!): String!
@@ -312,7 +312,7 @@ type Mutation {
   disconnectRoles(input: DisconnectRolesInput!): String!
   updateAuction(input: UpdateAuctionInput!): String!
   updateDemand(input: UpdateDemandInput!): String!
-  updateGuild(input: UpdateGuildInput!): String!
+  updateGroup(input: UpdateGroupInput!): String!
   updateMember(input: UpdateMemberInput!): String!
   updateOffer(input: UpdateOfferInput!): String!
   updateRole(input: UpdateRoleInput!): String!
@@ -340,7 +340,7 @@ type OfferResponse {
   businessFunction: String!
   createdAt: DateTime!
   description: String
-  guildId: String!
+  groupId: String!
   id: ID!
   images: [UserImageResponse!]!
   name: String!
@@ -375,8 +375,8 @@ type PaginatedDemandsResponse {
   pageInfo: PageInfo!
 }
 
-type PaginatedGuildsResponse {
-  edges: [GuildResponseEdge!]!
+type PaginatedGroupsResponse {
+  edges: [GroupResponseEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -417,11 +417,11 @@ type Query {
   findDemand(slug: String!): DemandResponse
   findDemandById(id: ID!): DemandResponse
   findDemands(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedDemandsResponse!
-  findGuild(slug: String): GuildResponse
-  findGuildById(id: ID!): GuildResponse
-  findGuildPreviews: [GuildPreviewResponse!]!
-  findGuilds(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGuildsResponse!
-  findMemberByUserAndGuild(guildId: ID!, userId: ID!): MemberWithRolesResponse
+  findGroup(slug: String): GroupResponse
+  findGroupById(id: ID!): GroupResponse
+  findGroupPreviews: [GroupPreviewResponse!]!
+  findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
+  findMemberByUserAndGroup(groupId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: ID!): MyUserResponse
   findMyUserBySession(sessionToken: String!): MyUserResponse
   findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse
@@ -442,7 +442,7 @@ type Query {
 }
 
 type RoleResponse {
-  guildId: ID!
+  groupId: ID!
   hexColor: String!
   id: ID!
   name: String!
@@ -484,7 +484,7 @@ type SwapResponse {
   createdAt: DateTime!
   description0: String
   description1: String
-  guildId: String!
+  groupId: String!
   id: ID!
   images: [UserImageResponse!]!
   name0: String!
@@ -535,7 +535,7 @@ input UpdateDemandInput {
   source: String!
 }
 
-input UpdateGuildInput {
+input UpdateGroupInput {
   description: String
   icon: String
   id: ID!

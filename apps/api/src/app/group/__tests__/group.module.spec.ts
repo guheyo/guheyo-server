@@ -4,13 +4,13 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { PrismaModule } from '@lib/shared/prisma/prisma.module';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
-import { GuildModule } from '../guild.module';
-import { GuildResolver } from '../guild.resolver';
+import { GroupModule } from '../group.module';
+import { GroupResolver } from '../group.resolver';
 
-describe('GuildModule', () => {
+describe('GroupModule', () => {
   let apiModule: ApiModule;
-  let guildModule: GuildModule;
-  let resolver: GuildResolver;
+  let groupModule: GroupModule;
+  let resolver: GroupResolver;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -20,30 +20,30 @@ describe('GuildModule', () => {
           driver: ApolloDriver,
         }),
         PrismaModule,
-        GuildModule,
+        GroupModule,
       ],
     }).compile();
 
     apiModule = moduleRef;
-    guildModule = moduleRef.get<GuildModule>(GuildModule);
-    resolver = moduleRef.get<GuildResolver>(GuildResolver);
+    groupModule = moduleRef.get<GroupModule>(GroupModule);
+    resolver = moduleRef.get<GroupResolver>(GroupResolver);
   });
 
-  describe('GuildApiModule', () => {
+  describe('GroupApiModule', () => {
     it('should be defined', async () => {
       expect(apiModule).toBeDefined();
     });
   });
 
-  describe('GuildModule', () => {
-    it('should be instance of GuildModule', async () => {
-      expect(guildModule).toBeInstanceOf(GuildModule);
+  describe('GroupModule', () => {
+    it('should be instance of GroupModule', async () => {
+      expect(groupModule).toBeInstanceOf(GroupModule);
     });
   });
 
-  describe('GuildResolver', () => {
-    it('should be instance of GuildResolver', async () => {
-      expect(resolver).toBeInstanceOf(GuildResolver);
+  describe('GroupResolver', () => {
+    it('should be instance of GroupResolver', async () => {
+      expect(resolver).toBeInstanceOf(GroupResolver);
     });
   });
 });
