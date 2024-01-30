@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Message } from 'discord.js';
 import { MarketChannelType } from '../types/market-channel.type';
-import {
-  DiscordMarket,
-  DiscordServer,
-} from '../interfaces/discord-server.interface';
+import { DiscordMarket, DiscordServer } from '../interfaces/discord-server.interface';
 
 @Injectable()
 export class DiscordConfigService {
@@ -19,8 +16,8 @@ export class DiscordConfigService {
     return this.configService.get('namespace.discord')!;
   }
 
-  getGuildNamespace(): string {
-    return this.configService.get('namespace.guild')!;
+  getGroupNamespace(): string {
+    return this.configService.get('namespace.group')!;
   }
 
   getDiscordServers(): DiscordServer[] {

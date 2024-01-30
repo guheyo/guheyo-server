@@ -4,14 +4,14 @@ import { GuildMember, Interaction, Message } from 'discord.js';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class GuildGuard implements CanActivate {
+export class GroupGuard implements CanActivate {
   @Inject()
   private readonly discordConfigService: DiscordConfigService;
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-    const [instanceWithGuild]: [Interaction | GuildMember | Message] = context.getArgByIndex(0);
+    const [instanceWithGroup]: [Interaction | GuildMember | Message] = context.getArgByIndex(0);
     return this.discordConfigService
       .getDiscordServerIds()
-      .includes(instanceWithGuild.guild?.id || '');
+      .includes(instanceWithGroup.guild?.id || '');
   }
 }

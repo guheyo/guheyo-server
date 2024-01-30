@@ -5,7 +5,7 @@ import { NecordModule } from 'necord';
 import { ConfigService } from '@nestjs/config/dist';
 import { PrismaModule } from '@lib/shared/prisma/prisma.module';
 import { ImageModule } from '@lib/shared/image/image.module';
-import { GUILD_PROVIDERS } from '@lib/domains/guild/guild.providers';
+import { GROUP_PROVIDERS } from '@lib/domains/group/group.providers';
 import { USER_PROVIDERS } from '@lib/domains/user/user.providers';
 import { USER_IMAGE_PROVIDERS } from '@lib/domains/user-image/user-image.providers';
 import { SOCIAL_ACCOUNT_PROVIDERS } from '@lib/domains/social-account/social-account.providers';
@@ -45,7 +45,7 @@ import { DiscordConfigService } from './shared/discord/discord.config.service';
     }),
   ],
   providers: [
-    ...GUILD_PROVIDERS,
+    ...GROUP_PROVIDERS,
     ...USER_PROVIDERS,
     ...USER_IMAGE_PROVIDERS,
     ...SOCIAL_ACCOUNT_PROVIDERS,

@@ -1,11 +1,11 @@
 import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
-import { GuildGuard } from '@app/bot/apps/guild/guards/guild.guard';
+import { GroupGuard } from '@app/bot/apps/group/guards/group.guard';
 import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
 import { UserClient } from '@app/bot/apps/user/clients/user.client';
 import { RegisterDiscordUserRequest } from './register-discord-user.request';
 
-@UseGuards(GuildGuard, OwnerGuard)
+@UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
 export class RegisterDiscordUserSlashCommandHandler {
   constructor(

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Message } from 'discord.js';
 import { CreateDemandInput } from '@lib/domains/demand/application/commands/create-demand/create-demand.input';
 import { UpdateDemandInput } from '@lib/domains/demand/application/commands/update-demand/update-demand.input';
-import { GuildResponse } from '@lib/domains/guild/application/dtos/guild.response';
+import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { CreateSwapInput } from '@lib/domains/swap/application/commands/create-swap/create-swap.input';
 import { CreateOfferInput } from '@lib/domains/offer/application/commands/create-offer/create-offer.input';
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
@@ -28,13 +28,13 @@ export abstract class DealClient extends UserImageClient {
 
   abstract deleteDeal(id: string): void;
 
-  async createDealFromMessage(userId: string, message: Message, guild: GuildResponse) {
+  async createDealFromMessage(userId: string, message: Message, group: GroupResponse) {
     const uploadUserImageInputList = this.userImageParser.parseUploadUserImageInputList(
       userId,
       message,
       this.dealType,
     );
-    const createDealInput = this.dealParser.parseCreateDealInput(userId, message, guild);
+    const createDealInput = this.dealParser.parseCreateDealInput(userId, message, group);
     await this.uploadAndCreateAttachments(uploadUserImageInputList);
     await this.createDeal(createDealInput);
     this.logger.log(`${this.dealType}<@${createDealInput.id}> created`);

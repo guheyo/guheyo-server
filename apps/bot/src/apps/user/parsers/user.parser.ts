@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { GuildMember, RoleManager } from 'discord.js';
 import { CreateUserFromDiscordInput } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.input';
 import { CreateRoleInput } from '@lib/domains/role/application/commands/create-role/create-role.input';
-import { GuildParser } from '../../guild/parsers/guild.parser';
+import { GroupParser } from '../../group/parsers/group.parser';
 
 @Injectable()
-export class UserParser extends GuildParser {
+export class UserParser extends GroupParser {
   parseCreateUserFromDiscordInput(guildMember: GuildMember): CreateUserFromDiscordInput {
     const id = this.generateUUID();
     return {
@@ -15,8 +15,8 @@ export class UserParser extends GuildParser {
       socialAccountId: this.discordIdConverter.convertIdUsingDiscordNamespace(guildMember.id),
       provider: 'discord',
       socialId: guildMember.id,
-      // NOTE: 임시로 root guildId 지정
-      guildId: this.parseRootGuildId(),
+      // NOTE: 임시로 root groupId 지정
+      groupId: this.parseRootGroupId(),
       memberId: this.parseMemberId(guildMember.id),
       roleIds: guildMember.roles.cache.map((role) =>
         this.discordIdConverter.convertIdUsingDiscordNamespace(role.id),
@@ -31,12 +31,12 @@ export class UserParser extends GuildParser {
       name: role.name,
       hexColor: role.hexColor === '#000000' ? '#7f838e' : role.hexColor,
       position: highestRole.position - role.position,
-      guildId: this.parseRootGuildId(),
+      groupId: this.parseRootGroupId(),
     }));
   }
 
   parseMemberId(discordMemberId: string): string {
-    return this.discordIdConverter.convertIdUsingGuildNamespace(discordMemberId);
+    return this.discordIdConverter.convertIdUsingGroupNamespace(discordMemberId);
   }
 
   parseRoleId(discordRoleId: string): string {

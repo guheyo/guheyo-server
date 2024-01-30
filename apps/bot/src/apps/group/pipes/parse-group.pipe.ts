@@ -1,22 +1,22 @@
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { ContextOf } from 'necord';
-import { GuildResponse } from '@lib/domains/guild/application/dtos/guild.response';
+import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { Message } from 'discord.js';
-import { GuildClient } from '../clients/guild.client';
+import { GroupClient } from '../clients/group.client';
 
 @Injectable()
-export class ParseGuildPipe implements PipeTransform {
-  constructor(private readonly guildClient: GuildClient) {}
+export class ParseGroupPipe implements PipeTransform {
+  constructor(private readonly groupClient: GroupClient) {}
 
   async transform(
     [createdOrOldmessage, newMessage]: ContextOf<'messageCreate' | 'messageUpdate'>,
     metadata: ArgumentMetadata,
-  ): Promise<GuildResponse> {
+  ): Promise<GroupResponse> {
     let message: Message;
 
     if (newMessage) message = await newMessage.fetch();
     else message = await createdOrOldmessage.fetch();
 
-    return this.guildClient.fetchGuildFromMessage(message);
+    return this.groupClient.fetchGroupFromMessage(message);
   }
 }

@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UserClient } from '@app/bot/apps/user/clients/user.client';
-import { GuildParser } from '@app/bot/apps/guild/parsers/guild.parser';
+import { GroupParser } from '@app/bot/apps/group/parsers/group.parser';
 import { DiscordManager } from '@app/bot/shared/discord/discord.manager';
-import { GuildClient } from '@app/bot/apps/guild/clients/guild.client';
+import { GroupClient } from '@app/bot/apps/group/clients/group.client';
 import { DealClient } from '@app/bot/apps/deal/clients/deal.client';
 import { Guild, Message } from 'discord.js';
 import { MarketChannelType } from '@app/bot/shared/types/market-channel.type';
@@ -10,22 +10,25 @@ import { MarketChannelType } from '@app/bot/shared/types/market-channel.type';
 @Injectable()
 export abstract class BulkSaveSlashCommandHandler {
   @Inject()
-  protected readonly guildParser: GuildParser;
+  protected readonly groupParser: GroupParser;
 
   @Inject()
-  protected readonly guildClient: GuildClient;
+  protected readonly groupClient: GroupClient;
 
   @Inject()
   protected readonly userClient: UserClient;
 
   protected discordManager: DiscordManager;
 
-  constructor(
-    protected readonly dealClient: DealClient,
-  ) {}
+  constructor(protected readonly dealClient: DealClient) {}
 
-  async bulkSave(discordGuild: Guild, guildName: string, marketChannelType: MarketChannelType, limit: number) {
-    const channelIds = this.guildParser.discordConfigService.findMarketChannelIds(
+  async bulkSave(
+    discordGuild: Guild,
+    guildName: string,
+    marketChannelType: MarketChannelType,
+    limit: number,
+  ) {
+    const channelIds = this.groupParser.discordConfigService.findMarketChannelIds(
       guildName,
       marketChannelType,
     );
@@ -41,9 +44,9 @@ export abstract class BulkSaveSlashCommandHandler {
   async saveMessage(message: Message, discordGuild: Guild) {
     const member = await this.discordManager.fetchMember(discordGuild, message.author);
     const user = await this.userClient.fetchSimpleUser('discord', member);
-    const guild = await this.guildClient.fetchGuildFromMessage(message);
+    const group = await this.groupClient.fetchGroupFromMessage(message);
     try {
-      await this.dealClient.createDealFromMessage(user.id, message, guild);
+      await this.dealClient.createDealFromMessage(user.id, message, group);
     } catch (e) {
       console.log(e);
     }

@@ -3,7 +3,7 @@ import { RpcException } from '@nestjs/microservices';
 import { Message } from 'discord.js';
 import { CreateDemandInput } from '@lib/domains/demand/application/commands/create-demand/create-demand.input';
 import { UpdateDemandInput } from '@lib/domains/demand/application/commands/update-demand/update-demand.input';
-import { GuildResponse } from '@lib/domains/guild/application/dtos/guild.response';
+import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { DemandErrorMessage } from './demand.error-message';
 
@@ -27,7 +27,7 @@ export class DemandParser extends DealParser {
     };
   }
 
-  parseCreateDealInput(userId: string, message: Message, guild: GuildResponse): CreateDemandInput {
+  parseCreateDealInput(userId: string, message: Message, group: GroupResponse): CreateDemandInput {
     const dealSummary = this.parseDealSummary(message);
 
     return {
@@ -35,8 +35,8 @@ export class DemandParser extends DealParser {
       priceCurrency: 'KRW',
       businessFunction: 'BUY',
       status: 'OPEN',
-      guildId: guild.id,
-      productCategoryId: this.parseProductCategoryId(message, guild),
+      groupId: group.id,
+      productCategoryId: this.parseProductCategoryId(message, group),
       buyerId: userId,
     };
   }

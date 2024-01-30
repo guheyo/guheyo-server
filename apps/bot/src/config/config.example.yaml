@@ -48,7 +48,7 @@ discord:
         disallowedRoleIds:
 namespace:
   discord:
-  guild:
+  group:
 document:
   title:
   description:

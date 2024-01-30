@@ -10,10 +10,7 @@ export class DiscordManager {
         if (channel?.type !== ChannelType.GuildText) return messagesPromise;
         const messages = await channel.messages.fetch({ limit });
         const fetchedMessages = await Promise.all(messages.map((message) => message.fetch()));
-        return [
-          ...(await messagesPromise),
-          ...fetchedMessages,
-        ];
+        return [...(await messagesPromise), ...fetchedMessages];
       },
       Promise.resolve([]),
     );
