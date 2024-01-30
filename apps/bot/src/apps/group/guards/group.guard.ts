@@ -9,9 +9,9 @@ export class GroupGuard implements CanActivate {
   private readonly discordConfigService: DiscordConfigService;
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-    const [instanceWithGroup]: [Interaction | GuildMember | Message] = context.getArgByIndex(0);
+    const [instanceWithGuild]: [Interaction | GuildMember | Message] = context.getArgByIndex(0);
     return this.discordConfigService
       .getDiscordServerIds()
-      .includes(instanceWithGroup.guild?.id || '');
+      .includes(instanceWithGuild.guild?.id || '');
   }
 }

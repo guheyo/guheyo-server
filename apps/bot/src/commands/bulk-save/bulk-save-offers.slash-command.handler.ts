@@ -9,9 +9,7 @@ import { BulkSaveRequest } from './bulk-save.request';
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
 export class BulkSaveOffersSlashCommandHandler extends BulkSaveSlashCommandHandler {
-  constructor(
-    protected readonly dealClient: OfferClient,
-  ) {
+  constructor(protected readonly dealClient: OfferClient) {
     super(dealClient);
   }
 

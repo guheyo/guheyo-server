@@ -8,9 +8,7 @@ import { UserClient } from '@app/bot/apps/user/clients/user.client';
 export class DiscordMemberRolesAddedHandler {
   private readonly logger = new Logger(DiscordMemberRolesAddedHandler.name);
 
-  constructor(
-    private readonly userClient: UserClient,
-  ) {}
+  constructor(private readonly userClient: UserClient) {}
 
   @On('guildMemberRoleAdd')
   public async onAddGuildMemberRoles(@Context() [member, role]: ContextOf<'guildMemberRoleAdd'>) {

@@ -7,9 +7,7 @@ import { UserClient } from '@app/bot/apps/user/clients/user.client';
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
 export class UpsertRolesSlashCommandHandler {
-  constructor(
-    private readonly userClient: UserClient,
-  ) {}
+  constructor(private readonly userClient: UserClient) {}
 
   @SlashCommand({ name: 'upsert-roles', description: 'Upsert roles' })
   async upsertRoles(@Context() [interaction]: SlashCommandContext) {

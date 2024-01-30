@@ -5,12 +5,12 @@ import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/qu
 import { Injectable } from '@nestjs/common';
 import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
 import { CreateUserFromDiscordInput } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.input';
-import { UserImageClient } from '../../user-image/clients/user-image.client';
-import { SimpleUser } from '../parsers/user.types';
-import { UserParser } from '../parsers/user.parser';
 import { UpsertRolesCommand } from '@lib/domains/role/application/commands/upsert-roles/upsert-roles.command';
 import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
 import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
+import { UserImageClient } from '../../user-image/clients/user-image.client';
+import { SimpleUser } from '../parsers/user.types';
+import { UserParser } from '../parsers/user.parser';
 
 @Injectable()
 export class UserClient extends UserImageClient {

@@ -8,9 +8,7 @@ import { RegisterDiscordUserRequest } from './register-discord-user.request';
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
 export class RegisterDiscordUserSlashCommandHandler {
-  constructor(
-    private readonly userClient: UserClient,
-  ) {}
+  constructor(private readonly userClient: UserClient) {}
 
   @SlashCommand({ name: 'register-user', description: 'Register user in DB' })
   public async onCreateUser(

@@ -9,7 +9,7 @@ import { GroupSavePort } from '../../../ports/out/group.save.port';
 
 describe('UpdateGroupHandler', () => {
   let handler: UpdateGroupHandler;
-  const guildLoadPort: GroupLoadPort = mock(GroupRepository);
+  const groupLoadPort: GroupLoadPort = mock(GroupRepository);
   const roleSavePort: GroupSavePort = mock(GroupRepository);
   const command: UpdateGroupCommand = {
     id: '94587c54-4d7d-11ee-be56-0242ac120002',

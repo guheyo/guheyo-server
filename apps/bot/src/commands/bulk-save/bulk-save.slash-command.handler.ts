@@ -38,7 +38,7 @@ export abstract class BulkSaveSlashCommandHandler {
   }
 
   async bulkSaveMessages(messages: Message[], discordGuild: Guild) {
-    return messages.map(async(message) => await this.saveMessage(message, discordGuild));
+    return messages.map(async (message) => this.saveMessage(message, discordGuild));
   }
 
   async saveMessage(message: Message, discordGuild: Guild) {

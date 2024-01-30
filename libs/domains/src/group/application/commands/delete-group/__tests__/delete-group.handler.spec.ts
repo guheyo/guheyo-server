@@ -9,8 +9,8 @@ import { GroupSavePort } from '../../../ports/out/group.save.port';
 
 describe('DeleteGroupHandler', () => {
   let handler: DeleteGroupHandler;
-  const guildLoadPort: GroupLoadPort = mock(GroupRepository);
-  const guildSavePort: GroupSavePort = mock(GroupRepository);
+  const groupLoadPort: GroupLoadPort = mock(GroupRepository);
+  const groupSavePort: GroupSavePort = mock(GroupRepository);
   const command: DeleteGroupCommand = {
     id: '94587c54-4d7d-11ee-be56-0242ac120002',
   };

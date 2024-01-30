@@ -8,7 +8,7 @@ import { GroupSavePort } from '../../../ports/out/group.save.port';
 
 describe('CreateGroupHandler', () => {
   let handler: CreateGroupHandler;
-  const guildSavePort: GroupSavePort = mock(GroupRepository);
+  const groupSavePort: GroupSavePort = mock(GroupRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
