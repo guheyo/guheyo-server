@@ -4,6 +4,7 @@
   "description": "monorepo for guheyo-server",
   "author": "keypport",
   "license": "BUSL-1.1",
+  "private": true,
   "workspaces": [
     "apps/*",
     "libs/*"
