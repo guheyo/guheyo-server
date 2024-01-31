@@ -1,0 +1,14 @@
+Dockerfile
+.git
+.gitignore
+dist
+node_modules
+.elasticbeanstalk
+.eslint*
+.prettier*
+jest*
+*.zip
+
+#env
+.env*
+*.yaml
