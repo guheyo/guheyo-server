@@ -1,5 +1,8 @@
 {
   "name": "@guheyo/domains",
+  "version": "1.0.0",
+  "author": "keypport",
+  "license": "BUSL-1.1",
   "packageManager": "yarn@3.6.1",
   "dependencies": {
     "@nestjs/common": "^10.2.4",
