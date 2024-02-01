@@ -1,6 +1,7 @@
 Dockerfile
 .git
 .gitignore
+.github
 dist
 node_modules
 .elasticbeanstalk
