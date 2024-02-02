@@ -83,6 +83,6 @@ export class ImageService {
   }
 
   generateUploadPath(userId: string, type: string, id: string) {
-    return `images/${userId}/${type}/${id}`;
+    return `images/users/${userId}/${type}/${id}`;
   }
 }
