@@ -35,7 +35,7 @@ export abstract class DealClient extends UserImageClient {
       this.dealType,
     );
     const createDealInput = this.dealParser.parseCreateDealInput(userId, message, group);
-    await this.uploadAndCreateAttachments(uploadUserImageInputList);
+    await this.uploadAndCreateAttachments(uploadUserImageInputList, this.dealType);
     await this.createDeal(createDealInput);
     this.logger.log(`${this.dealType}<@${createDealInput.id}> created`);
   }
