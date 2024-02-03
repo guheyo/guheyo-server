@@ -17,7 +17,8 @@
         "tsConfigPath": "apps/api/tsconfig.app.json",
         "assets": [
           {
-            "include": "**/*.yaml"
+            "include": "**/*.yaml",
+            "watchAssets": true
           }
         ]
       }
@@ -31,7 +32,8 @@
         "tsConfigPath": "apps/bot/tsconfig.app.json",
         "assets": [
           {
-            "include": "**/*.yaml"
+            "include": "**/*.yaml",
+            "watchAssets": true
           }
         ]
       }

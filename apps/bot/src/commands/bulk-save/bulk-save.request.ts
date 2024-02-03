@@ -8,6 +8,13 @@ export class BulkSaveRequest {
   })
   guildName: string;
 
+  @StringOption({
+    name: 'category-name',
+    description: 'category name',
+    required: true,
+  })
+  categoryName: string;
+
   @NumberOption({
     name: 'limit',
     description: 'limit',

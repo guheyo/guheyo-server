@@ -25,15 +25,26 @@ export abstract class BulkSaveSlashCommandHandler {
   async bulkSave(
     discordGuild: Guild,
     guildName: string,
+    categoryName: string,
     marketChannelType: MarketChannelType,
     limit: number,
   ) {
-    const channelIds = this.groupParser.discordConfigService.findMarketChannelIds(
-      guildName,
-      marketChannelType,
-    );
+    let channelIds: string[];
+    if (categoryName === 'all') {
+      channelIds = this.groupParser.discordConfigService.findMarketChannelIds(
+        guildName,
+        marketChannelType,
+      );
+    } else {
+      const channelId = this.groupParser.discordConfigService.findMarketChannelId(
+        guildName,
+        marketChannelType,
+        categoryName,
+      );
+      channelIds = channelId ? [channelId] : [];
+    }
     this.discordManager = new DiscordManager(discordGuild);
-    const messages = await this.discordManager.fetchMessages(channelIds, limit);
+    const messages = await this.discordManager.fetchMessagesFromChannels(channelIds, limit);
     await this.bulkSaveMessages(messages, discordGuild);
   }
 
