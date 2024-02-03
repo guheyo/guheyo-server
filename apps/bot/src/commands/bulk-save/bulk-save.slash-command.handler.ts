@@ -33,7 +33,7 @@ export abstract class BulkSaveSlashCommandHandler {
       marketChannelType,
     );
     this.discordManager = new DiscordManager(discordGuild);
-    const messages = await this.discordManager.fetchMessages(channelIds, limit);
+    const messages = await this.discordManager.fetchMessagesFromChannels(channelIds, limit);
     await this.bulkSaveMessages(messages, discordGuild);
   }
 
