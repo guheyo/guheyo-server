@@ -16,9 +16,9 @@ export class BulkSaveOffersSlashCommandHandler extends BulkSaveSlashCommandHandl
   @SlashCommand({ name: 'bulk-save-offers', description: 'Bulk Save Offers' })
   public async onBuckSaveOffers(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { guildName, limit }: BulkSaveRequest,
+    @Options() { guildName, categoryName, limit }: BulkSaveRequest,
   ) {
     if (!interaction.guild) return;
-    await this.bulkSave(interaction.guild, guildName, 'wts', limit);
+    await this.bulkSave(interaction.guild, guildName, categoryName, 'wts', limit);
   }
 }

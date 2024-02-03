@@ -16,9 +16,9 @@ export class BulkSaveSwapsSlashCommandHandler extends BulkSaveSlashCommandHandle
   @SlashCommand({ name: 'bulk-save-swaps', description: 'Bulk Save Swaps' })
   public async onBuckSaveSwaps(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { guildName, limit }: BulkSaveRequest,
+    @Options() { guildName, categoryName, limit }: BulkSaveRequest,
   ) {
     if (!interaction.guild) return;
-    await this.bulkSave(interaction.guild, guildName, 'wtt', limit);
+    await this.bulkSave(interaction.guild, guildName, categoryName, 'wtt', limit);
   }
 }
