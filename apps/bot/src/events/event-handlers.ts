@@ -12,6 +12,7 @@ import { DemandMessageDeletedHandler } from './demand-message-deleted/demand-mes
 import { SwapMessageCreatedHandler } from './swap-message-created/swap-message-created.handler';
 import { SwapMessageUpdatedHandler } from './swap-message-updated/swap-message-updated.handler';
 import { SwapMessageDeletedHandler } from './swap-message-deleted/swap-message-deleted.handler';
+import { DiscordUserUpdatedHandler } from './discord-user-updated/discord-user-updated.handler';
 
 export const EVENT_HANDLERS = [
   ReadyHandler,
@@ -28,4 +29,5 @@ export const EVENT_HANDLERS = [
   SwapMessageCreatedHandler,
   SwapMessageUpdatedHandler,
   SwapMessageDeletedHandler,
+  DiscordUserUpdatedHandler,
 ];
