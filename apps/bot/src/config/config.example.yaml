@@ -23,15 +23,15 @@ discord:
         wts:
           channels:
             - id:
-              categoryName:
+              name:
         wtb:
           channels:
             - id:
-              categoryName:
+              name:
         wtt:
           channels:
             - id:
-              categoryName:
+              name:
         allowedRoleIds:
         disallowedRoleIds:
       auction:
