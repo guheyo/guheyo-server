@@ -54,7 +54,7 @@ export class UserImageClient {
     imageId: string;
     discordAvatarURL: string;
   }) {
-    const path = this.imageService.generateUploadPath(userId, 'user-avatar', imageId);
+    const path = this.imageService.generateUploadPath(userId, 'avatar', imageId);
     return this.imageService.uploadFileFromURL(discordAvatarURL, path);
   }
 
