@@ -1,4 +1,4 @@
-import { GuildMember, RoleManager } from 'discord.js';
+import { GuildMember, PartialUser, RoleManager, User } from 'discord.js';
 import { CreateUserFromDiscordCommand } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.command';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.query';
@@ -18,15 +18,21 @@ export class UserClient extends UserImageClient {
     super();
   }
 
-  async fetchSimpleUser(provider: string, member: GuildMember): Promise<SimpleUser> {
-    const user = await this.findUserBySocialAccount(provider, member.id);
+  async fetchSimpleUser(provider: string, memberOrUser: GuildMember | User): Promise<SimpleUser> {
+    const user = await this.findUserBySocialAccount(provider, memberOrUser.id);
     if (user)
       return {
         id: user.id,
         username: user.username,
       };
 
-    const input = this.userParser.parseCreateUserFromDiscordInput(member);
+    let input: CreateUserFromDiscordInput;
+    if (memberOrUser instanceof GuildMember) {
+      input = this.userParser.parseCreateUserInputFromDiscordMember(memberOrUser as GuildMember);
+    } else {
+      input = this.userParser.parseCreateUserInputFromDiscordUser(memberOrUser as User);
+    }
+
     await this.createUserFromDiscord(input);
     return {
       id: input.id,
@@ -59,6 +65,16 @@ export class UserClient extends UserImageClient {
         avatarURL: url || undefined,
       }),
     );
+  }
+
+  isUpdatedAvatar(oldUser: PartialUser | User, newUser: User): boolean {
+    const oldUserAvatarURL = this.getAvatarURL(oldUser);
+    const newUserAvatarURL = this.getAvatarURL(newUser);
+    return oldUserAvatarURL !== newUserAvatarURL;
+  }
+
+  getAvatarURL(user: PartialUser | User): string {
+    return user.avatarURL() || user.displayAvatarURL();
   }
 
   async upsertRoles(roleManager: RoleManager) {

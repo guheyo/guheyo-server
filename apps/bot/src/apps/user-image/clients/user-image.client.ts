@@ -54,7 +54,7 @@ export class UserImageClient {
     imageId: string;
     discordAvatarURL: string;
   }) {
-    const path = this.imageService.generateUploadPath(userId, 'user-avatar', imageId);
+    const path = this.imageService.generateUploadPath(userId, 'avatar', imageId);
     return this.imageService.uploadFileFromURL(discordAvatarURL, path);
   }
 
@@ -84,19 +84,21 @@ export class UserImageClient {
 
   async uploadAndCreateAttachments(
     uploadUserImageInputList: CreateUserImageInput[],
+    type: string,
   ): Promise<void> {
-    const createUserImageInputList = await this.uploadAttachments(uploadUserImageInputList);
+    const createUserImageInputList = await this.uploadAttachments(uploadUserImageInputList, type);
     await this.createAttachments(createUserImageInputList);
   }
 
   async uploadAttachments(
     uploadUserImageInputList: CreateUserImageInput[],
+    type: string,
   ): Promise<CreateUserImageInput[]> {
     const createUserImageInputPromiseList = uploadUserImageInputList.map(
       async (uploadUserImageInput) => {
         const path = this.imageService.generateUploadPath(
           uploadUserImageInput.userId,
-          'offer',
+          type,
           uploadUserImageInput.id,
         );
         const { url } = await this.imageService.uploadFileFromURL(uploadUserImageInput.url, path);
