@@ -7,14 +7,13 @@ import { UpdateUserCommand } from '@lib/domains/user/application/commands/update
 import { DeleteUserCommand } from '@lib/domains/user/application/commands/delete-user/delete-user.command';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { FindMyUserByIdQuery } from '@lib/domains/user/application/queries/find-my-user-by-id/find-my-user-by-id.query';
-import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.query';
 import { PaginationArgs } from '@lib/shared/cqrs/queries/pagination/pagination.args';
 import { FindUsersQuery } from '@lib/domains/user/application/queries/find-users/find-users.query';
 import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/find-users/paginated-users.response';
-import { FindMyUserBySocialAccountArgs } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.args';
-import { FindMyUserBySessionArgs } from '@lib/domains/user/application/queries/find-my-user-by-session/find-my-user-by-session.args';
-import { FindMyUserBySessionQuery } from '@lib/domains/user/application/queries/find-my-user-by-session/find-my-user-by-session.query';
 import { FindMyUserByUsernameQuery } from '@lib/domains/user/application/queries/find-my-user-by-username/find-my-user-by-username.query';
+import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
+import { FindUserArgs } from '@lib/domains/user/application/queries/find-user/find-user.args';
+import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 
 @Resolver()
 export class UserResolver {
@@ -29,17 +28,9 @@ export class UserResolver {
     return this.queryBus.execute(query);
   }
 
-  @Query(() => MyUserResponse, { nullable: true })
-  async findMyUserBySocialAccount(
-    @Args() args: FindMyUserBySocialAccountArgs,
-  ): Promise<MyUserResponse | null> {
-    const query = new FindMyUserBySocialAccountQuery(args);
-    return this.queryBus.execute(query);
-  }
-
-  @Query(() => MyUserResponse, { nullable: true })
-  async findMyUserBySession(@Args() args: FindMyUserBySessionArgs): Promise<MyUserResponse | null> {
-    const query = new FindMyUserBySessionQuery(args);
+  @Query(() => UserResponse, { nullable: true })
+  async findUser(@Args() args: FindUserArgs): Promise<MyUserResponse | null> {
+    const query = new FindUserQuery(args);
     return this.queryBus.execute(query);
   }
 

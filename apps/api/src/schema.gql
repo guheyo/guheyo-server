@@ -423,8 +423,6 @@ type Query {
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
   findMemberByUserAndGroup(groupId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: ID!): MyUserResponse
-  findMyUserBySession(sessionToken: String!): MyUserResponse
-  findMyUserBySocialAccount(provider: String!, socialId: String!): MyUserResponse
   findMyUserByUsername(username: ID!): MyUserResponse
   findOffer(slug: String!): OfferResponse
   findOfferById(id: ID!): OfferResponse
@@ -435,6 +433,7 @@ type Query {
   findSwapById(id: ID!): SwapResponse
   findSwaps(cursor: ID, productCategoryId: ID!, skip: Int! = 1, take: Int!): PaginatedSwapsResponse!
   findTerm(name: String!): TermResponse
+  findUser(provider: String!, sessionToken: String!, socialId: String!): UserResponse
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
