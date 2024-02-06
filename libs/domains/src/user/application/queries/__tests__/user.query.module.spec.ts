@@ -4,25 +4,23 @@ import { ConfigYamlModule } from '@app/api/config/config.module';
 import { PrismaModule } from '@lib/shared/prisma/prisma.module';
 import { FindMyUserByIdQuery } from '../find-my-user-by-id/find-my-user-by-id.query';
 import { FindMyUserByIdHandler } from '../find-my-user-by-id/find-my-user-by-id.handler';
-import { FindMyUserBySocialAccountQuery } from '../find-my-user-by-social-account/find-my-user-by-social-account.query';
-import { FindMyUserBySocialAccountHandler } from '../find-my-user-by-social-account/find-my-user-by-social-account.handler';
 import { FindUsersQuery } from '../find-users/find-users.query';
 import { FindUsersHandler } from '../find-users/find-users.handler';
+import { FindUserHandler } from '../find-user/find-user.handler';
+import { FindUserQuery } from '../find-user/find-user.query';
 
 describe('UserQueryModule', () => {
   let findMyUserByIdHandler: FindMyUserByIdHandler;
-  let findMyUserBySocialAccountHandler: FindMyUserBySocialAccountHandler;
+  let findUserHandler: FindUserHandler;
   let findUsersHandler: FindUsersHandler;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [CqrsModule, ConfigYamlModule, PrismaModule],
-      providers: [FindMyUserByIdHandler, FindMyUserBySocialAccountHandler, FindUsersHandler],
+      providers: [FindMyUserByIdHandler, FindUserHandler, FindUsersHandler],
     }).compile();
     findMyUserByIdHandler = moduleRef.get<FindMyUserByIdHandler>(FindMyUserByIdHandler);
-    findMyUserBySocialAccountHandler = moduleRef.get<FindMyUserBySocialAccountHandler>(
-      FindMyUserBySocialAccountHandler,
-    );
+    findUserHandler = moduleRef.get<FindUserHandler>(FindUserHandler);
     findUsersHandler = moduleRef.get<FindUsersHandler>(FindUsersHandler);
   });
 
@@ -36,8 +34,8 @@ describe('UserQueryModule', () => {
 
   describe('execute', () => {
     it('should be null given an invalid socialId', async () => {
-      const query: FindMyUserBySocialAccountQuery = { provider: 'discord', socialId: 'test' };
-      const user = await findMyUserBySocialAccountHandler.execute(query);
+      const query: FindUserQuery = { provider: 'discord', socialId: 'test' };
+      const user = await findUserHandler.execute(query);
       expect(user).toBeNull();
     });
   });
