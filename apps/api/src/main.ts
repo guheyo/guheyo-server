@@ -1,13 +1,13 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { ClassSerializerInterceptor, RequestMethod, ValidationPipe } from '@nestjs/common';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { ExpressAdapter } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from '@lib/shared';
 import { ApiModule } from '@app/api/api.module';
 
 async function bootstrap() {
-  const fastifyAdapter = new FastifyAdapter();
-  const app = await NestFactory.create<NestFastifyApplication>(ApiModule, fastifyAdapter, {
+  const expressAdapter = new ExpressAdapter();
+  const app = await NestFactory.create(ApiModule, expressAdapter, {
     cors: process.env.NODE_ENV === 'dev',
   });
 
