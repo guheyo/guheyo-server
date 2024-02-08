@@ -17,6 +17,7 @@ import { AuctionModule } from './app/auction/auction.module';
 import { DiscordMessageModule } from './app/discord-message/discord-message.module';
 import { SessionModule } from './app/session/session.module';
 import { TermModule } from './app/term/term.module';
+import { AuthModule } from './app/auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { TermModule } from './app/term/term.module';
         DateTime: DateTimeResolver,
       },
     }),
+    AuthModule,
     UserModule,
     SocialAccountModule,
     MemberModule,

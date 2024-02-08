@@ -8,7 +8,7 @@ import { CreateUserHandler } from '@lib/domains/user/application/commands/create
 import { UpdateUserHandler } from '@lib/domains/user/application/commands/update-user/update-user.handler';
 import { DeleteUserHandler } from '@lib/domains/user/application/commands/delete-user/delete-user.handler';
 import { FindMyUserByIdHandler } from '@lib/domains/user/application/queries/find-my-user-by-id/find-my-user-by-id.handler';
-import { FindMyUserBySocialAccountHandler } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.handler';
+import { FindUserHandler } from '@lib/domains/user/application/queries/find-user/find-user.handler';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { UserModule } from '../user.module';
@@ -24,7 +24,7 @@ describe('UserModule', () => {
   let userUpdateHandler: UpdateUserHandler;
   let userDeleteHandler: DeleteUserHandler;
   let findMyUserByIdHandler: FindMyUserByIdHandler;
-  let findMyUserBySocialAccountHandler: FindMyUserBySocialAccountHandler;
+  let findUserHandler: FindUserHandler;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -46,9 +46,7 @@ describe('UserModule', () => {
     userUpdateHandler = moduleRef.get<UpdateUserHandler>(UpdateUserHandler);
     userDeleteHandler = moduleRef.get<DeleteUserHandler>(DeleteUserHandler);
     findMyUserByIdHandler = moduleRef.get<FindMyUserByIdHandler>(FindMyUserByIdHandler);
-    findMyUserBySocialAccountHandler = moduleRef.get<FindMyUserBySocialAccountHandler>(
-      FindMyUserBySocialAccountHandler,
-    );
+    findUserHandler = moduleRef.get<FindUserHandler>(FindUserHandler);
   });
 
   describe('UserApiModule', () => {
@@ -105,9 +103,9 @@ describe('UserModule', () => {
     });
   });
 
-  describe('FindMyUserBySocialAccountHandler', () => {
-    it('should be instance of FindMyUserBySocialAccountHandler', async () => {
-      expect(findMyUserBySocialAccountHandler).toBeInstanceOf(FindMyUserBySocialAccountHandler);
+  describe('FindUserHandler', () => {
+    it('should be instance of FindUserHandler', async () => {
+      expect(findUserHandler).toBeInstanceOf(FindUserHandler);
     });
   });
 });

@@ -1,7 +1,7 @@
 import { GuildMember, PartialUser, RoleManager, User } from 'discord.js';
 import { CreateUserFromDiscordCommand } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.command';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
-import { FindMyUserBySocialAccountQuery } from '@lib/domains/user/application/queries/find-my-user-by-social-account/find-my-user-by-social-account.query';
+import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 import { Injectable } from '@nestjs/common';
 import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
 import { CreateUserFromDiscordInput } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.input';
@@ -45,7 +45,7 @@ export class UserClient extends UserImageClient {
     socialId: string,
   ): Promise<MyUserResponse | null> {
     return this.queryBus.execute(
-      new FindMyUserBySocialAccountQuery({
+      new FindUserQuery({
         provider,
         socialId,
       }),
