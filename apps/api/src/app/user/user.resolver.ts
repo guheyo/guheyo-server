@@ -29,7 +29,7 @@ export class UserResolver {
   }
 
   @Query(() => UserResponse, { nullable: true })
-  async findUser(@Args() args: FindUserArgs): Promise<MyUserResponse | null> {
+  async findUser(@Args() args: FindUserArgs): Promise<UserResponse | null> {
     const query = new FindUserQuery(args);
     return this.queryBus.execute(query);
   }
