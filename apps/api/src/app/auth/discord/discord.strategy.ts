@@ -19,7 +19,6 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
       username: profile.username,
       provider: profile.provider,
       socialId: profile.id,
-      email: profile.email,
       accessToken,
       refreshToken,
     };
