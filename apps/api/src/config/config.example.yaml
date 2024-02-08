@@ -1,6 +1,18 @@
 server:
   version:
   port:
+oauth2:
+  discord:
+    clientId:
+    clientSecret:
+    callbackURL:
+  naver:
+    clientId:
+    clientSecret:
+    callbackURL:
+jwt:
+  secret:
+  expiresIn:
 postgresql:
   url:
 redis:
