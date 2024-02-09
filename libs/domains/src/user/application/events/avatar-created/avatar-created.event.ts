@@ -16,8 +16,6 @@ export class AvatarCreatedEvent implements IEvent {
 
   refId: string;
 
-  tracked: boolean;
-
   userId: string;
 
   source: string;
@@ -30,7 +28,6 @@ export class AvatarCreatedEvent implements IEvent {
     this.position = 0;
     this.type = 'avatar';
     this.refId = input.userId;
-    this.tracked = true;
     this.userId = input.userId;
     this.source = input.source;
   }
