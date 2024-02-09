@@ -1,5 +1,5 @@
 import { IEvent } from '@nestjs/cqrs';
-import { SocialAccountLinkedArgs } from './social-account-linked.args';
+import { SocialAccountLinkedInput } from './social-account-linked.input';
 
 export class SocialAccountLinkedEvent implements IEvent {
   socialAccountId: string;
@@ -10,10 +10,16 @@ export class SocialAccountLinkedEvent implements IEvent {
 
   userId: string;
 
-  constructor(args: SocialAccountLinkedArgs) {
-    this.socialAccountId = args.socialAccountId;
-    this.provider = args.provider;
-    this.socialId = args.socialId;
-    this.userId = args.userId;
+  accessToken?: string;
+
+  refreshToken?: string;
+
+  constructor(input: SocialAccountLinkedInput) {
+    this.socialAccountId = input.socialAccountId;
+    this.provider = input.provider;
+    this.socialId = input.socialId;
+    this.userId = input.userId;
+    this.accessToken = input.accessToken;
+    this.refreshToken = input.accessToken;
   }
 }

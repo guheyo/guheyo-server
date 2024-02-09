@@ -20,7 +20,8 @@
     "lodash": "^4.17.21",
     "necord": "^6.1.8",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@nestjs/testing": "^10.2.1"
