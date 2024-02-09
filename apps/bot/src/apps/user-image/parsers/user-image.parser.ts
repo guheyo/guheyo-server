@@ -30,7 +30,7 @@ export class UserImageParser extends Parser {
       url,
       contentType,
       position: 0,
-      type: 'user-avatar',
+      type: 'avatar',
       refId: userId,
       userId,
       source: 'discord',
