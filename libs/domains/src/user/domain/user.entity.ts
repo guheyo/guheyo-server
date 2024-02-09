@@ -2,7 +2,6 @@ import { MemberEntity } from '@lib/domains/member/domain/member.entity';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
 import _ from 'lodash';
-import { v4 as uuid4 } from 'uuid';
 import { UpdateUserProps } from './user.types';
 import { SocialAccountLinkedEvent } from '../application/events/social-account-linked/social-account-linked.event';
 import { UserUpdatedEvent } from '../application/events/user-updated/user-updated.event';
@@ -79,7 +78,7 @@ export class UserEntity extends AggregateRoot {
   }) {
     this.apply(
       new AvatarCreatedEvent({
-        id: uuid4(),
+        id: this.id,
         name,
         url,
         contentType,
