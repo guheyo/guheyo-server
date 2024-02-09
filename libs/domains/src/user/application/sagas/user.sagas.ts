@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
-import { Observable, map } from 'rxjs';
+import { Observable, concatMap, map, of } from 'rxjs';
 import { CreateSocialAccountCommand } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.command';
 import { TrackUserImagesCommand } from '@lib/domains/user-image/application/commands/track-user-images/track-user-images.command';
 import { CreateUserImageCommand } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.command';
@@ -44,6 +44,8 @@ export class UserSagas {
   avatarCreated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
       ofType(AvatarCreatedEvent),
-      map((event) => new CreateUserImageCommand(event)),
+      concatMap((event) =>
+        of(new CreateUserImageCommand(event), new TrackUserImagesCommand(event)),
+      ),
     );
 }
