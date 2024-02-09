@@ -2,6 +2,7 @@ import { GuildMember, PartialUser, RoleManager, User } from 'discord.js';
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 import { Injectable } from '@nestjs/common';
+import { v4 as uuid4 } from 'uuid';
 import { UpsertRolesCommand } from '@lib/domains/role/application/commands/upsert-roles/upsert-roles.command';
 import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
 import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
@@ -25,7 +26,12 @@ export class UserClient extends UserImageClient {
 
     const discordUser = memberOrUser instanceof GuildMember ? memberOrUser.user : memberOrUser;
     const input = this.userParser.parseSignInUserInput(provider, discordUser);
-    await this.commandBus.execute(new SignInUserCommand(input));
+    await this.commandBus.execute(
+      new SignInUserCommand({
+        ...input,
+        id: uuid4(),
+      }),
+    );
     const newUser = await this.queryBus.execute(
       new FindUserQuery({
         provider,
