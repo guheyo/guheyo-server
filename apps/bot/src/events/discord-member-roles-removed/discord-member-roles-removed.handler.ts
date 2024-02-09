@@ -12,8 +12,14 @@ export class DiscordMemberRolesRemovedHandler {
 
   @On('guildMemberRoleRemove')
   public async onRemovedGuildMemberRoles(
-    @Context() [member, role]: ContextOf<'guildMemberRoleRemove'>,
+    @Context() [discordMember, role]: ContextOf<'guildMemberRoleRemove'>,
   ) {
-    await this.userClient.disconnectRoles(member.id, role.id);
+    const user = await this.userClient.fetchSimpleUser('discord', discordMember);
+    const member = await this.userClient.findMember(user.id);
+    if (!member) {
+      this.logger.log(`${user.username} group member not found`);
+      return;
+    }
+    await this.userClient.disconnectRoles(member.id, [role.name]);
   }
 }
