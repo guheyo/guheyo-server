@@ -13,16 +13,16 @@ export class UploadAndCreateImageHandler implements ICommandHandler<UploadAndCre
   ) {}
 
   async execute(command: UploadAndCreateImageCommand): Promise<void> {
-    const { url, contentType, name } = await this.imageService.uploadFileFromURL(
+    const url = await this.imageService.uploadFileFromURL(
       command.url,
       command.type,
       command.userId,
     );
     const userImage = new UserImageEntity({
       id: 'new id',
-      name,
+      name: this.imageService.parseNameFromURL(url),
       url,
-      contentType,
+      contentType: this.imageService.parseMimeType(url),
       type: command.type,
       refId: command.refId,
       userId: command.userId,

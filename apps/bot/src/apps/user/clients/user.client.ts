@@ -79,7 +79,7 @@ export class UserClient extends UserImageClient {
 
   async updateUserAvatar(userId: string, discordUser: User | PartialUser): Promise<void> {
     const avatarURL = this.getAvatarURL(discordUser);
-    const { url } = await this.imageService.uploadFileFromURL(avatarURL, 'avatar', userId);
+    const url = await this.imageService.uploadFileFromURL(avatarURL, 'avatar', userId);
     await this.commandBus.execute(
       new UpdateUserCommand({
         id: userId,

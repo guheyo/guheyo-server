@@ -32,17 +32,9 @@ export class ImageService {
     });
   }
 
-  async downloadFile(url: string) {
-    const res = await axios.get(url, {
-      responseType: 'arraybuffer',
-    });
-    const buffer = Buffer.from(res.data, 'binary');
-    return {
-      buffer,
-    };
-  }
-
-  async uploadFile(key: string, file: Buffer) {
+  async uploadFile(file: Buffer, type: string, userId: string, name: string) {
+    const path = this.generateUploadPath(type, userId);
+    const key = this.createFileKey(path, name);
     const mimeType = mimeTypes.lookup(key);
     const command = new PutObjectCommand({
       Bucket: this.configService.get('s3.bucket'),
@@ -52,29 +44,13 @@ export class ImageService {
     });
     await this.client.send(command);
     const s3URL = this.createFileUrl(key);
-    return {
-      url: s3URL,
-      contentType: mimeType || undefined,
-    };
+    return s3URL;
   }
 
   async uploadFileFromURL(url: string, type: string, userId: string) {
-    const path = this.generateUploadPath(type, userId);
     const { buffer } = await this.downloadFile(url);
     const name = this.parseNameFromURL(url);
-    const key = this.createFileKey(path, name);
-    return {
-      name,
-      ...(await this.uploadFile(key, buffer)),
-    };
-  }
-
-  createFileKey(path: string, name: string) {
-    return `${path}/${name}`;
-  }
-
-  createFileUrl(key: string) {
-    return `${this.configService.get('s3.domain')}/${key}`;
+    return this.uploadFile(buffer, type, userId, name);
   }
 
   parseNameFromURL(url: string) {
@@ -84,7 +60,29 @@ export class ImageService {
     return match[1];
   }
 
-  generateUploadPath(type: string, userId: string) {
+  parseMimeType(url: string) {
+    return mimeTypes.lookup(url) || undefined;
+  }
+
+  private async downloadFile(url: string) {
+    const res = await axios.get(url, {
+      responseType: 'arraybuffer',
+    });
+    const buffer = Buffer.from(res.data, 'binary');
+    return {
+      buffer,
+    };
+  }
+
+  private createFileKey(path: string, name: string) {
+    return `${path}/${name}`;
+  }
+
+  private createFileUrl(key: string) {
+    return `${this.configService.get('s3.domain')}/${key}`;
+  }
+
+  private generateUploadPath(type: string, userId: string) {
     const yyyymm = dayjs().format('YYYYMM');
     return `${type}/${yyyymm}/${userId}`;
   }

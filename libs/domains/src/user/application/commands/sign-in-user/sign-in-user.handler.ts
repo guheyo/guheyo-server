@@ -33,16 +33,16 @@ export class SignInUserHandler implements ICommandHandler<SignInUserCommand> {
     );
 
     if (command.avatarURL) {
-      const { url, contentType, name } = await this.imageService.uploadFileFromURL(
+      const url = await this.imageService.uploadFileFromURL(
         command.avatarURL,
         'avatar',
         newUser.id,
       );
       newUser.avatarURL = url;
       newUser.createAvatar({
-        name,
         url,
-        contentType,
+        name: this.imageService.parseNameFromURL(url),
+        contentType: this.imageService.parseMimeType(url),
         source: command.provider,
       });
     }
