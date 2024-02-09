@@ -2,6 +2,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import dayjs from 'dayjs';
 import axios from 'axios';
 import mimeTypes from 'mime-types';
 import { ImageErrorMessage } from './image.error.message';
@@ -57,7 +58,8 @@ export class ImageService {
     };
   }
 
-  async uploadFileFromURL(url: string, path: string) {
+  async uploadFileFromURL(url: string, type: string, userId: string) {
+    const path = this.generateUploadPath(type, userId);
     const { buffer } = await this.downloadFile(url);
     const name = this.parseNameFromURL(url);
     const key = this.createFileKey(path, name);
@@ -82,7 +84,8 @@ export class ImageService {
     return match[1];
   }
 
-  generateUploadPath(userId: string, type: string, id: string) {
-    return `images/users/${userId}/${type}/${id}`;
+  generateUploadPath(type: string, userId: string) {
+    const yyyymm = dayjs().format('YYYYMM');
+    return `${type}/${yyyymm}/${userId}`;
   }
 }
