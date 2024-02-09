@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-discord';
+import { parseAvatarURL } from '@lib/shared/discord/discord.parser';
 
 @Injectable()
 export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
@@ -17,6 +18,7 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
   async validate(accessToken: string, refreshToken: string, profile: any, done: any) {
     const user = {
       username: profile.username,
+      avatarURL: parseAvatarURL(profile.id, profile.avatar),
       provider: profile.provider,
       socialId: profile.id,
       accessToken,
