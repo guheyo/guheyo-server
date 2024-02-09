@@ -28,9 +28,10 @@ describe('DisconnectRolesHandler', () => {
       const command: DisconnectRolesCommand = {
         id: '94587c54-4d7d-11ee-be56-0242ac120002',
         roleIds: ['role-id'],
+        roleNames: [],
       };
       await handler.execute(command);
-      verify(savePort.disconnectRoles(command.id, command.roleIds)).once();
+      verify(savePort.disconnectRoles(command.id, command.roleIds, command.roleNames)).once();
     });
   });
 });

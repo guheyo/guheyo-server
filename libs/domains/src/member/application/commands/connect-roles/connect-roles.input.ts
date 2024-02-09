@@ -5,9 +5,17 @@ import { IsString, IsUUID } from 'class-validator';
 export class ConnectRolesInput {
   @IsUUID()
   @Field(() => ID)
-  id: string;
+  groupId: string;
+
+  @IsUUID()
+  @Field(() => ID)
+  userId: string;
 
   @IsString({ each: true })
   @Field(() => [ID])
   roleIds: string[];
+
+  @IsString({ each: true })
+  @Field(() => [String])
+  roleNames: string[];
 }

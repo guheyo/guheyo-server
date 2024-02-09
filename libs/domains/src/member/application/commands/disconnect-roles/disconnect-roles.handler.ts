@@ -8,6 +8,6 @@ export class DisconnectRolesHandler implements ICommandHandler<DisconnectRolesCo
   constructor(@Inject('MemberRolesSavePort') private savePort: MemberRolesSavePort) {}
 
   async execute(command: DisconnectRolesCommand): Promise<void> {
-    await this.savePort.disconnectRoles(command.id, command.roleIds);
+    await this.savePort.disconnectRoles(command.id, command.roleIds, command.roleNames);
   }
 }

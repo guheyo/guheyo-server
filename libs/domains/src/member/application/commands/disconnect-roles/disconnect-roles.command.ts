@@ -6,8 +6,11 @@ export class DisconnectRolesCommand implements ICommand {
 
   roleIds: string[];
 
+  roleNames: string[];
+
   constructor(input: DisconnectRolesInput) {
     this.id = input.id;
     this.roleIds = input.roleIds;
+    this.roleNames = input.roleNames;
   }
 }
