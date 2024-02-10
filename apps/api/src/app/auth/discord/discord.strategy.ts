@@ -16,15 +16,15 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
   }
 
   async validate(accessToken: string, refreshToken: string, profile: any, done: any) {
-    const user = {
-      username: profile.username,
-      avatarURL: parseAvatarURL(profile.id, profile.avatar),
-      provider: profile.provider,
-      socialId: profile.id,
-      accessToken,
-      refreshToken,
-    };
     try {
+      const user = {
+        username: profile.username,
+        avatarURL: parseAvatarURL(profile.id, profile.avatar),
+        provider: profile.provider,
+        socialId: profile.id,
+        accessToken,
+        refreshToken,
+      };
       done(null, user);
     } catch (err) {
       done(err);
