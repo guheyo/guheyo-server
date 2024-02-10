@@ -5,11 +5,12 @@ import { MemberRolesSavePort } from '@lib/domains/member/application/ports/out/m
 import { MemberEntity } from '@lib/domains/member/domain/member.entity';
 import { MemberSavePort } from '@lib/domains/member/application/ports/out/member.save.port';
 import { CreateMembersOfUserInput } from '@lib/domains/member/application/commands/create-members-of-user/create-members-of-user.input';
+import { MemberRolesLoadPort } from '@lib/domains/member/application/ports/out/member-roles.load.port';
 
 @Injectable()
 export class MemberRepository
   extends PrismaRepository<MemberEntity>
-  implements MemberSavePort, MemberRolesSavePort
+  implements MemberSavePort, MemberRolesSavePort, MemberRolesLoadPort
 {
   constructor() {
     super(MemberEntity);
@@ -29,6 +30,35 @@ export class MemberRepository
       },
     });
     return this.toEntity(member);
+  }
+
+  async find(groupId: string, userId: string): Promise<MemberEntity | null> {
+    const member = await this.prismaService.member.findFirst({
+      where: {
+        groupId,
+        userId,
+      },
+      include: {
+        roles: {
+          orderBy: {
+            position: 'asc',
+          },
+        },
+      },
+    });
+    return this.toEntity(member);
+  }
+
+  async findRoleIds(groupId: string, roleNames: string[]): Promise<string[]> {
+    const roles = await this.prismaService.role.findMany({
+      where: {
+        groupId,
+        name: {
+          in: roleNames,
+        },
+      },
+    });
+    return roles.map((role) => role.id);
   }
 
   async create(member: MemberEntity): Promise<void> {
@@ -80,31 +110,41 @@ export class MemberRepository
     });
   }
 
-  async connectRoles(id: string, roleIds: string[]): Promise<void> {
+  async connectRoles(id: string, roleIds: string[], roleNames: string[]): Promise<void> {
     await this.prismaService.member.update({
       where: {
         id,
       },
       data: {
         roles: {
-          connect: roleIds.map((roleId) => ({
-            id: roleId,
-          })),
+          connect:
+            roleIds.length > 0
+              ? roleIds.map((roleId) => ({
+                  id: roleId,
+                }))
+              : roleNames.map((roleName) => ({
+                  name: roleName,
+                })),
         },
       },
     });
   }
 
-  async disconnectRoles(id: string, roleIds: string[]): Promise<void> {
+  async disconnectRoles(id: string, roleIds: string[], roleNames: string[]): Promise<void> {
     await this.prismaService.member.update({
       where: {
         id,
       },
       data: {
         roles: {
-          disconnect: roleIds.map((roleId) => ({
-            id: roleId,
-          })),
+          disconnect:
+            roleIds.length > 0
+              ? roleIds.map((roleId) => ({
+                  id: roleId,
+                }))
+              : roleNames.map((roleName) => ({
+                  name: roleName,
+                })),
         },
       },
     });

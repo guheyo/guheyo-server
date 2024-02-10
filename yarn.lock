@@ -1667,6 +1667,7 @@ __metadata:
     necord: ^6.1.8
     reflect-metadata: ^0.1.13
     rxjs: ^7.8.1
+    uuid: ^9.0.1
   languageName: unknown
   linkType: soft
 
@@ -1687,10 +1688,12 @@ __metadata:
     axios: ^1.5.0
     class-transformer: ^0.5.1
     class-validator: ^0.14.0
+    dayjs: ^1.11.10
     express: ^4.18.2
     fs: ^0.0.1-security
     graphql: ^16.8.0
     js-yaml: ^4.1.0
+    jsonwebtoken: ^9.0.2
     mime-types: ^2.1.35
     nanoid: ^3.0.0
     prisma: ^5.8.1
@@ -9463,7 +9466,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:9.0.2, jsonwebtoken@npm:^9.0.0":
+"jsonwebtoken@npm:9.0.2, jsonwebtoken@npm:^9.0.0, jsonwebtoken@npm:^9.0.2":
   version: 9.0.2
   resolution: "jsonwebtoken@npm:9.0.2"
   dependencies:

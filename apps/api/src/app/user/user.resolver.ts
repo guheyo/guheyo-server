@@ -14,6 +14,8 @@ import { FindMyUserByUsernameQuery } from '@lib/domains/user/application/queries
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { FindUserArgs } from '@lib/domains/user/application/queries/find-user/find-user.args';
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
+import { UseGuards } from '@nestjs/common';
+import { JwtAccessAuthGuard } from '../auth/jwt/jwt-acess-auth.guard';
 
 @Resolver()
 export class UserResolver {
@@ -34,6 +36,7 @@ export class UserResolver {
     return this.queryBus.execute(query);
   }
 
+  @UseGuards(JwtAccessAuthGuard)
   @Query(() => MyUserResponse, { nullable: true })
   async findMyUserByUsername(
     @Args('username', { type: () => ID }) username: string,

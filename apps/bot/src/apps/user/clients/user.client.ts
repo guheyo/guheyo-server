@@ -1,13 +1,15 @@
 import { GuildMember, PartialUser, RoleManager, User } from 'discord.js';
-import { CreateUserFromDiscordCommand } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.command';
-import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 import { Injectable } from '@nestjs/common';
-import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
-import { CreateUserFromDiscordInput } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.input';
+import { v4 as uuid4 } from 'uuid';
 import { UpsertRolesCommand } from '@lib/domains/role/application/commands/upsert-roles/upsert-roles.command';
 import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
 import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
+import { SignInUserCommand } from '@lib/domains/user/application/commands/sign-in-user/sign-in-user.command';
+import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
+import { MemberResponse } from '@lib/domains/member/application/dtos/member.response';
+import { FindMemberQuery } from '@lib/domains/member/application/queries/find-member-by-user-and-group/find-member.query';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { SimpleUser } from '../parsers/user.types';
 import { UserParser } from '../parsers/user.parser';
@@ -20,30 +22,34 @@ export class UserClient extends UserImageClient {
 
   async fetchSimpleUser(provider: string, memberOrUser: GuildMember | User): Promise<SimpleUser> {
     const user = await this.findUserBySocialAccount(provider, memberOrUser.id);
-    if (user)
-      return {
-        id: user.id,
-        username: user.username,
-      };
+    if (user) return user;
 
-    let input: CreateUserFromDiscordInput;
+    const discordUser = memberOrUser instanceof GuildMember ? memberOrUser.user : memberOrUser;
+    const input = this.userParser.parseSignInUserInput(provider, discordUser);
+    await this.commandBus.execute(
+      new SignInUserCommand({
+        ...input,
+        id: uuid4(),
+      }),
+    );
+    const newUser = await this.queryBus.execute(
+      new FindUserQuery({
+        provider,
+        socialId: memberOrUser.id,
+      }),
+    );
+
     if (memberOrUser instanceof GuildMember) {
-      input = this.userParser.parseCreateUserInputFromDiscordMember(memberOrUser as GuildMember);
-    } else {
-      input = this.userParser.parseCreateUserInputFromDiscordUser(memberOrUser as User);
+      const roleNames = this.userParser.parseRoleNames(memberOrUser);
+      await this.connectRoles(newUser.id, roleNames);
     }
-
-    await this.createUserFromDiscord(input);
     return {
-      id: input.id,
-      username: input.username,
+      id: newUser.id,
+      username: newUser.username,
     };
   }
 
-  async findUserBySocialAccount(
-    provider: string,
-    socialId: string,
-  ): Promise<MyUserResponse | null> {
+  async findUserBySocialAccount(provider: string, socialId: string): Promise<UserResponse | null> {
     return this.queryBus.execute(
       new FindUserQuery({
         provider,
@@ -52,17 +58,11 @@ export class UserClient extends UserImageClient {
     );
   }
 
-  async createUserFromDiscord(input: CreateUserFromDiscordInput): Promise<void> {
-    await this.commandBus.execute(new CreateUserFromDiscordCommand(input));
-    await this.updateUserAvatar(input.id, input.avatarURL);
-  }
-
-  async updateUserAvatar(userId: string, discordAvatarURL?: string): Promise<void> {
-    const url = await this.uploadAndCreateAvatar({ userId, discordAvatarURL });
-    await this.commandBus.execute(
-      new UpdateUserCommand({
-        id: userId,
-        avatarURL: url || undefined,
+  async findMember(userId: string): Promise<MemberResponse | null> {
+    return this.queryBus.execute(
+      new FindMemberQuery({
+        userId,
+        groupId: this.userParser.parseRootGroupId(),
       }),
     );
   }
@@ -77,6 +77,17 @@ export class UserClient extends UserImageClient {
     return user.avatarURL() || user.displayAvatarURL();
   }
 
+  async updateUserAvatar(userId: string, discordUser: User | PartialUser): Promise<void> {
+    const avatarURL = this.getAvatarURL(discordUser);
+    const url = await this.imageService.uploadFileFromURL(avatarURL, 'avatar', userId);
+    await this.commandBus.execute(
+      new UpdateUserCommand({
+        id: userId,
+        avatarURL: url || undefined,
+      }),
+    );
+  }
+
   async upsertRoles(roleManager: RoleManager) {
     const upsertRoleInputs = this.userParser.parseUpsertRolesInput(roleManager);
     const command = new UpsertRolesCommand({
@@ -85,20 +96,23 @@ export class UserClient extends UserImageClient {
     await this.commandBus.execute(command);
   }
 
-  async connectRoles(memberId: string, roleId: string) {
+  async connectRoles(userId: string, roleNames: string[]) {
     await this.commandBus.execute(
       new ConnectRolesCommand({
-        id: this.userParser.parseMemberId(memberId),
-        roleIds: [this.userParser.parseRoleId(roleId)],
+        groupId: this.userParser.parseRootGroupId(),
+        userId,
+        roleIds: [],
+        roleNames,
       }),
     );
   }
 
-  async disconnectRoles(memberId: string, roleId: string) {
+  async disconnectRoles(memberId: string, roleNames: string[]) {
     await this.commandBus.execute(
       new DisconnectRolesCommand({
-        id: this.userParser.parseMemberId(memberId),
-        roleIds: [this.userParser.parseRoleId(roleId)],
+        id: memberId,
+        roleIds: [],
+        roleNames,
       }),
     );
   }

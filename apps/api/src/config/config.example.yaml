@@ -11,8 +11,12 @@ oauth2:
     clientSecret:
     callbackURL:
 jwt:
-  secret:
-  expiresIn:
+  access:
+    secret:
+    expiresIn:
+  refresh:
+    secret:
+    expiresIn:
 postgresql:
   url:
 redis:

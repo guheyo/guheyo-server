@@ -12,11 +12,6 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
   ) {}
 
   async execute(command: CreateUserCommand): Promise<void> {
-    const user = this.publisher.mergeObjectContext(new UserEntity(command));
-    user.create({
-      data: [],
-    });
-    await this.userSavePort.create(user);
-    user.commit();
+    await this.userSavePort.create(new UserEntity(command));
   }
 }

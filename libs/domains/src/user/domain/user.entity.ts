@@ -1,12 +1,11 @@
 import { MemberEntity } from '@lib/domains/member/domain/member.entity';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
-import { CreateMembersOfUserInput } from '@lib/domains/member/application/commands/create-members-of-user/create-members-of-user.input';
 import _ from 'lodash';
 import { UpdateUserProps } from './user.types';
-import { UserCreatedEvent } from '../application/events/user-created/user-created.event';
 import { SocialAccountLinkedEvent } from '../application/events/social-account-linked/social-account-linked.event';
 import { UserUpdatedEvent } from '../application/events/user-updated/user-updated.event';
+import { AvatarCreatedEvent } from '../application/events/avatar-created/avatar-created.event';
 
 export class UserEntity extends AggregateRoot {
   id: string;
@@ -36,32 +35,55 @@ export class UserEntity extends AggregateRoot {
     Object.assign(this, partial);
   }
 
-  create(createMembersOfUserInput: CreateMembersOfUserInput) {
-    this.apply(new UserCreatedEvent(createMembersOfUserInput));
-  }
-
-  createUserFromDiscord(
-    createMembersOfUserInput: CreateMembersOfUserInput,
-    socialAccountId: string,
-    provider: string,
-    socialId: string,
-  ) {
-    this.create(createMembersOfUserInput);
-    this.linkSocialAccount(socialAccountId, provider, socialId);
-  }
-
   update(props: UpdateUserProps) {
     Object.assign(this, _.pickBy(props, _.identity));
     this.apply(new UserUpdatedEvent(this.id));
   }
 
-  private linkSocialAccount(socialAccountId: string, provider: string, socialId: string) {
+  linkSocialAccount({
+    socialAccountId,
+    provider,
+    socialId,
+    accessToken,
+    refreshToken,
+  }: {
+    socialAccountId: string;
+    provider: string;
+    socialId: string;
+    accessToken?: string;
+    refreshToken?: string;
+  }) {
     this.apply(
       new SocialAccountLinkedEvent({
         socialAccountId,
         provider,
         socialId,
         userId: this.id,
+        accessToken,
+        refreshToken,
+      }),
+    );
+  }
+
+  createAvatar({
+    name,
+    url,
+    contentType,
+    source,
+  }: {
+    name: string;
+    url: string;
+    contentType?: string;
+    source: string;
+  }) {
+    this.apply(
+      new AvatarCreatedEvent({
+        id: this.id,
+        name,
+        url,
+        contentType,
+        userId: this.id,
+        source,
       }),
     );
   }

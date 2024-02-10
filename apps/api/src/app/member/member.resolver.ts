@@ -7,8 +7,8 @@ import { UpdateMemberCommand } from '@lib/domains/member/application/commands/up
 import { DeleteMemberArgs } from '@lib/domains/member/application/commands/delete-member/delete-member.args';
 import { DeleteMemberCommand } from '@lib/domains/member/application/commands/delete-member/delete-member.command';
 import { MemberWithRolesResponse } from '@lib/domains/member/application/dtos/member-with-roles.response';
-import { FindMemberByUserAndGroupQuery } from '@lib/domains/member/application/queries/find-member-by-user-and-group/find-member-by-user-and-group.query';
-import { FindMemberByUserAndGroupArgs } from '@lib/domains/member/application/queries/find-member-by-user-and-group/find-member-by-user-and-group.args';
+import { FindMemberArgs } from '@lib/domains/member/application/queries/find-member-by-user-and-group/find-member.args';
+import { FindMemberQuery } from '@lib/domains/member/application/queries/find-member-by-user-and-group/find-member.query';
 import { ConnectRolesInput } from '@lib/domains/member/application/commands/connect-roles/connect-roles.input';
 import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
 import { DisconnectRolesInput } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.input';
@@ -23,9 +23,9 @@ export class MemberResolver {
 
   @Query(() => MemberWithRolesResponse, { nullable: true })
   async findMemberByUserAndGroup(
-    @Args() args: FindMemberByUserAndGroupArgs,
+    @Args() args: FindMemberArgs,
   ): Promise<MemberWithRolesResponse | null> {
-    const query = new FindMemberByUserAndGroupQuery(args);
+    const query = new FindMemberQuery(args);
     return this.queryBus.execute(query);
   }
 
@@ -50,7 +50,7 @@ export class MemberResolver {
   @Mutation(() => String)
   async connectRoles(@Args('input') input: ConnectRolesInput): Promise<string> {
     await this.commandBus.execute(new ConnectRolesCommand(input));
-    return input.id;
+    return input.groupId;
   }
 
   @Mutation(() => String)

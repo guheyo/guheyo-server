@@ -65,8 +65,10 @@ input CancelBidInput {
 }
 
 input ConnectRolesInput {
-  id: ID!
+  groupId: ID!
   roleIds: [ID!]!
+  roleNames: [String!]!
+  userId: ID!
 }
 
 input CreateAuctionInput {
@@ -242,6 +244,7 @@ type DemandResponseEdge {
 input DisconnectRolesInput {
   id: ID!
   roleIds: [ID!]!
+  roleNames: [String!]!
 }
 
 type GroupPreviewResponse {

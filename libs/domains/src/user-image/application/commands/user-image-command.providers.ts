@@ -4,6 +4,7 @@ import { DeleteUserImageHandler } from './delete-user-image/delete-user-image.ha
 import { UpdateUserImageHandler } from './update-user-image/update-user-image.handler';
 import { TrackUserImagesHandler } from './track-user-images/track-user-images.handler';
 import { UntrackUserImagesHandler } from './untrack-user-images/untrack-user-images.handler';
+import { UploadAndCreateImageHandler } from './upload-and-create-image/upload-and-create-image.handler';
 
 export const USER_IMAGE_COMMAND_PROVIDERS = [
   CreateUserImageHandler,
@@ -12,4 +13,5 @@ export const USER_IMAGE_COMMAND_PROVIDERS = [
   DeleteUserImageHandler,
   TrackUserImagesHandler,
   UntrackUserImagesHandler,
+  UploadAndCreateImageHandler,
 ];

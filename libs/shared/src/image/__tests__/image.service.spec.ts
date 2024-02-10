@@ -28,7 +28,8 @@ describe('ImageService', () => {
     it('should be upload file from url', async () => {
       const url = await imageService.uploadFileFromURL(
         'https://i.imgur.com/MKeEzUx.jpeg',
-        'tests/0',
+        'test',
+        '0',
       );
       expect(typeof url).toBe('object');
     });

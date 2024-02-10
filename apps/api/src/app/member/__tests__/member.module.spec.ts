@@ -6,7 +6,7 @@ import { MemberRepository } from '@lib/domains/member/adapter/out/persistence/me
 import { CreateMemberHandler } from '@lib/domains/member/application/commands/create-member/create-member.handler';
 import { UpdateMemberHandler } from '@lib/domains/member/application/commands/update-member/update-member.handler';
 import { DeleteMemberHandler } from '@lib/domains/member/application/commands/delete-member/delete-member.handler';
-import { FindMemberByUserAndGroupHandler } from '@lib/domains/member/application/queries/find-member-by-user-and-group/find-member-by-user-and-group.handler';
+import { FindMemberHandler } from '@lib/domains/member/application/queries/find-member-by-user-and-group/find-member.handler';
 import { MemberSavePort } from '@lib/domains/member/application/ports/out/member.save.port';
 import { MemberLoadPort } from '@lib/domains/member/application/ports/out/member.load.port';
 import { ApiModule } from '../../../api.module';
@@ -23,7 +23,7 @@ describe('MemberModule', () => {
   let memberCreateHandler: CreateMemberHandler;
   let memberUpdateHandler: UpdateMemberHandler;
   let memberDeleteHandler: DeleteMemberHandler;
-  let findMemberByUserAndGroupHandler: FindMemberByUserAndGroupHandler;
+  let findMemberHandler: FindMemberHandler;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -45,9 +45,7 @@ describe('MemberModule', () => {
     memberCreateHandler = moduleRef.get<CreateMemberHandler>(CreateMemberHandler);
     memberUpdateHandler = moduleRef.get<UpdateMemberHandler>(UpdateMemberHandler);
     memberDeleteHandler = moduleRef.get<DeleteMemberHandler>(DeleteMemberHandler);
-    findMemberByUserAndGroupHandler = moduleRef.get<FindMemberByUserAndGroupHandler>(
-      FindMemberByUserAndGroupHandler,
-    );
+    findMemberHandler = moduleRef.get<FindMemberHandler>(FindMemberHandler);
   });
 
   describe('MemberApiModule', () => {
@@ -98,9 +96,9 @@ describe('MemberModule', () => {
     });
   });
 
-  describe('FindMemberByUserAndGroupHandler', () => {
-    it('should be instance of FindMemberByUserAndGroupHandler', async () => {
-      expect(findMemberByUserAndGroupHandler).toBeInstanceOf(FindMemberByUserAndGroupHandler);
+  describe('FindMemberHandler', () => {
+    it('should be instance of FindMemberHandler', async () => {
+      expect(findMemberHandler).toBeInstanceOf(FindMemberHandler);
     });
   });
 });

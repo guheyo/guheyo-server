@@ -10,4 +10,8 @@ export class DisconnectRolesInput {
   @IsString({ each: true })
   @Field(() => [ID])
   roleIds: string[];
+
+  @IsString({ each: true })
+  @Field(() => [String])
+  roleNames: string[];
 }

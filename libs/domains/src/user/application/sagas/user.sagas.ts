@@ -1,22 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
-import { Observable, map, mergeMap, of } from 'rxjs';
-import { CreateMembersOfUserCommand } from '@lib/domains/member/application/commands/create-members-of-user/create-members-of-user.command';
+import { Observable, concatMap, map, of } from 'rxjs';
 import { CreateSocialAccountCommand } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.command';
 import { TrackUserImagesCommand } from '@lib/domains/user-image/application/commands/track-user-images/track-user-images.command';
-import { UserCreatedEvent } from '../events/user-created/user-created.event';
+import { CreateUserImageCommand } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.command';
 import { SocialAccountLinkedEvent } from '../events/social-account-linked/social-account-linked.event';
 import { UserUpdatedEvent } from '../events/user-updated/user-updated.event';
+import { AvatarCreatedEvent } from '../events/avatar-created/avatar-created.event';
 
 @Injectable()
 export class UserSagas {
-  @Saga()
-  userCreated = (events$: Observable<any>): Observable<ICommand> =>
-    events$.pipe(
-      ofType(UserCreatedEvent),
-      mergeMap((event) => of(new CreateMembersOfUserCommand(event.createMembersOfUserInput))),
-    );
-
   @Saga()
   socialAccountLinked = (event$: Observable<any>): Observable<ICommand> =>
     event$.pipe(
@@ -28,6 +21,8 @@ export class UserSagas {
             provider: event.provider,
             socialId: event.socialId,
             userId: event.userId,
+            accessToken: event.accessToken,
+            refreshToken: event.refreshToken,
           }),
       ),
     );
@@ -39,9 +34,18 @@ export class UserSagas {
       map(
         (event) =>
           new TrackUserImagesCommand({
-            type: 'user-avatar',
+            type: 'avatar',
             refId: event.userId,
           }),
+      ),
+    );
+
+  @Saga()
+  avatarCreated = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(AvatarCreatedEvent),
+      concatMap((event) =>
+        of(new CreateUserImageCommand(event), new TrackUserImagesCommand(event)),
       ),
     );
 }

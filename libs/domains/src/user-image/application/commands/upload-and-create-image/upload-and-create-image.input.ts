@@ -2,20 +2,24 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsString, IsUUID } from 'class-validator';
 
 @InputType()
-export class ConnectRolesInput {
+export class UploadAndCreateImageInput {
+  @IsString()
+  @Field()
+  type: string;
+
   @IsUUID()
   @Field(() => ID)
-  groupId: string;
+  refId: string;
 
   @IsUUID()
   @Field(() => ID)
   userId: string;
 
-  @IsString({ each: true })
-  @Field(() => [ID])
-  roleIds: string[];
+  @IsString()
+  @Field()
+  url: string;
 
-  @IsString({ each: true })
-  @Field(() => [String])
-  roleNames: string[];
+  @IsString()
+  @Field()
+  source: string;
 }

@@ -1,41 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { GuildMember, RoleManager, User } from 'discord.js';
-import { CreateUserFromDiscordInput } from '@lib/domains/user/application/commands/create-user-from-discord/create-user-from-discord.input';
 import { CreateRoleInput } from '@lib/domains/role/application/commands/create-role/create-role.input';
+import { SignInUserInput } from '@lib/domains/user/application/commands/sign-in-user/sing-in-user.input';
 import { GroupParser } from '../../group/parsers/group.parser';
 
 @Injectable()
 export class UserParser extends GroupParser {
-  parseCreateUserInputFromDiscordMember(guildMember: GuildMember): CreateUserFromDiscordInput {
-    const id = this.generateUUID();
+  parseSignInUserInput(provider: string, discordUser: User): SignInUserInput {
     return {
-      id,
-      username: guildMember.user.username,
-      avatarURL: guildMember.avatarURL() || guildMember.displayAvatarURL(),
-      socialAccountId: this.discordIdConverter.convertIdUsingDiscordNamespace(guildMember.id),
-      provider: 'discord',
-      socialId: guildMember.id,
-      // NOTE: 임시로 root groupId 지정
-      groupId: this.parseRootGroupId(),
-      memberId: this.parseMemberId(guildMember.id),
-      roleIds: guildMember.roles.cache.map((role) =>
-        this.discordIdConverter.convertIdUsingDiscordNamespace(role.id),
-      ),
-    };
-  }
-
-  parseCreateUserInputFromDiscordUser(discordUser: User): CreateUserFromDiscordInput {
-    const id = this.generateUUID();
-    return {
-      id,
+      id: this.generateUUID(),
       username: discordUser.username,
       avatarURL: discordUser.avatarURL() || discordUser.displayAvatarURL(),
-      socialAccountId: this.discordIdConverter.convertIdUsingDiscordNamespace(discordUser.id),
-      provider: 'discord',
+      provider,
       socialId: discordUser.id,
-      groupId: this.parseRootGroupId(),
-      memberId: this.parseMemberId(discordUser.id),
-      roleIds: [],
     };
   }
 
@@ -50,11 +27,7 @@ export class UserParser extends GroupParser {
     }));
   }
 
-  parseMemberId(discordMemberId: string): string {
-    return this.discordIdConverter.convertIdUsingGroupNamespace(discordMemberId);
-  }
-
-  parseRoleId(discordRoleId: string): string {
-    return this.discordIdConverter.convertIdUsingDiscordNamespace(discordRoleId);
+  parseRoleNames(discordMember: GuildMember): string[] {
+    return discordMember.roles.cache.map((role) => role.name);
   }
 }
