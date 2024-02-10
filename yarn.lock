@@ -1693,6 +1693,7 @@ __metadata:
     fs: ^0.0.1-security
     graphql: ^16.8.0
     js-yaml: ^4.1.0
+    jsonwebtoken: ^9.0.2
     mime-types: ^2.1.35
     nanoid: ^3.0.0
     prisma: ^5.8.1
@@ -9465,7 +9466,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:9.0.2, jsonwebtoken@npm:^9.0.0":
+"jsonwebtoken@npm:9.0.2, jsonwebtoken@npm:^9.0.0, jsonwebtoken@npm:^9.0.2":
   version: 9.0.2
   resolution: "jsonwebtoken@npm:9.0.2"
   dependencies:
