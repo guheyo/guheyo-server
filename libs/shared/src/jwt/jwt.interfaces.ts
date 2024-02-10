@@ -1,4 +1,4 @@
 export interface Payload {
   username: string;
-  avatarURL: string | null;
+  avatarURL?: string;
 }

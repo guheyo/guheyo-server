@@ -19,7 +19,7 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
     try {
       const user = {
         username: profile.username,
-        avatarURL: parseAvatarURL(profile.id, profile.avatar),
+        avatarURL: parseAvatarURL(profile.id, profile.avatar) || undefined,
         provider: profile.provider,
         socialId: profile.id,
         accessToken,
