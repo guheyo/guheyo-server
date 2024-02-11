@@ -313,6 +313,8 @@ type Mutation {
   deleteUser(id: ID!): String!
   deleteUserImage(id: ID!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!
+  logout: String!
+  refreshToken: String!
   updateAuction(input: UpdateAuctionInput!): String!
   updateDemand(input: UpdateDemandInput!): String!
   updateGroup(input: UpdateGroupInput!): String!
@@ -577,13 +579,15 @@ input UpdateSessionInput {
 input UpdateSocialAccountInput {
   accessToken: String
   expiresAt: Int
-  id: String!
+  id: ID
   idToken: String
+  provider: String
   refreshToken: String
   scope: String
   sessionState: String
+  socialId: String
   tokenType: String
-  userId: String!
+  userId: ID
 }
 
 input UpdateSwapInput {

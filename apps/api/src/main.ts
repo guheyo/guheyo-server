@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from '@lib/shared';
 import { ApiModule } from '@app/api/api.module';
 import passport from 'passport';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap(): Promise<void> {
   const expressAdapter = new ExpressAdapter();
@@ -34,6 +35,7 @@ async function bootstrap(): Promise<void> {
   );
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.use(passport.initialize());
+  app.use(cookieParser());
 
   await app.listen(serverConfig.port, '0.0.0.0');
 }

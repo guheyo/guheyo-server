@@ -31,6 +31,7 @@ import { AuthModule } from './app/auth/auth.module';
       resolvers: {
         DateTime: DateTimeResolver,
       },
+      context: (context: any) => context,
     }),
     AuthModule,
     UserModule,
