@@ -3,6 +3,7 @@ import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-a
 import { DeleteSocialAccountCommand } from '@lib/domains/social-account/application/commands/delete-social-account/delete-social-account.command';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { SocialAccountLoadPort } from '@lib/domains/social-account/application/ports/out/social-account.load.port';
+import _ from 'lodash';
 
 @Injectable()
 export class SocialAccountRepository
@@ -50,7 +51,15 @@ export class SocialAccountRepository
         id: socialAccount.id,
         userId: socialAccount.userId,
       },
-      data: socialAccount,
+      data: _.pick(socialAccount, [
+        'accessToken',
+        'refreshToken',
+        'expiresAt',
+        'tokenType',
+        'scope',
+        'idToken',
+        'sessionState',
+      ]),
     });
   }
 
