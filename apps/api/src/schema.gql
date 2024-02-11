@@ -313,8 +313,8 @@ type Mutation {
   deleteUser(id: ID!): String!
   deleteUserImage(id: ID!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!
-  logout: String!
-  refreshToken: String!
+  logout: String
+  refreshToken: String
   updateAuction(input: UpdateAuctionInput!): String!
   updateDemand(input: UpdateDemandInput!): String!
   updateGroup(input: UpdateGroupInput!): String!

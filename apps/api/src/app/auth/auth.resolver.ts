@@ -17,7 +17,7 @@ export class AuthResolver {
     private readonly jwtService: JwtService,
   ) {}
 
-  @Mutation(() => String)
+  @Mutation(() => String, { nullable: true })
   @UseGuards(JwtRefreshAuthGuard)
   async refreshToken(@Context('req') req: Request, @Context('res') res: Response) {
     const oldRefreshToken = this.jwtService.getRefreshTokenFromCookies(req);
@@ -54,9 +54,38 @@ export class AuthResolver {
     return res.status(HttpStatus.OK).send();
   }
 
-  @Mutation(() => String)
+  @Mutation(() => String, { nullable: true })
   @UseGuards(JwtRefreshAuthGuard)
   async logout(@Context('req') req: Request, @Context('res') res: Response) {
-    // TODO
+    const oldRefreshToken = this.jwtService.getRefreshTokenFromCookies(req);
+    if (!oldRefreshToken) {
+      return res.status(HttpStatus.UNAUTHORIZED).send();
+    }
+    const payload = _.pick(this.jwtService.verifyRefreshToken(oldRefreshToken) as Payload, [
+      'username',
+      'provider',
+      'socialId',
+      'avatarURL',
+    ]);
+    const socialAccount = await this.queryBus.execute(
+      new FindSocialAccountQuery({
+        provider: payload.provider,
+        socialId: payload.socialId,
+        refreshToken: oldRefreshToken,
+      }),
+    );
+    if (!socialAccount) {
+      return res.status(HttpStatus.UNAUTHORIZED).send();
+    }
+    await this.commandBus.execute(
+      new UpdateSocialAccountCommand({
+        id: socialAccount.id,
+        accessToken: undefined,
+        refreshToken: undefined,
+      }),
+    );
+    this.jwtService.clearAccessTokenCookie(res);
+    this.jwtService.clearRefreshTokenCookie(res);
+    return res.status(HttpStatus.OK).send();
   }
 }
