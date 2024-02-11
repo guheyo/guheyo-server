@@ -26,7 +26,7 @@ export class SocialAccountResolver {
   @Mutation(() => String)
   async updateSocialAccount(@Args('input') input: UpdateSocialAccountInput): Promise<string> {
     await this.commandBus.execute(new UpdateSocialAccountCommand(input));
-    return input.id;
+    return 'ok';
   }
 
   @Mutation(() => String)
