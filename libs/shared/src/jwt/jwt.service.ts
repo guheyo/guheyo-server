@@ -48,7 +48,7 @@ export class JwtService {
     res.cookie('refresh-token', token, this.getRefreshTokenCookieOption());
   }
 
-  getRefreshToken(req: Request): string | null {
+  getRefreshTokenFromCookies(req: Request): string | null {
     return req.cookies?.['refresh-token'];
   }
 }
