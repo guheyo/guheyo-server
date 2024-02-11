@@ -1,13 +1,13 @@
 import { Controller, Get, HttpStatus, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { v4 as uuid4 } from 'uuid';
-import _ from 'lodash';
 import { QueryBus, CommandBus } from '@nestjs/cqrs';
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 import { SignInUserInput } from '@lib/domains/user/application/commands/sign-in-user/sing-in-user.input';
 import { SignInUserCommand } from '@lib/domains/user/application/commands/sign-in-user/sign-in-user.command';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@lib/shared/jwt/jwt.service';
+import { UpdateSocialAccountCommand } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.command';
 
 @Controller('auth')
 export class AuthController {
@@ -27,34 +27,42 @@ export class AuthController {
   @UseGuards(AuthGuard('discord'))
   async discordLoginCallback(@Req() req: any, @Res() res: Response) {
     const input = req.user as SignInUserInput;
-    const user = await this.findUserBySocialAccount(input.provider, input.socialId);
-    if (user) {
-      res.status(HttpStatus.OK).send();
-      return;
-    }
+    const payload = {
+      username: input.username,
+      provider: input.provider,
+      socialId: input.socialId,
+      avatarURL: input.avatarURL,
+    };
+    const accessToken = this.jwtService.signAccessToken(payload);
+    const refreshToken = this.jwtService.signRefreshToken(payload);
 
-    await this.commandBus.execute(
-      new SignInUserCommand({
-        ...input,
-        id: uuid4(),
-      }),
-    );
-    this.jwtService.setJwtCookies(
-      {
-        username: input.username,
-        avatarURL: input.avatarURL,
-      },
-      res,
-    );
-    res.status(HttpStatus.OK).send();
-  }
-
-  private findUserBySocialAccount(provider: string, socialId: string) {
-    return this.queryBus.execute(
+    const user = await this.queryBus.execute(
       new FindUserQuery({
-        provider,
-        socialId,
+        provider: input.provider,
+        socialId: input.socialId,
       }),
     );
+    if (user) {
+      await this.commandBus.execute(
+        new UpdateSocialAccountCommand({
+          provider: input.provider,
+          socialId: input.socialId,
+          accessToken,
+          refreshToken,
+        }),
+      );
+    } else {
+      await this.commandBus.execute(
+        new SignInUserCommand({
+          ...input,
+          id: uuid4(),
+          accessToken,
+          refreshToken,
+        }),
+      );
+    }
+    this.jwtService.setAccessTokenCookie(accessToken, res);
+    this.jwtService.setRefreshTokenCookie(refreshToken, res);
+    res.status(HttpStatus.OK).send();
   }
 }
