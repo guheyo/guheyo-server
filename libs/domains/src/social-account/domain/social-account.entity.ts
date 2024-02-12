@@ -1,5 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs/dist';
 import _ from 'lodash';
+import { hashToken } from '@lib/shared/bcrypt/bcypt';
 import { UpdateSocialAccountProps } from './social-account.types';
 
 export class SocialAccountEntity extends AggregateRoot {
@@ -36,7 +37,15 @@ export class SocialAccountEntity extends AggregateRoot {
     Object.assign(this, partial);
   }
 
-  update(props: UpdateSocialAccountProps) {
-    Object.assign(this, _.pickBy(props, _.identity));
+  async init() {
+    this.accessToken = this.accessToken ? await hashToken(this.accessToken) : null;
+    this.refreshToken = this.refreshToken ? await hashToken(this.refreshToken) : null;
+  }
+
+  async update(props: UpdateSocialAccountProps) {
+    Object.assign(this, _.pickBy(props, _.identity), {
+      accessToken: props?.accessToken ? await hashToken(props.accessToken) : null,
+      refreshToken: props?.refreshToken ? await hashToken(props.refreshToken) : null,
+    });
   }
 }

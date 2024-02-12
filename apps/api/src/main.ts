@@ -1,10 +1,11 @@
 import { NestFactory, Reflector } from '@nestjs/core';
-import { ClassSerializerInterceptor, RequestMethod, ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from '@lib/shared';
 import { ApiModule } from '@app/api/api.module';
 import passport from 'passport';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap(): Promise<void> {
   const expressAdapter = new ExpressAdapter();
@@ -17,14 +18,6 @@ async function bootstrap(): Promise<void> {
 
   app.enableShutdownHooks();
   app.useGlobalFilters(new HttpExceptionFilter()); // 전역 필터 적용
-  app.setGlobalPrefix('api', {
-    exclude: [
-      {
-        path: 'check_health',
-        method: RequestMethod.GET,
-      },
-    ],
-  });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // DTO에 없는 값은 거르고 에러메세지 출력
@@ -34,6 +27,7 @@ async function bootstrap(): Promise<void> {
   );
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.use(passport.initialize());
+  app.use(cookieParser());
 
   await app.listen(serverConfig.port, '0.0.0.0');
 }

@@ -1,15 +1,27 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import { IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class UpdateSocialAccountInput {
+  @IsOptional()
   @IsUUID()
-  @Field()
-  id: string;
+  @Field(() => ID, { nullable: true })
+  id?: string;
 
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  provider?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  socialId?: string;
+
+  @IsOptional()
   @IsUUID()
-  @Field()
-  userId: string;
+  @Field(() => ID, { nullable: true })
+  userId?: string;
 
   @IsOptional()
   @IsString()

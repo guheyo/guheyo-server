@@ -22,8 +22,6 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
         avatarURL: parseAvatarURL(profile.id, profile.avatar) || undefined,
         provider: profile.provider,
         socialId: profile.id,
-        accessToken,
-        refreshToken,
       };
       done(null, user);
     } catch (err) {
