@@ -57,6 +57,6 @@ export class AuthController {
     }
     this.jwtService.setAccessTokenCookie(accessToken, res);
     this.jwtService.setRefreshTokenCookie(refreshToken, res);
-    res.status(HttpStatus.OK).send();
+    return res.status(HttpStatus.OK).send();
   }
 }
