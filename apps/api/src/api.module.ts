@@ -18,6 +18,7 @@ import { DiscordMessageModule } from './app/discord-message/discord-message.modu
 import { SessionModule } from './app/session/session.module';
 import { TermModule } from './app/term/term.module';
 import { AuthModule } from './app/auth/auth.module';
+import { CommonModule } from './app/common/common.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { AuthModule } from './app/auth/auth.module';
       context: (context: any) => context,
     }),
     AuthModule,
+    CommonModule,
     UserModule,
     SocialAccountModule,
     MemberModule,

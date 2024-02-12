@@ -12,7 +12,7 @@ import { DiscordStrategy } from './discord/discord.strategy';
 
 @Module({
   imports: [CqrsModule, PrismaModule, PassportModule.register({}), JwtModule.register({})],
-  providers: [AuthResolver, JwtAccessStrategy, JwtRefreshStrategy, JwtService, DiscordStrategy],
   controllers: [AuthController],
+  providers: [AuthResolver, JwtAccessStrategy, JwtRefreshStrategy, JwtService, DiscordStrategy],
 })
 export class AuthModule {}

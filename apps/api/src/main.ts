@@ -1,5 +1,5 @@
 import { NestFactory, Reflector } from '@nestjs/core';
-import { ClassSerializerInterceptor, RequestMethod, ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from '@lib/shared';
@@ -18,14 +18,6 @@ async function bootstrap(): Promise<void> {
 
   app.enableShutdownHooks();
   app.useGlobalFilters(new HttpExceptionFilter()); // 전역 필터 적용
-  app.setGlobalPrefix('api', {
-    exclude: [
-      {
-        path: 'check_health',
-        method: RequestMethod.GET,
-      },
-    ],
-  });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // DTO에 없는 값은 거르고 에러메세지 출력

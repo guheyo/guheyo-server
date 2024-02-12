@@ -9,7 +9,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@lib/shared/jwt/jwt.service';
 import { UpdateSocialAccountCommand } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.command';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(
     private readonly queryBus: QueryBus,
