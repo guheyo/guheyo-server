@@ -27,25 +27,20 @@ export class AuthController {
   @UseGuards(AuthGuard('discord'))
   async discordLoginCallback(@Req() req: any, @Res() res: Response) {
     const input = req.user as SignInUserInput;
-    const jwtUser = {
-      username: input.username,
-      provider: input.provider,
-      socialId: input.socialId,
-      avatarURL: input.avatarURL,
-    };
+    const jwtUser = this.jwtService.parseJwtUserFromSignInUserInput(input);
     const accessToken = this.jwtService.signAccessToken(jwtUser);
     const refreshToken = this.jwtService.signRefreshToken(jwtUser);
     const user = await this.queryBus.execute(
       new FindUserQuery({
-        provider: input.provider,
-        socialId: input.socialId,
+        provider: jwtUser.provider,
+        socialId: jwtUser.socialId,
       }),
     );
     if (user) {
       await this.commandBus.execute(
         new UpdateSocialAccountCommand({
-          provider: input.provider,
-          socialId: input.socialId,
+          provider: jwtUser.provider,
+          socialId: jwtUser.socialId,
           accessToken,
           refreshToken,
         }),

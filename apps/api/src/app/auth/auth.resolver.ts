@@ -17,7 +17,7 @@ export class AuthResolver {
   @Mutation(() => String, { nullable: true })
   @UseGuards(JwtRefreshAuthGuard)
   async refreshToken(@Context('req') req: Request, @Context('res') res: Response) {
-    const jwtUser = this.jwtService.parseJwtUser(req.user as Payload);
+    const jwtUser = this.jwtService.parseJwtUserFromPayload(req.user as Payload);
     const accessToken = this.jwtService.signAccessToken(jwtUser);
     const refreshToken = this.jwtService.signRefreshToken(jwtUser);
     await this.commandBus.execute(
@@ -36,7 +36,7 @@ export class AuthResolver {
   @Mutation(() => String, { nullable: true })
   @UseGuards(JwtRefreshAuthGuard)
   async logout(@Context('req') req: Request, @Context('res') res: Response) {
-    const jwtUser = this.jwtService.parseJwtUser(req.user as Payload);
+    const jwtUser = this.jwtService.parseJwtUserFromPayload(req.user as Payload);
     await this.commandBus.execute(
       new UpdateSocialAccountCommand({
         provider: jwtUser.provider,

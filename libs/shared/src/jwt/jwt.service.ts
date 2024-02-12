@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { CookieOptions, Request, Response } from 'express';
 import { sign, verify } from 'jsonwebtoken';
 import _ from 'lodash';
+import { SignInUserInput } from '@lib/domains/user/application/commands/sign-in-user/sing-in-user.input';
 import { JwtUser, Payload } from './jwt.interfaces';
 
 @Injectable()
@@ -21,8 +22,12 @@ export class JwtService {
     });
   }
 
-  parseJwtUser(payload: Payload): JwtUser {
+  parseJwtUserFromPayload(payload: Payload): JwtUser {
     return _.pick(payload, ['username', 'provider', 'socialId', 'avatarURL']);
+  }
+
+  parseJwtUserFromSignInUserInput(input: SignInUserInput): JwtUser {
+    return _.pick(input, ['username', 'provider', 'socialId', 'avatarURL']);
   }
 
   verifyRefreshToken(token: string) {
