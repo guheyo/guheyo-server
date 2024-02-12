@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { v4 as uuid4 } from 'uuid';
 import { QueryBus, CommandBus } from '@nestjs/cqrs';
@@ -8,6 +8,7 @@ import { SignInUserCommand } from '@lib/domains/user/application/commands/sign-i
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@lib/shared/jwt/jwt.service';
 import { UpdateSocialAccountCommand } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.command';
+import { JwtResponse } from './jwt/jwt.response';
 
 @Controller('api/auth')
 export class AuthController {
@@ -19,13 +20,13 @@ export class AuthController {
 
   @Get('discord')
   @UseGuards(AuthGuard('discord'))
-  async discordLogin(): Promise<void> {
-    // do nothing
+  async discordLogin(): Promise<string> {
+    return 'login';
   }
 
   @Get('discord/callback')
   @UseGuards(AuthGuard('discord'))
-  async discordLoginCallback(@Req() req: any, @Res() res: Response) {
+  async discordLoginCallback(@Req() req: any, @Res() res: Response): Promise<JwtResponse> {
     const input = req.user as SignInUserInput;
     const jwtUser = this.jwtService.parseJwtUserFromSignInUserInput(input);
     const accessToken = this.jwtService.signAccessToken(jwtUser);
@@ -57,6 +58,9 @@ export class AuthController {
     }
     this.jwtService.setAccessTokenCookie(accessToken, res);
     this.jwtService.setRefreshTokenCookie(refreshToken, res);
-    return res.status(HttpStatus.OK).send();
+    return new JwtResponse({
+      accessToken,
+      refreshToken,
+    });
   }
 }

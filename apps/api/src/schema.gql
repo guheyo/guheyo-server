@@ -275,6 +275,11 @@ type GroupResponseEdge {
   node: GroupResponse!
 }
 
+type JwtResponse {
+  accessToken: String!
+  refreshToken: String!
+}
+
 type MemberWithRolesResponse {
   createdAt: DateTime!
   groupId: String!
@@ -313,8 +318,8 @@ type Mutation {
   deleteUser(id: ID!): String!
   deleteUserImage(id: ID!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!
-  logout: String
-  refreshToken: String
+  logout: String!
+  refreshToken: JwtResponse!
   updateAuction(input: UpdateAuctionInput!): String!
   updateDemand(input: UpdateDemandInput!): String!
   updateGroup(input: UpdateGroupInput!): String!
