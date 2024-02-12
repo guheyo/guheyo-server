@@ -27,15 +27,14 @@ export class AuthController {
   @UseGuards(AuthGuard('discord'))
   async discordLoginCallback(@Req() req: any, @Res() res: Response) {
     const input = req.user as SignInUserInput;
-    const payload = {
+    const jwtUser = {
       username: input.username,
       provider: input.provider,
       socialId: input.socialId,
       avatarURL: input.avatarURL,
     };
-    const accessToken = this.jwtService.signAccessToken(payload);
-    const refreshToken = this.jwtService.signRefreshToken(payload);
-
+    const accessToken = this.jwtService.signAccessToken(jwtUser);
+    const refreshToken = this.jwtService.signRefreshToken(jwtUser);
     const user = await this.queryBus.execute(
       new FindUserQuery({
         provider: input.provider,
