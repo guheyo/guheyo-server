@@ -1,6 +1,9 @@
 server:
   version:
   port:
+frontend:
+  host:
+  port:
 oauth2:
   discord:
     clientId:
