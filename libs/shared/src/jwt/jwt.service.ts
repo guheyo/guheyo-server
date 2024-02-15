@@ -39,7 +39,7 @@ export class JwtService {
       sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'none',
       httpOnly: true,
       secure: true, // https, except for localhost
-      maxAge: this.configService.get('jwt.access.expiresIn'),
+      maxAge: this.configService.get('jwt.access.expiresIn') * 1000, // millisecond
       domain: this.configService.get('jwt.access.domain'), // BE
     };
   }
@@ -49,7 +49,7 @@ export class JwtService {
       sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'none',
       httpOnly: true,
       secure: true,
-      maxAge: this.configService.get('jwt.refresh.expiresIn'),
+      maxAge: this.configService.get('jwt.refresh.expiresIn') * 1000,
       domain: this.configService.get('jwt.refresh.domain'),
     };
   }
