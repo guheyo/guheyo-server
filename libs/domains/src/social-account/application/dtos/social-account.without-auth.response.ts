@@ -1,7 +1,8 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { SocialUserResponse } from './social-user.response';
 
 @ObjectType()
-export class SocialAccountWithoutAuthResponse {
+export class SocialAccountWithoutAuthResponse extends SocialUserResponse {
   @Field(() => ID)
   id: string;
 
@@ -9,15 +10,10 @@ export class SocialAccountWithoutAuthResponse {
   createdAt: Date;
 
   @Field()
-  provider: string;
-
-  @Field()
-  socialId: string;
-
-  @Field()
   userId: string;
 
   constructor(partial: Partial<SocialAccountWithoutAuthResponse>) {
+    super(partial);
     Object.assign(this, partial);
   }
 }
