@@ -15,9 +15,11 @@ oauth2:
     callbackURL:
 jwt:
   access:
+    domain:
     secret:
     expiresIn:
   refresh:
+    domain:
     secret:
     expiresIn:
 postgresql:

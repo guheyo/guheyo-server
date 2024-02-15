@@ -36,17 +36,21 @@ export class JwtService {
 
   getAccessTokenCookieOption(): CookieOptions {
     return {
-      sameSite: true,
+      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'none',
       httpOnly: true,
-      secure: process.env.NOTE_ENV === 'production',
+      secure: true, // https, except for localhost
+      maxAge: this.configService.get('jwt.access.expiresIn'),
+      domain: this.configService.get('jwt.access.domain'), // BE
     };
   }
 
   getRefreshTokenCookieOption(): CookieOptions {
     return {
-      sameSite: true,
+      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'none',
       httpOnly: true,
-      secure: process.env.NOTE_ENV === 'production',
+      secure: true,
+      maxAge: this.configService.get('jwt.refresh.expiresIn'),
+      domain: this.configService.get('jwt.refresh.domain'),
     };
   }
 
