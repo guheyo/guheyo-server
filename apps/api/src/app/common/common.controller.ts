@@ -1,15 +1,15 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Res } from '@nestjs/common';
 import { Response } from 'express';
 
 @Controller()
 export class CommonController {
   @Get('favicon.ico')
-  getFavicon(@Res() res: Response): string {
-    return 'NO CONTENT';
+  getFavicon(@Res() res: Response) {
+    res.status(HttpStatus.NOT_FOUND).send();
   }
 
   @Get()
-  getNoContent(@Res() res: Response): string {
-    return 'NO CONTENT';
+  getNoContent(@Res() res: Response) {
+    res.status(HttpStatus.NOT_FOUND).send();
   }
 }
