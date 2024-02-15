@@ -6,18 +6,26 @@ import { HttpExceptionFilter } from '@lib/shared';
 import { ApiModule } from '@app/api/api.module';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
 async function bootstrap(): Promise<void> {
   const expressAdapter = new ExpressAdapter();
-  const app = await NestFactory.create(ApiModule, expressAdapter, {
-    cors: process.env.NODE_ENV === 'dev',
-  });
+  const app = await NestFactory.create(ApiModule, expressAdapter);
+
+  const corsOptions: CorsOptions =
+    process.env.NODE_ENV === 'dev'
+      ? {
+          origin: 'http://localhost:3000',
+          credentials: true,
+        }
+      : {};
+  app.enableCors(corsOptions);
 
   const configService = app.get(ConfigService);
   const serverConfig = configService.get('server');
 
   app.enableShutdownHooks();
-  app.useGlobalFilters(new HttpExceptionFilter()); // 전역 필터 적용
+  app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // DTO에 없는 값은 거르고 에러메세지 출력

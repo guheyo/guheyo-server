@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { v4 as uuid4 } from 'uuid';
 import { QueryBus, CommandBus } from '@nestjs/cqrs';
@@ -8,7 +8,7 @@ import { SignInUserCommand } from '@lib/domains/user/application/commands/sign-i
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@lib/shared/jwt/jwt.service';
 import { UpdateSocialAccountCommand } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.command';
-import { JwtResponse } from './jwt/jwt.response';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('api/auth')
 export class AuthController {
@@ -16,17 +16,18 @@ export class AuthController {
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   @Get('discord')
   @UseGuards(AuthGuard('discord'))
-  async discordLogin(): Promise<string> {
-    return 'login';
+  discordLogin(@Res() res: Response) {
+    return res.status(HttpStatus.OK).send();
   }
 
   @Get('discord/callback')
   @UseGuards(AuthGuard('discord'))
-  async discordLoginCallback(@Req() req: any, @Res() res: Response): Promise<JwtResponse> {
+  async discordLoginCallback(@Req() req: any, @Res() res: Response) {
     const input = req.user as SignInUserInput;
     const jwtUser = this.jwtService.parseJwtUserFromSignInUserInput(input);
     const accessToken = this.jwtService.signAccessToken(jwtUser);
@@ -58,9 +59,8 @@ export class AuthController {
     }
     this.jwtService.setAccessTokenCookie(accessToken, res);
     this.jwtService.setRefreshTokenCookie(refreshToken, res);
-    return new JwtResponse({
-      accessToken,
-      refreshToken,
-    });
+    return res.redirect(
+      `${this.configService.get(`frontend.host`)!}:${this.configService.get('frontend.port')}`,
+    );
   }
 }

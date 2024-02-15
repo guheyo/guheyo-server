@@ -5,11 +5,11 @@ import { Response } from 'express';
 export class CommonController {
   @Get('favicon.ico')
   getFavicon(@Res() res: Response) {
-    return res.status(HttpStatus.NO_CONTENT).send('ok');
+    res.status(HttpStatus.NOT_FOUND).send();
   }
 
   @Get()
   getNoContent(@Res() res: Response) {
-    return res.status(HttpStatus.NO_CONTENT).send('ok');
+    res.status(HttpStatus.NOT_FOUND).send();
   }
 }

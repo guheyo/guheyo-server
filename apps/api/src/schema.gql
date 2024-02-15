@@ -318,7 +318,7 @@ type Mutation {
   deleteUser(id: ID!): String!
   deleteUserImage(id: ID!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!
-  logout: String!
+  logout: SocialUserResponse!
   refreshToken: JwtResponse!
   updateAuction(input: UpdateAuctionInput!): String!
   updateDemand(input: UpdateDemandInput!): String!
@@ -485,6 +485,11 @@ type SocialAccountWithoutAuthResponse {
   provider: String!
   socialId: String!
   userId: String!
+}
+
+type SocialUserResponse {
+  provider: String!
+  socialId: String!
 }
 
 type SwapResponse {
