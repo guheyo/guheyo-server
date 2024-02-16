@@ -53,13 +53,14 @@ export abstract class BulkSaveSlashCommandHandler {
   }
 
   async saveMessage(message: Message, discordGuild: Guild) {
-    const member = await this.discordManager.fetchMember(discordGuild, message.author);
-    const user = await this.userClient.fetchSimpleUser('discord', member);
-    const group = await this.groupClient.fetchGroupFromMessage(message);
     try {
+      const member = await this.discordManager.fetchMember(discordGuild, message.author);
+      const user = await this.userClient.fetchSimpleUser('discord', member);
+      const group = await this.groupClient.fetchGroupFromMessage(message);
       await this.dealClient.createDealFromMessage(user.id, message, group);
     } catch (e) {
-      console.log(e);
+      // NOTE: do nothing
+      // console.log(e);
     }
   }
 }
