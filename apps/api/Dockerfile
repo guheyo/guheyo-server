@@ -20,6 +20,4 @@ COPY libs ./libs
 RUN npx @nestjs/cli build api
 
 # run
-ARG DOCKER_ENV
-ENV NODE_ENV=$DOCKER_ENV
-CMD node ./dist/apps/api/main.js -e NODE_ENV=${NODE_ENV}
+CMD node ./dist/apps/api/main.js
