@@ -15,7 +15,7 @@ async function bootstrap(): Promise<void> {
   const corsOptions: CorsOptions =
     process.env.NODE_ENV === 'dev'
       ? {
-          origin: 'http://localhost:3000',
+          origin: process.env.ORIGINS?.split(','),
           credentials: true,
         }
       : {};
