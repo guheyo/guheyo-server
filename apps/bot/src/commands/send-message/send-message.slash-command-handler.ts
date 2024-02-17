@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { ChannelType, TextBasedChannel } from 'discord.js';
+import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
 import { SendMessageRequest } from './send-message.request';
 
+@UseGuards(OwnerGuard)
 @Injectable()
 export class SendMessageSlashCommandHandler {
   @SlashCommand({ name: 'send-message', description: 'Send a message to the channel' })

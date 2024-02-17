@@ -1,6 +1,8 @@
 server:
   version:
   port:
+  cors:
+    origins:
 frontend:
   host:
   port:
@@ -44,6 +46,3 @@ logger:
   pretty:
   level:
   stdout:
-discord:
-  bot:
-    token:

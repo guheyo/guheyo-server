@@ -20,6 +20,4 @@ COPY libs ./libs
 RUN npx @nestjs/cli build bot
 
 # run
-ARG DOCKER_ENV
-ENV NODE_ENV=$DOCKER_ENV
-CMD node ./dist/apps/bot/main.js -e NODE_ENV=${NODE_ENV}
+CMD node ./dist/apps/bot/main.js

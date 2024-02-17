@@ -12,18 +12,15 @@ async function bootstrap(): Promise<void> {
   const expressAdapter = new ExpressAdapter();
   const app = await NestFactory.create(ApiModule, expressAdapter);
 
+  const configService = app.get(ConfigService);
   const corsOptions: CorsOptions =
     process.env.NODE_ENV === 'dev'
       ? {
-          origin: 'http://localhost:3000',
+          origin: configService.get('server.cors.origins'),
           credentials: true,
         }
       : {};
   app.enableCors(corsOptions);
-
-  const configService = app.get(ConfigService);
-  const serverConfig = configService.get('server');
-
   app.enableShutdownHooks();
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(
@@ -37,7 +34,7 @@ async function bootstrap(): Promise<void> {
   app.use(passport.initialize());
   app.use(cookieParser());
 
-  await app.listen(serverConfig.port, '0.0.0.0');
+  await app.listen(configService.get('server.port')!, '0.0.0.0');
 }
 
 bootstrap();

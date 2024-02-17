@@ -1658,6 +1658,7 @@ __metadata:
     "@nestjs/swagger": ^7.1.8
     "@nestjs/testing": ^10.2.1
     "@prisma/client": ^5.8.1
+    "@types/uuid": ^9.0.8
     bcrypt: ^5.1.1
     class-transformer: ^0.5.1
     class-validator: ^0.14.0
@@ -4102,6 +4103,13 @@ __metadata:
   version: 9.0.4
   resolution: "@types/uuid@npm:9.0.4"
   checksum: 356e2504456eaebbc43a5af5ca6c07d71f5ae5520b5767cb1c62cd0ec55475fc4ee3d16a2874f4a5fce78e40e8583025afd3a7d9ba41f82939de310665f53f0e
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^9.0.8":
+  version: 9.0.8
+  resolution: "@types/uuid@npm:9.0.8"
+  checksum: b8c60b7ba8250356b5088302583d1704a4e1a13558d143c549c408bf8920535602ffc12394ede77f8a8083511b023704bc66d1345792714002bfa261b17c5275
   languageName: node
   linkType: hard
 

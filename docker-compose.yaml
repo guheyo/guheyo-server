@@ -4,11 +4,12 @@ services:
     build:
       dockerfile: ./apps/api/Dockerfile
       context: .
-    ports:
-      - "8080:8080"
+    environment:
+      - NODE_ENV
+# docker-compose run -e NODE_ENV=dev -p 8080:8080 api
   bot:
     build:
       dockerfile: ./apps/bot/Dockerfile
       context: .
-    ports:
-      - "3000:3000"
+    environment:
+      - NODE_ENV
