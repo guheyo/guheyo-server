@@ -11,7 +11,6 @@
   ],
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "tsc",
     "build:api": "nest build api",
     "build:bot": "nest build bot",
     "start": "./node_modules/pm2/bin/pm2-runtime ./dist/apps/api/main.js",
