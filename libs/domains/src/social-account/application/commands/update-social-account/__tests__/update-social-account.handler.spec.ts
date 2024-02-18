@@ -22,7 +22,7 @@ describe('UpdateSocialAccountCommand', () => {
     idToken: 'id-token',
     sessionState: 'session-state',
   };
-  when(socialAccountLoadPort.findById(command.id)).thenResolve(
+  when(socialAccountLoadPort.findById(command.id!)).thenResolve(
     new SocialAccountEntity({
       id: command.id,
     }),
