@@ -63,4 +63,16 @@ export class AuthController {
       `${this.configService.get(`frontend.host`)!}:${this.configService.get('frontend.port')}`,
     );
   }
+
+  @Get('naver')
+  @UseGuards(AuthGuard('naver'))
+  naverdLogin(@Res() res: Response) {
+    return res.status(HttpStatus.OK).send();
+  }
+
+  @Get('naver/callback')
+  @UseGuards(AuthGuard('naver'))
+  async naverLoginCallback(@Req() req: any, @Res() res: Response) {
+    // TODO
+  }
 }
