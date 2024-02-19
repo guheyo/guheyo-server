@@ -37,7 +37,7 @@ export class JwtService {
   getAccessTokenCookieOption(): CookieOptions {
     return {
       sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'none',
-      httpOnly: true,
+      httpOnly: false,
       secure: true, // https, except for localhost
       maxAge: this.configService.get('jwt.access.expiresIn') * 1000, // millisecond
       domain: this.configService.get('jwt.access.domain'), // BE
