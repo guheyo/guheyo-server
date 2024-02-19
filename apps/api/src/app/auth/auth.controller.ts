@@ -29,29 +29,53 @@ export class AuthController {
   @UseGuards(AuthGuard('discord'))
   async discordLoginCallback(@Req() req: any, @Res() res: Response) {
     const input = req.user as SignInUserInput;
-    const jwtUser = this.jwtService.parseJwtUserFromSignInUserInput(input);
-    const accessToken = this.jwtService.signAccessToken(jwtUser);
-    const refreshToken = this.jwtService.signRefreshToken(jwtUser);
     const user = await this.queryBus.execute(
       new FindUserQuery({
-        provider: jwtUser.provider,
-        socialId: jwtUser.socialId,
+        provider: input.provider,
+        socialId: input.socialId,
       }),
     );
+    let accessToken: string;
+    let refreshToken: string;
     if (user) {
+      accessToken = this.jwtService.signAccessToken(
+        this.jwtService.parseJwtUser({
+          ...input,
+          id: user.id,
+        }),
+      );
+      refreshToken = this.jwtService.signRefreshToken(
+        this.jwtService.parseJwtUser({
+          ...input,
+          id: user.id,
+        }),
+      );
       await this.commandBus.execute(
         new UpdateSocialAccountCommand({
-          provider: jwtUser.provider,
-          socialId: jwtUser.socialId,
+          provider: input.provider,
+          socialId: input.socialId,
           accessToken,
           refreshToken,
         }),
       );
     } else {
+      const id = uuid4();
+      accessToken = this.jwtService.signAccessToken(
+        this.jwtService.parseJwtUser({
+          ...input,
+          id,
+        }),
+      );
+      refreshToken = this.jwtService.signRefreshToken(
+        this.jwtService.parseJwtUser({
+          ...input,
+          id,
+        }),
+      );
       await this.commandBus.execute(
         new SignInUserCommand({
           ...input,
-          id: uuid4(),
+          id,
           accessToken,
           refreshToken,
         }),
