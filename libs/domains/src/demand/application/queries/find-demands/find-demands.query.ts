@@ -3,7 +3,8 @@ import { FindDemandsArgs } from './find-demands.args';
 
 export class FindDemandsQuery extends PaginationQuery {
   where: {
-    productCategoryId: string;
+    productCategoryId?: string;
+    buyerId?: string;
     status?: string;
   };
 
@@ -11,6 +12,7 @@ export class FindDemandsQuery extends PaginationQuery {
     super(findDemandsArgs);
     this.where = {
       productCategoryId: findDemandsArgs.productCategoryId,
+      buyerId: findDemandsArgs.buyerId,
       status: findDemandsArgs.status,
     };
   }

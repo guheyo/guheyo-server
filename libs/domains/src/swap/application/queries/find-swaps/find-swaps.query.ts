@@ -3,7 +3,8 @@ import { FindSwapsArgs } from './find-swaps.args';
 
 export class FindSwapsQuery extends PaginationQuery {
   where: {
-    productCategoryId: string;
+    productCategoryId?: string;
+    proposerId?: string;
     status?: string;
   };
 
@@ -11,6 +12,7 @@ export class FindSwapsQuery extends PaginationQuery {
     super(findSwapsArgs);
     this.where = {
       productCategoryId: findSwapsArgs.productCategoryId,
+      proposerId: findSwapsArgs.proposerId,
       status: findSwapsArgs.status,
     };
   }

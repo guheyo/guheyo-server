@@ -4,9 +4,15 @@ import { IsString, IsOptional } from 'class-validator';
 
 @ArgsType()
 export class FindSwapsArgs extends PaginationArgs {
+  @IsOptional()
   @IsString()
-  @Field(() => ID)
-  productCategoryId: string;
+  @Field(() => ID, { nullable: true })
+  productCategoryId?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => ID, { nullable: true })
+  proposerId?: string;
 
   @IsOptional()
   @IsString()
