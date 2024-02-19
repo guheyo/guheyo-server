@@ -319,7 +319,7 @@ type Mutation {
   deleteUserImage(id: ID!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!
   logout: SocialUserResponse!
-  refreshToken: JwtResponse!
+  refreshTokens: JwtResponse!
   updateAuction(input: UpdateAuctionInput!): String!
   updateDemand(input: UpdateDemandInput!): String!
   updateGroup(input: UpdateGroupInput!): String!

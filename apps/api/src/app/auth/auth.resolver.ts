@@ -18,7 +18,7 @@ export class AuthResolver {
 
   @Mutation(() => JwtResponse)
   @UseGuards(JwtRefreshAuthGuard)
-  async refreshToken(
+  async refreshTokens(
     @Context('req') req: Request,
     @Context('res') res: Response,
   ): Promise<JwtResponse> {
