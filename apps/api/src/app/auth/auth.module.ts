@@ -9,10 +9,18 @@ import { JwtAccessStrategy } from './jwt/jwt-access.strategy';
 import { JwtRefreshStrategy } from './jwt/jwt-refresh.strategy';
 import { AuthController } from './auth.controller';
 import { DiscordStrategy } from './discord/discord.strategy';
+import { NaverStrategy } from './naver/naver.strategy';
 
 @Module({
   imports: [CqrsModule, PrismaModule, PassportModule.register({}), JwtModule.register({})],
   controllers: [AuthController],
-  providers: [AuthResolver, JwtAccessStrategy, JwtRefreshStrategy, JwtService, DiscordStrategy],
+  providers: [
+    AuthResolver,
+    JwtAccessStrategy,
+    JwtRefreshStrategy,
+    JwtService,
+    DiscordStrategy,
+    NaverStrategy,
+  ],
 })
 export class AuthModule {}
