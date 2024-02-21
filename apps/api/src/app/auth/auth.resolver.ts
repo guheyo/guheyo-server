@@ -22,13 +22,13 @@ export class AuthResolver {
     @Context('req') req: Request,
     @Context('res') res: Response,
   ): Promise<JwtResponse> {
-    const jwtUser = this.jwtService.parseJwtUserFromPayload(req.user as Payload);
-    const accessToken = this.jwtService.signAccessToken(jwtUser);
-    const refreshToken = this.jwtService.signRefreshToken(jwtUser);
+    const payload = req.user as Payload;
+    const accessToken = this.jwtService.signAccessToken(this.jwtService.parseJwtUser(payload));
+    const refreshToken = this.jwtService.signRefreshToken(this.jwtService.parseJwtUser(payload));
     await this.commandBus.execute(
       new UpdateSocialAccountCommand({
-        provider: jwtUser.provider,
-        socialId: jwtUser.socialId,
+        provider: payload.provider,
+        socialId: payload.socialId,
         accessToken,
         refreshToken,
       }),
@@ -47,11 +47,11 @@ export class AuthResolver {
     @Context('req') req: Request,
     @Context('res') res: Response,
   ): Promise<SocialUserResponse> {
-    const jwtUser = this.jwtService.parseJwtUserFromPayload(req.user as Payload);
+    const payload = req.user as Payload;
     await this.commandBus.execute(
       new UpdateSocialAccountCommand({
-        provider: jwtUser.provider,
-        socialId: jwtUser.socialId,
+        provider: payload.provider,
+        socialId: payload.socialId,
         accessToken: undefined,
         refreshToken: undefined,
       }),
@@ -59,8 +59,8 @@ export class AuthResolver {
     this.jwtService.clearAccessTokenCookie(res);
     this.jwtService.clearRefreshTokenCookie(res);
     return new SocialUserResponse({
-      provider: jwtUser.provider,
-      socialId: jwtUser.socialId,
+      provider: payload.provider,
+      socialId: payload.socialId,
     });
   }
 }
