@@ -217,6 +217,28 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type DemandPreviewResponse {
+  brandId: String
+  businessFunction: String!
+  buyer: UsernameResponse!
+  createdAt: DateTime!
+  groupId: String!
+  id: ID!
+  name: String!
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  slug: String
+  source: String!
+  status: String!
+  updatedAt: DateTime!
+}
+
+type DemandPreviewResponseEdge {
+  cursor: String!
+  node: DemandPreviewResponse!
+}
+
 type DemandResponse {
   brandId: String
   businessFunction: String!
@@ -236,11 +258,6 @@ type DemandResponse {
   updatedAt: DateTime!
 }
 
-type DemandResponseEdge {
-  cursor: String!
-  node: DemandResponse!
-}
-
 input DisconnectRolesInput {
   id: ID!
   roleIds: [ID!]!
@@ -248,7 +265,7 @@ input DisconnectRolesInput {
 }
 
 type GroupPreviewResponse {
-  demands: [DemandResponse!]!
+  demands: [DemandPreviewResponse!]!
   description: String
   icon: String
   id: ID!
@@ -398,8 +415,8 @@ type PaginatedAuctionsResponse {
   pageInfo: PageInfo!
 }
 
-type PaginatedDemandsResponse {
-  edges: [DemandResponseEdge!]!
+type PaginatedDemandPreviewsResponse {
+  edges: [DemandPreviewResponseEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -444,7 +461,7 @@ type Query {
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
   findDemand(slug: String!): DemandResponse
   findDemandById(id: ID!): DemandResponse
-  findDemands(buyerId: ID, cursor: ID, keyword: String, productCategoryId: ID, skip: Int! = 1, status: String, take: Int!): PaginatedDemandsResponse!
+  findDemandPreviews(buyerId: ID, cursor: ID, keyword: String, productCategoryId: ID, skip: Int! = 1, status: String, take: Int!): PaginatedDemandPreviewsResponse!
   findGroup(slug: String): GroupResponse
   findGroupById(id: ID!): GroupResponse
   findGroupPreviews: [GroupPreviewResponse!]!

@@ -6,9 +6,9 @@ import { UpdateDemandInput } from '@lib/domains/demand/application/commands/upda
 import { DemandResponse } from '@lib/domains/demand/application/dtos/demand.response';
 import { FindDemandByIdQuery } from '@lib/domains/demand/application/queries/find-demand-by-id/find-demand-by-id.query';
 import { FindDemandQuery } from '@lib/domains/demand/application/queries/find-demand/find-demand.query';
-import { FindDemandsArgs } from '@lib/domains/demand/application/queries/find-demands/find-demands.args';
-import { FindDemandsQuery } from '@lib/domains/demand/application/queries/find-demands/find-demands.query';
-import { PaginatedDemandsResponse } from '@lib/domains/demand/application/queries/find-demands/paginated-demands.response';
+import { FindDemandPreviewsArgs } from '@lib/domains/demand/application/queries/find-demand-previews/find-demand-previews.args';
+import { FindDemandPreviewsQuery } from '@lib/domains/demand/application/queries/find-demand-previews/find-demand-previews.query';
+import { PaginatedDemandPreviewsResponse } from '@lib/domains/demand/application/queries/find-demand-previews/paginated-demand-previews.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 
@@ -31,9 +31,9 @@ export class DemandResolver {
     return this.queryBus.execute(query);
   }
 
-  @Query(() => PaginatedDemandsResponse)
-  async findDemands(@Args() findDemandsArgs: FindDemandsArgs) {
-    const query = new FindDemandsQuery(findDemandsArgs);
+  @Query(() => PaginatedDemandPreviewsResponse)
+  async findDemandPreviews(@Args() findDemandPreviewsArgs: FindDemandPreviewsArgs) {
+    const query = new FindDemandPreviewsQuery(findDemandPreviewsArgs);
     return this.queryBus.execute(query);
   }
 
