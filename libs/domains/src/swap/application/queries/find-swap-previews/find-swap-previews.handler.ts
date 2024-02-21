@@ -36,7 +36,7 @@ export class FindSwapPreviewsHandler extends PrismaQueryHandler<
         },
       },
     });
-    const swapPreviewsPromises = swaps.map(async (swap) => {
+    const swapPreviewPromises = swaps.map(async (swap) => {
       const thumbnail = await this.prismaService.userImage.findFirst({
         where: {
           type: 'swap',
@@ -53,7 +53,7 @@ export class FindSwapPreviewsHandler extends PrismaQueryHandler<
       };
     });
     return paginate<SwapPreviewResponse>(
-      this.parseResponses(await Promise.all(swapPreviewsPromises)),
+      this.parseResponses(await Promise.all(swapPreviewPromises)),
       'id',
       query.take,
     );

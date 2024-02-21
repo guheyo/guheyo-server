@@ -36,7 +36,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
         createdAt: 'desc',
       },
     });
-    const offerWithImagesPromises = offers.map(async (offer) => {
+    const offerPreviewPromises = offers.map(async (offer) => {
       const thumbnail = await this.prismaService.userImage.findFirst({
         where: {
           type: 'offer',
@@ -53,7 +53,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
       };
     });
     return paginate<OfferPreviewResponse>(
-      this.parseResponses(await Promise.all(offerWithImagesPromises)),
+      this.parseResponses(await Promise.all(offerPreviewPromises)),
       'id',
       query.take,
     );
