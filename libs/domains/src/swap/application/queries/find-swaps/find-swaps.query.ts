@@ -1,4 +1,5 @@
 import { PaginationQuery } from '@lib/shared/cqrs/queries/pagination/pagination.query';
+import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { FindSwapsArgs } from './find-swaps.args';
 
 export class FindSwapsQuery extends PaginationQuery {
@@ -6,6 +7,9 @@ export class FindSwapsQuery extends PaginationQuery {
     productCategoryId?: string;
     proposerId?: string;
     status?: string;
+    name?: {
+      search: string;
+    };
   };
 
   constructor(findSwapsArgs: FindSwapsArgs) {
@@ -14,6 +18,7 @@ export class FindSwapsQuery extends PaginationQuery {
       productCategoryId: findSwapsArgs.productCategoryId,
       proposerId: findSwapsArgs.proposerId,
       status: findSwapsArgs.status,
+      name: parseFollowedBySearcher(findSwapsArgs.keyword),
     };
   }
 }
