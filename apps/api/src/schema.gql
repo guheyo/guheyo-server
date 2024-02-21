@@ -253,7 +253,7 @@ type GroupPreviewResponse {
   icon: String
   id: ID!
   name: String!
-  offers: [OfferResponse!]!
+  offers: [OfferPreviewResponse!]!
   position: Int
   slug: String
 }
@@ -345,6 +345,29 @@ type MyUserResponse {
   username: String!
 }
 
+type OfferPreviewResponse {
+  brandId: String
+  businessFunction: String!
+  createdAt: DateTime!
+  groupId: String!
+  id: ID!
+  name: String!
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  seller: UsernameResponse!
+  slug: String
+  source: String!
+  status: String!
+  thumbnail: UserImageResponse
+  updatedAt: DateTime!
+}
+
+type OfferPreviewResponseEdge {
+  cursor: String!
+  node: OfferPreviewResponse!
+}
+
 type OfferResponse {
   brandId: String
   businessFunction: String!
@@ -363,11 +386,6 @@ type OfferResponse {
   status: String!
   thumbnail: UserImageResponse
   updatedAt: DateTime!
-}
-
-type OfferResponseEdge {
-  cursor: String!
-  node: OfferResponse!
 }
 
 type PageInfo {
@@ -390,8 +408,8 @@ type PaginatedGroupsResponse {
   pageInfo: PageInfo!
 }
 
-type PaginatedOffersResponse {
-  edges: [OfferResponseEdge!]!
+type PaginatedOfferPreviewsResponse {
+  edges: [OfferPreviewResponseEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -436,7 +454,7 @@ type Query {
   findMyUserByUsername(username: ID!): MyUserResponse
   findOffer(slug: String!): OfferResponse
   findOfferById(id: ID!): OfferResponse
-  findOffers(cursor: ID, keyword: String, productCategoryId: ID, sellerId: ID, skip: Int! = 1, status: String, take: Int!): PaginatedOffersResponse!
+  findOfferPreviews(cursor: ID, keyword: String, productCategoryId: ID, sellerId: ID, skip: Int! = 1, status: String, take: Int!): PaginatedOfferPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
   findSwap(slug: String!): SwapResponse
@@ -654,4 +672,8 @@ type UserResponse {
 type UserResponseEdge {
   cursor: String!
   node: UserResponse!
+}
+
+type UsernameResponse {
+  username: String!
 }

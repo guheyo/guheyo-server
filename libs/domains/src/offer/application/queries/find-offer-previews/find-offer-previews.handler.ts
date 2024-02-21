@@ -1,17 +1,20 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
-import { FindOffersQuery } from './find-offers.query';
-import { OfferResponse } from '../../dtos/offer.response';
-import { PaginatedOffersResponse } from './paginated-offers.response';
+import { FindOfferPreviewsQuery } from './find-offer-previews.query';
+import { PaginatedOfferPreviewsResponse } from './paginated-offer-previews.response';
+import { OfferPreviewResponse } from '../../dtos/offer-preview.response';
 
-@QueryHandler(FindOffersQuery)
-export class FindOffersHandler extends PrismaQueryHandler<FindOffersQuery, OfferResponse> {
+@QueryHandler(FindOfferPreviewsQuery)
+export class FindOfferPreviewsHandler extends PrismaQueryHandler<
+  FindOfferPreviewsQuery,
+  OfferPreviewResponse
+> {
   constructor() {
-    super(OfferResponse);
+    super(OfferPreviewResponse);
   }
 
-  async execute(query: FindOffersQuery): Promise<PaginatedOffersResponse> {
+  async execute(query: FindOfferPreviewsQuery): Promise<PaginatedOfferPreviewsResponse> {
     const cursor = query.cursor
       ? {
           id: query.cursor,
@@ -22,44 +25,34 @@ export class FindOffersHandler extends PrismaQueryHandler<FindOffersQuery, Offer
       cursor,
       take: query.take + 1,
       skip: query.skip,
-      orderBy: {
-        createdAt: 'desc',
-      },
       include: {
         seller: {
-          include: {
-            members: {
-              include: {
-                roles: {
-                  orderBy: {
-                    position: 'asc',
-                  },
-                },
-              },
-            },
-            socialAccounts: true,
+          select: {
+            username: true,
           },
         },
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
     const offerWithImagesPromises = offers.map(async (offer) => {
-      const images = await this.prismaService.userImage.findMany({
+      const thumbnail = await this.prismaService.userImage.findFirst({
         where: {
           type: 'offer',
           refId: offer.id,
           tracked: true,
         },
         orderBy: {
-          createdAt: 'asc',
+          createdAt: 'desc',
         },
       });
       return {
         ...offer,
-        images,
-        thumbnail: images[0],
+        thumbnail,
       };
     });
-    return paginate<OfferResponse>(
+    return paginate<OfferPreviewResponse>(
       this.parseResponses(await Promise.all(offerWithImagesPromises)),
       'id',
       query.take,

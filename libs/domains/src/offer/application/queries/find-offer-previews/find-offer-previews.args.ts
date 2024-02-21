@@ -3,7 +3,7 @@ import { ArgsType, Field, ID } from '@nestjs/graphql';
 import { IsString, IsOptional } from 'class-validator';
 
 @ArgsType()
-export class FindOffersArgs extends PaginationSearchArgs {
+export class FindOfferPreviewsArgs extends PaginationSearchArgs {
   @IsOptional()
   @IsString()
   @Field(() => ID, { nullable: true })
