@@ -275,6 +275,18 @@ type GroupPreviewResponse {
   slug: String
 }
 
+type GroupProfileResponse {
+  icon: String
+  id: ID!
+  name: String!
+  slug: String
+}
+
+type GroupProfileResponseEdge {
+  cursor: String!
+  node: GroupProfileResponse!
+}
+
 type GroupResponse {
   description: String
   icon: String
@@ -420,6 +432,11 @@ type PaginatedDemandPreviewsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedGroupProfilesResponse {
+  edges: [GroupProfileResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedGroupsResponse {
   edges: [GroupResponseEdge!]!
   pageInfo: PageInfo!
@@ -465,6 +482,7 @@ type Query {
   findGroup(slug: String): GroupResponse
   findGroupById(id: ID!): GroupResponse
   findGroupPreviews: [GroupPreviewResponse!]!
+  findGroupProfiles(cursor: ID, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
   findMemberByUserAndGroup(groupId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: ID!): MyUserResponse

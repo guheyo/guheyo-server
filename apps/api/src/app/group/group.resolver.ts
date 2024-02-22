@@ -14,6 +14,9 @@ import { FindGroupQuery } from '@lib/domains/group/application/queries/find-grou
 import { FindGroupArgs } from '@lib/domains/group/application/queries/find-group/find-group.args';
 import { GroupPreviewResponse } from '@lib/domains/group/application/dtos/group-preview.response';
 import { FindGroupPreviewsQuery } from '@lib/domains/group/application/queries/find-group-previews/find-group-previews.query';
+import { PaginatedGroupProfilesResponse } from '@lib/domains/group/application/queries/find-group-profiles/paginated-group-profiles.response';
+import { FindGroupProfilesArgs } from '@lib/domains/group/application/queries/find-group-profiles/find-group-profiles.args';
+import { FindGroupProfilesQuery } from '@lib/domains/group/application/queries/find-group-profiles/find-group-profiles.query';
 
 @Resolver()
 export class GroupResolver {
@@ -37,6 +40,14 @@ export class GroupResolver {
   @Query(() => PaginatedGroupsResponse)
   async findGroups(@Args() findGroupsArgs: FindGroupsArgs): Promise<PaginatedGroupsResponse> {
     const query = new FindGroupsQuery(findGroupsArgs);
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => PaginatedGroupProfilesResponse)
+  async findGroupProfiles(
+    @Args() findGroupProfilesArgs: FindGroupProfilesArgs,
+  ): Promise<PaginatedGroupProfilesResponse> {
+    const query = new FindGroupProfilesQuery(findGroupProfilesArgs);
     return this.queryBus.execute(query);
   }
 
