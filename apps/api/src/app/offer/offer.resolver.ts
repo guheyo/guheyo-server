@@ -6,9 +6,9 @@ import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update
 import { OfferResponse } from '@lib/domains/offer/application/dtos/offer.response';
 import { FindOfferByIdQuery } from '@lib/domains/offer/application/queries/find-offer-by-id/find-offer-by-id.query';
 import { FindOfferQuery } from '@lib/domains/offer/application/queries/find-offer/find-offer.query';
-import { FindOffersArgs } from '@lib/domains/offer/application/queries/find-offers/find-offers.args';
-import { FindOffersQuery } from '@lib/domains/offer/application/queries/find-offers/find-offers.query';
-import { PaginatedOffersResponse } from '@lib/domains/offer/application/queries/find-offers/paginated-offers.response';
+import { FindOfferPreviewsArgs } from '@lib/domains/offer/application/queries/find-offer-previews/find-offer-previews.args';
+import { FindOfferPreviewsQuery } from '@lib/domains/offer/application/queries/find-offer-previews/find-offer-previews.query';
+import { PaginatedOfferPreviewsResponse } from '@lib/domains/offer/application/queries/find-offer-previews/paginated-offer-previews.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 
@@ -31,9 +31,9 @@ export class OfferResolver {
     return this.queryBus.execute(query);
   }
 
-  @Query(() => PaginatedOffersResponse)
-  async findOffers(@Args() findOffersArgs: FindOffersArgs) {
-    const query = new FindOffersQuery(findOffersArgs);
+  @Query(() => PaginatedOfferPreviewsResponse)
+  async findOfferPreviews(@Args() findOfferPreviewsArgs: FindOfferPreviewsArgs) {
+    const query = new FindOfferPreviewsQuery(findOfferPreviewsArgs);
     return this.queryBus.execute(query);
   }
 

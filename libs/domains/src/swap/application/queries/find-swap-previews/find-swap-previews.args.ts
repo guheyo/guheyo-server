@@ -1,9 +1,9 @@
-import { PaginationArgs } from '@lib/shared/cqrs/queries/pagination/pagination.args';
+import { PaginationSearchArgs } from '@lib/shared/cqrs/queries/pagination/pagination-search.args';
 import { ArgsType, Field, ID } from '@nestjs/graphql';
 import { IsString, IsOptional } from 'class-validator';
 
 @ArgsType()
-export class FindOffersArgs extends PaginationArgs {
+export class FindSwapPreviewsArgs extends PaginationSearchArgs {
   @IsOptional()
   @IsString()
   @Field(() => ID, { nullable: true })
@@ -12,7 +12,7 @@ export class FindOffersArgs extends PaginationArgs {
   @IsOptional()
   @IsString()
   @Field(() => ID, { nullable: true })
-  sellerId?: string;
+  proposerId?: string;
 
   @IsOptional()
   @IsString()
