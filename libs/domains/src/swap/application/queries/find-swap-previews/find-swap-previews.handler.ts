@@ -21,17 +21,20 @@ export class FindSwapPreviewsHandler extends PrismaQueryHandler<
           id: query.cursor,
         }
       : undefined;
+
     const swaps = await this.prismaService.swap.findMany({
       where: {
         ...query.where,
-        OR: [
-          {
-            name0: parseFollowedBySearcher(query.keyword),
-          },
-          {
-            name1: parseFollowedBySearcher(query.keyword),
-          },
-        ],
+        OR: query.keyword
+          ? [
+              {
+                name0: parseFollowedBySearcher(query.keyword),
+              },
+              {
+                name1: parseFollowedBySearcher(query.keyword),
+              },
+            ]
+          : undefined,
       },
       cursor,
       take: query.take + 1,
