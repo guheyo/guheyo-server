@@ -36,7 +36,14 @@ export class FindDemandPreviewsHandler extends PrismaQueryHandler<
           },
         },
       },
-      orderBy: query.orderBy,
+      orderBy: [
+        {
+          price: query.orderBy?.price,
+        },
+        {
+          createdAt: query.orderBy?.createdAt,
+        },
+      ],
     });
 
     return paginate<DemandPreviewResponse>(

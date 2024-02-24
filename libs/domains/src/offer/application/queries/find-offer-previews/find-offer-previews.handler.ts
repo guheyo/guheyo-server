@@ -36,7 +36,14 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
           },
         },
       },
-      orderBy: query.orderBy,
+      orderBy: [
+        {
+          price: query.orderBy?.price,
+        },
+        {
+          createdAt: query.orderBy?.createdAt,
+        },
+      ],
     });
     const offerPreviewPromises = offers.map(async (offer) => {
       const thumbnail = await this.prismaService.userImage.findFirst({

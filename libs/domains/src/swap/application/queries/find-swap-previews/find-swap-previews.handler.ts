@@ -39,7 +39,14 @@ export class FindSwapPreviewsHandler extends PrismaQueryHandler<
       cursor,
       take: query.take + 1,
       skip: query.skip,
-      orderBy: query.orderBy,
+      orderBy: [
+        {
+          price: query.orderBy?.price,
+        },
+        {
+          createdAt: query.orderBy?.createdAt,
+        },
+      ],
       include: {
         proposer: {
           select: {
