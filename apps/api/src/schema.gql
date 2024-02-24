@@ -499,7 +499,7 @@ type Query {
   findSession(sessionToken: String!): SessionResponse
   findSwap(slug: String!): SwapResponse
   findSwapById(id: ID!): SwapResponse
-  findSwapPreviews(cursor: ID, groupId: ID, keyword: String, productCategoryId: ID, proposerId: ID, skip: Int! = 1, status: String, take: Int!): PaginatedSwapPreviewsResponse!
+  findSwapPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedSwapPreviewsResponse!
   findTerm(name: String!): TermResponse
   findUser(provider: String, sessionToken: String, socialId: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse

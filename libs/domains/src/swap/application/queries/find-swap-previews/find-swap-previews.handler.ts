@@ -1,6 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
+import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { FindSwapPreviewsQuery } from './find-swap-previews.query';
 import { SwapPreviewResponse } from '../../dtos/swap-preview.response';
 import { PaginatedSwapPreviewsResponse } from './paginated-swap-previews.response';
@@ -21,13 +22,21 @@ export class FindSwapPreviewsHandler extends PrismaQueryHandler<
         }
       : undefined;
     const swaps = await this.prismaService.swap.findMany({
-      where: query.where,
+      where: {
+        ...query.where,
+        OR: [
+          {
+            name0: parseFollowedBySearcher(query.keyword),
+          },
+          {
+            name1: parseFollowedBySearcher(query.keyword),
+          },
+        ],
+      },
       cursor,
       take: query.take + 1,
       skip: query.skip,
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: query.orderBy,
       include: {
         proposer: {
           select: {
