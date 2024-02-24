@@ -1,6 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
+import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { FindDemandPreviewsQuery } from './find-demand-previews.query';
 import { DemandPreviewResponse } from '../../dtos/demand-preview.response';
 import { PaginatedDemandPreviewsResponse } from './paginated-demand-previews.response';
@@ -21,13 +22,13 @@ export class FindDemandPreviewsHandler extends PrismaQueryHandler<
         }
       : undefined;
     const demands = await this.prismaService.demand.findMany({
-      where: query.where,
+      where: {
+        ...query.where,
+        name: parseFollowedBySearcher(query.keyword),
+      },
       cursor,
       take: query.take + 1,
       skip: query.skip,
-      orderBy: {
-        createdAt: 'desc',
-      },
       include: {
         buyer: {
           select: {
@@ -35,6 +36,7 @@ export class FindDemandPreviewsHandler extends PrismaQueryHandler<
           },
         },
       },
+      orderBy: query.orderBy,
     });
 
     return paginate<DemandPreviewResponse>(

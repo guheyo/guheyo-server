@@ -1,24 +1,19 @@
 import { PaginationQuery } from '@lib/shared/cqrs/queries/pagination/pagination.query';
-import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { FindOfferPreviewsArgs } from './find-offer-previews.args';
+import { FindOffersWhereArgs } from './find-offers-where.args';
+import { FindOffersOrderByArgs } from './find-offers-order-by.args';
 
 export class FindOfferPreviewsQuery extends PaginationQuery {
-  where: {
-    productCategoryId?: string;
-    sellerId?: string;
-    status?: string;
-    name?: {
-      search: string;
-    };
-  };
+  where?: FindOffersWhereArgs;
+
+  orderBy?: FindOffersOrderByArgs;
+
+  keyword?: string;
 
   constructor(findOfferPreviewsArgs: FindOfferPreviewsArgs) {
     super(findOfferPreviewsArgs);
-    this.where = {
-      productCategoryId: findOfferPreviewsArgs.productCategoryId,
-      sellerId: findOfferPreviewsArgs.sellerId,
-      status: findOfferPreviewsArgs.status,
-      name: parseFollowedBySearcher(findOfferPreviewsArgs.keyword),
-    };
+    this.where = findOfferPreviewsArgs.where;
+    this.orderBy = findOfferPreviewsArgs.orderBy;
+    this.keyword = findOfferPreviewsArgs.keyword;
   }
 }

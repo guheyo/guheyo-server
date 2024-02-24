@@ -304,6 +304,11 @@ type GroupResponseEdge {
   node: GroupResponse!
 }
 
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
 type JwtResponse {
   accessToken: String!
   refreshToken: String!
@@ -478,7 +483,7 @@ type Query {
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
   findDemand(slug: String!): DemandResponse
   findDemandById(id: ID!): DemandResponse
-  findDemandPreviews(buyerId: ID, cursor: ID, keyword: String, productCategoryId: ID, skip: Int! = 1, status: String, take: Int!): PaginatedDemandPreviewsResponse!
+  findDemandPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
   findGroup(slug: String): GroupResponse
   findGroupById(id: ID!): GroupResponse
   findGroupPreviews: [GroupPreviewResponse!]!
@@ -489,12 +494,12 @@ type Query {
   findMyUserByUsername(username: ID!): MyUserResponse
   findOffer(slug: String!): OfferResponse
   findOfferById(id: ID!): OfferResponse
-  findOfferPreviews(cursor: ID, keyword: String, productCategoryId: ID, sellerId: ID, skip: Int! = 1, status: String, take: Int!): PaginatedOfferPreviewsResponse!
+  findOfferPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
   findSwap(slug: String!): SwapResponse
   findSwapById(id: ID!): SwapResponse
-  findSwapPreviews(cursor: ID, keyword: String, productCategoryId: ID, proposerId: ID, skip: Int! = 1, status: String, take: Int!): PaginatedSwapPreviewsResponse!
+  findSwapPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedSwapPreviewsResponse!
   findTerm(name: String!): TermResponse
   findUser(provider: String, sessionToken: String, socialId: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse
