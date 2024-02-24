@@ -10,10 +10,13 @@ export class FindSwapPreviewsQuery extends PaginationQuery {
 
   keyword?: string;
 
+  distinct?: boolean;
+
   constructor(findSwapPreviewsArgs: FindSwapPreviewsArgs) {
     super(findSwapPreviewsArgs);
     this.where = findSwapPreviewsArgs.where;
     this.orderBy = findSwapPreviewsArgs.orderBy;
     this.keyword = findSwapPreviewsArgs.keyword;
+    this.distinct = findSwapPreviewsArgs.distinct;
   }
 }

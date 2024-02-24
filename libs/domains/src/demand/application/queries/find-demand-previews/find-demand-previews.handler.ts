@@ -44,6 +44,7 @@ export class FindDemandPreviewsHandler extends PrismaQueryHandler<
           createdAt: query.orderBy?.createdAt,
         },
       ],
+      distinct: query.distinct ? ['name', 'buyerId'] : undefined,
     });
 
     return paginate<DemandPreviewResponse>(
