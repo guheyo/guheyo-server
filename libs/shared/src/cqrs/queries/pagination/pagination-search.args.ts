@@ -8,4 +8,8 @@ export class PaginationSearchArgs extends PaginationArgs {
   @IsString()
   @Field(() => String, { nullable: true })
   keyword?: string;
+
+  @IsOptional()
+  @Field(() => Boolean, { nullable: true })
+  distinct?: boolean;
 }
