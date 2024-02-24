@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigYamlModule } from '@app/api/config/config.module';
-import { DateTimeResolver, DateTimeTypeDefinition } from 'graphql-scalars';
+import { DateTimeResolver, DateTimeTypeDefinition, GraphQLJSON } from 'graphql-scalars';
 import { UserModule } from './app/user/user.module';
 import { SocialAccountModule } from './app/social-account/social-account.module';
 import { MemberModule } from './app/member/member.module';
@@ -31,6 +31,7 @@ import { CommonModule } from './app/common/common.module';
       typeDefs: [DateTimeTypeDefinition],
       resolvers: {
         DateTime: DateTimeResolver,
+        JSON: GraphQLJSON,
       },
       context: (context: any) => context,
     }),
