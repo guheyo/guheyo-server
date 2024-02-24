@@ -7,6 +7,11 @@ export class FindOfferPreviewsArgs extends PaginationSearchArgs {
   @IsOptional()
   @IsString()
   @Field(() => ID, { nullable: true })
+  groupId?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => ID, { nullable: true })
   productCategoryId?: string;
 
   @IsOptional()

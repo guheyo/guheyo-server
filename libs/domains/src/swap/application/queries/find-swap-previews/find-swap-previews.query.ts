@@ -4,6 +4,7 @@ import { FindSwapPreviewsArgs } from './find-swap-previews.args';
 
 export class FindSwapPreviewsQuery extends PaginationQuery {
   where: {
+    groupId?: string;
     productCategoryId?: string;
     proposerId?: string;
     status?: string;
@@ -15,6 +16,7 @@ export class FindSwapPreviewsQuery extends PaginationQuery {
   constructor(findSwapPreviewsArgs: FindSwapPreviewsArgs) {
     super(findSwapPreviewsArgs);
     this.where = {
+      groupId: findSwapPreviewsArgs.groupId,
       productCategoryId: findSwapPreviewsArgs.productCategoryId,
       proposerId: findSwapPreviewsArgs.proposerId,
       status: findSwapPreviewsArgs.status,
