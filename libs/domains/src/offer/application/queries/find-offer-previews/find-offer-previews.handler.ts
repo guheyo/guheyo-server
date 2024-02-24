@@ -1,6 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
+import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { FindOfferPreviewsQuery } from './find-offer-previews.query';
 import { PaginatedOfferPreviewsResponse } from './paginated-offer-previews.response';
 import { OfferPreviewResponse } from '../../dtos/offer-preview.response';
@@ -21,7 +22,10 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
         }
       : undefined;
     const offers = await this.prismaService.offer.findMany({
-      where: query.where,
+      where: {
+        ...query.where,
+        name: parseFollowedBySearcher(query.keyword),
+      },
       cursor,
       take: query.take + 1,
       skip: query.skip,
@@ -32,9 +36,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
           },
         },
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: query.orderBy,
     });
     const offerPreviewPromises = offers.map(async (offer) => {
       const thumbnail = await this.prismaService.userImage.findFirst({

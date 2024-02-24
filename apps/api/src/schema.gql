@@ -304,6 +304,11 @@ type GroupResponseEdge {
   node: GroupResponse!
 }
 
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
 type JwtResponse {
   accessToken: String!
   refreshToken: String!
@@ -489,7 +494,7 @@ type Query {
   findMyUserByUsername(username: ID!): MyUserResponse
   findOffer(slug: String!): OfferResponse
   findOfferById(id: ID!): OfferResponse
-  findOfferPreviews(cursor: ID, groupId: ID, keyword: String, productCategoryId: ID, sellerId: ID, skip: Int! = 1, status: String, take: Int!): PaginatedOfferPreviewsResponse!
+  findOfferPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
   findSwap(slug: String!): SwapResponse
