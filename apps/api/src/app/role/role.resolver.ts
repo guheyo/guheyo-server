@@ -7,7 +7,10 @@ import { CreateRoleCommand } from '@lib/domains/role/application/commands/create
 import { UpdateRoleInput } from '@lib/domains/role/application/commands/update-role/update-role.input';
 import { UpdateRoleCommand } from '@lib/domains/role/application/commands/update-role/update-role.command';
 import { DeleteRoleCommand } from '@lib/domains/role/application/commands/delete-role/delete-role.command';
+import { UseGuards } from '@nestjs/common';
+import { GqlThrottlerGuard } from '../throttler/gql-throttler.guard';
 
+@UseGuards(GqlThrottlerGuard)
 @Resolver()
 export class RoleResolver {
   constructor(

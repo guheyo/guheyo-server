@@ -11,7 +11,10 @@ import { FindSwapPreviewsQuery } from '@lib/domains/swap/application/queries/fin
 import { PaginatedSwapPreviewsResponse } from '@lib/domains/swap/application/queries/find-swap-previews/paginated-swap-previews.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { GqlThrottlerGuard } from '../throttler/gql-throttler.guard';
 
+@UseGuards(GqlThrottlerGuard)
 @Resolver()
 export class SwapResolver {
   constructor(

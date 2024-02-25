@@ -14,7 +14,10 @@ import { CancelBidCommand } from '@lib/domains/auction/application/commands/canc
 import { PaginatedAuctionsResponse } from '@lib/domains/auction/application/queries/find-auctions/paginated-auctions.response';
 import { FindAuctionsArgs } from '@lib/domains/auction/application/queries/find-auctions/find-auctions.args';
 import { FindAuctionsQuery } from '@lib/domains/auction/application/queries/find-auctions/find-auctions.query';
+import { UseGuards } from '@nestjs/common';
+import { GqlThrottlerGuard } from '../throttler/gql-throttler.guard';
 
+@UseGuards(GqlThrottlerGuard)
 @Resolver()
 export class AuctionResolver {
   constructor(
