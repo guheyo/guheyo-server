@@ -12,9 +12,9 @@ import { FindUserImageByIdQuery } from '@lib/domains/user-image/application/quer
 import { UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GqlThrottlerGuard } from '../throttler/gql-throttler.guard';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
-@UseGuards(GqlThrottlerGuard)
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class UserImageResolver {
   constructor(

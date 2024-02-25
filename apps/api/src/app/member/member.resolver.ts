@@ -14,9 +14,9 @@ import { ConnectRolesCommand } from '@lib/domains/member/application/commands/co
 import { DisconnectRolesInput } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.input';
 import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
 import { UseGuards } from '@nestjs/common';
-import { GqlThrottlerGuard } from '../throttler/gql-throttler.guard';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
-@UseGuards(GqlThrottlerGuard)
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class MemberResolver {
   constructor(

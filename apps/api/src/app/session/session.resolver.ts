@@ -8,9 +8,9 @@ import { UpdateSessionCommand } from '@lib/domains/session/application/commands/
 import { DeleteSessionCommand } from '@lib/domains/session/application/commands/delete-session/delete-session.command';
 import { SessionResponse } from '@lib/domains/session/application/dtos/session.response';
 import { UseGuards } from '@nestjs/common';
-import { GqlThrottlerGuard } from '../throttler/gql-throttler.guard';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
-@UseGuards(GqlThrottlerGuard)
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class SessionResolver {
   constructor(

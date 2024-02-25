@@ -15,9 +15,9 @@ import { PaginatedAuctionsResponse } from '@lib/domains/auction/application/quer
 import { FindAuctionsArgs } from '@lib/domains/auction/application/queries/find-auctions/find-auctions.args';
 import { FindAuctionsQuery } from '@lib/domains/auction/application/queries/find-auctions/find-auctions.query';
 import { UseGuards } from '@nestjs/common';
-import { GqlThrottlerGuard } from '../throttler/gql-throttler.guard';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
-@UseGuards(GqlThrottlerGuard)
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class AuctionResolver {
   constructor(

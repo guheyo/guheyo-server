@@ -18,9 +18,9 @@ import { PaginatedGroupProfilesResponse } from '@lib/domains/group/application/q
 import { FindGroupProfilesArgs } from '@lib/domains/group/application/queries/find-group-profiles/find-group-profiles.args';
 import { FindGroupProfilesQuery } from '@lib/domains/group/application/queries/find-group-profiles/find-group-profiles.query';
 import { UseGuards } from '@nestjs/common';
-import { GqlThrottlerGuard } from '../throttler/gql-throttler.guard';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
-@UseGuards(GqlThrottlerGuard)
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class GroupResolver {
   constructor(

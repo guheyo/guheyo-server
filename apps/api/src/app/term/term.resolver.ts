@@ -3,9 +3,9 @@ import { FindTermQuery } from '@lib/domains/term/application/queries/find-term/f
 import { UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { GqlThrottlerGuard } from '../throttler/gql-throttler.guard';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
-@UseGuards(GqlThrottlerGuard)
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class TermResolver {
   constructor(private readonly queryBus: QueryBus) {}

@@ -16,9 +16,9 @@ import { FindUserArgs } from '@lib/domains/user/application/queries/find-user/fi
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 import { UseGuards } from '@nestjs/common';
 import { JwtAccessAuthGuard } from '../auth/jwt/jwt-acess-auth.guard';
-import { GqlThrottlerGuard } from '../throttler/gql-throttler.guard';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
-@UseGuards(GqlThrottlerGuard)
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class UserResolver {
   constructor(

@@ -8,9 +8,9 @@ import { UpdateRoleInput } from '@lib/domains/role/application/commands/update-r
 import { UpdateRoleCommand } from '@lib/domains/role/application/commands/update-role/update-role.command';
 import { DeleteRoleCommand } from '@lib/domains/role/application/commands/delete-role/delete-role.command';
 import { UseGuards } from '@nestjs/common';
-import { GqlThrottlerGuard } from '../throttler/gql-throttler.guard';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
-@UseGuards(GqlThrottlerGuard)
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class RoleResolver {
   constructor(
