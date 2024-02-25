@@ -1,9 +1,9 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { ThrottlerGuard } from '@nestjs/throttler';
+import { ThrottlerBehindProxyGuard } from './throttler-behind-proxy.guard';
 
 @Injectable()
-export class GqlThrottlerGuard extends ThrottlerGuard {
+export class GqlThrottlerBehindProxyGuard extends ThrottlerBehindProxyGuard {
   protected getRequestResponse(context: ExecutionContext): {
     req: Record<string, any>;
     res: Record<string, any>;
