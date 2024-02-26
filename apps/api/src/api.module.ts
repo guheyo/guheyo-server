@@ -2,6 +2,7 @@ import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { ConfigYamlModule } from '@app/api/config/config.module';
 import { DateTimeResolver, DateTimeTypeDefinition } from 'graphql-scalars';
 import { GraphQLJSON } from 'graphql-type-json';
@@ -36,6 +37,12 @@ import { CommonModule } from './app/common/common.module';
       },
       context: (context: any) => context,
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000, // milliseconds
+        limit: 100,
+      },
+    ]),
     AuthModule,
     CommonModule,
     UserModule,
