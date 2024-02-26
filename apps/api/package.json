@@ -18,6 +18,7 @@
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.3.2",
     "@nestjs/swagger": "^7.1.6",
+    "@nestjs/throttler": "^5.1.2",
     "@types/cookie-parser": "^1.4.6",
     "axios": "^1.4.0",
     "cache-manager": "^5.2.3",

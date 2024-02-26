@@ -11,7 +11,10 @@ import { FindDemandPreviewsQuery } from '@lib/domains/demand/application/queries
 import { PaginatedDemandPreviewsResponse } from '@lib/domains/demand/application/queries/find-demand-previews/paginated-demand-previews.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class DemandResolver {
   constructor(

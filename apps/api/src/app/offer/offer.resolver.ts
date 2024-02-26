@@ -11,7 +11,10 @@ import { FindOfferPreviewsQuery } from '@lib/domains/offer/application/queries/f
 import { PaginatedOfferPreviewsResponse } from '@lib/domains/offer/application/queries/find-offer-previews/paginated-offer-previews.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class OfferResolver {
   constructor(

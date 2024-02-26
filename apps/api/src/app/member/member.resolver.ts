@@ -13,7 +13,10 @@ import { ConnectRolesInput } from '@lib/domains/member/application/commands/conn
 import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
 import { DisconnectRolesInput } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.input';
 import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
+import { UseGuards } from '@nestjs/common';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class MemberResolver {
   constructor(

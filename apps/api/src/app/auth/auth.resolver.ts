@@ -8,7 +8,9 @@ import { UpdateSocialAccountCommand } from '@lib/domains/social-account/applicat
 import { SocialUserResponse } from '@lib/domains/social-account/application/dtos/social-user.response';
 import { JwtRefreshAuthGuard } from './jwt/jwt-refresh-auth.guard';
 import { JwtResponse } from './jwt/jwt.response';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class AuthResolver {
   constructor(

@@ -1,6 +1,8 @@
-import { Controller, Get, HttpStatus, Res } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
+import { ThrottlerBehindProxyGuard } from '../throttler/throttler-behind-proxy.guard';
 
+@UseGuards(ThrottlerBehindProxyGuard)
 @Controller()
 export class CommonController {
   @Get('favicon.ico')

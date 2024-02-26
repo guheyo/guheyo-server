@@ -35,11 +35,23 @@ export class FindSwapPreviewsHandler extends PrismaQueryHandler<
               },
             ]
           : undefined,
+        createdAt: query.where?.createdAt
+          ? {
+              gt: new Date(query.where.createdAt.gt),
+            }
+          : undefined,
       },
       cursor,
       take: query.take + 1,
       skip: query.skip,
-      orderBy: query.orderBy,
+      orderBy: [
+        {
+          price: query.orderBy?.price,
+        },
+        {
+          createdAt: query.orderBy?.createdAt,
+        },
+      ],
       include: {
         proposer: {
           select: {
@@ -47,6 +59,7 @@ export class FindSwapPreviewsHandler extends PrismaQueryHandler<
           },
         },
       },
+      distinct: query.distinct ? ['name0', 'name1', 'proposerId'] : undefined,
     });
     const swapPreviewPromises = swaps.map(async (swap) => {
       const thumbnail = await this.prismaService.userImage.findFirst({

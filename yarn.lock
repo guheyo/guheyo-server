@@ -2486,6 +2486,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/throttler@npm:^5.1.2":
+  version: 5.1.2
+  resolution: "@nestjs/throttler@npm:5.1.2"
+  peerDependencies:
+    "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+    "@nestjs/core": ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+    reflect-metadata: ^0.1.13 || ^0.2.0
+  checksum: 181c99fca712be09ce9264e0b3f505f450d07d19cdacd58ca2e66c9f29e143ac3a8051a3cdc0b928f162ae0c0b14d40fc68752434d46c9b25e555974a1c8c1a1
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -4704,6 +4715,7 @@ __metadata:
     "@nestjs/schematics": ^10.0.1
     "@nestjs/swagger": ^7.1.6
     "@nestjs/testing": ^10.2.4
+    "@nestjs/throttler": ^5.1.2
     "@types/cache-manager-redis-store": ^2.0.1
     "@types/cookie-parser": ^1.4.6
     "@types/express": ^4.17.17

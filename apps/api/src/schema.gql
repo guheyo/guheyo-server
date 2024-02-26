@@ -483,23 +483,23 @@ type Query {
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
   findDemand(slug: String!): DemandResponse
   findDemandById(id: ID!): DemandResponse
-  findDemandPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
+  findDemandPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
   findGroup(slug: String): GroupResponse
   findGroupById(id: ID!): GroupResponse
   findGroupPreviews: [GroupPreviewResponse!]!
-  findGroupProfiles(cursor: ID, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
+  findGroupProfiles(cursor: ID, distinct: Boolean, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
   findMemberByUserAndGroup(groupId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: ID!): MyUserResponse
   findMyUserByUsername(username: ID!): MyUserResponse
   findOffer(slug: String!): OfferResponse
   findOfferById(id: ID!): OfferResponse
-  findOfferPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
+  findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
   findSwap(slug: String!): SwapResponse
   findSwapById(id: ID!): SwapResponse
-  findSwapPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedSwapPreviewsResponse!
+  findSwapPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedSwapPreviewsResponse!
   findTerm(name: String!): TermResponse
   findUser(provider: String, sessionToken: String, socialId: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse

@@ -25,6 +25,11 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
       where: {
         ...query.where,
         name: parseFollowedBySearcher(query.keyword),
+        createdAt: query.where?.createdAt
+          ? {
+              gt: new Date(query.where.createdAt.gt),
+            }
+          : undefined,
       },
       cursor,
       take: query.take + 1,
@@ -36,7 +41,15 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
           },
         },
       },
-      orderBy: query.orderBy,
+      orderBy: [
+        {
+          price: query.orderBy?.price,
+        },
+        {
+          createdAt: query.orderBy?.createdAt,
+        },
+      ],
+      distinct: query.distinct ? ['name', 'sellerId'] : undefined,
     });
     const offerPreviewPromises = offers.map(async (offer) => {
       const thumbnail = await this.prismaService.userImage.findFirst({

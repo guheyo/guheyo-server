@@ -10,10 +10,13 @@ export class FindDemandPreviewsQuery extends PaginationQuery {
 
   keyword?: string;
 
+  distinct?: boolean;
+
   constructor(findDemandPreviewsArgs: FindDemandPreviewsArgs) {
     super(findDemandPreviewsArgs);
     this.where = findDemandPreviewsArgs.where;
     this.orderBy = findDemandPreviewsArgs.orderBy;
     this.keyword = findDemandPreviewsArgs.keyword;
+    this.distinct = findDemandPreviewsArgs.distinct;
   }
 }

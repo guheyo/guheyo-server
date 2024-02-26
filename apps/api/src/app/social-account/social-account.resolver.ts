@@ -6,7 +6,10 @@ import { UpdateSocialAccountCommand } from '@lib/domains/social-account/applicat
 import { UpdateSocialAccountInput } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.input';
 import { DeleteSocialAccountCommand } from '@lib/domains/social-account/application/commands/delete-social-account/delete-social-account.command';
 import { DeleteSocialAccountByProviderCommand } from '@lib/domains/social-account/application/commands/delete-social-account-by-provider/delete-social-account-by-provider.command';
+import { UseGuards } from '@nestjs/common';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class SocialAccountResolver {
   constructor(private readonly commandBus: CommandBus) {}

@@ -9,9 +9,12 @@ import { UserImageResponse } from '@lib/domains/user-image/application/dtos/user
 import { FindUserImagesOfRefArgs } from '@lib/domains/user-image/application/queries/find-user-iamges-of-ref/find-user-images-of-ref.args';
 import { FindUserImagesOfRefQuery } from '@lib/domains/user-image/application/queries/find-user-iamges-of-ref/find-user-images-of-ref.query';
 import { FindUserImageByIdQuery } from '@lib/domains/user-image/application/queries/find-user-image-by-id/find-user-image-by-id.query';
+import { UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class UserImageResolver {
   constructor(

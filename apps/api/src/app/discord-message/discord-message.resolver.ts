@@ -1,8 +1,11 @@
 import { CreateDiscordMessageCommand } from '@lib/domains/discord-message/application/commands/create-discord-message/create-discord-message.command';
 import { CreateDiscordMessageInput } from '@lib/domains/discord-message/application/commands/create-discord-message/create-discord-message.input';
+import { UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
+@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class DiscordMessageResolver {
   constructor(
