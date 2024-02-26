@@ -25,6 +25,11 @@ export class FindDemandPreviewsHandler extends PrismaQueryHandler<
       where: {
         ...query.where,
         name: parseFollowedBySearcher(query.keyword),
+        createdAt: query.where?.createdAt
+          ? {
+              gt: new Date(query.where.createdAt.gt),
+            }
+          : undefined,
       },
       cursor,
       take: query.take + 1,

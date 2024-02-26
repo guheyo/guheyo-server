@@ -35,6 +35,11 @@ export class FindSwapPreviewsHandler extends PrismaQueryHandler<
               },
             ]
           : undefined,
+        createdAt: query.where?.createdAt
+          ? {
+              gt: new Date(query.where.createdAt.gt),
+            }
+          : undefined,
       },
       cursor,
       take: query.take + 1,
