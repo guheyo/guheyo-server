@@ -1,5 +1,5 @@
 import { ArgsType, Field } from '@nestjs/graphql';
-import { IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 import { PaginationArgs } from './pagination.args';
 
 @ArgsType()
@@ -10,6 +10,7 @@ export class PaginationSearchArgs extends PaginationArgs {
   keyword?: string;
 
   @IsOptional()
+  @IsBoolean()
   @Field(() => Boolean, { nullable: true })
   distinct?: boolean;
 }
