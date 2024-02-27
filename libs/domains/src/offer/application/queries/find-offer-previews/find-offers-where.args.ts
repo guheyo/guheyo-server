@@ -23,6 +23,6 @@ export class FindOffersWhereArgs {
   @IsOptional()
   @Field(() => GraphQLJSON, { nullable: true })
   createdAt?: {
-    gt: Date;
+    gt: string;
   };
 }
