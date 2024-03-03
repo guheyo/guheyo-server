@@ -1,6 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
-import _ from 'lodash';
 import { SocialAccountErrorMessage } from '@lib/domains/social-account/domain/social-account.error.message';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { UpdateSocialAccountCommand } from './update-social-account.command';
