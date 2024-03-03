@@ -31,11 +31,11 @@ describe('ImageService', () => {
         'test',
         '0',
       );
-      expect(typeof url).toBe('object');
+      expect(typeof url).toBe('string');
     });
 
     it('should generate signed url', async () => {
-      const signedUrl = await imageService.generateSignedUrl('tests/0', 'test.jpg');
+      const signedUrl = await imageService.generateSignedUrl('tests', '0', 'test.jpg');
       expect(typeof signedUrl).toBe('string');
     });
   });

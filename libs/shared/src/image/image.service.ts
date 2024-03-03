@@ -21,25 +21,29 @@ export class ImageService {
     });
   }
 
-  async generateSignedUrl(path: string, filename: string) {
-    const command = new PutObjectCommand({
-      Bucket: this.configService.get('s3.bucket'),
-      Key: `${path}/${filename}`,
-      ContentType: 'image/*',
-    });
-    return getSignedUrl(this.client, command, {
-      expiresIn: 60 * 30,
-    });
-  }
-
-  async uploadFile(file: Buffer, type: string, userId: string, name: string) {
+  async generateSignedUrl(type: string, userId: string, filename: string) {
     const path = this.generateUploadPath(type, userId);
-    const key = this.createFileKey(path, name);
-    const mimeType = mimeTypes.lookup(key);
+    const key = this.createFileKey(path, filename);
+
     const command = new PutObjectCommand({
       Bucket: this.configService.get('s3.bucket'),
       Key: key,
-      ContentType: mimeType || undefined,
+      ContentType: 'image/*',
+    });
+    return getSignedUrl(this.client, command, {
+      expiresIn: 60 * 30, // 30 mins
+    });
+  }
+
+  async uploadFile(file: Buffer, type: string, userId: string, filename: string) {
+    const path = this.generateUploadPath(type, userId);
+    const key = this.createFileKey(path, filename);
+    const mimeType = this.parseMimeType(key);
+
+    const command = new PutObjectCommand({
+      Bucket: this.configService.get('s3.bucket'),
+      Key: key,
+      ContentType: mimeType,
       Body: file,
     });
     await this.client.send(command);
@@ -49,8 +53,8 @@ export class ImageService {
 
   async uploadFileFromURL(url: string, type: string, userId: string) {
     const { buffer } = await this.downloadFile(url);
-    const name = this.parseNameFromURL(url);
-    return this.uploadFile(buffer, type, userId, name);
+    const filename = this.parseNameFromURL(url);
+    return this.uploadFile(buffer, type, userId, filename);
   }
 
   parseNameFromURL(url: string) {
@@ -74,8 +78,8 @@ export class ImageService {
     };
   }
 
-  private createFileKey(path: string, name: string) {
-    return `${path}/${name}`;
+  private createFileKey(path: string, filename: string) {
+    return `${path}/${filename}`;
   }
 
   private createFileUrl(key: string) {
