@@ -21,7 +21,15 @@ export class ImageService {
     });
   }
 
-  async generateSignedUrl(type: string, userId: string, filename: string) {
+  async createSignedUrl({
+    type,
+    userId,
+    filename,
+  }: {
+    type: string;
+    userId: string;
+    filename: string;
+  }) {
     const path = this.generateUploadPath(type, userId);
     const key = this.createFileKey(path, filename);
 
@@ -35,7 +43,17 @@ export class ImageService {
     });
   }
 
-  async uploadFile(file: Buffer, type: string, userId: string, filename: string) {
+  async uploadFile({
+    file,
+    type,
+    userId,
+    filename,
+  }: {
+    file: Buffer;
+    type: string;
+    userId: string;
+    filename: string;
+  }) {
     const path = this.generateUploadPath(type, userId);
     const key = this.createFileKey(path, filename);
     const mimeType = this.parseMimeType(key);
@@ -51,10 +69,15 @@ export class ImageService {
     return s3URL;
   }
 
-  async uploadFileFromURL(url: string, type: string, userId: string) {
+  async uploadFileFromURL({ url, type, userId }: { url: string; type: string; userId: string }) {
     const { buffer } = await this.downloadFile(url);
     const filename = this.parseNameFromURL(url);
-    return this.uploadFile(buffer, type, userId, filename);
+    return this.uploadFile({
+      file: buffer,
+      type,
+      userId,
+      filename,
+    });
   }
 
   parseNameFromURL(url: string) {

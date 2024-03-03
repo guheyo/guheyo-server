@@ -26,16 +26,20 @@ describe('ImageService', () => {
     });
 
     it('should be upload file from url', async () => {
-      const url = await imageService.uploadFileFromURL(
-        'https://i.imgur.com/MKeEzUx.jpeg',
-        'test',
-        '0',
-      );
+      const url = await imageService.uploadFileFromURL({
+        url: 'https://i.imgur.com/MKeEzUx.jpeg',
+        type: 'test',
+        userId: '0',
+      });
       expect(typeof url).toBe('string');
     });
 
     it('should generate signed url', async () => {
-      const signedUrl = await imageService.generateSignedUrl('tests', '0', 'test.jpg');
+      const signedUrl = await imageService.createSignedUrl({
+        type: 'test',
+        userId: '0',
+        filename: 'test.jpg',
+      });
       expect(typeof signedUrl).toBe('string');
     });
   });
