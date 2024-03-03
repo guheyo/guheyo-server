@@ -3,6 +3,7 @@ import { ConfigYamlModule } from '@app/api/config/config.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { Test } from '@nestjs/testing';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { DemandModule } from '../demand.module';
 
 describe('DemandModule', () => {
@@ -16,6 +17,12 @@ describe('DemandModule', () => {
         GraphQLModule.forRoot<ApolloDriverConfig>({
           driver: ApolloDriver,
         }),
+        ThrottlerModule.forRoot([
+          {
+            ttl: 60000,
+            limit: 100,
+          },
+        ]),
         DemandModule,
       ],
     }).compile();

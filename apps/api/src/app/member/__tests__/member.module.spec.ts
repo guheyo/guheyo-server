@@ -9,6 +9,7 @@ import { DeleteMemberHandler } from '@lib/domains/member/application/commands/de
 import { FindMemberHandler } from '@lib/domains/member/application/queries/find-member-by-user-and-group/find-member.handler';
 import { MemberSavePort } from '@lib/domains/member/application/ports/out/member.save.port';
 import { MemberLoadPort } from '@lib/domains/member/application/ports/out/member.load.port';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { MemberModule } from '../member.module';
@@ -33,6 +34,12 @@ describe('MemberModule', () => {
           driver: ApolloDriver,
         }),
         PrismaModule,
+        ThrottlerModule.forRoot([
+          {
+            ttl: 60000,
+            limit: 100,
+          },
+        ]),
         MemberModule,
       ],
     }).compile();
