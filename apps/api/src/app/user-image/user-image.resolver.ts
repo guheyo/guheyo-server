@@ -14,8 +14,8 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateSignedUrlInput } from '@lib/domains/user-image/application/commands/create-signed-url/create-signed-url.input';
 import { CreateSignedUrlCommand } from '@lib/domains/user-image/application/commands/create-signed-url/create-signed-url.command';
-import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 import { SignedUrlResponse } from '@lib/shared/image/image.response';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
