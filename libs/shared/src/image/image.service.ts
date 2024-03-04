@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import mimeTypes from 'mime-types';
 import { ImageErrorMessage } from './image.error.message';
+import { SignedUrlResponse } from './image.response';
 
 @Injectable()
 export class ImageService {
@@ -29,7 +30,7 @@ export class ImageService {
     type: string;
     userId: string;
     filename: string;
-  }) {
+  }): Promise<SignedUrlResponse> {
     const path = this.generateUploadPath(type, userId);
     const key = this.createFileKey(path, filename);
 
@@ -38,9 +39,13 @@ export class ImageService {
       Key: key,
       ContentType: 'image/*',
     });
-    return getSignedUrl(this.client, command, {
-      expiresIn: 60 * 30, // 30 mins
-    });
+
+    return {
+      signedUrl: await getSignedUrl(this.client, command, {
+        expiresIn: 60 * 15, // 15 mins
+      }),
+      url: key,
+    };
   }
 
   async uploadFile({

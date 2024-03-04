@@ -5,6 +5,7 @@ import { UpdateUserImageHandler } from './update-user-image/update-user-image.ha
 import { TrackUserImagesHandler } from './track-user-images/track-user-images.handler';
 import { UntrackUserImagesHandler } from './untrack-user-images/untrack-user-images.handler';
 import { UploadAndCreateImageHandler } from './upload-and-create-image/upload-and-create-image.handler';
+import { CreateSignedUrlHandler } from './create-signed-url/create-signed-url.handler';
 
 export const USER_IMAGE_COMMAND_PROVIDERS = [
   CreateUserImageHandler,
@@ -14,4 +15,5 @@ export const USER_IMAGE_COMMAND_PROVIDERS = [
   TrackUserImagesHandler,
   UntrackUserImagesHandler,
   UploadAndCreateImageHandler,
+  CreateSignedUrlHandler,
 ];

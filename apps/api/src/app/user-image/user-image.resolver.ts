@@ -12,7 +12,10 @@ import { FindUserImageByIdQuery } from '@lib/domains/user-image/application/quer
 import { UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CreateSignedUrlInput } from '@lib/domains/user-image/application/commands/create-signed-url/create-signed-url.input';
+import { CreateSignedUrlCommand } from '@lib/domains/user-image/application/commands/create-signed-url/create-signed-url.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
+import { SignedUrlResponse } from '@lib/shared/image/image.response';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
@@ -46,6 +49,11 @@ export class UserImageResolver {
   async createManyUserImage(@Args('input') input: CreateManyUserImageInput): Promise<string> {
     await this.commandBus.execute(new CreateManyUserImageCommand(input));
     return '200';
+  }
+
+  @Mutation(() => SignedUrlResponse)
+  async createSignedUrl(@Args('input') input: CreateSignedUrlInput): Promise<SignedUrlResponse> {
+    return this.commandBus.execute(new CreateSignedUrlCommand(input));
   }
 
   @Mutation(() => String)

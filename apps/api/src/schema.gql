@@ -158,6 +158,12 @@ input CreateSessionInput {
   userId: ID!
 }
 
+input CreateSignedUrlInput {
+  filename: String!
+  type: String!
+  userId: String!
+}
+
 input CreateSocialAccountInput {
   accessToken: String
   expiresAt: Int
@@ -335,6 +341,7 @@ type Mutation {
   createOffer(input: CreateOfferInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSession(input: CreateSessionInput!): String!
+  createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
   createSocialAccount(input: CreateSocialAccountInput!): String!
   createSwap(input: CreateSwapInput!): String!
   createUser(input: CreateUserInput!): String!
@@ -520,6 +527,11 @@ type SessionResponse {
   expires: DateTime!
   sessionToken: String!
   userId: String!
+}
+
+type SignedUrlResponse {
+  signedUrl: String!
+  url: String!
 }
 
 type SocialAccountResponse {

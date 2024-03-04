@@ -35,12 +35,12 @@ describe('ImageService', () => {
     });
 
     it('should generate signed url', async () => {
-      const signedUrl = await imageService.createSignedUrl({
+      const res = await imageService.createSignedUrl({
         type: 'test',
         userId: '0',
         filename: 'test.jpg',
       });
-      expect(typeof signedUrl).toBe('string');
+      expect(typeof res.signedUrl).toBe('string');
     });
   });
 });
