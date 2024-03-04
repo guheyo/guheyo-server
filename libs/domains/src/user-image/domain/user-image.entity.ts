@@ -13,6 +13,8 @@ export class UserImageEntity {
 
   description: string | null;
 
+  size: number | null;
+
   height: number | null;
 
   width: number | null;

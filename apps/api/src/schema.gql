@@ -203,6 +203,7 @@ input CreateUserImageInput {
   name: String!
   position: Int!
   refId: ID!
+  size: Int
   source: String!
   type: String!
   url: String!
@@ -724,6 +725,7 @@ type UserImageResponse {
   name: String!
   position: Int!
   refId: ID!
+  size: Int
   source: String!
   type: String!
   updatedAt: DateTime!

@@ -12,6 +12,8 @@ export class CreateUserImageCommand implements ICommand {
 
   description?: string;
 
+  size?: number;
+
   height?: number;
 
   width?: number;
@@ -32,6 +34,7 @@ export class CreateUserImageCommand implements ICommand {
     this.url = input.url;
     this.contentType = input.contentType;
     this.description = input.description;
+    this.size = input.size;
     this.height = input.height;
     this.width = input.width;
     this.position = input.position;
