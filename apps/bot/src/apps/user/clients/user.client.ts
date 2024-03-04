@@ -10,6 +10,7 @@ import { SignInUserCommand } from '@lib/domains/user/application/commands/sign-i
 import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
 import { MemberResponse } from '@lib/domains/member/application/dtos/member.response';
 import { FindMemberQuery } from '@lib/domains/member/application/queries/find-member-by-user-and-group/find-member.query';
+import { CreateUserImageCommand } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.command';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { SimpleUser } from '../parsers/user.types';
 import { UserParser } from '../parsers/user.parser';
@@ -84,10 +85,20 @@ export class UserClient extends UserImageClient {
       type: 'avatar',
       userId,
     });
+    const createUserImageInput = this.userImageParser.parseCreateUserImageInputFromUrl({
+      id: uuid4(),
+      name: this.imageService.parseNameFromURL(url),
+      url,
+      contentType: this.imageService.parseMimeType(url),
+      userId,
+    });
+    await this.commandBus.execute(
+      new CreateUserImageCommand(new CreateUserImageCommand(createUserImageInput)),
+    );
     await this.commandBus.execute(
       new UpdateUserCommand({
         id: userId,
-        avatarURL: url || undefined,
+        avatarURL: url,
       }),
     );
   }
