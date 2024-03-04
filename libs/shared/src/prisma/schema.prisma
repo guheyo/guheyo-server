@@ -51,6 +51,7 @@ model UserImage {
   url               String
   contentType       String?
   description       String?
+  size              Int?
   height            Int?
   width             Int?
   position          Int
