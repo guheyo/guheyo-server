@@ -35,6 +35,14 @@ export class FindUserHandler extends PrismaQueryHandler<FindUserQuery, UserRespo
       });
       return this.parseResponse(users[0]);
     }
+    if (query.username) {
+      const user = await this.prismaService.user.findUnique({
+        where: {
+          username: query.username,
+        },
+      });
+      return this.parseResponse(user);
+    }
     return null;
   }
 }

@@ -17,4 +17,9 @@ export class FindUserArgs {
   @IsString()
   @Field({ nullable: true })
   sessionToken?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field({ nullable: true })
+  username?: string;
 }
