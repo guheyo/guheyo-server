@@ -44,7 +44,7 @@ export class ImageService {
       signedUrl: await getSignedUrl(this.client, command, {
         expiresIn: 60 * 15, // 15 mins
       }),
-      url: key,
+      url: this.createFileUrl(key),
     };
   }
 

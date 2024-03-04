@@ -9,7 +9,7 @@ export class CreateSignedUrlCommand implements ICommand {
   filename: string;
 
   constructor(input: CreateSignedUrlInput) {
-    this.type = input.userId;
+    this.type = input.type;
     this.userId = input.userId;
     this.filename = input.filename;
   }
