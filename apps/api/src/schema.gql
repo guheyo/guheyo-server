@@ -158,6 +158,12 @@ input CreateSessionInput {
   userId: ID!
 }
 
+input CreateSignedUrlInput {
+  filename: String!
+  type: String!
+  userId: String!
+}
+
 input CreateSocialAccountInput {
   accessToken: String
   expiresAt: Int
@@ -197,6 +203,7 @@ input CreateUserImageInput {
   name: String!
   position: Int!
   refId: ID!
+  size: Int
   source: String!
   type: String!
   url: String!
@@ -335,6 +342,7 @@ type Mutation {
   createOffer(input: CreateOfferInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSession(input: CreateSessionInput!): String!
+  createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
   createSocialAccount(input: CreateSocialAccountInput!): String!
   createSwap(input: CreateSwapInput!): String!
   createUser(input: CreateUserInput!): String!
@@ -501,7 +509,7 @@ type Query {
   findSwapById(id: ID!): SwapResponse
   findSwapPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedSwapPreviewsResponse!
   findTerm(name: String!): TermResponse
-  findUser(provider: String, sessionToken: String, socialId: String): UserResponse
+  findUser(provider: String, sessionToken: String, socialId: String, username: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
@@ -520,6 +528,11 @@ type SessionResponse {
   expires: DateTime!
   sessionToken: String!
   userId: String!
+}
+
+type SignedUrlResponse {
+  signedUrl: String!
+  url: String!
 }
 
 type SocialAccountResponse {
@@ -712,6 +725,7 @@ type UserImageResponse {
   name: String!
   position: Int!
   refId: ID!
+  size: Int
   source: String!
   type: String!
   updatedAt: DateTime!

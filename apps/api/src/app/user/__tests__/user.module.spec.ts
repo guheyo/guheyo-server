@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { GraphQLModule } from '@nestjs/graphql/dist/graphql.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UserSavePort } from '@lib/domains/user/application/ports/out/user.save.port';
 import { UserLoadPort } from '@lib/domains/user/application/ports/out/user.load.port';
@@ -33,6 +34,12 @@ describe('UserModule', () => {
         GraphQLModule.forRoot<ApolloDriverConfig>({
           driver: ApolloDriver,
         }),
+        ThrottlerModule.forRoot([
+          {
+            ttl: 60000,
+            limit: 100,
+          },
+        ]),
         UserModule,
       ],
     }).compile();

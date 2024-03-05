@@ -33,11 +33,11 @@ export class UserImageClient {
   ): Promise<CreateUserImageInput[]> {
     const createUserImageInputPromiseList = uploadUserImageInputList.map(
       async (uploadUserImageInput) => {
-        const url = await this.imageService.uploadFileFromURL(
-          uploadUserImageInput.url,
+        const url = await this.imageService.uploadFileFromURL({
+          url: uploadUserImageInput.url,
           type,
-          uploadUserImageInput.userId,
-        );
+          userId: uploadUserImageInput.userId,
+        });
         uploadUserImageInput.url = url;
         return uploadUserImageInput;
       },

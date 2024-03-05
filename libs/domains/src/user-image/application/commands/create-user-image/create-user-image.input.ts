@@ -25,6 +25,10 @@ export class CreateUserImageInput {
 
   @IsInt()
   @Field(() => Int, { nullable: true })
+  size?: number;
+
+  @IsInt()
+  @Field(() => Int, { nullable: true })
   height?: number;
 
   @IsInt()

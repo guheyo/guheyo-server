@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import mimeTypes from 'mime-types';
 import { ImageErrorMessage } from './image.error.message';
+import { SignedUrlResponse } from './image.response';
 
 @Injectable()
 export class ImageService {
@@ -21,25 +22,51 @@ export class ImageService {
     });
   }
 
-  async generateSignedUrl(path: string, filename: string) {
-    const command = new PutObjectCommand({
-      Bucket: this.configService.get('s3.bucket'),
-      Key: `${path}/${filename}`,
-      ContentType: 'image/*',
-    });
-    return getSignedUrl(this.client, command, {
-      expiresIn: 60 * 30,
-    });
-  }
-
-  async uploadFile(file: Buffer, type: string, userId: string, name: string) {
+  async createSignedUrl({
+    type,
+    userId,
+    filename,
+  }: {
+    type: string;
+    userId: string;
+    filename: string;
+  }): Promise<SignedUrlResponse> {
     const path = this.generateUploadPath(type, userId);
-    const key = this.createFileKey(path, name);
-    const mimeType = mimeTypes.lookup(key);
+    const key = this.createFileKey(path, filename);
+
     const command = new PutObjectCommand({
       Bucket: this.configService.get('s3.bucket'),
       Key: key,
-      ContentType: mimeType || undefined,
+      ContentType: 'image/*',
+    });
+
+    return {
+      signedUrl: await getSignedUrl(this.client, command, {
+        expiresIn: 60 * 15, // 15 mins
+      }),
+      url: this.createFileUrl(key),
+    };
+  }
+
+  async uploadFile({
+    file,
+    type,
+    userId,
+    filename,
+  }: {
+    file: Buffer;
+    type: string;
+    userId: string;
+    filename: string;
+  }) {
+    const path = this.generateUploadPath(type, userId);
+    const key = this.createFileKey(path, filename);
+    const mimeType = this.parseMimeType(key);
+
+    const command = new PutObjectCommand({
+      Bucket: this.configService.get('s3.bucket'),
+      Key: key,
+      ContentType: mimeType,
       Body: file,
     });
     await this.client.send(command);
@@ -47,10 +74,15 @@ export class ImageService {
     return s3URL;
   }
 
-  async uploadFileFromURL(url: string, type: string, userId: string) {
+  async uploadFileFromURL({ url, type, userId }: { url: string; type: string; userId: string }) {
     const { buffer } = await this.downloadFile(url);
-    const name = this.parseNameFromURL(url);
-    return this.uploadFile(buffer, type, userId, name);
+    const filename = this.parseNameFromURL(url);
+    return this.uploadFile({
+      file: buffer,
+      type,
+      userId,
+      filename,
+    });
   }
 
   parseNameFromURL(url: string) {
@@ -74,8 +106,8 @@ export class ImageService {
     };
   }
 
-  private createFileKey(path: string, name: string) {
-    return `${path}/${name}`;
+  private createFileKey(path: string, filename: string) {
+    return `${path}/${filename}`;
   }
 
   private createFileUrl(key: string) {

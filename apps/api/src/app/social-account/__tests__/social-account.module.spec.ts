@@ -8,6 +8,7 @@ import { UpdateSocialAccountHandler } from '@lib/domains/social-account/applicat
 import { DeleteSocialAccountHandler } from '@lib/domains/social-account/application/commands/delete-social-account/delete-social-account.handler';
 import { SocialAccountLoadPort } from '@lib/domains/social-account/application/ports/out/social-account.load.port';
 import { SocialAccountSavePort } from '@lib/domains/social-account/application/ports/out/social-account.save.port';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { SocialAccountModule } from '../social-account.module';
@@ -31,6 +32,12 @@ describe('SocialAccountModule', () => {
           driver: ApolloDriver,
         }),
         PrismaModule,
+        ThrottlerModule.forRoot([
+          {
+            ttl: 60000,
+            limit: 100,
+          },
+        ]),
         SocialAccountModule,
       ],
     }).compile();

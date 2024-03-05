@@ -33,6 +33,10 @@ export class UserImageResponse {
 
   @IsInt()
   @Field(() => Int, { nullable: true })
+  size: number | null;
+
+  @IsInt()
+  @Field(() => Int, { nullable: true })
   height: number | null;
 
   @IsInt()

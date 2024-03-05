@@ -2,7 +2,7 @@ import { Parser } from '@app/bot/shared/parsers/parser';
 import { CreateUserImageInput } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.input';
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
-import { Attachment, Message } from 'discord.js';
+import { Message } from 'discord.js';
 import { UserImageErrorMessage } from './user-image.error.message';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class UserImageParser extends Parser {
     return message.attachments.size > 0;
   }
 
-  parseCreateUserImageFromAvatar({
+  parseCreateUserImageInputFromUrl({
     id,
     name,
     url,
@@ -37,39 +37,6 @@ export class UserImageParser extends Parser {
     };
   }
 
-  parseCreateUserImageInputFromAttachment({
-    id,
-    attachment,
-    url,
-    position,
-    type,
-    refId,
-    userId,
-  }: {
-    id: string;
-    attachment: Attachment;
-    url: string;
-    position: number;
-    type: string;
-    refId: string;
-    userId: string;
-  }): CreateUserImageInput {
-    return {
-      id,
-      name: attachment.name,
-      url,
-      contentType: attachment.contentType || undefined,
-      description: attachment.description || undefined,
-      height: attachment.height || undefined,
-      width: attachment.width || undefined,
-      position,
-      type,
-      refId,
-      userId,
-      source: 'discord',
-    };
-  }
-
   parseUploadUserImageInputList(
     userId: string,
     message: Message,
@@ -88,6 +55,7 @@ export class UserImageParser extends Parser {
         url: attachment.url,
         contentType: attachment.contentType ?? undefined,
         description: attachment.description ?? undefined,
+        size: attachment.size,
         height: attachment.height ?? undefined,
         width: attachment.width ?? undefined,
         position,

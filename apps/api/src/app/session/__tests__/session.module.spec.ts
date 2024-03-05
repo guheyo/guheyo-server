@@ -8,6 +8,7 @@ import { CreateSessionHandler } from '@lib/domains/session/application/commands/
 import { UpdateSessionHandler } from '@lib/domains/session/application/commands/update-session/update-session.handler';
 import { DeleteSessionHandler } from '@lib/domains/session/application/commands/delete-session/delete-session.handler';
 import { SessionRepository } from '@lib/domains/session/adapter/out/persistence/session.repository';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { SessionModule } from '../session.module';
@@ -31,6 +32,12 @@ describe('SesionModule', () => {
           driver: ApolloDriver,
         }),
         PrismaModule,
+        ThrottlerModule.forRoot([
+          {
+            ttl: 60000,
+            limit: 100,
+          },
+        ]),
         SessionModule,
       ],
     }).compile();
