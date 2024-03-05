@@ -40,6 +40,9 @@ model User {
   posts             Post[]
   postComments      PostComment[]
   discordMessages   DiscordMessage[]
+  offerReports      OfferReport[]
+  demandReports     DemandReport[]
+  swapReports       SwapReport[]
 }
 
 model UserImage {
@@ -239,6 +242,7 @@ model Offer {
   id                String          @id @default(uuid())
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
+  bumpedAt          DateTime        @default(now())
   deletedAt         DateTime?
   name              String
   slug              String?
@@ -256,12 +260,37 @@ model Offer {
   seller            User            @relation(fields: [sellerId], references: [id])
   brandId           String?
   brand             Brand?          @relation(fields: [brandId], references: [id])
+  bumps             OfferBump[]
+  reports           OfferReport[]
+}
+
+model OfferBump {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  offerId           String
+  offer             Offer             @relation(fields: [offerId], references: [id])
+  old               Json?
+  new               Json?
+}
+
+model OfferReport {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  offerId           String
+  offer             Offer             @relation(fields: [offerId], references: [id])
+  reporterId        String
+  reporter          User              @relation(fields: [reporterId], references: [id])
+  title             String
+  content           String?
 }
 
 model Demand {
   id                String          @id @default(uuid())
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
+  bumpedAt          DateTime        @default(now())
   deletedAt         DateTime?
   name              String
   slug              String?
@@ -279,12 +308,37 @@ model Demand {
   buyer             User            @relation(fields: [buyerId], references: [id])
   brandId           String?
   brand             Brand?          @relation(fields: [brandId], references: [id])
+  bumps             DemandBump[]
+  reports           DemandReport[]
+}
+
+model DemandBump {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  demandId          String
+  demand            Demand            @relation(fields: [demandId], references: [id])
+  old               Json?
+  new               Json?
+}
+
+model DemandReport {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  demandId          String
+  demand            Demand            @relation(fields: [demandId], references: [id])
+  reporterId        String
+  reporter          User              @relation(fields: [reporterId], references: [id])
+  title             String
+  content           String?
 }
 
 model Swap {
   id                  String          @id @default(uuid())
   createdAt           DateTime        @default(now())
   updatedAt           DateTime        @updatedAt
+  bumpedAt            DateTime        @default(now())
   deletedAt           DateTime?
   slug                String?
   name0               String
@@ -304,6 +358,30 @@ model Swap {
   proposer            User            @relation(fields: [proposerId], references: [id])
   brandId             String?
   brand               Brand?          @relation(fields: [brandId], references: [id])
+  bumps               SwapBump[]
+  reports             SwapReport[]
+}
+
+model SwapBump {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  swapId            String
+  swap              Swap              @relation(fields: [swapId], references: [id])
+  old               Json?
+  new               Json?
+}
+
+model SwapReport {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  swapId            String
+  swap              Swap              @relation(fields: [swapId], references: [id])
+  reporterId        String
+  reporter          User              @relation(fields: [reporterId], references: [id])
+  title             String
+  content           String?
 }
 
 model Auction {
