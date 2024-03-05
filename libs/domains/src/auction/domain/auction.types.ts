@@ -15,7 +15,7 @@ export interface UpdateAuctionProps {
 }
 
 export enum AuctionStatus {
-  OPEN = 'OPEN',
+  OPEN = 'open',
   END = 'END',
 }
 

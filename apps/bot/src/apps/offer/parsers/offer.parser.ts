@@ -32,9 +32,9 @@ export class OfferParser extends DealParser {
 
     return {
       ...dealSummary,
-      priceCurrency: 'KRW',
-      businessFunction: 'SELL',
-      status: 'OPEN',
+      priceCurrency: 'krw',
+      businessFunction: 'sell',
+      status: 'open',
       groupId: group.id,
       productCategoryId: this.parseProductCategoryId(message, group),
       sellerId: userId,

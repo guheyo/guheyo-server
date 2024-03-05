@@ -32,9 +32,9 @@ export class DemandParser extends DealParser {
 
     return {
       ...dealSummary,
-      priceCurrency: 'KRW',
-      businessFunction: 'BUY',
-      status: 'OPEN',
+      priceCurrency: 'krw',
+      businessFunction: 'buy',
+      status: 'open',
       groupId: group.id,
       productCategoryId: this.parseProductCategoryId(message, group),
       buyerId: userId,

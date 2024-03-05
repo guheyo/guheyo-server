@@ -33,9 +33,9 @@ export class SwapParser extends DealParser {
 
     return {
       ...dealSummary,
-      priceCurrency: 'KRW',
-      businessFunction: 'TRADE',
-      status: 'OPEN',
+      priceCurrency: 'krw',
+      businessFunction: 'trade',
+      status: 'open',
       groupId: group.id,
       productCategoryId: this.parseProductCategoryId(message, group),
       proposerId: userId,
