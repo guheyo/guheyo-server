@@ -1,5 +1,5 @@
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { IsInt, IsString, IsUUID } from 'class-validator';
+import { IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreateUserImageInput {
@@ -15,22 +15,27 @@ export class CreateUserImageInput {
   @Field()
   url: string;
 
+  @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
   contentType?: string;
 
+  @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
   description?: string;
 
+  @IsOptional()
   @IsInt()
   @Field(() => Int, { nullable: true })
   size?: number;
 
+  @IsOptional()
   @IsInt()
   @Field(() => Int, { nullable: true })
   height?: number;
 
+  @IsOptional()
   @IsInt()
   @Field(() => Int, { nullable: true })
   width?: number;
