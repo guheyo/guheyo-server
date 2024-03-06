@@ -16,14 +16,14 @@ export interface UpdateAuctionProps {
 
 export enum AuctionStatus {
   OPEN = 'open',
-  END = 'END',
+  END = 'end',
 }
 
 export enum AuctionBusinessFunction {
-  AUCTION = 'AUCTION',
+  AUCTION = 'auction',
 }
 
 export enum BidStatus {
-  BID = 'BID',
-  WINNING_BID = 'WINNING_BID',
+  BID = 'bid',
+  WIN = 'win',
 }

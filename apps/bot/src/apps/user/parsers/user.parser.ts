@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { GuildMember, RoleManager, User } from 'discord.js';
 import { CreateRoleInput } from '@lib/domains/role/application/commands/create-role/create-role.input';
 import { SignInUserInput } from '@lib/domains/user/application/commands/sign-in-user/sing-in-user.input';
+import { DEFAULT_ROLE_COLOR } from '@lib/domains/role/domain/role.constants';
 import { GroupParser } from '../../group/parsers/group.parser';
 
 @Injectable()
@@ -21,7 +22,7 @@ export class UserParser extends GroupParser {
     return roleManager.cache.map((role) => ({
       id: this.discordIdConverter.convertIdUsingDiscordNamespace(role.id),
       name: role.name,
-      hexColor: role.hexColor === '#000000' ? '#7f838e' : role.hexColor,
+      hexColor: role.hexColor === '#000000' ? DEFAULT_ROLE_COLOR : role.hexColor,
       position: highestRole.position - role.position,
       groupId: this.parseRootGroupId(),
     }));
