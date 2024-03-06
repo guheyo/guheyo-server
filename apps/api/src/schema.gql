@@ -115,7 +115,7 @@ input CreateGroupInput {
   icon: String
   id: ID!
   name: String!
-  position: Int
+  position: Int!
 }
 
 input CreateManyUserImageInput {
@@ -278,7 +278,7 @@ type GroupPreviewResponse {
   id: ID!
   name: String!
   offers: [OfferPreviewResponse!]!
-  position: Int
+  position: Int!
   slug: String
 }
 

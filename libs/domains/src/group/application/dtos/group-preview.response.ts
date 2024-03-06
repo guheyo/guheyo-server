@@ -1,5 +1,4 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
-import { IsOptional } from 'class-validator';
 import { OfferPreviewResponse } from '@lib/domains/offer/application/dtos/offer-preview.response';
 import { DemandPreviewResponse } from '@lib/domains/demand/application/dtos/demand-preview.response';
 
@@ -14,15 +13,13 @@ export class GroupPreviewResponse {
   @Field(() => String, { nullable: true })
   slug: string | null;
 
-  @IsOptional()
   @Field(() => String, { nullable: true })
   description: string | null;
 
-  @IsOptional()
   @Field(() => String, { nullable: true })
   icon: string | null;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => Int)
   position: number;
 
   @Field(() => [OfferPreviewResponse])

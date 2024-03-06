@@ -1,5 +1,4 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
-import { IsOptional } from 'class-validator';
 
 @ObjectType()
 export class ProductCategoryResponse {
@@ -12,7 +11,6 @@ export class ProductCategoryResponse {
   @Field(() => String, { nullable: true })
   slug: string | null;
 
-  @IsOptional()
   @Field(() => String, { nullable: true })
   description: string | null;
 
