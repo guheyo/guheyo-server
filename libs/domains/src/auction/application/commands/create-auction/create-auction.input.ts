@@ -21,7 +21,7 @@ export class CreateAuctionInput {
 
   @IsOptional()
   @IsString()
-  @Field()
+  @Field(() => String, { nullable: true })
   description?: string;
 
   @IsString()

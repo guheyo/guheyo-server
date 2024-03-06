@@ -75,7 +75,7 @@ input CreateAuctionInput {
   brandId: String
   businessFunction: String!
   createdAt: DateTime!
-  description: String!
+  description: String
   endedAt: DateTime!
   groupId: ID!
   id: ID!
@@ -90,7 +90,7 @@ input CreateDemandInput {
   brandId: String
   businessFunction: String!
   buyerId: String!
-  description: String!
+  description: String
   groupId: ID!
   id: ID!
   name: String!
@@ -131,7 +131,7 @@ input CreateMemberInput {
 input CreateOfferInput {
   brandId: String
   businessFunction: String!
-  description: String!
+  description: String
   groupId: ID!
   id: ID!
   name: String!
@@ -181,8 +181,8 @@ input CreateSocialAccountInput {
 input CreateSwapInput {
   brandId: String
   businessFunction: String!
-  description0: String!
-  description1: String!
+  description0: String
+  description1: String
   groupId: ID!
   id: ID!
   name0: String!

@@ -13,7 +13,7 @@ export class CreateOfferInput {
 
   @IsOptional()
   @IsString()
-  @Field()
+  @Field(() => String, { nullable: true })
   description?: string;
 
   @IsInt()

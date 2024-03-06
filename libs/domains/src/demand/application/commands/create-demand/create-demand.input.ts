@@ -13,7 +13,7 @@ export class CreateDemandInput {
 
   @IsOptional()
   @IsString()
-  @Field()
+  @Field(() => String, { nullable: true })
   description?: string;
 
   @IsInt()

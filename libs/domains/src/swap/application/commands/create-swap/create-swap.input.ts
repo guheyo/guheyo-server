@@ -17,12 +17,12 @@ export class CreateSwapInput {
 
   @IsOptional()
   @IsString()
-  @Field()
+  @Field(() => String, { nullable: true })
   description0?: string;
 
   @IsOptional()
   @IsString()
-  @Field()
+  @Field(() => String, { nullable: true })
   description1?: string;
 
   @IsInt()
