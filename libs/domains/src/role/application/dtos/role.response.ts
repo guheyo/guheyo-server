@@ -12,7 +12,7 @@ export class RoleResponse {
   position: number;
 
   @Field()
-  hexColor: string = '#000000';
+  hexColor: string;
 
   @Field(() => ID)
   groupId: string;

@@ -75,7 +75,7 @@ input CreateAuctionInput {
   brandId: String
   businessFunction: String!
   createdAt: DateTime!
-  description: String!
+  description: String
   endedAt: DateTime!
   groupId: ID!
   id: ID!
@@ -83,14 +83,14 @@ input CreateAuctionInput {
   productCategoryId: String!
   sellerId: String!
   source: String!
-  status: String! = "OPEN"
+  status: String! = "open"
 }
 
 input CreateDemandInput {
   brandId: String
   businessFunction: String!
   buyerId: String!
-  description: String!
+  description: String
   groupId: ID!
   id: ID!
   name: String!
@@ -98,7 +98,7 @@ input CreateDemandInput {
   priceCurrency: String!
   productCategoryId: String!
   source: String!
-  status: String! = "OPEN"
+  status: String! = "open"
 }
 
 input CreateDiscordMessageInput {
@@ -115,7 +115,7 @@ input CreateGroupInput {
   icon: String
   id: ID!
   name: String!
-  position: Int
+  position: Int!
 }
 
 input CreateManyUserImageInput {
@@ -131,7 +131,7 @@ input CreateMemberInput {
 input CreateOfferInput {
   brandId: String
   businessFunction: String!
-  description: String!
+  description: String
   groupId: ID!
   id: ID!
   name: String!
@@ -140,7 +140,7 @@ input CreateOfferInput {
   productCategoryId: String!
   sellerId: String!
   source: String!
-  status: String! = "OPEN"
+  status: String! = "open"
 }
 
 input CreateRoleInput {
@@ -181,8 +181,8 @@ input CreateSocialAccountInput {
 input CreateSwapInput {
   brandId: String
   businessFunction: String!
-  description0: String!
-  description1: String!
+  description0: String
+  description1: String
   groupId: ID!
   id: ID!
   name0: String!
@@ -192,7 +192,7 @@ input CreateSwapInput {
   productCategoryId: String!
   proposerId: String!
   source: String!
-  status: String! = "OPEN"
+  status: String! = "open"
 }
 
 input CreateUserImageInput {
@@ -278,7 +278,7 @@ type GroupPreviewResponse {
   id: ID!
   name: String!
   offers: [OfferPreviewResponse!]!
-  position: Int
+  position: Int!
   slug: String
 }
 

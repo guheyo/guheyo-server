@@ -13,7 +13,7 @@ export class CreateDemandInput {
 
   @IsOptional()
   @IsString()
-  @Field()
+  @Field(() => String, { nullable: true })
   description?: string;
 
   @IsInt()
@@ -29,7 +29,7 @@ export class CreateDemandInput {
   businessFunction: string;
 
   @IsString()
-  @Field(() => String, { defaultValue: 'OPEN' })
+  @Field(() => String, { defaultValue: 'open' })
   status: string;
 
   @IsUUID()

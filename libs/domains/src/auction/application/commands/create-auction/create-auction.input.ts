@@ -21,7 +21,7 @@ export class CreateAuctionInput {
 
   @IsOptional()
   @IsString()
-  @Field()
+  @Field(() => String, { nullable: true })
   description?: string;
 
   @IsString()
@@ -29,7 +29,7 @@ export class CreateAuctionInput {
   businessFunction: string;
 
   @IsString()
-  @Field(() => String, { defaultValue: 'OPEN' })
+  @Field(() => String, { defaultValue: 'open' })
   status: string;
 
   @IsString()

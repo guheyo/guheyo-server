@@ -17,12 +17,12 @@ export class CreateSwapInput {
 
   @IsOptional()
   @IsString()
-  @Field()
+  @Field(() => String, { nullable: true })
   description0?: string;
 
   @IsOptional()
   @IsString()
-  @Field()
+  @Field(() => String, { nullable: true })
   description1?: string;
 
   @IsInt()
@@ -38,7 +38,7 @@ export class CreateSwapInput {
   businessFunction: string;
 
   @IsString()
-  @Field(() => String, { defaultValue: 'OPEN' })
+  @Field(() => String, { defaultValue: 'open' })
   status: string;
 
   @IsUUID()

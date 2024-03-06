@@ -13,7 +13,7 @@ export class CreateOfferInput {
 
   @IsOptional()
   @IsString()
-  @Field()
+  @Field(() => String, { nullable: true })
   description?: string;
 
   @IsInt()
@@ -29,7 +29,7 @@ export class CreateOfferInput {
   businessFunction: string;
 
   @IsString()
-  @Field(() => String, { defaultValue: 'OPEN' })
+  @Field(() => String, { defaultValue: 'open' })
   status: string;
 
   @IsString()
