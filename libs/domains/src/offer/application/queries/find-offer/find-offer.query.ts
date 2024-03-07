@@ -1,5 +1,13 @@
 import { IQuery } from '@nestjs/cqrs';
+import { FindOfferArgs } from './find-offer.args';
 
 export class FindOfferQuery implements IQuery {
-  constructor(public readonly slug: string) {}
+  id?: string;
+
+  slug?: string;
+
+  constructor(findOfferArgs: FindOfferArgs) {
+    this.id = findOfferArgs.id;
+    this.slug = findOfferArgs.slug;
+  }
 }

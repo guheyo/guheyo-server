@@ -11,9 +11,12 @@ export class FindSwapHandler extends PrismaQueryHandler<FindSwapQuery, SwapRespo
     super(SwapResponse);
   }
 
-  async execute(query: FindSwapQuery): Promise<any> {
+  async execute(query: FindSwapQuery): Promise<SwapResponse | null> {
+    if (!query.id && !query.slug) return null;
+
     const swap = await this.prismaService.swap.findFirst({
       where: {
+        id: query.id,
         slug: query.slug,
       },
       include: {
