@@ -10,6 +10,8 @@ export class UpdateAuctionCommand implements ICommand {
 
   businessFunction?: string;
 
+  productCategoryId?: string;
+
   brandId?: string;
 
   constructor(input: UpdateAuctionInput) {
@@ -17,6 +19,7 @@ export class UpdateAuctionCommand implements ICommand {
     this.name = input.name;
     this.description = input.description;
     this.businessFunction = input.businessFunction;
+    this.productCategoryId = input.productCategoryId;
     this.brandId = input.brandId;
   }
 }

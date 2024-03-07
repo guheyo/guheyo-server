@@ -621,21 +621,23 @@ type TermResponse {
 }
 
 input UpdateAuctionInput {
-  brandId: String
+  brandId: ID
   businessFunction: String
   description: String
   id: ID!
   name: String
+  productCategoryId: ID
 }
 
 input UpdateDemandInput {
-  brandId: String
+  brandId: ID
   businessFunction: String
   description: String
   id: ID!
   name: String
   price: Int
   priceCurrency: String
+  productCategoryId: ID
   source: String!
 }
 
@@ -653,13 +655,14 @@ input UpdateMemberInput {
 }
 
 input UpdateOfferInput {
-  brandId: String
+  brandId: ID
   businessFunction: String
   description: String
   id: ID!
   name: String
   price: Int
   priceCurrency: String
+  productCategoryId: ID
   source: String!
 }
 
