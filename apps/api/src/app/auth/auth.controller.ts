@@ -41,13 +41,13 @@ export class AuthController {
     let refreshToken: string;
     if (user) {
       accessToken = this.jwtService.signAccessToken(
-        this.jwtService.parseJwtUser({
+        this.jwtService.parseProfile({
           ...input,
           id: user.id,
         }),
       );
       refreshToken = this.jwtService.signRefreshToken(
-        this.jwtService.parseJwtUser({
+        this.jwtService.parseProfile({
           ...input,
           id: user.id,
         }),
@@ -63,13 +63,13 @@ export class AuthController {
     } else {
       const id = uuid4();
       accessToken = this.jwtService.signAccessToken(
-        this.jwtService.parseJwtUser({
+        this.jwtService.parseProfile({
           ...input,
           id,
         }),
       );
       refreshToken = this.jwtService.signRefreshToken(
-        this.jwtService.parseJwtUser({
+        this.jwtService.parseProfile({
           ...input,
           id,
         }),

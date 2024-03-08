@@ -1,5 +1,5 @@
 import { FindSocialAccountQuery } from '@lib/domains/social-account/application/queries/find-social-account/find-social-account.query';
-import { Payload } from '@lib/shared/jwt/jwt.interfaces';
+import { AuthUser } from '@lib/shared/jwt/jwt.interfaces';
 import { JwtService } from '@lib/shared/jwt/jwt.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -23,7 +23,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
     });
   }
 
-  async validate(req: Request, payload: Payload) {
+  async validate(req: Request, payload: AuthUser) {
     const oldRefreshToken = this.jwtService.getRefreshTokenFromCookies(req)!;
     const socialAccount = await this.queryBus.execute(
       new FindSocialAccountQuery({

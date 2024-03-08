@@ -3,7 +3,7 @@ import { CommandBus } from '@nestjs/cqrs';
 import { JwtService } from '@lib/shared/jwt/jwt.service';
 import { UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { Payload } from '@lib/shared/jwt/jwt.interfaces';
+import { AuthUser } from '@lib/shared/jwt/jwt.interfaces';
 import { UpdateSocialAccountCommand } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.command';
 import { SocialUserResponse } from '@lib/domains/social-account/application/dtos/social-user.response';
 import { JwtRefreshAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-refresh-auth.guard';
@@ -24,13 +24,13 @@ export class AuthResolver {
     @Context('req') req: Request,
     @Context('res') res: Response,
   ): Promise<JwtResponse> {
-    const payload = req.user as Payload;
-    const accessToken = this.jwtService.signAccessToken(this.jwtService.parseJwtUser(payload));
-    const refreshToken = this.jwtService.signRefreshToken(this.jwtService.parseJwtUser(payload));
+    const authUser = req.user as AuthUser;
+    const accessToken = this.jwtService.signAccessToken(this.jwtService.parseProfile(authUser));
+    const refreshToken = this.jwtService.signRefreshToken(this.jwtService.parseProfile(authUser));
     await this.commandBus.execute(
       new UpdateSocialAccountCommand({
-        provider: payload.provider,
-        socialId: payload.socialId,
+        provider: authUser.provider,
+        socialId: authUser.socialId,
         accessToken,
         refreshToken,
       }),
@@ -49,11 +49,11 @@ export class AuthResolver {
     @Context('req') req: Request,
     @Context('res') res: Response,
   ): Promise<SocialUserResponse> {
-    const payload = req.user as Payload;
+    const authUser = req.user as AuthUser;
     await this.commandBus.execute(
       new UpdateSocialAccountCommand({
-        provider: payload.provider,
-        socialId: payload.socialId,
+        provider: authUser.provider,
+        socialId: authUser.socialId,
         accessToken: undefined,
         refreshToken: undefined,
       }),
@@ -61,8 +61,8 @@ export class AuthResolver {
     this.jwtService.clearAccessTokenCookie(res);
     this.jwtService.clearRefreshTokenCookie(res);
     return new SocialUserResponse({
-      provider: payload.provider,
-      socialId: payload.socialId,
+      provider: authUser.provider,
+      socialId: authUser.socialId,
     });
   }
 }
