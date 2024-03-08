@@ -11,9 +11,12 @@ export class FindDemandHandler extends PrismaQueryHandler<FindDemandQuery, Deman
     super(DemandResponse);
   }
 
-  async execute(query: FindDemandQuery): Promise<any> {
+  async execute(query: FindDemandQuery): Promise<DemandResponse | null> {
+    if (!query.id && !query.slug) return null;
+
     const demand = await this.prismaService.demand.findFirst({
       where: {
+        id: query.id,
         slug: query.slug,
       },
       include: {

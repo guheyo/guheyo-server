@@ -489,8 +489,7 @@ type ProductCategoryResponse {
 type Query {
   findAuctionById(id: ID!): AuctionResponse
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
-  findDemand(slug: String!): DemandResponse
-  findDemandById(id: ID!): DemandResponse
+  findDemand(id: ID, slug: String): DemandResponse
   findDemandPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
   findGroup(slug: String): GroupResponse
   findGroupById(id: ID!): GroupResponse
@@ -500,13 +499,11 @@ type Query {
   findMemberByUserAndGroup(groupId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUserById(id: ID!): MyUserResponse
   findMyUserByUsername(username: ID!): MyUserResponse
-  findOffer(slug: String!): OfferResponse
-  findOfferById(id: ID!): OfferResponse
+  findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
-  findSwap(slug: String!): SwapResponse
-  findSwapById(id: ID!): SwapResponse
+  findSwap(id: ID, slug: String): SwapResponse
   findSwapPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedSwapPreviewsResponse!
   findTerm(name: String!): TermResponse
   findUser(provider: String, sessionToken: String, socialId: String, username: String): UserResponse
@@ -621,21 +618,23 @@ type TermResponse {
 }
 
 input UpdateAuctionInput {
-  brandId: String
+  brandId: ID
   businessFunction: String
   description: String
   id: ID!
   name: String
+  productCategoryId: ID
 }
 
 input UpdateDemandInput {
-  brandId: String
+  brandId: ID
   businessFunction: String
   description: String
   id: ID!
   name: String
   price: Int
   priceCurrency: String
+  productCategoryId: ID
   source: String!
 }
 
@@ -653,13 +652,14 @@ input UpdateMemberInput {
 }
 
 input UpdateOfferInput {
-  brandId: String
+  brandId: ID
   businessFunction: String
   description: String
   id: ID!
   name: String
   price: Int
   priceCurrency: String
+  productCategoryId: ID
   source: String!
 }
 

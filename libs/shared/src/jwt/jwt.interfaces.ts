@@ -1,4 +1,4 @@
-export interface JwtUser {
+export interface Profile {
   id: string;
   username: string;
   provider: string;
@@ -6,7 +6,7 @@ export interface JwtUser {
   avatarURL?: string;
 }
 
-export interface Payload extends JwtUser {
+export interface UserPayload extends Profile {
   iat: number;
   exp: number;
 }

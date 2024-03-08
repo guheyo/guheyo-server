@@ -4,7 +4,6 @@ import { DeleteSwapCommand } from '@lib/domains/swap/application/commands/delete
 import { UpdateSwapCommand } from '@lib/domains/swap/application/commands/update-swap/update-swap.command';
 import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-swap/update-swap.input';
 import { SwapResponse } from '@lib/domains/swap/application/dtos/swap.response';
-import { FindSwapByIdQuery } from '@lib/domains/swap/application/queries/find-swap-by-id/find-swap-by-id.query';
 import { FindSwapQuery } from '@lib/domains/swap/application/queries/find-swap/find-swap.query';
 import { FindSwapPreviewsArgs } from '@lib/domains/swap/application/queries/find-swap-previews/find-swap-previews.args';
 import { FindSwapPreviewsQuery } from '@lib/domains/swap/application/queries/find-swap-previews/find-swap-previews.query';
@@ -12,6 +11,7 @@ import { PaginatedSwapPreviewsResponse } from '@lib/domains/swap/application/que
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
+import { FindSwapArgs } from '@lib/domains/swap/application/queries/find-swap/find-swap.args';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -23,14 +23,8 @@ export class SwapResolver {
   ) {}
 
   @Query(() => SwapResponse, { nullable: true })
-  async findSwapById(@Args('id', { type: () => ID }) id: string): Promise<SwapResponse | null> {
-    const query = new FindSwapByIdQuery(id);
-    return this.queryBus.execute(query);
-  }
-
-  @Query(() => SwapResponse, { nullable: true })
-  async findSwap(@Args('slug') slug: string): Promise<SwapResponse | null> {
-    const query = new FindSwapQuery(slug);
+  async findSwap(@Args() findSwapArgs: FindSwapArgs): Promise<SwapResponse | null> {
+    const query = new FindSwapQuery(findSwapArgs);
     return this.queryBus.execute(query);
   }
 

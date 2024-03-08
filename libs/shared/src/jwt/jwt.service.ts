@@ -3,25 +3,25 @@ import { ConfigService } from '@nestjs/config';
 import { CookieOptions, Request, Response } from 'express';
 import { sign, verify } from 'jsonwebtoken';
 import _ from 'lodash';
-import { JwtUser } from './jwt.interfaces';
+import { Profile } from './jwt.interfaces';
 
 @Injectable()
 export class JwtService {
   constructor(private readonly configService: ConfigService) {}
 
-  signAccessToken(jwtUser: JwtUser): string {
-    return sign(jwtUser, this.configService.get('jwt.access.secret')!, {
+  signAccessToken(profile: Profile): string {
+    return sign(profile, this.configService.get('jwt.access.secret')!, {
       expiresIn: this.configService.get('jwt.access.expiresIn'),
     });
   }
 
-  signRefreshToken(jwtUser: JwtUser): string {
-    return sign(jwtUser, this.configService.get('jwt.refresh.secret')!, {
+  signRefreshToken(profile: Profile): string {
+    return sign(profile, this.configService.get('jwt.refresh.secret')!, {
       expiresIn: this.configService.get('jwt.refresh.expiresIn'),
     });
   }
 
-  parseJwtUser(partial: any): JwtUser {
+  parseProfile(partial: any): Profile {
     return {
       ..._.pick(partial, ['id', 'username', 'provider', 'socialId', 'avatarURL']),
     };

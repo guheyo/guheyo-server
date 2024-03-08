@@ -19,7 +19,16 @@ export class UpdateAuctionHandler implements ICommandHandler<UpdateAuctionComman
     if (!auction) throw new NotFoundException(AuctionErrorMessage.AUCTION_IS_NOT_FOUND);
 
     auction = this.publisher.mergeObjectContext(auction);
-    auction.update(_.pick(command, ['id', 'name', 'description', 'businessFunction', 'brandId']));
+    auction.update(
+      _.pick(command, [
+        'id',
+        'name',
+        'description',
+        'businessFunction',
+        'productCategoryId',
+        'brandId',
+      ]),
+    );
     await this.auctionSavePort.save(auction);
     auction.commit();
   }

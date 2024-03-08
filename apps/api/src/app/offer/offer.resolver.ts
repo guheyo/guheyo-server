@@ -4,7 +4,6 @@ import { DeleteOfferCommand } from '@lib/domains/offer/application/commands/dele
 import { UpdateOfferCommand } from '@lib/domains/offer/application/commands/update-offer/update-offer.command';
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
 import { OfferResponse } from '@lib/domains/offer/application/dtos/offer.response';
-import { FindOfferByIdQuery } from '@lib/domains/offer/application/queries/find-offer-by-id/find-offer-by-id.query';
 import { FindOfferQuery } from '@lib/domains/offer/application/queries/find-offer/find-offer.query';
 import { FindOfferPreviewsArgs } from '@lib/domains/offer/application/queries/find-offer-previews/find-offer-previews.args';
 import { FindOfferPreviewsQuery } from '@lib/domains/offer/application/queries/find-offer-previews/find-offer-previews.query';
@@ -12,6 +11,7 @@ import { PaginatedOfferPreviewsResponse } from '@lib/domains/offer/application/q
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
+import { FindOfferArgs } from '@lib/domains/offer/application/queries/find-offer/find-offer.args';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -23,14 +23,8 @@ export class OfferResolver {
   ) {}
 
   @Query(() => OfferResponse, { nullable: true })
-  async findOfferById(@Args('id', { type: () => ID }) id: string): Promise<OfferResponse | null> {
-    const query = new FindOfferByIdQuery(id);
-    return this.queryBus.execute(query);
-  }
-
-  @Query(() => OfferResponse, { nullable: true })
-  async findOffer(@Args('slug') slug: string): Promise<OfferResponse | null> {
-    const query = new FindOfferQuery(slug);
+  async findOffer(@Args() findOfferArgs: FindOfferArgs): Promise<OfferResponse | null> {
+    const query = new FindOfferQuery(findOfferArgs);
     return this.queryBus.execute(query);
   }
 

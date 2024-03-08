@@ -14,9 +14,11 @@ export class UpdateOfferCommand implements ICommand {
 
   businessFunction?: string;
 
-  source: string;
+  productCategoryId?: string;
 
   brandId?: string;
+
+  source: string;
 
   constructor(input: UpdateOfferInput) {
     this.id = input.id;
@@ -25,7 +27,8 @@ export class UpdateOfferCommand implements ICommand {
     this.price = input.price;
     this.priceCurrency = input.priceCurrency;
     this.businessFunction = input.businessFunction;
-    this.source = input.source;
+    this.productCategoryId = input.productCategoryId;
     this.brandId = input.brandId;
+    this.source = input.source;
   }
 }

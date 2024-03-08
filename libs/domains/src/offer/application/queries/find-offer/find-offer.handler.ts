@@ -11,9 +11,12 @@ export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferRe
     super(OfferResponse);
   }
 
-  async execute(query: FindOfferQuery): Promise<any> {
+  async execute(query: FindOfferQuery): Promise<OfferResponse | null> {
+    if (!query.id && !query.slug) return null;
+
     const offer = await this.prismaService.offer.findFirst({
       where: {
+        id: query.id,
         slug: query.slug,
       },
       include: {

@@ -29,6 +29,7 @@ export class UpdateOfferHandler implements ICommandHandler<UpdateOfferCommand> {
         'price',
         'priceCurrency',
         'businessFunction',
+        'productCategoryId',
         'brandId',
       ]),
     );
