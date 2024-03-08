@@ -6,7 +6,7 @@ export interface Profile {
   avatarURL?: string;
 }
 
-export interface AuthUser extends Profile {
+export interface UserPayload extends Profile {
   iat: number;
   exp: number;
 }
