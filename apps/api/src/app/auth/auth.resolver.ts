@@ -6,8 +6,8 @@ import { Request, Response } from 'express';
 import { Payload } from '@lib/shared/jwt/jwt.interfaces';
 import { UpdateSocialAccountCommand } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.command';
 import { SocialUserResponse } from '@lib/domains/social-account/application/dtos/social-user.response';
-import { JwtRefreshAuthGuard } from './jwt/jwt-refresh-auth.guard';
-import { JwtResponse } from './jwt/jwt.response';
+import { JwtRefreshAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-refresh-auth.guard';
+import { JwtResponse } from '@lib/domains/auth/guards/jwt/jwt.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)

@@ -15,7 +15,7 @@ import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { FindUserArgs } from '@lib/domains/user/application/queries/find-user/find-user.args';
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 import { UseGuards } from '@nestjs/common';
-import { JwtAccessAuthGuard } from '../auth/jwt/jwt-acess-auth.guard';
+import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)

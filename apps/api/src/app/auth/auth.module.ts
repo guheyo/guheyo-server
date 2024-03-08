@@ -4,23 +4,13 @@ import { PrismaModule } from '@lib/shared/prisma/prisma.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtService } from '@lib/shared/jwt/jwt.service';
-import { AuthResolver } from './auth.resolver';
-import { JwtAccessStrategy } from './jwt/jwt-access.strategy';
-import { JwtRefreshStrategy } from './jwt/jwt-refresh.strategy';
+import { AUTH_STRATEGIES } from '@lib/domains/auth/guards/auth.strategies';
 import { AuthController } from './auth.controller';
-import { DiscordStrategy } from './discord/discord.strategy';
-import { NaverStrategy } from './naver/naver.strategy';
+import { AuthResolver } from './auth.resolver';
 
 @Module({
   imports: [CqrsModule, PrismaModule, PassportModule.register({}), JwtModule.register({})],
   controllers: [AuthController],
-  providers: [
-    AuthResolver,
-    JwtAccessStrategy,
-    JwtRefreshStrategy,
-    JwtService,
-    DiscordStrategy,
-    NaverStrategy,
-  ],
+  providers: [AuthResolver, JwtService, ...AUTH_STRATEGIES],
 })
 export class AuthModule {}
