@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
-import { Message } from 'discord.js';
+import { Message, PartialMessage } from 'discord.js';
 import { CreateSwapInput } from '@lib/domains/swap/application/commands/create-swap/create-swap.input';
 import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-swap/update-swap.input';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
@@ -47,7 +47,7 @@ export class SwapParser extends DealParser {
     return this.parseDealSummary(userId, message);
   }
 
-  parseDeleteDealArgs(userId: string, message: Message): DeleteSwapArgs {
+  parseDeleteDealArgs(userId: string, message: Message | PartialMessage): DeleteSwapArgs {
     return {
       proposerId: userId,
       id: this.parseIdFromMessage(message),

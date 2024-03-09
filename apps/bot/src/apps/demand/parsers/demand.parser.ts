@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
-import { Message } from 'discord.js';
+import { Message, PartialMessage } from 'discord.js';
 import { CreateDemandInput } from '@lib/domains/demand/application/commands/create-demand/create-demand.input';
 import { UpdateDemandInput } from '@lib/domains/demand/application/commands/update-demand/update-demand.input';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
@@ -46,7 +46,7 @@ export class DemandParser extends DealParser {
     return this.parseDealSummary(userId, message);
   }
 
-  parseDeleteDealArgs(userId: string, message: Message): DeleteDemandArgs {
+  parseDeleteDealArgs(userId: string, message: Message | PartialMessage): DeleteDemandArgs {
     return {
       buyerId: userId,
       id: this.parseIdFromMessage(message),

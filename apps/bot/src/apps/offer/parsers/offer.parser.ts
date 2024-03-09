@@ -1,7 +1,7 @@
 import { CreateOfferInput } from '@lib/domains/offer/application/commands/create-offer/create-offer.input';
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
-import { Message } from 'discord.js';
+import { Message, PartialMessage } from 'discord.js';
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
@@ -46,7 +46,7 @@ export class OfferParser extends DealParser {
     return this.parseDealSummary(userId, message);
   }
 
-  parseDeleteDealArgs(userId: string, message: Message): DeleteOfferArgs {
+  parseDeleteDealArgs(userId: string, message: Message | PartialMessage): DeleteOfferArgs {
     return {
       sellerId: userId,
       id: this.parseIdFromMessage(message),

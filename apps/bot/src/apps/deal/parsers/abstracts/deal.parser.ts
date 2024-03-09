@@ -1,4 +1,4 @@
-import { Message, TextChannel } from 'discord.js';
+import { Message, PartialMessage, TextChannel } from 'discord.js';
 import { RpcException } from '@nestjs/microservices';
 import { CreateOfferInput } from '@lib/domains/offer/application/commands/create-offer/create-offer.input';
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
@@ -35,7 +35,7 @@ export abstract class DealParser extends GroupParser {
 
   abstract parseDeleteDealArgs(
     userId: string,
-    message: Message,
+    message: Message | PartialMessage,
   ): DeleteOfferArgs | DeleteDemandArgs | DeleteSwapArgs;
 
   parsePrice(price: string) {

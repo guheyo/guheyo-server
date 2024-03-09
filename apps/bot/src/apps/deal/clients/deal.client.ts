@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Message } from 'discord.js';
+import { Message, PartialMessage } from 'discord.js';
 import { CreateDemandInput } from '@lib/domains/demand/application/commands/create-demand/create-demand.input';
 import { UpdateDemandInput } from '@lib/domains/demand/application/commands/update-demand/update-demand.input';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
@@ -49,7 +49,7 @@ export abstract class DealClient extends UserImageClient {
     this.logger.log(`${this.dealType}<@${updateDealInput.id}> updated`);
   }
 
-  async deleteDealFromMessage(userId: string, message: Message) {
+  async deleteDealFromMessage(userId: string, message: Message | PartialMessage) {
     const args = this.dealParser.parseDeleteDealArgs(userId, message);
     await this.deleteDeal(args);
     this.logger.log(`${this.dealType}<@${args.id}> deleted`);
