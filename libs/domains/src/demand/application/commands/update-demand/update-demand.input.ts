@@ -37,6 +37,10 @@ export class UpdateDemandInput {
   @Field(() => ID, { nullable: true })
   productCategoryId?: string;
 
+  @IsUUID()
+  @Field(() => ID)
+  buyerId: string;
+
   @IsOptional()
   @IsUUID()
   @Field(() => ID, { nullable: true })

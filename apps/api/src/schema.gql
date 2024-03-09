@@ -89,7 +89,7 @@ input CreateAuctionInput {
 input CreateDemandInput {
   brandId: String
   businessFunction: String!
-  buyerId: String!
+  buyerId: ID!
   description: String
   groupId: ID!
   id: ID!
@@ -138,7 +138,7 @@ input CreateOfferInput {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  sellerId: String!
+  sellerId: ID!
   source: String!
   status: String! = "open"
 }
@@ -190,7 +190,7 @@ input CreateSwapInput {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  proposerId: String!
+  proposerId: ID!
   source: String!
   status: String! = "open"
 }
@@ -629,6 +629,7 @@ input UpdateAuctionInput {
 input UpdateDemandInput {
   brandId: ID
   businessFunction: String
+  buyerId: ID!
   description: String
   id: ID!
   name: String
@@ -660,6 +661,7 @@ input UpdateOfferInput {
   price: Int
   priceCurrency: String
   productCategoryId: ID
+  sellerId: ID!
   source: String!
 }
 
@@ -700,6 +702,7 @@ input UpdateSwapInput {
   name1: String
   price: Int
   priceCurrency: String
+  proposerId: ID!
   source: String!
 }
 

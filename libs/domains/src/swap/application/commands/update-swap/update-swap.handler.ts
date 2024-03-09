@@ -17,6 +17,8 @@ export class UpdateSwapHandler implements ICommandHandler<UpdateSwapCommand> {
   async execute(command: UpdateSwapCommand): Promise<void> {
     let swap = await this.swapLoadPort.findById(command.id);
     if (!swap) throw new NotFoundException(SwapErrorMessage.SWAP_IS_NOT_FOUND);
+    if (!swap.isAuthorized(command.proposerId))
+      throw new ForbiddenException(SwapErrorMessage.SWAP_CHANGES_FROM_UNAUTHORIZED_USER);
     if (!swap.isCompatibleSource(command.source))
       throw new ForbiddenException(SwapErrorMessage.SWAP_CHANGES_FROM_INCOMPATIBLE_PLATFORMS);
 

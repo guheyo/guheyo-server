@@ -45,7 +45,7 @@ export class CreateOfferInput {
   productCategoryId: string;
 
   @IsUUID()
-  @Field()
+  @Field(() => ID)
   sellerId: string;
 
   @IsOptional()

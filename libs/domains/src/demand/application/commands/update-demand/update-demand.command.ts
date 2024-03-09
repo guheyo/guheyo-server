@@ -16,6 +16,8 @@ export class UpdateDemandCommand implements ICommand {
 
   productCategoryId?: string;
 
+  buyerId: string;
+
   brandId?: string;
 
   source: string;
@@ -28,6 +30,7 @@ export class UpdateDemandCommand implements ICommand {
     this.priceCurrency = input.priceCurrency;
     this.businessFunction = input.businessFunction;
     this.productCategoryId = input.productCategoryId;
+    this.buyerId = input.buyerId;
     this.brandId = input.brandId;
     this.source = input.source;
   }

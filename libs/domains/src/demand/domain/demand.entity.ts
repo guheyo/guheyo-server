@@ -49,6 +49,10 @@ export class DemandEntity extends AggregateRoot {
     return this.source === source;
   }
 
+  isAuthorized(buyerId: string) {
+    return this.buyerId === buyerId;
+  }
+
   update(props: UpdateDemandProps) {
     Object.assign(this, _.pickBy(props, _.identity));
     this.apply(new DemandUpdatedEvent(this.id));

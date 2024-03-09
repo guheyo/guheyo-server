@@ -37,6 +37,10 @@ export class UpdateOfferInput {
   @Field(() => ID, { nullable: true })
   productCategoryId?: string;
 
+  @IsUUID()
+  @Field(() => ID)
+  sellerId: string;
+
   @IsOptional()
   @IsUUID()
   @Field(() => ID, { nullable: true })
