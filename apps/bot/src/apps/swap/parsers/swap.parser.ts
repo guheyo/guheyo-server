@@ -47,10 +47,10 @@ export class SwapParser extends DealParser {
     return this.parseDealSummary(userId, message);
   }
 
-  parseDeleteDealArgs({ userId, id }: { userId: string; id: string }): DeleteSwapArgs {
+  parseDeleteDealArgs(userId: string, message: Message): DeleteSwapArgs {
     return {
       proposerId: userId,
-      id,
+      id: this.parseIdFromMessage(message),
     };
   }
 }

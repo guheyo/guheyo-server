@@ -46,10 +46,10 @@ export class OfferParser extends DealParser {
     return this.parseDealSummary(userId, message);
   }
 
-  parseDeleteDealArgs({ userId, id }: { userId: string; id: string }): DeleteOfferArgs {
+  parseDeleteDealArgs(userId: string, message: Message): DeleteOfferArgs {
     return {
       sellerId: userId,
-      id,
+      id: this.parseIdFromMessage(message),
     };
   }
 }

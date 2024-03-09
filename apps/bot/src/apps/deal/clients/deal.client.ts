@@ -49,12 +49,9 @@ export abstract class DealClient extends UserImageClient {
     this.logger.log(`${this.dealType}<@${updateDealInput.id}> updated`);
   }
 
-  async deleteDealFromMessage({ userId, id }: { userId: string; id: string }) {
-    const args = this.dealParser.parseDeleteDealArgs({
-      userId,
-      id,
-    });
+  async deleteDealFromMessage(userId: string, message: Message) {
+    const args = this.dealParser.parseDeleteDealArgs(userId, message);
     await this.deleteDeal(args);
-    this.logger.log(`${this.dealType}<@${id}> deleted`);
+    this.logger.log(`${this.dealType}<@${args.id}> deleted`);
   }
 }

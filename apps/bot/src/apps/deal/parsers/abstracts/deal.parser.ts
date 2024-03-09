@@ -33,13 +33,10 @@ export abstract class DealParser extends GroupParser {
     message: Message,
   ): UpdateOfferInput | UpdateDemandInput | UpdateSwapInput;
 
-  abstract parseDeleteDealArgs({
-    userId,
-    id,
-  }: {
-    userId: string;
-    id: string;
-  }): DeleteOfferArgs | DeleteDemandArgs | DeleteSwapArgs;
+  abstract parseDeleteDealArgs(
+    userId: string,
+    message: Message,
+  ): DeleteOfferArgs | DeleteDemandArgs | DeleteSwapArgs;
 
   parsePrice(price: string) {
     return Number(price) * 10000;
