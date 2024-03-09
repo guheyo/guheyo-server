@@ -11,7 +11,9 @@ export class ParseUserFromMessagePipe implements PipeTransform {
   constructor(private readonly userClient: UserClient) {}
 
   async transform(
-    [createdOrOldmessage, newMessage]: ContextOf<'messageCreate' | 'messageUpdate'>,
+    [createdOrOldmessage, newMessage]: ContextOf<
+      'messageCreate' | 'messageUpdate' | 'messageDelete'
+    >,
     metadata: ArgumentMetadata,
   ): Promise<SimpleUser> {
     let message: Message;
