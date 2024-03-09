@@ -50,7 +50,7 @@ export class CreateSwapInput {
   productCategoryId: string;
 
   @IsUUID()
-  @Field()
+  @Field(() => ID)
   proposerId: string;
 
   @IsOptional()

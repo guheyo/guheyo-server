@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
-import { Message } from 'discord.js';
+import { Message, PartialMessage } from 'discord.js';
 import { CreateDemandInput } from '@lib/domains/demand/application/commands/create-demand/create-demand.input';
 import { UpdateDemandInput } from '@lib/domains/demand/application/commands/update-demand/update-demand.input';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
+import { DeleteDemandArgs } from '@lib/domains/demand/application/commands/delete-demand/delete-demand.args';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { DemandErrorMessage } from './demand.error-message';
 
@@ -14,11 +15,12 @@ export class DemandParser extends DealParser {
     return re.exec(content);
   }
 
-  parseDealSummary(message: Message) {
+  parseDealSummary(userId: string, message: Message) {
     const match = this.matchFormat(message.content);
     if (!match) throw new RpcException(DemandErrorMessage.INVALID_DEMAND_FORMAT);
 
     return {
+      buyerId: userId,
       id: this.parseIdFromMessage(message),
       name: match[1].trim(),
       price: this.parsePrice(match[2]),
@@ -28,7 +30,7 @@ export class DemandParser extends DealParser {
   }
 
   parseCreateDealInput(userId: string, message: Message, group: GroupResponse): CreateDemandInput {
-    const dealSummary = this.parseDealSummary(message);
+    const dealSummary = this.parseDealSummary(userId, message);
 
     return {
       ...dealSummary,
@@ -37,11 +39,17 @@ export class DemandParser extends DealParser {
       status: 'open',
       groupId: group.id,
       productCategoryId: this.parseProductCategoryId(message, group),
-      buyerId: userId,
     };
   }
 
-  parseUpdateDealInput(message: Message<boolean>): UpdateDemandInput {
-    return this.parseDealSummary(message);
+  parseUpdateDealInput(userId: string, message: Message<boolean>): UpdateDemandInput {
+    return this.parseDealSummary(userId, message);
+  }
+
+  parseDeleteDealArgs(userId: string, message: Message | PartialMessage): DeleteDemandArgs {
+    return {
+      buyerId: userId,
+      id: this.parseIdFromMessage(message),
+    };
   }
 }

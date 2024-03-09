@@ -53,6 +53,10 @@ export class SwapEntity extends AggregateRoot {
     return this.source === source;
   }
 
+  isAuthorized(proposerId: string) {
+    return this.proposerId === proposerId;
+  }
+
   update(props: UpdateSwapProps) {
     Object.assign(this, _.pickBy(props, _.identity));
     this.apply(new SwapUpdatedEvent(this.id));

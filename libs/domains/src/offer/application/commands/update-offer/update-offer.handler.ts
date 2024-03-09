@@ -17,6 +17,8 @@ export class UpdateOfferHandler implements ICommandHandler<UpdateOfferCommand> {
   async execute(command: UpdateOfferCommand): Promise<void> {
     let offer = await this.offerLoadPort.findById(command.id);
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
+    if (!offer.isAuthorized(command.sellerId))
+      throw new ForbiddenException(OfferErrorMessage.OFFER_CHANGES_FROM_UNAUTHORIZED_USER);
     if (!offer.isCompatibleSource(command.source))
       throw new ForbiddenException(OfferErrorMessage.OFFER_CHANGES_FROM_INCOMPATIBLE_PLATFORMS);
 

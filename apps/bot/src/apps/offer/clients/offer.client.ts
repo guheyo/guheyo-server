@@ -4,6 +4,7 @@ import { CreateOfferCommand } from '@lib/domains/offer/application/commands/crea
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
 import { UpdateOfferCommand } from '@lib/domains/offer/application/commands/update-offer/update-offer.command';
 import { DeleteOfferCommand } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.command';
+import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
 import { DealClient } from '../../deal/clients/deal.client';
 import { OfferParser } from '../parsers/offer.parser';
 
@@ -21,7 +22,7 @@ export class OfferClient extends DealClient {
     await this.commandBus.execute(new UpdateOfferCommand(input));
   }
 
-  async deleteDeal(id: string) {
-    await this.commandBus.execute(new DeleteOfferCommand(id));
+  async deleteDeal(args: DeleteOfferArgs) {
+    await this.commandBus.execute(new DeleteOfferCommand(args));
   }
 }

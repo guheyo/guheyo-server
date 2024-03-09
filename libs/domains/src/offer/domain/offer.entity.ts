@@ -49,6 +49,10 @@ export class OfferEntity extends AggregateRoot {
     return this.source === source;
   }
 
+  isAuthorized(sellerId: string) {
+    return this.sellerId === sellerId;
+  }
+
   update(props: UpdateOfferProps) {
     Object.assign(this, _.pickBy(props, _.identity));
     this.apply(new OfferUpdatedEvent(this.id));

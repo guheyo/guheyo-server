@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
-import { Message } from 'discord.js';
+import { Message, PartialMessage } from 'discord.js';
 import { CreateSwapInput } from '@lib/domains/swap/application/commands/create-swap/create-swap.input';
 import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-swap/update-swap.input';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
+import { DeleteSwapArgs } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.args';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { SwapErrorMessage } from './swap.error-message';
 
@@ -14,11 +15,12 @@ export class SwapParser extends DealParser {
     return re.exec(content);
   }
 
-  parseDealSummary(message: Message) {
+  parseDealSummary(userId: string, message: Message) {
     const match = this.matchFormat(message.content);
     if (!match) throw new RpcException(SwapErrorMessage.INVALID_SWAP_FORMAT);
 
     return {
+      proposerId: userId,
       id: this.parseIdFromMessage(message),
       name0: match[1].trim(),
       name1: match[2].trim(),
@@ -29,7 +31,7 @@ export class SwapParser extends DealParser {
   }
 
   parseCreateDealInput(userId: string, message: Message, group: GroupResponse): CreateSwapInput {
-    const dealSummary = this.parseDealSummary(message);
+    const dealSummary = this.parseDealSummary(userId, message);
 
     return {
       ...dealSummary,
@@ -38,11 +40,17 @@ export class SwapParser extends DealParser {
       status: 'open',
       groupId: group.id,
       productCategoryId: this.parseProductCategoryId(message, group),
-      proposerId: userId,
     };
   }
 
-  parseUpdateDealInput(message: Message<boolean>): UpdateSwapInput {
-    return this.parseDealSummary(message);
+  parseUpdateDealInput(userId: string, message: Message<boolean>): UpdateSwapInput {
+    return this.parseDealSummary(userId, message);
+  }
+
+  parseDeleteDealArgs(userId: string, message: Message | PartialMessage): DeleteSwapArgs {
+    return {
+      proposerId: userId,
+      id: this.parseIdFromMessage(message),
+    };
   }
 }

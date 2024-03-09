@@ -1,11 +1,11 @@
 import { Injectable, UseGuards } from '@nestjs/common';
-import { Context, On } from 'necord';
+import { Context, ContextOf, On } from 'necord';
 import { GroupGuard } from '@app/bot/apps/group/guards/group.guard';
 import { DealChannelGuard } from '@app/bot/apps/deal/guards/deal-channel.guard';
 import { Type } from '@app/bot/decorators/type.decorator';
-import { ParseUserWithDeletedModelIdPipe } from '@app/bot/apps/user/pipes/parse-user-with-deleted-model-id.pipe';
-import { UserWithDeletedModelId } from '@app/bot/apps/user/parsers/user.types';
+import { SimpleUser } from '@app/bot/apps/user/parsers/user.types';
 import { DemandClient } from '@app/bot/apps/demand/clients/demand.client';
+import { ParseUserFromDeletedMessagePipe } from '@app/bot/apps/user/pipes/parse-user-from-deleted-message.pipe';
 
 @UseGuards(GroupGuard, DealChannelGuard)
 @Type('wtb')
@@ -15,9 +15,11 @@ export class DemandMessageDeletedHandler {
 
   @On('messageDelete')
   public async onDeleteOfferMessage(
-    @Context(ParseUserWithDeletedModelIdPipe)
-    { user, deletedModelId }: UserWithDeletedModelId,
+    @Context(ParseUserFromDeletedMessagePipe)
+    user: SimpleUser,
+    @Context()
+    [message]: ContextOf<'messageDelete'>,
   ) {
-    await this.demandClient.deleteDealFromMessage(deletedModelId);
+    await this.demandClient.deleteDealFromMessage(user.id, message);
   }
 }

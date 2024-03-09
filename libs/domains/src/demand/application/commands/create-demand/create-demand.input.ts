@@ -41,7 +41,7 @@ export class CreateDemandInput {
   productCategoryId: string;
 
   @IsUUID()
-  @Field()
+  @Field(() => ID)
   buyerId: string;
 
   @IsOptional()

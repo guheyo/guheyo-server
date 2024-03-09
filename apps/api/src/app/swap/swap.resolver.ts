@@ -9,9 +9,13 @@ import { FindSwapPreviewsArgs } from '@lib/domains/swap/application/queries/find
 import { FindSwapPreviewsQuery } from '@lib/domains/swap/application/queries/find-swap-previews/find-swap-previews.query';
 import { PaginatedSwapPreviewsResponse } from '@lib/domains/swap/application/queries/find-swap-previews/paginated-swap-previews.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { FindSwapArgs } from '@lib/domains/swap/application/queries/find-swap/find-swap.args';
+import { DeleteSwapArgs } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.args';
+import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
+import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
+import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -34,21 +38,27 @@ export class SwapResolver {
     return this.queryBus.execute(query);
   }
 
+  @AuthorIdPath('input.proposerId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async createSwap(@Args('input') input: CreateSwapInput): Promise<string> {
     await this.commandBus.execute(new CreateSwapCommand(input));
     return input.id;
   }
 
+  @AuthorIdPath('input.proposerId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async updateSwap(@Args('input') input: UpdateSwapInput): Promise<string> {
     await this.commandBus.execute(new UpdateSwapCommand(input));
     return input.id;
   }
 
+  @AuthorIdPath('input.proposerId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
-  async deleteSwap(@Args('id', { type: () => ID }) id: string): Promise<string> {
-    await this.commandBus.execute(new DeleteSwapCommand(id));
-    return id;
+  async deleteSwap(@Args() args: DeleteSwapArgs): Promise<string> {
+    await this.commandBus.execute(new DeleteSwapCommand(args));
+    return args.id;
   }
 }
