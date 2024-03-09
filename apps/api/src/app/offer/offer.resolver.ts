@@ -9,9 +9,13 @@ import { FindOfferPreviewsArgs } from '@lib/domains/offer/application/queries/fi
 import { FindOfferPreviewsQuery } from '@lib/domains/offer/application/queries/find-offer-previews/find-offer-previews.query';
 import { PaginatedOfferPreviewsResponse } from '@lib/domains/offer/application/queries/find-offer-previews/paginated-offer-previews.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { FindOfferArgs } from '@lib/domains/offer/application/queries/find-offer/find-offer.args';
+import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
+import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
+import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
+import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -34,21 +38,27 @@ export class OfferResolver {
     return this.queryBus.execute(query);
   }
 
+  @AuthorIdPath('input.sellerId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async createOffer(@Args('input') input: CreateOfferInput): Promise<string> {
     await this.commandBus.execute(new CreateOfferCommand(input));
     return input.id;
   }
 
+  @AuthorIdPath('input.sellerId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async updateOffer(@Args('input') input: UpdateOfferInput): Promise<string> {
     await this.commandBus.execute(new UpdateOfferCommand(input));
     return input.id;
   }
 
+  @AuthorIdPath('input.sellerId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
-  async deleteOffer(@Args('id', { type: () => ID }) id: string): Promise<string> {
-    await this.commandBus.execute(new DeleteOfferCommand(id));
-    return id;
+  async deleteOffer(@Args() args: DeleteOfferArgs): Promise<string> {
+    await this.commandBus.execute(new DeleteOfferCommand(args));
+    return args.id;
   }
 }

@@ -9,9 +9,13 @@ import { FindDemandPreviewsArgs } from '@lib/domains/demand/application/queries/
 import { FindDemandPreviewsQuery } from '@lib/domains/demand/application/queries/find-demand-previews/find-demand-previews.query';
 import { PaginatedDemandPreviewsResponse } from '@lib/domains/demand/application/queries/find-demand-previews/paginated-demand-previews.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { FindDemandArgs } from '@lib/domains/demand/application/queries/find-demand/find-demand.args';
+import { DeleteDemandArgs } from '@lib/domains/demand/application/commands/delete-demand/delete-demand.args';
+import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
+import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
+import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -34,21 +38,27 @@ export class DemandResolver {
     return this.queryBus.execute(query);
   }
 
+  @AuthorIdPath('input.buyerId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async createDemand(@Args('input') input: CreateDemandInput): Promise<string> {
     await this.commandBus.execute(new CreateDemandCommand(input));
     return input.id;
   }
 
+  @AuthorIdPath('input.buyerId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async updateDemand(@Args('input') input: UpdateDemandInput): Promise<string> {
     await this.commandBus.execute(new UpdateDemandCommand(input));
     return input.id;
   }
 
+  @AuthorIdPath('input.buyerId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
-  async deleteDemand(@Args('id', { type: () => ID }) id: string): Promise<string> {
-    await this.commandBus.execute(new DeleteDemandCommand(id));
-    return id;
+  async deleteDemand(@Args() args: DeleteDemandArgs): Promise<string> {
+    await this.commandBus.execute(new DeleteDemandCommand(args));
+    return args.id;
   }
 }
