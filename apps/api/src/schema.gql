@@ -348,15 +348,15 @@ type Mutation {
   createUser(input: CreateUserInput!): String!
   createUserImage(input: CreateUserImageInput!): String!
   deleteAuction(id: ID!): String!
-  deleteDemand(id: ID!): String!
+  deleteDemand(buyerId: ID!, id: ID!): String!
   deleteGroup(id: ID!): String!
   deleteMember(id: ID!, userId: ID!): String!
-  deleteOffer(id: ID!): String!
+  deleteOffer(id: ID!, sellerId: ID!): String!
   deleteRole(id: ID!): String!
   deleteSession(sessionToken: String!): String!
   deleteSocialAccount(id: ID!): String!
   deleteSocialAccountByProvider(provider: String!, socialId: String!): String!
-  deleteSwap(id: ID!): String!
+  deleteSwap(id: ID!, proposerId: ID!): String!
   deleteUser(id: ID!): String!
   deleteUserImage(id: ID!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!

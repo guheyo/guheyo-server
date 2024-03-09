@@ -1,3 +1,13 @@
-import { ByIdCommand } from '@lib/shared/cqrs/commands/by-id/by-id.command';
+import { ICommand } from '@nestjs/cqrs';
+import { DeleteOfferArgs } from './delete-offer.args';
 
-export class DeleteOfferCommand extends ByIdCommand {}
+export class DeleteOfferCommand implements ICommand {
+  id: string;
+
+  sellerId: string;
+
+  constructor(args: DeleteOfferArgs) {
+    this.id = args.id;
+    this.sellerId = args.sellerId;
+  }
+}
