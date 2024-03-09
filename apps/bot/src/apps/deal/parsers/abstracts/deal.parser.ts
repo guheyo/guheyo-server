@@ -8,6 +8,9 @@ import { CreateSwapInput } from '@lib/domains/swap/application/commands/create-s
 import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-swap/update-swap.input';
 import { GroupParser } from '@app/bot/apps/group/parsers/group.parser';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
+import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
+import { DeleteDemandArgs } from '@lib/domains/demand/application/commands/delete-demand/delete-demand.args';
+import { DeleteSwapArgs } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.args';
 import { DealErrorMessage } from './deal.error-message';
 
 export abstract class DealParser extends GroupParser {
@@ -26,8 +29,17 @@ export abstract class DealParser extends GroupParser {
   ): CreateOfferInput | CreateDemandInput | CreateSwapInput;
 
   abstract parseUpdateDealInput(
+    userId: string,
     message: Message,
   ): UpdateOfferInput | UpdateDemandInput | UpdateSwapInput;
+
+  abstract parseDeleteDealArgs({
+    userId,
+    id,
+  }: {
+    userId: string;
+    id: string;
+  }): DeleteOfferArgs | DeleteDemandArgs | DeleteSwapArgs;
 
   parsePrice(price: string) {
     return Number(price) * 10000;

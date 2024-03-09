@@ -4,6 +4,7 @@ import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-s
 import { CreateSwapCommand } from '@lib/domains/swap/application/commands/create-swap/create-swap.command';
 import { UpdateSwapCommand } from '@lib/domains/swap/application/commands/update-swap/update-swap.command';
 import { DeleteSwapCommand } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.command';
+import { DeleteSwapArgs } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.args';
 import { DealClient } from '../../deal/clients/deal.client';
 import { SwapParser } from '../parsers/swap.parser';
 
@@ -21,7 +22,7 @@ export class SwapClient extends DealClient {
     await this.commandBus.execute(new UpdateSwapCommand(input));
   }
 
-  async deleteDeal(id: string) {
-    await this.commandBus.execute(new DeleteSwapCommand(id));
+  async deleteDeal(args: DeleteSwapArgs) {
+    await this.commandBus.execute(new DeleteSwapCommand(args));
   }
 }

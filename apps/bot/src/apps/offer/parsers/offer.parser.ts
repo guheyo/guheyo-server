@@ -4,6 +4,7 @@ import { RpcException } from '@nestjs/microservices';
 import { Message } from 'discord.js';
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
+import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { OfferErrorMessage } from './offer.error-message';
 
@@ -14,11 +15,12 @@ export class OfferParser extends DealParser {
     return re.exec(content);
   }
 
-  parseDealSummary(message: Message) {
+  parseDealSummary(userId: string, message: Message) {
     const match = this.matchFormat(message.content);
     if (!match) throw new RpcException(OfferErrorMessage.INVALID_OFFER_FORMAT);
 
     return {
+      sellerId: userId,
       id: this.parseIdFromMessage(message),
       name: match[1].trim(),
       price: this.parsePrice(match[2]),
@@ -28,7 +30,7 @@ export class OfferParser extends DealParser {
   }
 
   parseCreateDealInput(userId: string, message: Message, group: GroupResponse): CreateOfferInput {
-    const dealSummary = this.parseDealSummary(message);
+    const dealSummary = this.parseDealSummary(userId, message);
 
     return {
       ...dealSummary,
@@ -37,11 +39,17 @@ export class OfferParser extends DealParser {
       status: 'open',
       groupId: group.id,
       productCategoryId: this.parseProductCategoryId(message, group),
-      sellerId: userId,
     };
   }
 
-  parseUpdateDealInput(message: Message<boolean>): UpdateOfferInput {
-    return this.parseDealSummary(message);
+  parseUpdateDealInput(userId: string, message: Message<boolean>): UpdateOfferInput {
+    return this.parseDealSummary(userId, message);
+  }
+
+  parseDeleteDealArgs({ userId, id }: { userId: string; id: string }): DeleteOfferArgs {
+    return {
+      sellerId: userId,
+      id,
+    };
   }
 }

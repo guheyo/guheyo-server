@@ -4,6 +4,7 @@ import { UpdateDemandInput } from '@lib/domains/demand/application/commands/upda
 import { CreateDemandCommand } from '@lib/domains/demand/application/commands/create-demand/create-demand.command';
 import { UpdateDemandCommand } from '@lib/domains/demand/application/commands/update-demand/update-demand.command';
 import { DeleteDemandCommand } from '@lib/domains/demand/application/commands/delete-demand/delete-demand.command';
+import { DeleteDemandArgs } from '@lib/domains/demand/application/commands/delete-demand/delete-demand.args';
 import { DemandParser } from '../parsers/demand.parser';
 import { DealClient } from '../../deal/clients/deal.client';
 
@@ -21,7 +22,7 @@ export class DemandClient extends DealClient {
     await this.commandBus.execute(new UpdateDemandCommand(input));
   }
 
-  async deleteDeal(id: string) {
-    await this.commandBus.execute(new DeleteDemandCommand(id));
+  async deleteDeal(args: DeleteDemandArgs) {
+    await this.commandBus.execute(new DeleteDemandCommand(args));
   }
 }

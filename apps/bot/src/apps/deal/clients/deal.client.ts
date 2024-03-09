@@ -7,6 +7,9 @@ import { CreateSwapInput } from '@lib/domains/swap/application/commands/create-s
 import { CreateOfferInput } from '@lib/domains/offer/application/commands/create-offer/create-offer.input';
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
 import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-swap/update-swap.input';
+import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
+import { DeleteSwapArgs } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.args';
+import { DeleteDemandArgs } from '@lib/domains/demand/application/commands/delete-demand/delete-demand.args';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { DealParser } from '../parsers/abstracts/deal.parser';
 import { DealType } from '../parsers/deal.types';
@@ -26,7 +29,7 @@ export abstract class DealClient extends UserImageClient {
 
   abstract updateDeal(input: UpdateOfferInput | UpdateDemandInput | UpdateSwapInput): void;
 
-  abstract deleteDeal(id: string): void;
+  abstract deleteDeal(args: DeleteOfferArgs | DeleteDemandArgs | DeleteSwapArgs): void;
 
   async createDealFromMessage(userId: string, message: Message, group: GroupResponse) {
     const uploadUserImageInputList = this.userImageParser.parseUploadUserImageInputList(
@@ -40,14 +43,18 @@ export abstract class DealClient extends UserImageClient {
     this.logger.log(`${this.dealType}<@${createDealInput.id}> created`);
   }
 
-  async updateDealFromMessage(message: Message) {
-    const updateDealInput = this.dealParser.parseUpdateDealInput(message);
+  async updateDealFromMessage(userId: string, message: Message) {
+    const updateDealInput = this.dealParser.parseUpdateDealInput(userId, message);
     await this.updateDeal(updateDealInput);
     this.logger.log(`${this.dealType}<@${updateDealInput.id}> updated`);
   }
 
-  async deleteDealFromMessage(id: string) {
-    await this.deleteDeal(id);
+  async deleteDealFromMessage({ userId, id }: { userId: string; id: string }) {
+    const args = this.dealParser.parseDeleteDealArgs({
+      userId,
+      id,
+    });
+    await this.deleteDeal(args);
     this.logger.log(`${this.dealType}<@${id}> deleted`);
   }
 }
