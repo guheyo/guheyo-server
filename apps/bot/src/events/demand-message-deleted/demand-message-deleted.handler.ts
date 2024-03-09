@@ -5,7 +5,7 @@ import { DealChannelGuard } from '@app/bot/apps/deal/guards/deal-channel.guard';
 import { Type } from '@app/bot/decorators/type.decorator';
 import { SimpleUser } from '@app/bot/apps/user/parsers/user.types';
 import { DemandClient } from '@app/bot/apps/demand/clients/demand.client';
-import { ParseUserFromMessagePipe } from '@app/bot/apps/user/pipes/parse-user-from-message.pipe';
+import { ParseUserFromDeletedMessagePipe } from '@app/bot/apps/user/pipes/parse-user-from-deleted-message.pipe';
 
 @UseGuards(GroupGuard, DealChannelGuard)
 @Type('wtb')
@@ -15,12 +15,11 @@ export class DemandMessageDeletedHandler {
 
   @On('messageDelete')
   public async onDeleteOfferMessage(
-    @Context(ParseUserFromMessagePipe)
+    @Context(ParseUserFromDeletedMessagePipe)
     user: SimpleUser,
     @Context()
     [message]: ContextOf<'messageDelete'>,
   ) {
-    const fetchedMessage = await message.fetch();
-    await this.demandClient.deleteDealFromMessage(user.id, fetchedMessage);
+    await this.demandClient.deleteDealFromMessage(user.id, message);
   }
 }
