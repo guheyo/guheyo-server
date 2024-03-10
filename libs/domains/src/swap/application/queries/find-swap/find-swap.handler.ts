@@ -20,6 +20,7 @@ export class FindSwapHandler extends PrismaQueryHandler<FindSwapQuery, SwapRespo
         slug: query.slug,
       },
       include: {
+        group: true,
         proposer: {
           include: {
             members: {

@@ -20,6 +20,7 @@ export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferRe
         slug: query.slug,
       },
       include: {
+        group: true,
         seller: {
           include: {
             members: {

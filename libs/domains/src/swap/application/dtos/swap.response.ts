@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { UserImageResponse } from '@lib/domains/user-image/application/dtos/user-image.response';
 import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
+import { GroupProfileResponse } from '@lib/domains/group/application/dtos/group-profile.response';
 
 @ObjectType()
 export class SwapResponse {
@@ -46,8 +47,8 @@ export class SwapResponse {
   @Field(() => UserImageResponse, { nullable: true })
   thumbnail: UserImageResponse | null;
 
-  @Field()
-  groupId: string;
+  @Field(() => GroupProfileResponse)
+  group: GroupProfileResponse;
 
   @Field()
   productCategoryId: string;

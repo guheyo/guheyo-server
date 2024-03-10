@@ -17,6 +17,7 @@ export class FindOfferByIdHandler extends PrismaQueryHandler<FindOfferByIdQuery,
         id: query.id,
       },
       include: {
+        group: true,
         seller: {
           include: {
             members: {

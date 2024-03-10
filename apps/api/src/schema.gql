@@ -252,7 +252,7 @@ type DemandResponse {
   buyer: AuthorResponse!
   createdAt: DateTime!
   description: String
-  groupId: String!
+  group: GroupProfileResponse!
   id: ID!
   images: [UserImageResponse!]!
   name: String!
@@ -415,7 +415,7 @@ type OfferResponse {
   businessFunction: String!
   createdAt: DateTime!
   description: String
-  groupId: String!
+  group: GroupProfileResponse!
   id: ID!
   images: [UserImageResponse!]!
   name: String!
@@ -590,7 +590,7 @@ type SwapResponse {
   createdAt: DateTime!
   description0: String
   description1: String
-  groupId: String!
+  group: GroupProfileResponse!
   id: ID!
   images: [UserImageResponse!]!
   name0: String!
