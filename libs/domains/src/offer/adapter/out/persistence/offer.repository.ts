@@ -29,6 +29,7 @@ export class OfferRepository extends PrismaRepository<OfferEntity> {
             },
           },
         },
+        bumps: true,
       },
     });
     return this.toEntity(offer);
@@ -82,6 +83,7 @@ export class OfferRepository extends PrismaRepository<OfferEntity> {
       data: _.pick(offer, [
         'name',
         'description',
+        'bumpedAt',
         'price',
         'priceCurrency',
         'businessFunction',
