@@ -81,9 +81,9 @@ export class OfferRepository extends PrismaRepository<OfferEntity> {
         id: offer.id,
       },
       data: _.pick(offer, [
+        'bumpedAt',
         'name',
         'description',
-        'bumpedAt',
         'price',
         'priceCurrency',
         'businessFunction',

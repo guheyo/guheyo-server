@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import _ from 'lodash';
-import dayjs from 'dayjs';
+import { validateBump } from '@lib/shared/deal/validate-bump';
 import { UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
@@ -67,7 +67,7 @@ export class OfferEntity extends AggregateRoot {
   }
 
   canBump() {
-    return dayjs().diff(this.bumpedAt, 'd', true) > 1;
+    return validateBump(this.bumpedAt);
   }
 
   bump(input: BumpOfferInput) {
