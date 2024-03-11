@@ -13,6 +13,9 @@ export class SwapPreviewResponse {
   @Field()
   updatedAt: Date;
 
+  @Field()
+  bumpedAt: Date;
+
   @Field(() => String, { nullable: true })
   slug: string | null;
 

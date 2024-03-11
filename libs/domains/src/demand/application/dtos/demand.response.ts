@@ -15,6 +15,9 @@ export class DemandResponse {
   updatedAt: Date;
 
   @Field()
+  bumpedAt: Date;
+
+  @Field()
   name: string;
 
   @Field(() => String, { nullable: true })

@@ -226,6 +226,7 @@ scalar DateTime
 
 type DemandPreviewResponse {
   brandId: String
+  bumpedAt: DateTime!
   businessFunction: String!
   buyer: UsernameResponse!
   createdAt: DateTime!
@@ -248,6 +249,7 @@ type DemandPreviewResponseEdge {
 
 type DemandResponse {
   brandId: String
+  bumpedAt: DateTime!
   businessFunction: String!
   buyer: AuthorResponse!
   createdAt: DateTime!
@@ -389,6 +391,7 @@ type MyUserResponse {
 
 type OfferPreviewResponse {
   brandId: String
+  bumpedAt: DateTime!
   businessFunction: String!
   createdAt: DateTime!
   groupId: String!
@@ -412,6 +415,7 @@ type OfferPreviewResponseEdge {
 
 type OfferResponse {
   brandId: String
+  bumpedAt: DateTime!
   businessFunction: String!
   createdAt: DateTime!
   description: String
@@ -562,6 +566,7 @@ type SocialUserResponse {
 
 type SwapPreviewResponse {
   brandId: String
+  bumpedAt: DateTime!
   businessFunction: String!
   createdAt: DateTime!
   groupId: String!
@@ -586,6 +591,7 @@ type SwapPreviewResponseEdge {
 
 type SwapResponse {
   brandId: String
+  bumpedAt: DateTime!
   businessFunction: String!
   createdAt: DateTime!
   description0: String
