@@ -74,9 +74,9 @@ input BumpOfferInput {
 }
 
 input BumpSwapInput {
-  buyerId: ID!
   id: ID!
   newPrice: Int!
+  proposerId: ID!
   swapId: ID!
 }
 

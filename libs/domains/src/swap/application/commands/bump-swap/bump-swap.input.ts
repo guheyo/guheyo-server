@@ -13,7 +13,7 @@ export class BumpSwapInput {
 
   @IsUUID()
   @Field(() => ID)
-  buyerId: string;
+  proposerId: string;
 
   @IsNumber()
   @Field(() => Int)
