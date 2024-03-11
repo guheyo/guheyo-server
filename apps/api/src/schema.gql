@@ -73,6 +73,13 @@ input BumpOfferInput {
   sellerId: ID!
 }
 
+input BumpSwapInput {
+  buyerId: ID!
+  id: ID!
+  newPrice: Int!
+  swapId: ID!
+}
+
 input CancelBidInput {
   auctionId: String!
   bidderId: String!
@@ -349,6 +356,7 @@ type Mutation {
   addBid(input: AddBidInput!): String!
   bumpDemand(input: BumpDemandInput!): String!
   bumpOffer(input: BumpOfferInput!): String!
+  bumpSwap(input: BumpSwapInput!): String!
   cancelBid(input: CancelBidInput!): String!
   connectRoles(input: ConnectRolesInput!): String!
   createAuction(input: CreateAuctionInput!): String!

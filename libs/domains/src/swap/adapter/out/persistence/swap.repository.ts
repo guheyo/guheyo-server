@@ -29,6 +29,7 @@ export class SwapRepository extends PrismaRepository<SwapEntity> {
             },
           },
         },
+        bumps: true,
       },
     });
     return this.toEntity(swap);
@@ -84,6 +85,7 @@ export class SwapRepository extends PrismaRepository<SwapEntity> {
         id: swap.id,
       },
       data: _.pick(swap, [
+        'bumpedAt',
         'name0',
         'name1',
         'description0',
