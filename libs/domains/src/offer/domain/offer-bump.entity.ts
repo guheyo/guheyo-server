@@ -7,9 +7,9 @@ export class OfferBumpEntity {
 
   offerId: string;
 
-  oldData?: any;
+  oldPrice: number;
 
-  newData?: any;
+  newPrice: number;
 
   constructor(partial: Partial<OfferBumpEntity>) {
     Object.assign(this, partial);

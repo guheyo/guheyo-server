@@ -5,24 +5,24 @@ export class OfferBumpedEvent implements IEvent {
 
   offerId: string;
 
-  oldData?: any;
+  oldPrice: number;
 
-  newData?: any;
+  newPrice: number;
 
   constructor({
     id,
     offerId,
-    oldData,
-    newData,
+    oldPrice,
+    newPrice,
   }: {
     id: string;
     offerId: string;
-    oldData?: any;
-    newData?: any;
+    oldPrice: number;
+    newPrice: number;
   }) {
     this.id = id;
     this.offerId = offerId;
-    this.oldData = oldData;
-    this.newData = newData;
+    this.oldPrice = oldPrice;
+    this.newPrice = newPrice;
   }
 }

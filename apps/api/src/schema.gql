@@ -61,7 +61,7 @@ type BidResponse {
 
 input BumpOfferInput {
   id: ID!
-  newData: JSON
+  newPrice: Int!
   offerId: ID!
   sellerId: ID!
 }

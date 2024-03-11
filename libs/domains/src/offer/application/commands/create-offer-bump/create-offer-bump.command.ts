@@ -6,14 +6,14 @@ export class CreateOfferBumpCommand implements ICommand {
 
   offerId: string;
 
-  oldData?: any;
+  oldPrice: number;
 
-  newData?: any;
+  newPrice: number;
 
   constructor(input: CreateOfferBumpInput) {
     this.id = input.id;
     this.offerId = input.offerId;
-    this.oldData = input.oldData;
-    this.newData = input.newData;
+    this.oldPrice = input.oldPrice;
+    this.newPrice = input.newPrice;
   }
 }

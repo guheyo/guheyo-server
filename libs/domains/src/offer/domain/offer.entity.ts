@@ -71,18 +71,15 @@ export class OfferEntity extends AggregateRoot {
   }
 
   bump(input: BumpOfferInput) {
-    this.bumpedAt = new Date();
-    const oldData = {
-      priceCurrency: this.priceCurrency,
-      price: this.price,
-    };
     this.apply(
       new OfferBumpedEvent({
         id: input.id,
         offerId: this.id,
-        oldData,
-        newData: input.newData,
+        oldPrice: this.price,
+        newPrice: input.newPrice,
       }),
     );
+    this.bumpedAt = new Date();
+    this.price = input.newPrice;
   }
 }

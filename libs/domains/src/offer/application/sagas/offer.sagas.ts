@@ -41,7 +41,7 @@ export class OfferSagas {
     events$.pipe(
       ofType(OfferBumpedEvent),
       map(
-        (event) => new CreateOfferBumpCommand(pick(event, ['id', 'offerId', 'oldData', 'newData'])),
+        (event) => new CreateOfferBumpCommand(pick(event, ['id', 'offerId', 'oldPrice', 'newPrice'])),
       ),
     );
 }
