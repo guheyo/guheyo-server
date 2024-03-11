@@ -16,6 +16,8 @@ import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth
 import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
 import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
+import { BumpOfferInput } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.input';
+import { BumpOfferCommand } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -60,5 +62,13 @@ export class OfferResolver {
   async deleteOffer(@Args() args: DeleteOfferArgs): Promise<string> {
     await this.commandBus.execute(new DeleteOfferCommand(args));
     return args.id;
+  }
+
+  @AuthorIdPath('input.sellerId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @Mutation(() => String)
+  async bumpOffer(@Args('input') input: BumpOfferInput): Promise<string> {
+    await this.commandBus.execute(new BumpOfferCommand(input));
+    return input.id;
   }
 }

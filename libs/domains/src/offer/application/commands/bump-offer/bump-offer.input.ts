@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsJSON, IsOptional, IsUUID } from 'class-validator';
+import { IsOptional, IsUUID } from 'class-validator';
 import { GraphQLJSON } from 'graphql-type-json';
 
 @InputType()
@@ -17,7 +17,6 @@ export class BumpOfferInput {
   sellerId: string;
 
   @IsOptional()
-  @IsJSON()
   @Field(() => GraphQLJSON, { nullable: true })
   newData?: any;
 }

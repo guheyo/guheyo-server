@@ -59,6 +59,13 @@ type BidResponse {
   status: String!
 }
 
+input BumpOfferInput {
+  id: ID!
+  newData: JSON
+  offerId: ID!
+  sellerId: ID!
+}
+
 input CancelBidInput {
   auctionId: String!
   bidderId: String!
@@ -333,6 +340,7 @@ type MemberWithRolesResponse {
 
 type Mutation {
   addBid(input: AddBidInput!): String!
+  bumpOffer(input: BumpOfferInput!): String!
   cancelBid(input: CancelBidInput!): String!
   connectRoles(input: ConnectRolesInput!): String!
   createAuction(input: CreateAuctionInput!): String!
