@@ -16,6 +16,8 @@ import { DeleteDemandArgs } from '@lib/domains/demand/application/commands/delet
 import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
 import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
 import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
+import { BumpDemandInput } from '@lib/domains/demand/application/commands/bump-demand/bump-demand.input';
+import { BumpDemandCommand } from '@lib/domains/demand/application/commands/bump-demand/bump-demand.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -60,5 +62,13 @@ export class DemandResolver {
   async deleteDemand(@Args() args: DeleteDemandArgs): Promise<string> {
     await this.commandBus.execute(new DeleteDemandCommand(args));
     return args.id;
+  }
+
+  @AuthorIdPath('input.buyerId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @Mutation(() => String)
+  async bumpDemand(@Args('input') input: BumpDemandInput): Promise<string> {
+    await this.commandBus.execute(new BumpDemandCommand(input));
+    return input.id;
   }
 }

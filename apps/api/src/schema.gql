@@ -59,6 +59,13 @@ type BidResponse {
   status: String!
 }
 
+input BumpDemandInput {
+  buyerId: ID!
+  demandId: ID!
+  id: ID!
+  newPrice: Int!
+}
+
 input BumpOfferInput {
   id: ID!
   newPrice: Int!
@@ -340,6 +347,7 @@ type MemberWithRolesResponse {
 
 type Mutation {
   addBid(input: AddBidInput!): String!
+  bumpDemand(input: BumpDemandInput!): String!
   bumpOffer(input: BumpOfferInput!): String!
   cancelBid(input: CancelBidInput!): String!
   connectRoles(input: ConnectRolesInput!): String!
