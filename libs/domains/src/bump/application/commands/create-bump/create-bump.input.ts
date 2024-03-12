@@ -13,17 +13,17 @@ export class CreateBumpInput {
 
   @IsOptional()
   @IsUUID()
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   offerId?: string;
 
   @IsOptional()
   @IsUUID()
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   demandId?: string;
 
   @IsOptional()
   @IsUUID()
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   swapId?: string;
 
   @IsNumber()
