@@ -164,6 +164,17 @@ input CreateOfferInput {
   status: String! = "open"
 }
 
+input CreateReportInput {
+  content: String
+  demandId: ID
+  id: ID!
+  offerId: ID
+  reporterId: ID!
+  swapId: ID
+  title: String!
+  type: String!
+}
+
 input CreateRoleInput {
   groupId: ID!
   hexColor: String! = "#000000"
@@ -366,6 +377,7 @@ type Mutation {
   createManyUserImage(input: CreateManyUserImageInput!): String!
   createMember(input: CreateMemberInput!): String!
   createOffer(input: CreateOfferInput!): String!
+  createReport(input: CreateReportInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSession(input: CreateSessionInput!): String!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
