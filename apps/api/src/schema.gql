@@ -666,6 +666,7 @@ input UpdateDemandInput {
   priceCurrency: String
   productCategoryId: ID
   source: String!
+  status: String
 }
 
 input UpdateGroupInput {
@@ -692,6 +693,7 @@ input UpdateOfferInput {
   productCategoryId: ID
   sellerId: ID!
   source: String!
+  status: String
 }
 
 input UpdateRoleInput {
@@ -733,6 +735,7 @@ input UpdateSwapInput {
   priceCurrency: String
   proposerId: ID!
   source: String!
+  status: String
 }
 
 input UpdateUserImageInput {

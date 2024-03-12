@@ -33,6 +33,7 @@ export class UpdateSwapHandler implements ICommandHandler<UpdateSwapCommand> {
         'price',
         'priceCurrency',
         'businessFunction',
+        'status',
         'brandId',
       ]),
     );

@@ -32,6 +32,7 @@ export class UpdateDemandHandler implements ICommandHandler<UpdateDemandCommand>
         'priceCurrency',
         'businessFunction',
         'productCategoryId',
+        'status',
         'brandId',
       ]),
     );

@@ -47,6 +47,11 @@ export class UpdateSwapInput {
   proposerId: string;
 
   @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  status?: string;
+
+  @IsOptional()
   @IsUUID()
   @Field(() => String, { nullable: true })
   brandId?: string;
