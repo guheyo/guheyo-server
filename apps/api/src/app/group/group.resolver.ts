@@ -1,7 +1,6 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
-import { FindGroupByIdQuery } from '@lib/domains/group/application/queries/find-group-by-id/find-group-by-id.query';
 import { CreateGroupInput } from '@lib/domains/group/application/commands/create-group/create-group.input';
 import { CreateGroupCommand } from '@lib/domains/group/application/commands/create-group/create-group.command';
 import { UpdateGroupInput } from '@lib/domains/group/application/commands/update-group/update-group.input';
@@ -27,12 +26,6 @@ export class GroupResolver {
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
   ) {}
-
-  @Query(() => GroupResponse, { nullable: true })
-  async findGroupById(@Args('id', { type: () => ID }) id: string): Promise<GroupResponse | null> {
-    const query = new FindGroupByIdQuery(id);
-    return this.queryBus.execute(query);
-  }
 
   @Query(() => GroupResponse, { nullable: true })
   async findGroup(@Args() args: FindGroupArgs): Promise<GroupResponse | null> {
