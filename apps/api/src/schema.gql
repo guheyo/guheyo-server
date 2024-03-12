@@ -249,7 +249,7 @@ type DemandPreviewResponse {
   brandId: String
   bumpedAt: DateTime!
   businessFunction: String!
-  buyer: UsernameResponse!
+  buyer: UserResponse!
   createdAt: DateTime!
   groupId: String!
   id: ID!
@@ -424,7 +424,7 @@ type OfferPreviewResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  seller: UsernameResponse!
+  seller: UserResponse!
   slug: String
   source: String!
   status: String!
@@ -600,7 +600,7 @@ type SwapPreviewResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  proposer: UsernameResponse!
+  proposer: UserResponse!
   slug: String
   source: String!
   status: String!
@@ -778,8 +778,4 @@ type UserResponse {
 type UserResponseEdge {
   cursor: String!
   node: UserResponse!
-}
-
-type UsernameResponse {
-  username: String!
 }

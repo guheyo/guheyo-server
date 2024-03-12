@@ -22,7 +22,7 @@ export class FindOffersWhereArgs {
 
   @IsOptional()
   @Field(() => GraphQLJSON, { nullable: true })
-  createdAt?: {
+  bumpedAt?: {
     gt: string;
   };
 }

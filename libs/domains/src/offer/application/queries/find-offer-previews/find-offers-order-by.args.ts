@@ -9,5 +9,5 @@ export class FindOffersOrderByArgs {
 
   @IsOptional()
   @Field(() => String, { nullable: true })
-  createdAt?: 'asc' | 'desc';
+  bumpedAt?: 'asc' | 'desc';
 }

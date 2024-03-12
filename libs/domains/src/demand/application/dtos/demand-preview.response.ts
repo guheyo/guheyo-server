@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
-import { UsernameResponse } from '@lib/domains/user/application/dtos/username.response';
+import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 
 @ObjectType()
 export class DemandPreviewResponse {
@@ -39,8 +39,8 @@ export class DemandPreviewResponse {
   @Field()
   productCategoryId: string;
 
-  @Field(() => UsernameResponse)
-  buyer: UsernameResponse;
+  @Field(() => UserResponse)
+  buyer: UserResponse;
 
   @Field(() => String, { nullable: true })
   brandId: string | null;

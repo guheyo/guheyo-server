@@ -27,12 +27,16 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
           include: {
             seller: {
               select: {
+                id: true,
+                createdAt: true,
                 username: true,
+                avatarURL: true,
+                bot: true,
               },
             },
           },
           orderBy: {
-            createdAt: 'desc',
+            bumpedAt: 'desc',
           },
           take: 3,
         },
@@ -40,12 +44,16 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
           include: {
             buyer: {
               select: {
+                id: true,
+                createdAt: true,
                 username: true,
+                avatarURL: true,
+                bot: true,
               },
             },
           },
           orderBy: {
-            createdAt: 'desc',
+            bumpedAt: 'desc',
           },
           take: 3,
         },

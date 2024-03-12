@@ -25,9 +25,9 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
       where: {
         ...query.where,
         name: parseFollowedBySearcher(query.keyword),
-        createdAt: query.where?.createdAt
+        bumpedAt: query.where?.bumpedAt
           ? {
-              gt: new Date(query.where.createdAt.gt),
+              gt: new Date(query.where.bumpedAt.gt),
             }
           : undefined,
       },
@@ -37,7 +37,11 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
       include: {
         seller: {
           select: {
+            id: true,
+            createdAt: true,
             username: true,
+            avatarURL: true,
+            bot: true,
           },
         },
       },
@@ -46,7 +50,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
           price: query.orderBy?.price,
         },
         {
-          createdAt: query.orderBy?.createdAt,
+          bumpedAt: query.orderBy?.bumpedAt,
         },
       ],
       distinct: query.distinct ? ['name', 'sellerId'] : undefined,
