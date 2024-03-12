@@ -3,10 +3,10 @@ import { ICommand, Saga, ofType } from '@nestjs/cqrs';
 import { Observable, map } from 'rxjs';
 import { TrackUserImagesCommand } from '@lib/domains/user-image/application/commands/track-user-images/track-user-images.command';
 import { pick } from 'lodash';
+import { CreateBumpCommand } from '@lib/domains/bump/application/commands/create-bump/create-bump.command';
 import { DemandCreatedEvent } from '../events/demand-created/demand-created.event';
 import { DemandUpdatedEvent } from '../events/demand-updated/demand-updated.event';
 import { DemandBumpedEvent } from '../events/demand-bumped/demand-bumped.event';
-import { CreateDemandBumpCommand } from '../commands/create-demand-bump/create-demand-bump.command';
 
 @Injectable()
 export class DemandSagas {
@@ -42,7 +42,10 @@ export class DemandSagas {
       ofType(DemandBumpedEvent),
       map(
         (event) =>
-          new CreateDemandBumpCommand(pick(event, ['id', 'demandId', 'oldPrice', 'newPrice'])),
+          new CreateBumpCommand({
+            ...pick(event, ['id', 'demandId', 'oldPrice', 'newPrice']),
+            type: 'demand',
+          }),
       ),
     );
 }

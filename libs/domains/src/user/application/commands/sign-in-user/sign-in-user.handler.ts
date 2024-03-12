@@ -40,6 +40,7 @@ export class SignInUserHandler implements ICommandHandler<SignInUserCommand> {
       });
       newUser.avatarURL = url;
       newUser.createAvatar({
+        imageId: uuid4(),
         url,
         name: this.imageService.parseNameFromURL(url),
         contentType: this.imageService.parseMimeType(url),
