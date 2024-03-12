@@ -20,6 +20,7 @@ export class FindDemandHandler extends PrismaQueryHandler<FindDemandQuery, Deman
         slug: query.slug,
       },
       include: {
+        group: true,
         buyer: {
           include: {
             members: {

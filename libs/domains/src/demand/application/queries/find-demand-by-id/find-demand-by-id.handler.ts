@@ -17,6 +17,7 @@ export class FindDemandByIdHandler extends PrismaQueryHandler<FindDemandByIdQuer
         id: query.id,
       },
       include: {
+        group: true,
         buyer: {
           include: {
             members: {

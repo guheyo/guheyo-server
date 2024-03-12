@@ -16,6 +16,8 @@ import { DeleteSwapArgs } from '@lib/domains/swap/application/commands/delete-sw
 import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
 import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
 import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
+import { BumpSwapInput } from '@lib/domains/swap/application/commands/bump-swap/bump-swap.input';
+import { BumpSwapCommand } from '@lib/domains/swap/application/commands/bump-swap/bump-swap.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -60,5 +62,13 @@ export class SwapResolver {
   async deleteSwap(@Args() args: DeleteSwapArgs): Promise<string> {
     await this.commandBus.execute(new DeleteSwapCommand(args));
     return args.id;
+  }
+
+  @AuthorIdPath('input.proposerId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @Mutation(() => String)
+  async bumpSwap(@Args('input') input: BumpSwapInput): Promise<string> {
+    await this.commandBus.execute(new BumpSwapCommand(input));
+    return input.id;
   }
 }

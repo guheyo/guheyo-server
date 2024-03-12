@@ -29,6 +29,7 @@ export class DemandRepository extends PrismaRepository<DemandEntity> {
             },
           },
         },
+        bumps: true,
       },
     });
     return this.toEntity(demand);
@@ -80,6 +81,7 @@ export class DemandRepository extends PrismaRepository<DemandEntity> {
         id: demand.id,
       },
       data: _.pick(demand, [
+        'bumpedAt',
         'name',
         'description',
         'price',

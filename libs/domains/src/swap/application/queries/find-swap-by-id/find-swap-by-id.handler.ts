@@ -17,6 +17,7 @@ export class FindSwapByIdHandler extends PrismaQueryHandler<FindSwapByIdQuery, S
         id: query.id,
       },
       include: {
+        group: true,
         proposer: {
           include: {
             members: {

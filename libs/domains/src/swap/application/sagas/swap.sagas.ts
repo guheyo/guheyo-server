@@ -2,8 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
 import { Observable, map } from 'rxjs';
 import { TrackUserImagesCommand } from '@lib/domains/user-image/application/commands/track-user-images/track-user-images.command';
+import { pick } from 'lodash';
 import { SwapCreatedEvent } from '../events/swap-created/swap-created.event';
 import { SwapUpdatedEvent } from '../events/swap-updated/swap-updated.event';
+import { CreateSwapBumpCommand } from '../commands/create-swap-bump/create-swap-bump.command';
+import { SwapBumpedEvent } from '../events/swap-bumped/swap-bumped.event';
 
 @Injectable()
 export class SwapSagas {
@@ -30,6 +33,15 @@ export class SwapSagas {
             type: 'swap',
             refId: event.id,
           }),
+      ),
+    );
+
+  @Saga()
+  swapBumped = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(SwapBumpedEvent),
+      map(
+        (event) => new CreateSwapBumpCommand(pick(event, ['id', 'swapId', 'oldPrice', 'newPrice'])),
       ),
     );
 }

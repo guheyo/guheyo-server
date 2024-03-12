@@ -59,6 +59,27 @@ type BidResponse {
   status: String!
 }
 
+input BumpDemandInput {
+  buyerId: ID!
+  demandId: ID!
+  id: ID!
+  newPrice: Int!
+}
+
+input BumpOfferInput {
+  id: ID!
+  newPrice: Int!
+  offerId: ID!
+  sellerId: ID!
+}
+
+input BumpSwapInput {
+  id: ID!
+  newPrice: Int!
+  proposerId: ID!
+  swapId: ID!
+}
+
 input CancelBidInput {
   auctionId: String!
   bidderId: String!
@@ -226,8 +247,9 @@ scalar DateTime
 
 type DemandPreviewResponse {
   brandId: String
+  bumpedAt: DateTime!
   businessFunction: String!
-  buyer: UsernameResponse!
+  buyer: UserResponse!
   createdAt: DateTime!
   groupId: String!
   id: ID!
@@ -248,11 +270,12 @@ type DemandPreviewResponseEdge {
 
 type DemandResponse {
   brandId: String
+  bumpedAt: DateTime!
   businessFunction: String!
   buyer: AuthorResponse!
   createdAt: DateTime!
   description: String
-  groupId: String!
+  group: GroupProfileResponse!
   id: ID!
   images: [UserImageResponse!]!
   name: String!
@@ -331,6 +354,9 @@ type MemberWithRolesResponse {
 
 type Mutation {
   addBid(input: AddBidInput!): String!
+  bumpDemand(input: BumpDemandInput!): String!
+  bumpOffer(input: BumpOfferInput!): String!
+  bumpSwap(input: BumpSwapInput!): String!
   cancelBid(input: CancelBidInput!): String!
   connectRoles(input: ConnectRolesInput!): String!
   createAuction(input: CreateAuctionInput!): String!
@@ -389,6 +415,7 @@ type MyUserResponse {
 
 type OfferPreviewResponse {
   brandId: String
+  bumpedAt: DateTime!
   businessFunction: String!
   createdAt: DateTime!
   groupId: String!
@@ -397,7 +424,7 @@ type OfferPreviewResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  seller: UsernameResponse!
+  seller: UserResponse!
   slug: String
   source: String!
   status: String!
@@ -412,10 +439,11 @@ type OfferPreviewResponseEdge {
 
 type OfferResponse {
   brandId: String
+  bumpedAt: DateTime!
   businessFunction: String!
   createdAt: DateTime!
   description: String
-  groupId: String!
+  group: GroupProfileResponse!
   id: ID!
   images: [UserImageResponse!]!
   name: String!
@@ -491,8 +519,7 @@ type Query {
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
   findDemand(id: ID, slug: String): DemandResponse
   findDemandPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
-  findGroup(slug: String): GroupResponse
-  findGroupById(id: ID!): GroupResponse
+  findGroup(id: ID, slug: String): GroupResponse
   findGroupPreviews: [GroupPreviewResponse!]!
   findGroupProfiles(cursor: ID, distinct: Boolean, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
@@ -562,6 +589,7 @@ type SocialUserResponse {
 
 type SwapPreviewResponse {
   brandId: String
+  bumpedAt: DateTime!
   businessFunction: String!
   createdAt: DateTime!
   groupId: String!
@@ -571,7 +599,7 @@ type SwapPreviewResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  proposer: UsernameResponse!
+  proposer: UserResponse!
   slug: String
   source: String!
   status: String!
@@ -586,11 +614,12 @@ type SwapPreviewResponseEdge {
 
 type SwapResponse {
   brandId: String
+  bumpedAt: DateTime!
   businessFunction: String!
   createdAt: DateTime!
   description0: String
   description1: String
-  groupId: String!
+  group: GroupProfileResponse!
   id: ID!
   images: [UserImageResponse!]!
   name0: String!
@@ -748,8 +777,4 @@ type UserResponse {
 type UserResponseEdge {
   cursor: String!
   node: UserResponse!
-}
-
-type UsernameResponse {
-  username: String!
 }

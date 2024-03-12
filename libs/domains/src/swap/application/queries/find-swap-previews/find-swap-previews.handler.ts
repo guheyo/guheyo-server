@@ -35,9 +35,9 @@ export class FindSwapPreviewsHandler extends PrismaQueryHandler<
               },
             ]
           : undefined,
-        createdAt: query.where?.createdAt
+        bumpedAt: query.where?.bumpedAt
           ? {
-              gt: new Date(query.where.createdAt.gt),
+              gt: new Date(query.where.bumpedAt.gt),
             }
           : undefined,
       },
@@ -49,13 +49,17 @@ export class FindSwapPreviewsHandler extends PrismaQueryHandler<
           price: query.orderBy?.price,
         },
         {
-          createdAt: query.orderBy?.createdAt,
+          bumpedAt: query.orderBy?.bumpedAt,
         },
       ],
       include: {
         proposer: {
           select: {
+            id: true,
+            createdAt: true,
             username: true,
+            avatarURL: true,
+            bot: true,
           },
         },
       },

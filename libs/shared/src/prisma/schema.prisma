@@ -270,8 +270,8 @@ model OfferBump {
   updatedAt         DateTime          @updatedAt
   offerId           String
   offer             Offer             @relation(fields: [offerId], references: [id])
-  old               Json?
-  new               Json?
+  oldPrice          Int
+  newPrice          Int
 }
 
 model OfferReport {
@@ -318,8 +318,8 @@ model DemandBump {
   updatedAt         DateTime          @updatedAt
   demandId          String
   demand            Demand            @relation(fields: [demandId], references: [id])
-  old               Json?
-  new               Json?
+  oldPrice          Int
+  newPrice          Int
 }
 
 model DemandReport {
@@ -368,8 +368,8 @@ model SwapBump {
   updatedAt         DateTime          @updatedAt
   swapId            String
   swap              Swap              @relation(fields: [swapId], references: [id])
-  old               Json?
-  new               Json?
+  oldPrice          Int
+  newPrice          Int
 }
 
 model SwapReport {

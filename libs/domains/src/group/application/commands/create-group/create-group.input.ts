@@ -12,7 +12,7 @@ export class CreateGroupInput {
   name: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsString()
   @Field(() => String, { nullable: true })
   description?: string;
 

@@ -13,7 +13,7 @@ export class UpdateGroupInput {
   name?: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsString()
   @Field(() => String, { nullable: true })
   description?: string;
 

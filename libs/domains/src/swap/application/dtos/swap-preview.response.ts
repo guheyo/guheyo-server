@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { UserImageResponse } from '@lib/domains/user-image/application/dtos/user-image.response';
-import { UsernameResponse } from '@lib/domains/user/application/dtos/username.response';
+import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 
 @ObjectType()
 export class SwapPreviewResponse {
@@ -12,6 +12,9 @@ export class SwapPreviewResponse {
 
   @Field()
   updatedAt: Date;
+
+  @Field()
+  bumpedAt: Date;
 
   @Field(() => String, { nullable: true })
   slug: string | null;
@@ -43,8 +46,8 @@ export class SwapPreviewResponse {
   @Field()
   productCategoryId: string;
 
-  @Field(() => UsernameResponse)
-  proposer: UsernameResponse;
+  @Field(() => UserResponse)
+  proposer: UserResponse;
 
   @Field(() => String, { nullable: true })
   brandId: string | null;

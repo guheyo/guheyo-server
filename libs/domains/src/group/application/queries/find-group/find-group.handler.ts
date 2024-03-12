@@ -11,9 +11,12 @@ export class FindGroupHandler extends PrismaQueryHandler<FindGroupQuery, GroupRe
 
   async execute(query: FindGroupQuery): Promise<GroupResponse | null> {
     let group: GroupResponse | null;
-    if (query.slug) {
+    if (query.id || query.slug) {
       group = await this.prismaService.group.findFirst({
-        where: { slug: query.slug },
+        where: {
+          id: query.id,
+          slug: query.slug,
+        },
         include: {
           productCategories: {
             orderBy: {

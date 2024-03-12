@@ -1,10 +1,15 @@
-import { ArgsType, Field } from '@nestjs/graphql';
-import { IsOptional, IsString } from 'class-validator';
+import { ArgsType, Field, ID } from '@nestjs/graphql';
+import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 @ArgsType()
 export class FindGroupArgs {
   @IsOptional()
+  @IsUUID()
+  @Field(() => ID, { nullable: true })
+  id?: string;
+
+  @IsOptional()
   @IsString()
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   slug?: string;
 }
