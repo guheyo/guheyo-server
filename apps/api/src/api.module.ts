@@ -21,6 +21,7 @@ import { SessionModule } from './app/session/session.module';
 import { TermModule } from './app/term/term.module';
 import { AuthModule } from './app/auth/auth.module';
 import { CommonModule } from './app/common/common.module';
+import { BumpModule } from './app/bump/bump.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { CommonModule } from './app/common/common.module';
     DiscordMessageModule,
     SessionModule,
     TermModule,
+    BumpModule,
   ],
 })
 export class ApiModule {}
