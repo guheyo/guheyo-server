@@ -540,6 +540,7 @@ type Query {
   findMyUserByUsername(username: ID!): MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
+  findReport(demandId: ID, id: ID, offerId: ID, reporterId: ID, swapId: ID): ReportResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
   findSwap(id: ID, slug: String): SwapResponse
@@ -550,6 +551,19 @@ type Query {
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   getSocialAccountsByUserId(id: ID!): String!
+}
+
+type ReportResponse {
+  content: String
+  createdAt: DateTime!
+  demandId: ID
+  id: ID!
+  offerId: ID
+  reporter: AuthorResponse!
+  swapId: ID
+  title: String!
+  type: DateTime!
+  updatedAt: DateTime!
 }
 
 type RoleResponse {
