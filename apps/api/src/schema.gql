@@ -85,6 +85,19 @@ input CancelBidInput {
   bidderId: String!
 }
 
+type CommentResponse {
+  auctionId: ID
+  author: AuthorResponse!
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  parentId: ID
+  postId: ID
+  reportId: ID
+  type: DateTime!
+  updatedAt: DateTime!
+}
+
 input ConnectRolesInput {
   groupId: ID!
   roleIds: [ID!]!
@@ -105,6 +118,18 @@ input CreateAuctionInput {
   sellerId: String!
   source: String!
   status: String! = "open"
+}
+
+input CreateCommentInput {
+  auctionId: ID
+  authorId: ID!
+  content: String!
+  id: ID!
+  parentId: ID
+  postId: ID
+  reportId: ID
+  source: String!
+  type: String!
 }
 
 input CreateDemandInput {
@@ -372,6 +397,7 @@ type Mutation {
   cancelBid(input: CancelBidInput!): String!
   connectRoles(input: ConnectRolesInput!): String!
   createAuction(input: CreateAuctionInput!): String!
+  createComment(input: CreateCommentInput!): String!
   createDemand(input: CreateDemandInput!): String!
   createDiscordMessage(input: CreateDiscordMessageInput!): String!
   createGroup(input: CreateGroupInput!): String!
@@ -530,6 +556,7 @@ type ProductCategoryResponse {
 type Query {
   findAuctionById(id: ID!): AuctionResponse
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
+  findComment(auctionId: ID, id: ID, postId: ID, reportId: ID, type: String): CommentResponse!
   findDemand(id: ID, slug: String): DemandResponse
   findDemandPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
   findGroup(id: ID, slug: String): GroupResponse
