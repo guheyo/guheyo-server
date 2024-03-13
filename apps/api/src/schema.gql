@@ -94,7 +94,7 @@ type CommentResponse {
   parentId: ID
   postId: ID
   reportId: ID
-  type: DateTime!
+  type: String!
   updatedAt: DateTime!
 }
 
@@ -294,6 +294,7 @@ type DemandPreviewResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
+  reports: [ReportResponse!]!
   slug: String
   source: String!
   status: String!
@@ -319,6 +320,7 @@ type DemandResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
+  reports: [ReportWithAuthorResponse!]!
   slug: String
   source: String!
   status: String!
@@ -463,6 +465,7 @@ type OfferPreviewResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
+  reports: [ReportResponse!]!
   seller: UserResponse!
   slug: String
   source: String!
@@ -489,6 +492,7 @@ type OfferResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
+  reports: [ReportWithAuthorResponse!]!
   seller: AuthorResponse!
   slug: String
   source: String!
@@ -582,6 +586,19 @@ type Query {
 }
 
 type ReportResponse {
+  content: String
+  createdAt: DateTime!
+  demandId: ID
+  id: ID!
+  offerId: ID
+  status: String!
+  swapId: ID
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+}
+
+type ReportWithAuthorResponse {
   author: AuthorResponse!
   content: String
   createdAt: DateTime!
@@ -591,7 +608,7 @@ type ReportResponse {
   status: String!
   swapId: ID
   title: String!
-  type: DateTime!
+  type: String!
   updatedAt: DateTime!
 }
 
@@ -655,6 +672,7 @@ type SwapPreviewResponse {
   priceCurrency: String!
   productCategoryId: String!
   proposer: UserResponse!
+  reports: [ReportResponse!]!
   slug: String
   source: String!
   status: String!
@@ -683,6 +701,7 @@ type SwapResponse {
   priceCurrency: String!
   productCategoryId: String!
   proposer: AuthorResponse!
+  reports: [ReportWithAuthorResponse!]!
   slug: String
   source: String!
   status: String!

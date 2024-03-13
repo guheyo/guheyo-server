@@ -36,6 +36,22 @@ export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferRe
           },
         },
         reports: {
+          include: {
+            author: {
+              include: {
+                members: {
+                  include: {
+                    roles: {
+                      orderBy: {
+                        position: 'asc',
+                      },
+                    },
+                  },
+                },
+                socialAccounts: true,
+              },
+            },
+          },
           orderBy: {
             createdAt: 'desc',
           },
