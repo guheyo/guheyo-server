@@ -41,6 +41,7 @@ model User {
   postComments      PostComment[]
   discordMessages   DiscordMessage[]
   reports           Report[]
+  reportComments    ReportComment[]
 }
 
 model UserImage {
@@ -290,10 +291,24 @@ model Report {
   demand            Demand?           @relation(fields: [demandId], references: [id])
   swapId            String?
   swap              Swap?             @relation(fields: [swapId], references: [id])
-  reporterId        String
-  reporter          User              @relation(fields: [reporterId], references: [id])
+  authorId          String
+  author            User              @relation(fields: [authorId], references: [id])
   title             String
   content           String?
+  status            String
+  comments          ReportComment[]
+}
+
+model ReportComment {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  reportId          String
+  report            Report            @relation(fields: [reportId], references: [id])
+  authorId          String
+  author            User              @relation(fields: [authorId], references: [id])
+  content           String
 }
 
 model Demand {
@@ -429,6 +444,5 @@ model Term {
   name              String
   title             String
   content           String
-  metaTitle         String
-  metaDescription   String
+  meta              Json?             @default("{}")
 }
