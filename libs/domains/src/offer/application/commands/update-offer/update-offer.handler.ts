@@ -19,8 +19,6 @@ export class UpdateOfferHandler implements ICommandHandler<UpdateOfferCommand> {
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
     if (!offer.isAuthorized(command.sellerId))
       throw new ForbiddenException(OfferErrorMessage.OFFER_CHANGES_FROM_UNAUTHORIZED_USER);
-    if (!offer.isCompatibleSource(command.source))
-      throw new ForbiddenException(OfferErrorMessage.OFFER_CHANGES_FROM_INCOMPATIBLE_PLATFORMS);
 
     offer = this.publisher.mergeObjectContext(offer);
     offer.update(
@@ -32,6 +30,7 @@ export class UpdateOfferHandler implements ICommandHandler<UpdateOfferCommand> {
         'priceCurrency',
         'businessFunction',
         'productCategoryId',
+        'status',
         'brandId',
       ]),
     );

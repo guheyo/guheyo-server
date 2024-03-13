@@ -19,8 +19,6 @@ export class UpdateDemandHandler implements ICommandHandler<UpdateDemandCommand>
     if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_IS_NOT_FOUND);
     if (!demand.isAuthorized(command.buyerId))
       throw new ForbiddenException(DemandErrorMessage.DEMAND_CHANGES_FROM_UNAUTHORIZED_USER);
-    if (!demand.isCompatibleSource(command.source))
-      throw new ForbiddenException(DemandErrorMessage.DEMAND_CHANGES_FROM_INCOMPATIBLE_PLATFORMS);
 
     demand = this.publisher.mergeObjectContext(demand);
     demand.update(
@@ -32,6 +30,7 @@ export class UpdateDemandHandler implements ICommandHandler<UpdateDemandCommand>
         'priceCurrency',
         'businessFunction',
         'productCategoryId',
+        'status',
         'brandId',
       ]),
     );

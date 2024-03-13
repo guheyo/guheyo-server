@@ -164,6 +164,17 @@ input CreateOfferInput {
   status: String! = "open"
 }
 
+input CreateReportInput {
+  content: String
+  demandId: ID
+  id: ID!
+  offerId: ID
+  reporterId: ID!
+  swapId: ID
+  title: String!
+  type: String!
+}
+
 input CreateRoleInput {
   groupId: ID!
   hexColor: String! = "#000000"
@@ -366,6 +377,7 @@ type Mutation {
   createManyUserImage(input: CreateManyUserImageInput!): String!
   createMember(input: CreateMemberInput!): String!
   createOffer(input: CreateOfferInput!): String!
+  createReport(input: CreateReportInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSession(input: CreateSessionInput!): String!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
@@ -528,6 +540,7 @@ type Query {
   findMyUserByUsername(username: ID!): MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
+  findReport(demandId: ID, id: ID, offerId: ID, reporterId: ID, swapId: ID, type: String): ReportResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
   findSwap(id: ID, slug: String): SwapResponse
@@ -538,6 +551,19 @@ type Query {
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   getSocialAccountsByUserId(id: ID!): String!
+}
+
+type ReportResponse {
+  content: String
+  createdAt: DateTime!
+  demandId: ID
+  id: ID!
+  offerId: ID
+  reporter: AuthorResponse!
+  swapId: ID
+  title: String!
+  type: DateTime!
+  updatedAt: DateTime!
 }
 
 type RoleResponse {
@@ -666,6 +692,7 @@ input UpdateDemandInput {
   priceCurrency: String
   productCategoryId: ID
   source: String!
+  status: String
 }
 
 input UpdateGroupInput {
@@ -692,6 +719,7 @@ input UpdateOfferInput {
   productCategoryId: ID
   sellerId: ID!
   source: String!
+  status: String
 }
 
 input UpdateRoleInput {
@@ -733,6 +761,7 @@ input UpdateSwapInput {
   priceCurrency: String
   proposerId: ID!
   source: String!
+  status: String
 }
 
 input UpdateUserImageInput {
