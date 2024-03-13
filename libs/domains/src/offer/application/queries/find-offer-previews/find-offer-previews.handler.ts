@@ -77,6 +77,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
         thumbnail,
       };
     });
+
     return paginate<OfferPreviewResponse>(
       this.parseResponses(await Promise.all(offerPreviewPromises)),
       'id',
