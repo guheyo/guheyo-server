@@ -12,11 +12,13 @@ export class CreateReportCommand implements ICommand {
 
   swapId?: string;
 
-  reporterId: string;
+  authorId: string;
 
   title: string;
 
   content?: string;
+
+  status: string;
 
   constructor(input: CreateReportInput) {
     this.id = input.id;
@@ -24,8 +26,9 @@ export class CreateReportCommand implements ICommand {
     this.offerId = input.offerId;
     this.demandId = input.demandId;
     this.swapId = input.swapId;
-    this.reporterId = input.reporterId;
+    this.authorId = input.authorId;
     this.title = input.title;
     this.content = input.content;
+    this.status = input.status;
   }
 }

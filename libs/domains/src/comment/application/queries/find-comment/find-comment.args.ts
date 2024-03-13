@@ -2,11 +2,11 @@ import { ArgsType, Field, ID } from '@nestjs/graphql';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 @ArgsType()
-export class FindReportArgs {
+export class FindCommentArgs {
   @IsOptional()
   @IsUUID()
   @Field(() => ID, { nullable: true })
-  id?: string;
+  id: string;
 
   @IsOptional()
   @IsString()
@@ -16,20 +16,15 @@ export class FindReportArgs {
   @IsOptional()
   @IsUUID()
   @Field(() => ID, { nullable: true })
-  offerId?: string;
+  postId?: string;
 
   @IsOptional()
   @IsUUID()
   @Field(() => ID, { nullable: true })
-  demandId?: string;
+  reportId?: string;
 
   @IsOptional()
   @IsUUID()
   @Field(() => ID, { nullable: true })
-  swapId?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  authorId?: string;
+  auctionId?: string;
 }

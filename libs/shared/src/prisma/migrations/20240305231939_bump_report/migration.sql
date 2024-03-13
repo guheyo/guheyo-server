@@ -25,7 +25,7 @@ CREATE TABLE "OfferReport" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "offerId" TEXT NOT NULL,
-    "reporterId" TEXT NOT NULL,
+    "authorId" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT,
 
@@ -50,7 +50,7 @@ CREATE TABLE "DemandReport" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "demandId" TEXT NOT NULL,
-    "reporterId" TEXT NOT NULL,
+    "authorId" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT,
 
@@ -75,7 +75,7 @@ CREATE TABLE "SwapReport" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "swapId" TEXT NOT NULL,
-    "reporterId" TEXT NOT NULL,
+    "authorId" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT,
 
@@ -89,7 +89,7 @@ ALTER TABLE "OfferBump" ADD CONSTRAINT "OfferBump_offerId_fkey" FOREIGN KEY ("of
 ALTER TABLE "OfferReport" ADD CONSTRAINT "OfferReport_offerId_fkey" FOREIGN KEY ("offerId") REFERENCES "Offer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OfferReport" ADD CONSTRAINT "OfferReport_reporterId_fkey" FOREIGN KEY ("reporterId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "OfferReport" ADD CONSTRAINT "OfferReport_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "DemandBump" ADD CONSTRAINT "DemandBump_demandId_fkey" FOREIGN KEY ("demandId") REFERENCES "Demand"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -98,7 +98,7 @@ ALTER TABLE "DemandBump" ADD CONSTRAINT "DemandBump_demandId_fkey" FOREIGN KEY (
 ALTER TABLE "DemandReport" ADD CONSTRAINT "DemandReport_demandId_fkey" FOREIGN KEY ("demandId") REFERENCES "Demand"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "DemandReport" ADD CONSTRAINT "DemandReport_reporterId_fkey" FOREIGN KEY ("reporterId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "DemandReport" ADD CONSTRAINT "DemandReport_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "SwapBump" ADD CONSTRAINT "SwapBump_swapId_fkey" FOREIGN KEY ("swapId") REFERENCES "Swap"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -107,4 +107,4 @@ ALTER TABLE "SwapBump" ADD CONSTRAINT "SwapBump_swapId_fkey" FOREIGN KEY ("swapI
 ALTER TABLE "SwapReport" ADD CONSTRAINT "SwapReport_swapId_fkey" FOREIGN KEY ("swapId") REFERENCES "Swap"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SwapReport" ADD CONSTRAINT "SwapReport_reporterId_fkey" FOREIGN KEY ("reporterId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "SwapReport" ADD CONSTRAINT "SwapReport_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

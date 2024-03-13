@@ -16,9 +16,9 @@ export class FindReportHandler extends PrismaQueryHandler<FindReportQuery, Repor
       ? {
           id: query.id,
         }
-      : query.reporterId && query.type && (query.demandId || query.offerId || query.swapId)
+      : query.authorId && query.type && (query.demandId || query.offerId || query.swapId)
       ? {
-          reporterId: query.reporterId,
+          authorId: query.authorId,
           type: query.type,
           offerId: query.offerId,
           demandId: query.demandId,
@@ -30,7 +30,7 @@ export class FindReportHandler extends PrismaQueryHandler<FindReportQuery, Repor
     const report = await this.prismaService.report.findFirst({
       where,
       include: {
-        reporter: {
+        author: {
           include: {
             members: {
               include: {

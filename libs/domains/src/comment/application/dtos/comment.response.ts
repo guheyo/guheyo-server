@@ -2,7 +2,7 @@ import { AuthorResponse } from '@lib/domains/user/application/dtos/author.respon
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class ReportResponse {
+export class CommentResponse {
   @Field(() => ID)
   id: string;
 
@@ -15,28 +15,25 @@ export class ReportResponse {
   @Field()
   type: Date;
 
-  @Field(() => ID, { nullable: true })
-  offerId: string | null;
-
-  @Field(() => ID, { nullable: true })
-  demandId: string | null;
-
-  @Field(() => ID, { nullable: true })
-  swapId: string | null;
-
   @Field(() => AuthorResponse)
   author: AuthorResponse;
 
+  @Field(() => ID, { nullable: true })
+  parentId: string | null;
+
+  @Field(() => ID, { nullable: true })
+  postId: string | null;
+
+  @Field(() => ID, { nullable: true })
+  reportId: string | null;
+
+  @Field(() => ID, { nullable: true })
+  auctionId: string | null;
+
   @Field(() => String)
-  title: string;
+  content: string;
 
-  @Field(() => String, { nullable: true })
-  content: string | null;
-
-  @Field()
-  status: string;
-
-  constructor(partial: Partial<ReportResponse>) {
+  constructor(partial: Partial<CommentResponse>) {
     Object.assign(this, partial);
   }
 }

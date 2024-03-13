@@ -36,9 +36,8 @@ model User {
   swaps             Swap[]
   auctions          Auction[]
   bids              Bid[]
-  auctionComments   AuctionComment[]
+  comments          Comment[]
   posts             Post[]
-  postComments      PostComment[]
   discordMessages   DiscordMessage[]
   reports           Report[]
 }
@@ -217,23 +216,28 @@ model Post {
   postCategory      PostCategory  @relation(fields: [postCategoryId], references: [id])
   authorId          String
   author            User          @relation(fields: [authorId], references: [id])
-  comments          PostComment[]
+  comments          Comment[]
 }
 
-model PostComment {
+model Comment {
   id                String        @id @default(uuid())
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
   deletedAt         DateTime?
+  type              String
   source            String
   authorId          String
   author            User          @relation(fields: [authorId], references: [id])
   content           String
-  postId            String
-  post              Post          @relation(fields: [postId], references: [id])
   parentId          String?
-  parent            PostComment?  @relation("PostComments", fields: [parentId], references: [id])
-  comments          PostComment[] @relation("PostComments")
+  parent            Comment?      @relation("Comments", fields: [parentId], references: [id])
+  comments          Comment[]     @relation("Comments")
+  postId            String?
+  post              Post?         @relation(fields: [postId], references: [id])
+  reportId          String?
+  report            Report?       @relation(fields: [reportId], references: [id])
+  auctionId         String?
+  auction           Auction?      @relation(fields: [auctionId], references: [id])
 }
 
 model Offer {
@@ -290,10 +294,12 @@ model Report {
   demand            Demand?           @relation(fields: [demandId], references: [id])
   swapId            String?
   swap              Swap?             @relation(fields: [swapId], references: [id])
-  reporterId        String
-  reporter          User              @relation(fields: [reporterId], references: [id])
+  authorId          String
+  author            User              @relation(fields: [authorId], references: [id])
   title             String
   content           String?
+  status            String
+  comments          Comment[]
 }
 
 model Demand {
@@ -370,24 +376,8 @@ model Auction {
   productCategory   ProductCategory   @relation(fields: [productCategoryId], references: [id])
   sellerId          String
   seller            User              @relation(fields: [sellerId], references: [id])
-  comments          AuctionComment[]
+  comments          Comment[]
   status            String
-}
-
-model AuctionComment {
-  id                String            @id @default(uuid())
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  deletedAt         DateTime?
-  source            String
-  authorId          String
-  author            User              @relation(fields: [authorId], references: [id])
-  content           String
-  auctionId         String
-  auction           Auction           @relation(fields: [auctionId], references: [id])
-  parentId          String?
-  parent            AuctionComment?   @relation("AuctionComments", fields: [parentId], references: [id])
-  comments          AuctionComment[]  @relation("AuctionComments")
 }
 
 model Bid {
@@ -429,6 +419,5 @@ model Term {
   name              String
   title             String
   content           String
-  metaTitle         String
-  metaDescription   String
+  meta              Json?             @default("{}")
 }

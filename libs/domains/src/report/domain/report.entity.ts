@@ -15,7 +15,9 @@ export class ReportEntity extends AggregateRoot {
 
   swapId: string | null;
 
-  reporterId: string;
+  status: string;
+
+  authorId: string;
 
   title: string;
 

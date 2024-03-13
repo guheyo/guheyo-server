@@ -85,6 +85,19 @@ input CancelBidInput {
   bidderId: String!
 }
 
+type CommentResponse {
+  auctionId: ID
+  author: AuthorResponse!
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  parentId: ID
+  postId: ID
+  reportId: ID
+  type: DateTime!
+  updatedAt: DateTime!
+}
+
 input ConnectRolesInput {
   groupId: ID!
   roleIds: [ID!]!
@@ -105,6 +118,18 @@ input CreateAuctionInput {
   sellerId: String!
   source: String!
   status: String! = "open"
+}
+
+input CreateCommentInput {
+  auctionId: ID
+  authorId: ID!
+  content: String!
+  id: ID!
+  parentId: ID
+  postId: ID
+  reportId: ID
+  source: String!
+  type: String!
 }
 
 input CreateDemandInput {
@@ -165,11 +190,12 @@ input CreateOfferInput {
 }
 
 input CreateReportInput {
+  authorId: ID!
   content: String
   demandId: ID
   id: ID!
   offerId: ID
-  reporterId: ID!
+  status: String! = "open"
   swapId: ID
   title: String!
   type: String!
@@ -371,6 +397,7 @@ type Mutation {
   cancelBid(input: CancelBidInput!): String!
   connectRoles(input: ConnectRolesInput!): String!
   createAuction(input: CreateAuctionInput!): String!
+  createComment(input: CreateCommentInput!): String!
   createDemand(input: CreateDemandInput!): String!
   createDiscordMessage(input: CreateDiscordMessageInput!): String!
   createGroup(input: CreateGroupInput!): String!
@@ -529,6 +556,7 @@ type ProductCategoryResponse {
 type Query {
   findAuctionById(id: ID!): AuctionResponse
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
+  findComment(auctionId: ID, id: ID, postId: ID, reportId: ID, type: String): CommentResponse!
   findDemand(id: ID, slug: String): DemandResponse
   findDemandPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
   findGroup(id: ID, slug: String): GroupResponse
@@ -540,7 +568,7 @@ type Query {
   findMyUserByUsername(username: ID!): MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
-  findReport(demandId: ID, id: ID, offerId: ID, reporterId: ID, swapId: ID, type: String): ReportResponse!
+  findReport(authorId: ID, demandId: ID, id: ID, offerId: ID, swapId: ID, type: String): ReportResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
   findSwap(id: ID, slug: String): SwapResponse
@@ -554,12 +582,13 @@ type Query {
 }
 
 type ReportResponse {
+  author: AuthorResponse!
   content: String
   createdAt: DateTime!
   demandId: ID
   id: ID!
   offerId: ID
-  reporter: AuthorResponse!
+  status: String!
   swapId: ID
   title: String!
   type: DateTime!

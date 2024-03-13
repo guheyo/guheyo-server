@@ -23,6 +23,7 @@ import { AuthModule } from './app/auth/auth.module';
 import { CommonModule } from './app/common/common.module';
 import { BumpModule } from './app/bump/bump.module';
 import { ReportModule } from './app/report/report.module';
+import { CommentModule } from './app/comment/comment.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { ReportModule } from './app/report/report.module';
     TermModule,
     BumpModule,
     ReportModule,
+    CommentModule,
   ],
 })
 export class ApiModule {}

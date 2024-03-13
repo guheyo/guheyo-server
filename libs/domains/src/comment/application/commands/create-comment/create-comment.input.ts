@@ -2,7 +2,7 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
-export class CreateReportInput {
+export class CreateCommentInput {
   @IsUUID()
   @Field(() => ID)
   id: string;
@@ -11,35 +11,35 @@ export class CreateReportInput {
   @Field()
   type: string;
 
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  offerId?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  demandId?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  swapId?: string;
+  @IsString()
+  @Field()
+  source: string;
 
   @IsUUID()
   @Field(() => ID)
   authorId: string;
 
-  @IsString()
-  @Field()
-  title: string;
+  @IsOptional()
+  @IsUUID()
+  @Field(() => ID, { nullable: true })
+  parentId?: string;
 
   @IsOptional()
-  @IsString()
-  @Field(() => String, { nullable: true })
-  content: string;
+  @IsUUID()
+  @Field(() => ID, { nullable: true })
+  postId?: string;
+
+  @IsOptional()
+  @IsUUID()
+  @Field(() => ID, { nullable: true })
+  reportId?: string;
+
+  @IsOptional()
+  @IsUUID()
+  @Field(() => ID, { nullable: true })
+  auctionId?: string;
 
   @IsString()
-  @Field(() => String, { defaultValue: 'open' })
-  status: string;
+  @Field(() => String)
+  content: string;
 }
