@@ -44,6 +44,11 @@ export class FindDemandPreviewsHandler extends PrismaQueryHandler<
             bot: true,
           },
         },
+        reports: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
       orderBy: [
         {

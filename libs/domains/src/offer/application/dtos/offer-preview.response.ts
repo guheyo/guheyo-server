@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { UserImageResponse } from '@lib/domains/user-image/application/dtos/user-image.response';
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
+import { ReportResponse } from '@lib/domains/report/application/dtos/report.response';
 
 @ObjectType()
 export class OfferPreviewResponse {
@@ -51,6 +52,9 @@ export class OfferPreviewResponse {
 
   @Field(() => String, { nullable: true })
   brandId: string | null;
+
+  @Field(() => [ReportResponse])
+  reports: ReportResponse[];
 
   constructor(partial: Partial<OfferPreviewResponse>) {
     Object.assign(this, partial);

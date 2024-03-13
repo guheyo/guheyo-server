@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
+import { ReportResponse } from '@lib/domains/report/application/dtos/report.response';
 
 @ObjectType()
 export class DemandPreviewResponse {
@@ -47,6 +48,9 @@ export class DemandPreviewResponse {
 
   @Field()
   source: string;
+
+  @Field(() => [ReportResponse])
+  reports: ReportResponse[];
 
   constructor(partial: Partial<DemandPreviewResponse>) {
     Object.assign(this, partial);

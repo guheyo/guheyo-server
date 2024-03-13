@@ -44,6 +44,11 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
             bot: true,
           },
         },
+        reports: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
       orderBy: [
         {
@@ -55,6 +60,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
       ],
       distinct: query.distinct ? ['name', 'sellerId'] : undefined,
     });
+
     const offerPreviewPromises = offers.map(async (offer) => {
       const thumbnail = await this.prismaService.userImage.findFirst({
         where: {
