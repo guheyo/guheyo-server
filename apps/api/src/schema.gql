@@ -540,7 +540,7 @@ type Query {
   findMyUserByUsername(username: ID!): MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
-  findReport(demandId: ID, id: ID, offerId: ID, reporterId: ID, swapId: ID): ReportResponse!
+  findReport(demandId: ID, id: ID, offerId: ID, reporterId: ID, swapId: ID, type: String): ReportResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
   findSwap(id: ID, slug: String): SwapResponse
