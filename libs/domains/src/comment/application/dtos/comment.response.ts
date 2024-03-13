@@ -13,7 +13,7 @@ export class CommentResponse {
   updatedAt: Date;
 
   @Field()
-  type: Date;
+  type: string;
 
   @Field(() => AuthorResponse)
   author: AuthorResponse;
