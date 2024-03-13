@@ -16,7 +16,7 @@ ALTER TABLE "DemandBump" DROP CONSTRAINT "DemandBump_demandId_fkey";
 ALTER TABLE "DemandReport" DROP CONSTRAINT "DemandReport_demandId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "DemandReport" DROP CONSTRAINT "DemandReport_reporterId_fkey";
+ALTER TABLE "DemandReport" DROP CONSTRAINT "DemandReport_authorId_fkey";
 
 -- DropForeignKey
 ALTER TABLE "OfferBump" DROP CONSTRAINT "OfferBump_offerId_fkey";
@@ -25,13 +25,13 @@ ALTER TABLE "OfferBump" DROP CONSTRAINT "OfferBump_offerId_fkey";
 ALTER TABLE "OfferReport" DROP CONSTRAINT "OfferReport_offerId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "OfferReport" DROP CONSTRAINT "OfferReport_reporterId_fkey";
+ALTER TABLE "OfferReport" DROP CONSTRAINT "OfferReport_authorId_fkey";
 
 -- DropForeignKey
 ALTER TABLE "SwapBump" DROP CONSTRAINT "SwapBump_swapId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "SwapReport" DROP CONSTRAINT "SwapReport_reporterId_fkey";
+ALTER TABLE "SwapReport" DROP CONSTRAINT "SwapReport_authorId_fkey";
 
 -- DropForeignKey
 ALTER TABLE "SwapReport" DROP CONSTRAINT "SwapReport_swapId_fkey";
@@ -78,7 +78,7 @@ CREATE TABLE "Report" (
     "offerId" TEXT,
     "demandId" TEXT,
     "swapId" TEXT,
-    "reporterId" TEXT NOT NULL,
+    "authorId" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT,
 
@@ -104,4 +104,4 @@ ALTER TABLE "Report" ADD CONSTRAINT "Report_demandId_fkey" FOREIGN KEY ("demandI
 ALTER TABLE "Report" ADD CONSTRAINT "Report_swapId_fkey" FOREIGN KEY ("swapId") REFERENCES "Swap"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Report" ADD CONSTRAINT "Report_reporterId_fkey" FOREIGN KEY ("reporterId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Report" ADD CONSTRAINT "Report_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -1,7 +1,7 @@
 /*
   Warnings:
 
-  - You are about to drop the column `reporterId` on the `Report` table. All the data in the column will be lost.
+  - You are about to drop the column `authorId` on the `Report` table. All the data in the column will be lost.
   - You are about to drop the column `metaDescription` on the `Term` table. All the data in the column will be lost.
   - You are about to drop the column `metaTitle` on the `Term` table. All the data in the column will be lost.
   - Added the required column `authorId` to the `Report` table without a default value. This is not possible if the table is not empty.
@@ -9,10 +9,10 @@
 
 */
 -- DropForeignKey
-ALTER TABLE "Report" DROP CONSTRAINT "Report_reporterId_fkey";
+ALTER TABLE "Report" DROP CONSTRAINT "Report_authorId_fkey";
 
 -- AlterTable
-ALTER TABLE "Report" DROP COLUMN "reporterId",
+ALTER TABLE "Report" DROP COLUMN "authorId",
 ADD COLUMN     "authorId" TEXT NOT NULL,
 ADD COLUMN     "status" TEXT NOT NULL;
 

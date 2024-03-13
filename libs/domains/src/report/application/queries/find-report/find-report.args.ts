@@ -31,5 +31,5 @@ export class FindReportArgs {
   @IsOptional()
   @IsUUID()
   @Field(() => ID, { nullable: true })
-  reporterId?: string;
+  authorId?: string;
 }

@@ -26,9 +26,10 @@ export class ReportRepository extends PrismaRepository<ReportEntity> {
         'offerId',
         'demandId',
         'swapId',
-        'reporterId',
+        'authorId',
         'title',
         'content',
+        'status',
       ]),
     });
   }
@@ -42,9 +43,10 @@ export class ReportRepository extends PrismaRepository<ReportEntity> {
           'offerId',
           'demandId',
           'swapId',
-          'reporterId',
+          'authorId',
           'title',
           'content',
+          'status',
         ]),
       ),
     });
@@ -55,7 +57,7 @@ export class ReportRepository extends PrismaRepository<ReportEntity> {
       where: {
         id: report.id,
       },
-      data: _.pick(report, ['title', 'content']),
+      data: _.pick(report, ['title', 'content', 'status']),
     });
   }
 

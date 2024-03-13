@@ -25,13 +25,16 @@ export class ReportResponse {
   swapId: string | null;
 
   @Field(() => AuthorResponse)
-  reporter: AuthorResponse;
+  author: AuthorResponse;
 
   @Field(() => String)
   title: string;
 
   @Field(() => String, { nullable: true })
   content: string | null;
+
+  @Field()
+  status: string;
 
   constructor(partial: Partial<ReportResponse>) {
     Object.assign(this, partial);

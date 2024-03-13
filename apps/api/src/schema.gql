@@ -165,11 +165,12 @@ input CreateOfferInput {
 }
 
 input CreateReportInput {
+  authorId: ID!
   content: String
   demandId: ID
   id: ID!
   offerId: ID
-  reporterId: ID!
+  status: String! = "open"
   swapId: ID
   title: String!
   type: String!
@@ -540,7 +541,7 @@ type Query {
   findMyUserByUsername(username: ID!): MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
-  findReport(demandId: ID, id: ID, offerId: ID, reporterId: ID, swapId: ID, type: String): ReportResponse!
+  findReport(authorId: ID, demandId: ID, id: ID, offerId: ID, swapId: ID, type: String): ReportResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
   findSwap(id: ID, slug: String): SwapResponse
@@ -554,12 +555,13 @@ type Query {
 }
 
 type ReportResponse {
+  author: AuthorResponse!
   content: String
   createdAt: DateTime!
   demandId: ID
   id: ID!
   offerId: ID
-  reporter: AuthorResponse!
+  status: String!
   swapId: ID
   title: String!
   type: DateTime!

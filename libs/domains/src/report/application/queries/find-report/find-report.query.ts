@@ -12,7 +12,7 @@ export class FindReportQuery implements IQuery {
 
   swapId?: string;
 
-  reporterId?: string;
+  authorId?: string;
 
   constructor(args: FindReportArgs) {
     this.id = args.id;
@@ -20,6 +20,6 @@ export class FindReportQuery implements IQuery {
     this.offerId = args.offerId;
     this.demandId = args.demandId;
     this.swapId = args.swapId;
-    this.reporterId = args.reporterId;
+    this.authorId = args.authorId;
   }
 }

@@ -28,7 +28,7 @@ export class CreateReportInput {
 
   @IsUUID()
   @Field(() => ID)
-  reporterId: string;
+  authorId: string;
 
   @IsString()
   @Field()
@@ -38,4 +38,8 @@ export class CreateReportInput {
   @IsString()
   @Field(() => String, { nullable: true })
   content: string;
+
+  @IsString()
+  @Field(() => String, { defaultValue: 'open' })
+  status: string;
 }
