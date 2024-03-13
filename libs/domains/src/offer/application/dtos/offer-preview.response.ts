@@ -35,9 +35,6 @@ export class OfferPreviewResponse {
   @Field()
   status: string;
 
-  @Field()
-  source: string;
-
   @Field(() => UserImageResponse, { nullable: true })
   thumbnail: UserImageResponse | null;
 
@@ -52,6 +49,9 @@ export class OfferPreviewResponse {
 
   @Field(() => String, { nullable: true })
   brandId: string | null;
+
+  @Field()
+  source: string;
 
   @Field(() => [ReportResponse])
   reports: ReportResponse[];
