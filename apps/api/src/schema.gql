@@ -87,7 +87,6 @@ input CancelBidInput {
 
 type CommentResponse {
   auctionId: ID
-  author: AuthorResponse!
   content: String!
   createdAt: DateTime!
   id: ID!
@@ -320,7 +319,7 @@ type DemandResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  reports: [ReportWithAuthorResponse!]!
+  reports: [ReportResponse!]!
   slug: String
   source: String!
   status: String!
@@ -492,7 +491,7 @@ type OfferResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  reports: [ReportWithAuthorResponse!]!
+  reports: [ReportResponse!]!
   seller: AuthorResponse!
   slug: String
   source: String!
@@ -586,20 +585,7 @@ type Query {
 }
 
 type ReportResponse {
-  content: String
-  createdAt: DateTime!
-  demandId: ID
-  id: ID!
-  offerId: ID
-  status: String!
-  swapId: ID
-  title: String!
-  type: String!
-  updatedAt: DateTime!
-}
-
-type ReportWithAuthorResponse {
-  author: AuthorResponse!
+  comments: [CommentResponse!]!
   content: String
   createdAt: DateTime!
   demandId: ID
@@ -701,7 +687,7 @@ type SwapResponse {
   priceCurrency: String!
   productCategoryId: String!
   proposer: AuthorResponse!
-  reports: [ReportWithAuthorResponse!]!
+  reports: [ReportResponse!]!
   slug: String
   source: String!
   status: String!

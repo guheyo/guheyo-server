@@ -34,18 +34,9 @@ export class FindSwapByIdHandler extends PrismaQueryHandler<FindSwapByIdQuery, S
         },
         reports: {
           include: {
-            author: {
-              include: {
-                members: {
-                  include: {
-                    roles: {
-                      orderBy: {
-                        position: 'asc',
-                      },
-                    },
-                  },
-                },
-                socialAccounts: true,
+            comments: {
+              orderBy: {
+                createdAt: 'desc',
               },
             },
           },

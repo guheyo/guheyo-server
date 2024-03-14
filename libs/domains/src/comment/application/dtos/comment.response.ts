@@ -1,4 +1,3 @@
-import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
@@ -14,9 +13,6 @@ export class CommentResponse {
 
   @Field()
   type: string;
-
-  @Field(() => AuthorResponse)
-  author: AuthorResponse;
 
   @Field(() => ID, { nullable: true })
   parentId: string | null;

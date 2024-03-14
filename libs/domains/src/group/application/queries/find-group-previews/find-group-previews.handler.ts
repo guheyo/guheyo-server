@@ -35,6 +35,13 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
               },
             },
             reports: {
+              include: {
+                comments: {
+                  orderBy: {
+                    createdAt: 'desc',
+                  },
+                },
+              },
               orderBy: {
                 createdAt: 'desc',
               },
@@ -57,6 +64,13 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
               },
             },
             reports: {
+              include: {
+                comments: {
+                  orderBy: {
+                    createdAt: 'desc',
+                  },
+                },
+              },
               orderBy: {
                 createdAt: 'desc',
               },

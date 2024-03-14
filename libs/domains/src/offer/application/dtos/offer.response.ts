@@ -2,7 +2,7 @@ import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { UserImageResponse } from '@lib/domains/user-image/application/dtos/user-image.response';
 import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
 import { GroupProfileResponse } from '@lib/domains/group/application/dtos/group-profile.response';
-import { ReportWithAuthorResponse } from '@lib/domains/report/application/dtos/report-with-author.response';
+import { ReportResponse } from '@lib/domains/report/application/dtos/report.response';
 
 @ObjectType()
 export class OfferResponse {
@@ -60,8 +60,8 @@ export class OfferResponse {
   @Field()
   source: string;
 
-  @Field(() => [ReportWithAuthorResponse])
-  reports: ReportWithAuthorResponse[];
+  @Field(() => [ReportResponse])
+  reports: ReportResponse[];
 
   constructor(partial: Partial<OfferResponse>) {
     Object.assign(this, partial);
