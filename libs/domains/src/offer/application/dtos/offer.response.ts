@@ -39,9 +39,6 @@ export class OfferResponse {
   @Field()
   status: string;
 
-  @Field()
-  source: string;
-
   @Field(() => [UserImageResponse])
   images: UserImageResponse[];
 
@@ -59,6 +56,9 @@ export class OfferResponse {
 
   @Field(() => String, { nullable: true })
   brandId: string | null;
+
+  @Field()
+  source: string;
 
   @Field(() => [ReportWithAuthorResponse])
   reports: ReportWithAuthorResponse[];
