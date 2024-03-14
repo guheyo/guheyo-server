@@ -34,6 +34,11 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
                 bot: true,
               },
             },
+            reports: {
+              orderBy: {
+                createdAt: 'desc',
+              },
+            },
           },
           orderBy: {
             bumpedAt: 'desc',
@@ -49,6 +54,11 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
                 username: true,
                 avatarURL: true,
                 bot: true,
+              },
+            },
+            reports: {
+              orderBy: {
+                createdAt: 'desc',
               },
             },
           },
