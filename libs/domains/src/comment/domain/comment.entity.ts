@@ -53,7 +53,6 @@ export class CommentEntity extends AggregateRoot {
       new CommentCreatedEvent({
         type: this.type,
         refId,
-        authorId: this.authorId,
       }),
     );
   }
