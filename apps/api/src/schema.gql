@@ -191,11 +191,8 @@ input CreateOfferInput {
 input CreateReportInput {
   authorId: ID!
   content: String
-  demandId: ID
   id: ID!
-  offerId: ID
-  status: String! = "open"
-  swapId: ID
+  refId: ID!
   title: String!
   type: String!
 }

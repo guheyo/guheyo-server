@@ -2,6 +2,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import _ from 'lodash';
 import { validateBump } from '@lib/shared/deal/validate-bump';
+import { ReportEntity } from '@lib/domains/report/domain/report.entity';
 import { UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
@@ -44,6 +45,8 @@ export class OfferEntity extends AggregateRoot {
 
   bumps: OfferBumpEntity[];
 
+  reports: ReportEntity[];
+
   constructor(partial: Partial<OfferEntity>) {
     super();
     Object.assign(this, partial);
@@ -81,5 +84,10 @@ export class OfferEntity extends AggregateRoot {
     );
     this.bumpedAt = new Date();
     this.price = input.newPrice;
+  }
+
+  reported() {
+    const uncheckedReportsCount = this.reports.filter((report) => report.status === 'open').length;
+    this.status = uncheckedReportsCount ? `reported#${uncheckedReportsCount}` : this.status;
   }
 }
