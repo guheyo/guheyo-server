@@ -3,12 +3,14 @@ import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import _ from 'lodash';
 import { validateBump } from '@lib/shared/deal/validate-bump';
 import { ReportEntity } from '@lib/domains/report/domain/report.entity';
+import { ReportCommentedEvent } from '@lib/domains/report/application/events/report-commented/report-commented.event';
 import { UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
 import { OfferBumpEntity } from './offer-bump.entity';
 import { BumpOfferInput } from '../application/commands/bump-offer/bump-offer.input';
 import { OfferBumpedEvent } from '../application/events/offer-bumped/offer-bumped.event';
+import { CommentOfferReportInput } from '../application/commands/comment-offer-report/comment-offer-report.input';
 
 export class OfferEntity extends AggregateRoot {
   id: string;
@@ -86,8 +88,32 @@ export class OfferEntity extends AggregateRoot {
     this.price = input.newPrice;
   }
 
-  reported() {
-    const uncheckedReportsCount = this.reports.filter((report) => report.status === 'open').length;
+  findUncheckedReportsCount() {
+    return this.reports.filter((report) => report.status === 'open').length;
+  }
+
+  checkReports() {
+    const uncheckedReportsCount = this.findUncheckedReportsCount();
     this.status = uncheckedReportsCount ? `reported#${uncheckedReportsCount}` : this.status;
+  }
+
+  findReport({ reportId }: { reportId: string }) {
+    return this.reports.find((report) => report.id === reportId);
+  }
+
+  isSeller({ authorId }: { authorId: string }) {
+    return this.sellerId === authorId;
+  }
+
+  commentReport(input: CommentOfferReportInput) {
+    this.apply(
+      new ReportCommentedEvent({
+        id: input.id,
+        reportId: input.reportId,
+        authorId: input.authorId,
+        content: input.content,
+        source: input.source,
+      }),
+    );
   }
 }

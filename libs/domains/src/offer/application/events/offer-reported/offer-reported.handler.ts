@@ -18,7 +18,7 @@ export class OfferReportedHandler implements IEventHandler<ReportCreatedEvent> {
     const offer = await this.loadPort.findById(event.refId);
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_FROM_REPORTED_NOT_FOUND);
 
-    offer.reported();
+    offer.checkReports();
     this.savePort.save(offer);
   }
 }
