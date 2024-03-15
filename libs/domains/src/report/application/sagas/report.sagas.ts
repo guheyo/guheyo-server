@@ -4,11 +4,11 @@ import { Observable, filter, map } from 'rxjs';
 import { CreateCommentCommand } from '@lib/domains/comment/application/commands/create-comment/create-comment.command';
 import { pick } from 'lodash';
 import { CommentCreatedEvent } from '@lib/domains/comment/application/events/comment-created/comment-created.event';
+import { CheckOfferReportsCommand } from '@lib/domains/offer/application/commands/check-offer-reports/check-offer-reports.command';
 import { ReportCommentedEvent } from '../events/report-commented/report-commented.event';
 import { CheckReportCommentsCommand } from '../commands/check-report-comments/check-report-comments.command';
 import { ReportCreatedEvent } from '../events/report-created/report-created.event';
 import { ReportStatusUpdatedEvent } from '../events/report-status-updated/report-status-updated.event';
-import { CheckOfferReportsCommand } from '@lib/domains/offer/application/commands/check-offer-reports/check-offer-reports.command';
 
 @Injectable()
 export class ReportSagas {
@@ -34,6 +34,7 @@ export class ReportSagas {
       map((event) => new CheckReportCommentsCommand(event)),
     );
 
+  // TODO: handle demand, swap
   @Saga()
   reportCreated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
