@@ -1,18 +1,18 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
-import { ReportCreatedEvent } from '@lib/domains/report/application/events/report-created/report-created.event';
 import { OfferLoadPort } from '../../ports/out/offer.load.port';
 import { OfferSavePort } from '../../ports/out/offer.save.port';
+import { CheckOfferReportsCommand } from './check-offer-reports.command';
 
-@EventsHandler(ReportCreatedEvent)
-export class OfferReportedHandler implements IEventHandler<ReportCreatedEvent> {
+@EventsHandler(CheckOfferReportsCommand)
+export class CheckOfferReportsHandler implements IEventHandler<CheckOfferReportsCommand> {
   constructor(
     @Inject('OfferLoadPort') private loadPort: OfferLoadPort,
     @Inject('OfferSavePort') private savePort: OfferSavePort,
   ) {}
 
-  async handle(event: ReportCreatedEvent) {
+  async handle(event: CheckOfferReportsCommand) {
     if (event.type !== 'offer') return;
 
     const offer = await this.loadPort.findById(event.refId);

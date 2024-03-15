@@ -1,6 +1,5 @@
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
-import { pick } from 'lodash';
 import { InternalServerErrorException } from '@nestjs/common';
 import { ReportCreatedEvent } from '../application/events/report-created/report-created.event';
 import { ReportStatusUpdatedEvent } from '../application/events/report-status-updated/report-status-updated.event';
