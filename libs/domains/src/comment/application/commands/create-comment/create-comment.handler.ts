@@ -1,14 +1,23 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
+import { omit } from 'lodash';
 import { CreateCommentCommand } from './create-comment.command';
 import { CommentSavePort } from '../../ports/out/comment.save.port';
 
 @CommandHandler(CreateCommentCommand)
 export class CreateCommentHandler implements ICommandHandler<CreateCommentCommand> {
-  constructor(@Inject('CommentSavePort') private savePort: CommentSavePort) {}
+  constructor(
+    @Inject('CommentSavePort') private savePort: CommentSavePort,
+    private readonly publisher: EventPublisher,
+  ) {}
 
   async execute(command: CreateCommentCommand): Promise<void> {
-    await this.savePort.create(new CommentEntity(command));
+    const comment = this.publisher.mergeObjectContext(
+      new CommentEntity({ partial: omit(command, ['refId']), refId: command.refId }),
+    );
+    comment.create(command.refId);
+    await this.savePort.create(comment);
+    comment.commit();
   }
 }
