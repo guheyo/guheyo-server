@@ -34,18 +34,9 @@ export class FindOfferByIdHandler extends PrismaQueryHandler<FindOfferByIdQuery,
         },
         reports: {
           include: {
-            author: {
-              include: {
-                members: {
-                  include: {
-                    roles: {
-                      orderBy: {
-                        position: 'asc',
-                      },
-                    },
-                  },
-                },
-                socialAccounts: true,
+            comments: {
+              orderBy: {
+                createdAt: 'desc',
               },
             },
           },

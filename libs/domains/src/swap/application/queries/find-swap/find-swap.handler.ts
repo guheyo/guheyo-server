@@ -37,18 +37,9 @@ export class FindSwapHandler extends PrismaQueryHandler<FindSwapQuery, SwapRespo
         },
         reports: {
           include: {
-            author: {
-              include: {
-                members: {
-                  include: {
-                    roles: {
-                      orderBy: {
-                        position: 'asc',
-                      },
-                    },
-                  },
-                },
-                socialAccounts: true,
+            comments: {
+              orderBy: {
+                createdAt: 'desc',
               },
             },
           },

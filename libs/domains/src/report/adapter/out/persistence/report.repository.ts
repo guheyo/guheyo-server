@@ -14,6 +14,13 @@ export class ReportRepository extends PrismaRepository<ReportEntity> {
       where: {
         id,
       },
+      include: {
+        comments: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+      },
     });
     return this.toEntity(report);
   }

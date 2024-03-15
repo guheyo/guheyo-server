@@ -34,18 +34,9 @@ export class FindDemandByIdHandler extends PrismaQueryHandler<FindDemandByIdQuer
         },
         reports: {
           include: {
-            author: {
-              include: {
-                members: {
-                  include: {
-                    roles: {
-                      orderBy: {
-                        position: 'asc',
-                      },
-                    },
-                  },
-                },
-                socialAccounts: true,
+            comments: {
+              orderBy: {
+                createdAt: 'desc',
               },
             },
           },

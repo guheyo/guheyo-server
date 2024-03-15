@@ -11,20 +11,9 @@ export class CreateReportInput {
   @Field()
   type: string;
 
-  @IsOptional()
   @IsUUID()
-  @Field(() => ID, { nullable: true })
-  offerId?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  demandId?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  swapId?: string;
+  @Field(() => ID)
+  refId: string;
 
   @IsUUID()
   @Field(() => ID)
@@ -37,9 +26,5 @@ export class CreateReportInput {
   @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
-  content: string;
-
-  @IsString()
-  @Field(() => String, { defaultValue: 'open' })
-  status: string;
+  content?: string;
 }

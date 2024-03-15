@@ -23,9 +23,9 @@ export class CommentRepository extends PrismaRepository<CommentEntity> {
       data: _.pick(comment, [
         'id',
         'type',
-        'source',
         'authorId',
         'content',
+        'source',
         'parentId',
         'postId',
         'reportId',
@@ -40,9 +40,9 @@ export class CommentRepository extends PrismaRepository<CommentEntity> {
         _.pick(comment, [
           'id',
           'type',
-          'source',
           'authorId',
           'content',
+          'source',
           'parentId',
           'postId',
           'reportId',
