@@ -25,7 +25,6 @@ export class CommentOfferReportHandler implements ICommandHandler<CommentOfferRe
     if (!report) throw new NotFoundException(OfferErrorMessage.OFFER_REPORT_NOT_FOUND);
 
     offer.commentReport(command.input);
-    await this.savePort.save(offer);
     offer.commit();
   }
 }
