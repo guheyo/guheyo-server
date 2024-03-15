@@ -120,13 +120,10 @@ input CreateAuctionInput {
 }
 
 input CreateCommentInput {
-  auctionId: ID
   authorId: ID!
   content: String!
   id: ID!
-  parentId: ID
-  postId: ID
-  reportId: ID
+  refId: ID!
   source: String!
   type: String!
 }
