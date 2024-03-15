@@ -41,7 +41,7 @@ export class ReportEntity extends AggregateRoot {
   create(refId: string) {
     this.apply(
       new ReportCreatedEvent({
-        ...pick(this, ['id', 'type']),
+        type: this.type,
         refId,
       }),
     );
