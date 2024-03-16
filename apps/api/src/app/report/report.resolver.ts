@@ -6,6 +6,9 @@ import { CreateReportCommand } from '@lib/domains/report/application/commands/cr
 import { ReportResponse } from '@lib/domains/report/application/dtos/report.response';
 import { FindReportArgs } from '@lib/domains/report/application/queries/find-report/find-report.args';
 import { FindReportQuery } from '@lib/domains/report/application/queries/find-report/find-report.query';
+import { PaginatedReportsResponse } from '@lib/domains/report/application/queries/find-reports/paginated-reports.response';
+import { FindReportsArgs } from '@lib/domains/report/application/queries/find-reports/find-reports.args';
+import { FindReportsQuery } from '@lib/domains/report/application/queries/find-reports/find-reports.query';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -25,6 +28,12 @@ export class ReportResolver {
   @Query(() => ReportResponse)
   async findReport(@Args() args: FindReportArgs) {
     const query = new FindReportQuery(args);
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => PaginatedReportsResponse)
+  async findReports(@Args() args: FindReportsArgs) {
+    const query = new FindReportsQuery(args);
     return this.queryBus.execute(query);
   }
 }

@@ -524,6 +524,11 @@ type PaginatedOfferPreviewsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedReportsResponse {
+  edges: [ReportResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedSwapPreviewsResponse {
   edges: [SwapPreviewResponseEdge!]!
   pageInfo: PageInfo!
@@ -566,6 +571,7 @@ type Query {
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
   findReport(authorId: ID, demandId: ID, id: ID, offerId: ID, swapId: ID, type: String): ReportResponse!
+  findReports(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportsResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
   findSwap(id: ID, slug: String): SwapResponse
@@ -590,6 +596,11 @@ type ReportResponse {
   title: String!
   type: String!
   updatedAt: DateTime!
+}
+
+type ReportResponseEdge {
+  cursor: String!
+  node: ReportResponse!
 }
 
 type RoleResponse {
