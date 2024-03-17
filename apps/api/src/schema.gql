@@ -85,6 +85,15 @@ input CancelBidInput {
   bidderId: String!
 }
 
+input CommentOfferReportInput {
+  authorId: ID!
+  content: String!
+  id: ID!
+  offerId: ID!
+  reportId: ID!
+  source: String!
+}
+
 type CommentResponse {
   auctionId: ID
   content: String!
@@ -390,6 +399,7 @@ type Mutation {
   bumpOffer(input: BumpOfferInput!): String!
   bumpSwap(input: BumpSwapInput!): String!
   cancelBid(input: CancelBidInput!): String!
+  commentOfferReport(input: CommentOfferReportInput!): String!
   connectRoles(input: ConnectRolesInput!): String!
   createAuction(input: CreateAuctionInput!): String!
   createComment(input: CreateCommentInput!): String!
