@@ -5,11 +5,11 @@ import { validateBump } from '@lib/shared/deal/validate-bump';
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { ReportEntity } from '@lib/domains/report/domain/report.entity';
 import { ReportCommentedEvent } from '@lib/domains/report/application/events/report-commented/report-commented.event';
+import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
 import { UpdateDemandProps } from './demand.types';
 import { DemandCreatedEvent } from '../application/events/demand-created/demand-created.event';
 import { DemandUpdatedEvent } from '../application/events/demand-updated/demand-updated.event';
 import { BumpDemandInput } from '../application/commands/bump-demand/bump-demand.input';
-import { DemandBumpedEvent } from '../application/events/demand-bumped/demand-bumped.event';
 import { DEMAND_OPEN, DEMAND_REPORTED_PREFIX } from './demand.constants';
 import { CommentDemandReportInput } from '../application/commands/comment-demand-report/comment-demand-report.input';
 
@@ -78,9 +78,10 @@ export class DemandEntity extends AggregateRoot {
 
   bump(input: BumpDemandInput) {
     this.apply(
-      new DemandBumpedEvent({
+      new BumpedEvent({
         id: input.id,
-        demandId: this.id,
+        type: 'demand',
+        refId: this.id,
         oldPrice: this.price,
         newPrice: input.newPrice,
       }),
