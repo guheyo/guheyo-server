@@ -95,7 +95,11 @@ export class OfferEntity extends AggregateRoot {
 
   checkReports() {
     const uncheckedReportsCount = this.findUncheckedReportsCount();
-    this.status = uncheckedReportsCount ? `reported#${uncheckedReportsCount}` : this.status;
+    if (uncheckedReportsCount) {
+      this.status = `reported#${uncheckedReportsCount}`;
+    } else if (this.status.startsWith('reported')) {
+      this.status = 'open';
+    }
   }
 
   findReport({ reportId }: { reportId: string }) {
