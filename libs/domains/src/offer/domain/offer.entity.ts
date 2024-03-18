@@ -4,13 +4,13 @@ import _ from 'lodash';
 import { validateBump } from '@lib/shared/deal/validate-bump';
 import { ReportEntity } from '@lib/domains/report/domain/report.entity';
 import { ReportCommentedEvent } from '@lib/domains/report/application/events/report-commented/report-commented.event';
+import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
-import { OfferBumpEntity } from './offer-bump.entity';
 import { BumpOfferInput } from '../application/commands/bump-offer/bump-offer.input';
-import { OfferBumpedEvent } from '../application/events/offer-bumped/offer-bumped.event';
 import { CommentOfferReportInput } from '../application/commands/comment-offer-report/comment-offer-report.input';
+import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
 
 export class OfferEntity extends AggregateRoot {
   id: string;
@@ -45,7 +45,7 @@ export class OfferEntity extends AggregateRoot {
 
   seller: UserEntity;
 
-  bumps: OfferBumpEntity[];
+  bumps: BumpEntity[];
 
   reports: ReportEntity[];
 
@@ -77,9 +77,10 @@ export class OfferEntity extends AggregateRoot {
 
   bump(input: BumpOfferInput) {
     this.apply(
-      new OfferBumpedEvent({
+      new BumpedEvent({
         id: input.id,
-        offerId: this.id,
+        type: 'offer',
+        refId: this.id,
         oldPrice: this.price,
         newPrice: input.newPrice,
       }),

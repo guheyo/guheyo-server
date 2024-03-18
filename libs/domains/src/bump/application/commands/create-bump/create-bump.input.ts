@@ -11,20 +11,9 @@ export class CreateBumpInput {
   @Field()
   type: string;
 
-  @IsOptional()
   @IsUUID()
-  @Field(() => ID, { nullable: true })
-  offerId?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  demandId?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  swapId?: string;
+  @Field(() => ID)
+  refId: string;
 
   @IsNumber()
   @Field(() => Int)
