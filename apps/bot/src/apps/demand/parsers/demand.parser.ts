@@ -5,6 +5,7 @@ import { CreateDemandInput } from '@lib/domains/demand/application/commands/crea
 import { UpdateDemandInput } from '@lib/domains/demand/application/commands/update-demand/update-demand.input';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { DeleteDemandArgs } from '@lib/domains/demand/application/commands/delete-demand/delete-demand.args';
+import { DEMAND_OPEN } from '@lib/domains/demand/domain/demand.constants';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { DemandErrorMessage } from './demand.error-message';
 
@@ -36,7 +37,7 @@ export class DemandParser extends DealParser {
       ...dealSummary,
       priceCurrency: 'krw',
       businessFunction: 'buy',
-      status: 'open',
+      status: DEMAND_OPEN,
       groupId: group.id,
       productCategoryId: this.parseProductCategoryId(message, group),
     };
