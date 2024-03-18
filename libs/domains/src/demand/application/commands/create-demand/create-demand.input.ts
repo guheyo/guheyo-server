@@ -1,3 +1,4 @@
+import { DEMAND_OPEN } from '@lib/domains/demand/domain/demand.constants';
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import { IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
 
@@ -29,7 +30,7 @@ export class CreateDemandInput {
   businessFunction: string;
 
   @IsString()
-  @Field(() => String, { defaultValue: 'open' })
+  @Field(() => String, { defaultValue: DEMAND_OPEN })
   status: string;
 
   @IsUUID()

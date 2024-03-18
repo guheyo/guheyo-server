@@ -1,3 +1,4 @@
+import { SWAP_OPEN } from '@lib/domains/swap/domain/swap.constants';
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import { IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
 
@@ -38,7 +39,7 @@ export class CreateSwapInput {
   businessFunction: string;
 
   @IsString()
-  @Field(() => String, { defaultValue: 'open' })
+  @Field(() => String, { defaultValue: SWAP_OPEN })
   status: string;
 
   @IsUUID()
