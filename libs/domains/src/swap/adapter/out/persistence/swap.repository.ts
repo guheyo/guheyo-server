@@ -30,6 +30,11 @@ export class SwapRepository extends PrismaRepository<SwapEntity> {
           },
         },
         bumps: true,
+        reports: {
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
       },
     });
     return this.toEntity(swap);
