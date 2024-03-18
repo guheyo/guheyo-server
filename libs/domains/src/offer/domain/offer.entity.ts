@@ -6,11 +6,13 @@ import { ReportEntity } from '@lib/domains/report/domain/report.entity';
 import { ReportCommentedEvent } from '@lib/domains/report/application/events/report-commented/report-commented.event';
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
+import { REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
 import { UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
 import { BumpOfferInput } from '../application/commands/bump-offer/bump-offer.input';
 import { CommentOfferReportInput } from '../application/commands/comment-offer-report/comment-offer-report.input';
+import { OFFER_REPORTED_PREFIX } from './offer.constants';
 
 export class OfferEntity extends AggregateRoot {
   id: string;
@@ -90,15 +92,15 @@ export class OfferEntity extends AggregateRoot {
   }
 
   findUncheckedReportsCount() {
-    return this.reports.filter((report) => report.status === 'open').length;
+    return this.reports.filter((report) => report.status === REPORT_OPEN).length;
   }
 
   checkReports() {
     const uncheckedReportsCount = this.findUncheckedReportsCount();
     if (uncheckedReportsCount) {
-      this.status = `reported#${uncheckedReportsCount}`;
-    } else if (this.status.startsWith('reported')) {
-      this.status = 'open';
+      this.status = `${OFFER_REPORTED_PREFIX}#${uncheckedReportsCount}`;
+    } else if (this.status.startsWith(OFFER_REPORTED_PREFIX)) {
+      this.status = REPORT_OPEN;
     }
   }
 
