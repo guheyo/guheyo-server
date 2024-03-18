@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
-import { Observable, filter, iif, map } from 'rxjs';
+import { Observable, filter, map } from 'rxjs';
 import { CreateCommentCommand } from '@lib/domains/comment/application/commands/create-comment/create-comment.command';
 import { pick } from 'lodash';
 import { CommentCreatedEvent } from '@lib/domains/comment/application/events/comment-created/comment-created.event';
