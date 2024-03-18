@@ -46,7 +46,7 @@ export class FindSwapByIdHandler extends PrismaQueryHandler<FindSwapByIdQuery, S
         },
       },
     });
-    if (!swap) throw new NotFoundException(SwapErrorMessage.SWAP_IS_NOT_FOUND);
+    if (!swap) throw new NotFoundException(SwapErrorMessage.SWAP_NOT_FOUND);
 
     const images = await this.prismaService.userImage.findMany({
       where: {

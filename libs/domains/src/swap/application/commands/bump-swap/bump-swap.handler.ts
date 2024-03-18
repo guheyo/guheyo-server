@@ -15,7 +15,7 @@ export class BumpSwapHandler implements ICommandHandler<BumpSwapCommand> {
 
   async execute(command: BumpSwapCommand): Promise<void> {
     let swap = await this.swapLoadPort.findById(command.input.swapId);
-    if (!swap) throw new NotFoundException(SwapErrorMessage.SWAP_IS_NOT_FOUND);
+    if (!swap) throw new NotFoundException(SwapErrorMessage.SWAP_NOT_FOUND);
     if (!swap.isAuthorized(command.input.proposerId))
       throw new ForbiddenException(SwapErrorMessage.SWAP_CHANGES_FROM_UNAUTHORIZED_USER);
     if (!swap.canBump()) throw new ForbiddenException(SwapErrorMessage.SWAP_BUMP_STUCK_ON_COOLDOWN);
