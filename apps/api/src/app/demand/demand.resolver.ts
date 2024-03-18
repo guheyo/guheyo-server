@@ -18,6 +18,8 @@ import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth
 import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { BumpDemandInput } from '@lib/domains/demand/application/commands/bump-demand/bump-demand.input';
 import { BumpDemandCommand } from '@lib/domains/demand/application/commands/bump-demand/bump-demand.command';
+import { CommentDemandReportInput } from '@lib/domains/demand/application/commands/comment-demand-report/comment-demand-report.input';
+import { CommentDemandReportCommand } from '@lib/domains/demand/application/commands/comment-demand-report/comment-demand-report.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -69,6 +71,14 @@ export class DemandResolver {
   @Mutation(() => String)
   async bumpDemand(@Args('input') input: BumpDemandInput): Promise<string> {
     await this.commandBus.execute(new BumpDemandCommand(input));
+    return input.id;
+  }
+
+  @AuthorIdPath('input.authorId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @Mutation(() => String)
+  async commentDemandReport(@Args('input') input: CommentDemandReportInput): Promise<string> {
+    await this.commandBus.execute(new CommentDemandReportCommand(input));
     return input.id;
   }
 }
