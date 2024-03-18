@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
-import { Observable, filter, map } from 'rxjs';
+import { Observable, filter, iif, map } from 'rxjs';
 import { CreateCommentCommand } from '@lib/domains/comment/application/commands/create-comment/create-comment.command';
 import { pick } from 'lodash';
 import { CommentCreatedEvent } from '@lib/domains/comment/application/events/comment-created/comment-created.event';
 import { CheckOfferReportsCommand } from '@lib/domains/offer/application/commands/check-offer-reports/check-offer-reports.command';
+import { CheckDemandReportsCommand } from '@lib/domains/demand/application/commands/check-demand-reports/check-demand-reports.command';
+import { CheckSwapReportsCommand } from '@lib/domains/swap/application/commands/check-swap-reports/check-swap-reports.command';
 import { ReportCommentedEvent } from '../events/report-commented/report-commented.event';
 import { CheckReportCommentsCommand } from '../commands/check-report-comments/check-report-comments.command';
 import { ReportCreatedEvent } from '../events/report-created/report-created.event';
@@ -34,18 +36,25 @@ export class ReportSagas {
       map((event) => new CheckReportCommentsCommand(event)),
     );
 
-  // TODO: handle demand, swap
   @Saga()
   reportCreated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
       ofType(ReportCreatedEvent),
-      map((event) => new CheckOfferReportsCommand(event)),
+      map((event) => {
+        if (event.type === 'offer') return new CheckOfferReportsCommand(event);
+        if (event.type === 'demand') return new CheckDemandReportsCommand(event);
+        return new CheckSwapReportsCommand(event);
+      }),
     );
 
   @Saga()
   reportStatusUpdated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
       ofType(ReportStatusUpdatedEvent),
-      map((event) => new CheckOfferReportsCommand(event)),
+      map((event) => {
+        if (event.type === 'offer') return new CheckOfferReportsCommand(event);
+        if (event.type === 'demand') return new CheckDemandReportsCommand(event);
+        return new CheckSwapReportsCommand(event);
+      }),
     );
 }
