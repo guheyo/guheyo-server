@@ -2,13 +2,15 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import dayjs from 'dayjs';
 import _ from 'lodash';
-import { AuctionStatus, BidStatus, UpdateAuctionProps } from './auction.types';
+import { UpdateAuctionProps } from './auction.types';
 import { AuctionCreatedEvent } from '../application/events/auction-created/auction-created.event';
 import { AuctionUpdatedEvent } from '../application/events/auction-updated/auction-updated.event';
 import { BidEntity } from './bid.entity';
 import { AddBidInput } from '../application/commands/add-bid/add-bid.input';
 import { AuctionErrorMessage } from './auction.error.message';
 import { CancelBidCommand } from '../application/commands/cancel-bid/cancel-bid.command';
+import { AUCTION_CLOSED, AUCTION_OPEN } from './auction.constants';
+import { BID_BID } from './bid.constants';
 
 export class AuctionEntity extends AggregateRoot {
   id: string;
@@ -44,7 +46,7 @@ export class AuctionEntity extends AggregateRoot {
   constructor(partial: Partial<AuctionEntity>) {
     super();
     Object.assign(this, partial);
-    this.status = AuctionStatus.OPEN;
+    this.status = AUCTION_OPEN;
   }
 
   create() {
@@ -59,7 +61,7 @@ export class AuctionEntity extends AggregateRoot {
   addBid(input: AddBidInput) {
     const bid = new BidEntity({
       ...input,
-      status: BidStatus.BID,
+      status: BID_BID,
     });
     if (this.isBidBelowTheCurrentPrice(bid.price))
       throw new Error(AuctionErrorMessage.BID_BELOW_THE_CURRENT_PRICE);
@@ -69,7 +71,7 @@ export class AuctionEntity extends AggregateRoot {
   }
 
   cancelBid(input: CancelBidCommand): BidEntity {
-    if (this.hasEnded()) throw new Error(AuctionErrorMessage.AUCTION_HAS_ENDED);
+    if (this.hasClosed()) throw new Error(AuctionErrorMessage.AUCTION_HAS_ENDED);
 
     const bidToBeCanceled = this.bids.find((bid) => bid.bidderId === input.bidderId);
     if (!bidToBeCanceled) throw new Error(AuctionErrorMessage.BID_IS_NOT_FOUND);
@@ -87,8 +89,8 @@ export class AuctionEntity extends AggregateRoot {
     return lastBid;
   }
 
-  hasEnded() {
-    return this.status === AuctionStatus.END;
+  hasClosed() {
+    return this.status === AUCTION_CLOSED;
   }
 
   isBidBelowTheCurrentPrice(price: number) {
