@@ -14,7 +14,7 @@ export class DeleteDemandHandler implements ICommandHandler<DeleteDemandCommand>
 
   async execute(command: DeleteDemandCommand): Promise<void> {
     const demand = await this.demandLoadPort.findById(command.id);
-    if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_IS_NOT_FOUND);
+    if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_NOT_FOUND);
     if (!demand.isAuthorized(command.buyerId))
       throw new ForbiddenException(DemandErrorMessage.DEMAND_DELETE_COMMAND_FROM_UNAUTHORIZED_USER);
 

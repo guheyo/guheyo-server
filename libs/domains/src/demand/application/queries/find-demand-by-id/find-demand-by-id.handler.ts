@@ -46,7 +46,7 @@ export class FindDemandByIdHandler extends PrismaQueryHandler<FindDemandByIdQuer
         },
       },
     });
-    if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_IS_NOT_FOUND);
+    if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_NOT_FOUND);
 
     const images = await this.prismaService.userImage.findMany({
       where: {

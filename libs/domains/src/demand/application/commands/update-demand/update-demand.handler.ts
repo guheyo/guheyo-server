@@ -16,7 +16,7 @@ export class UpdateDemandHandler implements ICommandHandler<UpdateDemandCommand>
 
   async execute(command: UpdateDemandCommand): Promise<void> {
     let demand = await this.demandLoadPort.findById(command.id);
-    if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_IS_NOT_FOUND);
+    if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_NOT_FOUND);
     if (!demand.isAuthorized(command.buyerId))
       throw new ForbiddenException(DemandErrorMessage.DEMAND_CHANGES_FROM_UNAUTHORIZED_USER);
 

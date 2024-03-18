@@ -15,7 +15,7 @@ export class BumpDemandHandler implements ICommandHandler<BumpDemandCommand> {
 
   async execute(command: BumpDemandCommand): Promise<void> {
     let demand = await this.demandLoadPort.findById(command.input.demandId);
-    if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_IS_NOT_FOUND);
+    if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_NOT_FOUND);
     if (!demand.isAuthorized(command.input.buyerId))
       throw new ForbiddenException(DemandErrorMessage.DEMAND_CHANGES_FROM_UNAUTHORIZED_USER);
     if (!demand.canBump())
