@@ -2,11 +2,16 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import _ from 'lodash';
 import { validateBump } from '@lib/shared/deal/validate-bump';
+import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
+import { ReportEntity } from '@lib/domains/report/domain/report.entity';
+import { ReportCommentedEvent } from '@lib/domains/report/application/events/report-commented/report-commented.event';
 import { UpdateDemandProps } from './demand.types';
 import { DemandCreatedEvent } from '../application/events/demand-created/demand-created.event';
 import { DemandUpdatedEvent } from '../application/events/demand-updated/demand-updated.event';
 import { BumpDemandInput } from '../application/commands/bump-demand/bump-demand.input';
 import { DemandBumpedEvent } from '../application/events/demand-bumped/demand-bumped.event';
+import { DEMAND_OPEN, DEMAND_REPORTED_PREFIX } from './demand.constants';
+import { CommentDemandReportInput } from '../application/commands/comment-demand-report/comment-demand-report.input';
 
 export class DemandEntity extends AggregateRoot {
   id: string;
@@ -40,6 +45,10 @@ export class DemandEntity extends AggregateRoot {
   buyer: UserEntity;
 
   source: string;
+
+  bumps: BumpEntity[];
+
+  reports: ReportEntity[];
 
   constructor(partial: Partial<DemandEntity>) {
     super();
@@ -78,5 +87,34 @@ export class DemandEntity extends AggregateRoot {
     );
     this.bumpedAt = new Date();
     this.price = input.newPrice;
+  }
+
+  findUncheckedReportsCount() {
+    return this.reports.filter((report) => report.status === DEMAND_OPEN).length;
+  }
+
+  checkReports() {
+    const uncheckedReportsCount = this.findUncheckedReportsCount();
+    if (uncheckedReportsCount) {
+      this.status = `${DEMAND_REPORTED_PREFIX}#${uncheckedReportsCount}`;
+    } else if (this.status.startsWith(DEMAND_REPORTED_PREFIX)) {
+      this.status = DEMAND_OPEN;
+    }
+  }
+
+  findReport({ reportId }: { reportId: string }) {
+    return this.reports.find((report) => report.id === reportId);
+  }
+
+  commentReport(input: CommentDemandReportInput) {
+    this.apply(
+      new ReportCommentedEvent({
+        id: input.id,
+        reportId: input.reportId,
+        authorId: input.authorId,
+        content: input.content,
+        source: input.source,
+      }),
+    );
   }
 }
