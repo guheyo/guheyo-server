@@ -1,5 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
+import { OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
+import { DEMAND_OPEN } from '@lib/domains/demand/domain/demand.constants';
 import { FindGroupPreviewsQuery } from './find-group-previews.query';
 import { GroupPreviewResponse } from '../../dtos/group-preview.response';
 
@@ -24,6 +26,9 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
       },
       include: {
         offers: {
+          where: {
+            status: OFFER_OPEN,
+          },
           include: {
             seller: {
               select: {
@@ -53,6 +58,9 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
           take: 3,
         },
         demands: {
+          where: {
+            status: DEMAND_OPEN,
+          },
           include: {
             buyer: {
               select: {
