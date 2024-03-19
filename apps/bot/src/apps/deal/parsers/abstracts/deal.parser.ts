@@ -39,7 +39,7 @@ export abstract class DealParser extends GroupParser {
   ): DeleteOfferArgs | DeleteDemandArgs | DeleteSwapArgs;
 
   parsePrice(price: string) {
-    return Number(price) * 10000;
+    return Number(Number(price).toFixed(1)) * 10000;
   }
 
   parseProductCategoryName(channelName: string): string {

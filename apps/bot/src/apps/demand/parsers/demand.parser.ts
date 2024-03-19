@@ -12,7 +12,7 @@ import { DemandErrorMessage } from './demand.error-message';
 @Injectable()
 export class DemandParser extends DealParser {
   matchFormat(content: string): RegExpExecArray | null {
-    const re = /^wtb[\r\n](.*)-[ ()a-zA-Z가-힣]*(\d+)([\s\S]*)/i;
+    const re = /^wtb[\r\n](.*)-[ ()a-zA-Z가-힣]*(\d+(?:\.\d+)?)([\s\S]*)/i;
     return re.exec(content);
   }
 

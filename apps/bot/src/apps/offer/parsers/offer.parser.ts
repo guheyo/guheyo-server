@@ -12,7 +12,7 @@ import { OfferErrorMessage } from './offer.error-message';
 @Injectable()
 export class OfferParser extends DealParser {
   matchFormat(content: string): RegExpExecArray | null {
-    const re = /^wts[\r\n](.*)-[ ()a-zA-Z가-힣]*(\d+)([\s\S]*)/i;
+    const re = /^wts[\r\n](.*)-[ ()a-zA-Z가-힣]*(\d+(?:\.\d+)?)([\s\S]*)/i;
     return re.exec(content);
   }
 
