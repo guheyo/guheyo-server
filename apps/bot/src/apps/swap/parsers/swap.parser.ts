@@ -5,6 +5,7 @@ import { CreateSwapInput } from '@lib/domains/swap/application/commands/create-s
 import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-swap/update-swap.input';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { DeleteSwapArgs } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.args';
+import { SWAP_OPEN } from '@lib/domains/swap/domain/swap.constants';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { SwapErrorMessage } from './swap.error-message';
 
@@ -37,7 +38,7 @@ export class SwapParser extends DealParser {
       ...dealSummary,
       priceCurrency: 'krw',
       businessFunction: 'trade',
-      status: 'open',
+      status: SWAP_OPEN,
       groupId: group.id,
       productCategoryId: this.parseProductCategoryId(message, group),
     };

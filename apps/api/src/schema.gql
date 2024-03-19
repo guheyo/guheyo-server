@@ -85,6 +85,24 @@ input CancelBidInput {
   bidderId: String!
 }
 
+input CommentDemandReportInput {
+  authorId: ID!
+  content: String!
+  demandId: ID!
+  id: ID!
+  reportId: ID!
+  source: String!
+}
+
+input CommentOfferReportInput {
+  authorId: ID!
+  content: String!
+  id: ID!
+  offerId: ID!
+  reportId: ID!
+  source: String!
+}
+
 type CommentResponse {
   auctionId: ID
   content: String!
@@ -95,6 +113,15 @@ type CommentResponse {
   reportId: ID
   type: String!
   updatedAt: DateTime!
+}
+
+input CommentSwapReportInput {
+  authorId: ID!
+  content: String!
+  id: ID!
+  reportId: ID!
+  source: String!
+  swapId: ID!
 }
 
 input ConnectRolesInput {
@@ -390,6 +417,9 @@ type Mutation {
   bumpOffer(input: BumpOfferInput!): String!
   bumpSwap(input: BumpSwapInput!): String!
   cancelBid(input: CancelBidInput!): String!
+  commentDemandReport(input: CommentDemandReportInput!): String!
+  commentOfferReport(input: CommentOfferReportInput!): String!
+  commentSwapReport(input: CommentSwapReportInput!): String!
   connectRoles(input: ConnectRolesInput!): String!
   createAuction(input: CreateAuctionInput!): String!
   createComment(input: CreateCommentInput!): String!

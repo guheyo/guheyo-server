@@ -6,11 +6,7 @@ export class CreateBumpCommand implements ICommand {
 
   type: string;
 
-  offerId?: string;
-
-  demandId?: string;
-
-  swapId?: string;
+  refId: string;
 
   oldPrice: number;
 
@@ -19,9 +15,7 @@ export class CreateBumpCommand implements ICommand {
   constructor(input: CreateBumpInput) {
     this.id = input.id;
     this.type = input.type;
-    this.offerId = input.offerId;
-    this.demandId = input.demandId;
-    this.swapId = input.swapId;
+    this.refId = input.refId;
     this.oldPrice = input.oldPrice;
     this.newPrice = input.newPrice;
   }

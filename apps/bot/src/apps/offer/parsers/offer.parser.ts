@@ -5,6 +5,7 @@ import { Message, PartialMessage } from 'discord.js';
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
+import { OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { OfferErrorMessage } from './offer.error-message';
 
@@ -36,7 +37,7 @@ export class OfferParser extends DealParser {
       ...dealSummary,
       priceCurrency: 'krw',
       businessFunction: 'sell',
-      status: 'open',
+      status: OFFER_OPEN,
       groupId: group.id,
       productCategoryId: this.parseProductCategoryId(message, group),
     };

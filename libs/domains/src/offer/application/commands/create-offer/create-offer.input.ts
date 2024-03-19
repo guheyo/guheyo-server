@@ -1,3 +1,4 @@
+import { OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import { IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
 
@@ -29,7 +30,7 @@ export class CreateOfferInput {
   businessFunction: string;
 
   @IsString()
-  @Field(() => String, { defaultValue: 'open' })
+  @Field(() => String, { defaultValue: OFFER_OPEN })
   status: string;
 
   @IsString()

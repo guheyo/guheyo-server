@@ -10,15 +10,7 @@ export class FindReportsWhereArgs {
 
   @IsOptional()
   @Field(() => ID, { nullable: true })
-  offerId?: string;
-
-  @IsOptional()
-  @Field(() => ID, { nullable: true })
-  demandId?: string;
-
-  @IsOptional()
-  @Field(() => ID, { nullable: true })
-  swapId?: string;
+  refId?: string;
 
   @IsOptional()
   @Field(() => String, { nullable: true })

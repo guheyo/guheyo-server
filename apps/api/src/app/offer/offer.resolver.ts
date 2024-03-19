@@ -18,6 +18,8 @@ import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author
 import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
 import { BumpOfferInput } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.input';
 import { BumpOfferCommand } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.command';
+import { CommentOfferReportInput } from '@lib/domains/offer/application/commands/comment-offer-report/comment-offer-report.input';
+import { CommentOfferReportCommand } from '@lib/domains/offer/application/commands/comment-offer-report/comment-offer-report.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -69,6 +71,14 @@ export class OfferResolver {
   @Mutation(() => String)
   async bumpOffer(@Args('input') input: BumpOfferInput): Promise<string> {
     await this.commandBus.execute(new BumpOfferCommand(input));
+    return input.id;
+  }
+
+  @AuthorIdPath('input.authorId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @Mutation(() => String)
+  async commentOfferReport(@Args('input') input: CommentOfferReportInput): Promise<string> {
+    await this.commandBus.execute(new CommentOfferReportCommand(input));
     return input.id;
   }
 }

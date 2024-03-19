@@ -1,3 +1,4 @@
+import { AUCTION_OPEN } from '@lib/domains/auction/domain/auction.constants';
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
 
@@ -29,7 +30,7 @@ export class CreateAuctionInput {
   businessFunction: string;
 
   @IsString()
-  @Field(() => String, { defaultValue: 'open' })
+  @Field(() => String, { defaultValue: AUCTION_OPEN })
   status: string;
 
   @IsString()

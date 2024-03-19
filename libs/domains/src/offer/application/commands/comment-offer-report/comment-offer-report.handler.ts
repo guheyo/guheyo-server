@@ -18,7 +18,7 @@ export class CommentOfferReportHandler implements ICommandHandler<CommentOfferRe
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
 
     offer = this.publisher.mergeObjectContext(offer);
-    if (!offer.isSeller({ authorId: command.input.authorId }))
+    if (!offer.isAuthorized(command.input.authorId))
       throw new ForbiddenException(OfferErrorMessage.COMMENT_OFFER_REPORT_REQUEST_FROM_NON_SELLER);
 
     const report = offer.findReport({ reportId: command.input.reportId });
