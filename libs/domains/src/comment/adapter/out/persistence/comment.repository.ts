@@ -14,6 +14,13 @@ export class CommentRepository extends PrismaRepository<CommentEntity> {
       where: {
         id,
       },
+      include: {
+        comments: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+      },
     });
     return this.toEntity(comment);
   }

@@ -453,6 +453,7 @@ type Mutation {
   logout: SocialUserResponse!
   refreshTokens: JwtResponse!
   updateAuction(input: UpdateAuctionInput!): String!
+  updateComment(input: UpdateCommentInput!): String!
   updateDemand(input: UpdateDemandInput!): String!
   updateGroup(input: UpdateGroupInput!): String!
   updateMember(input: UpdateMemberInput!): String!
@@ -748,6 +749,13 @@ input UpdateAuctionInput {
   id: ID!
   name: String
   productCategoryId: ID
+}
+
+input UpdateCommentInput {
+  authorId: ID!
+  content: String!
+  id: ID!
+  source: String!
 }
 
 input UpdateDemandInput {

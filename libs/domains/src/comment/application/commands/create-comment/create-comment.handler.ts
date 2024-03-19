@@ -13,9 +13,8 @@ export class CreateCommentHandler implements ICommandHandler<CreateCommentComman
   ) {}
 
   async execute(command: CreateCommentCommand): Promise<void> {
-    const comment = this.publisher.mergeObjectContext(
-      new CommentEntity({ partial: omit(command, ['refId']), refId: command.refId }),
-    );
+    const comment = this.publisher.mergeObjectContext(new CommentEntity(omit(command, ['refId'])));
+    comment.setRefId(command.refId);
     comment.create(command.refId);
     await this.savePort.create(comment);
     comment.commit();

@@ -24,7 +24,7 @@ export class FindCommentHandler extends PrismaQueryHandler<FindCommentQuery, Com
           auctionId: query.auctionId,
         }
       : null;
-    if (!where) throw new NotFoundException(CommentErrorMessage.COMMENT_IS_NOT_FOUND);
+    if (!where) throw new NotFoundException(CommentErrorMessage.COMMENT_NOT_FOUND);
 
     const comment = await this.prismaService.comment.findFirst({
       where,
