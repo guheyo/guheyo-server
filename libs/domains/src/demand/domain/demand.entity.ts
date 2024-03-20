@@ -34,6 +34,8 @@ export class DemandEntity extends AggregateRoot {
 
   shippingType: string;
 
+  totalPrice: number;
+
   businessFunction: string;
 
   status: string;

@@ -326,6 +326,7 @@ type DemandPreviewResponse {
   slug: String
   source: String!
   status: String!
+  totalPrice: Int!
   updatedAt: DateTime!
 }
 
@@ -354,6 +355,7 @@ type DemandResponse {
   slug: String
   source: String!
   status: String!
+  totalPrice: Int!
   updatedAt: DateTime!
 }
 
@@ -507,6 +509,7 @@ type OfferPreviewResponse {
   source: String!
   status: String!
   thumbnail: UserImageResponse
+  totalPrice: Int!
   updatedAt: DateTime!
 }
 
@@ -536,6 +539,7 @@ type OfferResponse {
   source: String!
   status: String!
   thumbnail: UserImageResponse
+  totalPrice: Int!
   updatedAt: DateTime!
 }
 
@@ -728,6 +732,7 @@ type SwapPreviewResponse {
   source: String!
   status: String!
   thumbnail: UserImageResponse
+  totalPrice: Int!
   updatedAt: DateTime!
 }
 
@@ -759,6 +764,7 @@ type SwapResponse {
   source: String!
   status: String!
   thumbnail: UserImageResponse
+  totalPrice: Int!
   updatedAt: DateTime!
 }
 

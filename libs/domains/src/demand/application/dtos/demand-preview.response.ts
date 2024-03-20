@@ -34,6 +34,9 @@ export class DemandPreviewResponse {
   @Field()
   shippingType: string;
 
+  @Field(() => Int)
+  totalPrice: number;
+
   @Field()
   businessFunction: string;
 

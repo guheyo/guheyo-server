@@ -39,6 +39,9 @@ export class OfferResponse {
   @Field()
   shippingType: string;
 
+  @Field(() => Int)
+  totalPrice: number;
+
   @Field()
   businessFunction: string;
 
