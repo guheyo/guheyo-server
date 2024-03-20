@@ -20,6 +20,7 @@ import { BumpSwapInput } from '@lib/domains/swap/application/commands/bump-swap/
 import { BumpSwapCommand } from '@lib/domains/swap/application/commands/bump-swap/bump-swap.command';
 import { CommentSwapReportInput } from '@lib/domains/swap/application/commands/comment-swap-report/comment-swap-report.input';
 import { CommentSwapReportCommand } from '@lib/domains/swap/application/commands/comment-swap-report/comment-swap-report.command';
+import { SwapPreviewResponse } from '@lib/domains/swap/application/dtos/swap-preview.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -52,10 +53,9 @@ export class SwapResolver {
 
   @AuthorIdPath('input.proposerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
-  @Mutation(() => String)
-  async updateSwap(@Args('input') input: UpdateSwapInput): Promise<string> {
-    await this.commandBus.execute(new UpdateSwapCommand(input));
-    return input.id;
+  @Mutation(() => SwapPreviewResponse)
+  async updateSwap(@Args('input') input: UpdateSwapInput): Promise<SwapPreviewResponse> {
+    return this.commandBus.execute(new UpdateSwapCommand(input));
   }
 
   @AuthorIdPath('input.proposerId')

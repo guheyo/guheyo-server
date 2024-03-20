@@ -454,14 +454,14 @@ type Mutation {
   refreshTokens: JwtResponse!
   updateAuction(input: UpdateAuctionInput!): String!
   updateComment(input: UpdateCommentInput!): CommentResponse!
-  updateDemand(input: UpdateDemandInput!): String!
+  updateDemand(input: UpdateDemandInput!): DemandPreviewResponse!
   updateGroup(input: UpdateGroupInput!): String!
   updateMember(input: UpdateMemberInput!): String!
-  updateOffer(input: UpdateOfferInput!): String!
+  updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
   updateRole(input: UpdateRoleInput!): String!
   updateSession(input: UpdateSessionInput!): String!
   updateSocialAccount(input: UpdateSocialAccountInput!): String!
-  updateSwap(input: UpdateSwapInput!): String!
+  updateSwap(input: UpdateSwapInput!): SwapPreviewResponse!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
 }
