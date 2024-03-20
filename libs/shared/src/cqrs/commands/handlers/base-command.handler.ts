@@ -7,8 +7,8 @@ export abstract class BaseCommandHandler<T extends ICommand, TRes> implements IC
 
   abstract execute(command: T): Promise<any>;
 
-  parseResponse(model: Object | null) {
-    return model ? plainToClass(this.Response, model) : null;
+  parseResponse(model: Object) {
+    return plainToClass(this.Response, model);
   }
 
   parseResponses(models: Object[]) {
