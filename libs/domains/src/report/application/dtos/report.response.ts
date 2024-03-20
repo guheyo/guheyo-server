@@ -1,42 +1,14 @@
 import { CommentResponse } from '@lib/domains/comment/application/dtos/comment.response';
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { ReportPreviewResponse } from './report-preview.response';
 
 @ObjectType()
-export class ReportResponse {
-  @Field(() => ID)
-  id: string;
-
-  @Field()
-  createdAt: Date;
-
-  @Field()
-  updatedAt: Date;
-
-  @Field()
-  type: string;
-
-  @Field(() => ID, { nullable: true })
-  offerId: string | null;
-
-  @Field(() => ID, { nullable: true })
-  demandId: string | null;
-
-  @Field(() => ID, { nullable: true })
-  swapId: string | null;
-
-  @Field()
-  status: string;
-
-  @Field(() => String)
-  title: string;
-
-  @Field(() => String, { nullable: true })
-  content: string | null;
-
+export class ReportResponse extends ReportPreviewResponse {
   @Field(() => [CommentResponse])
   comments: CommentResponse[];
 
   constructor(partial: Partial<ReportResponse>) {
+    super(partial);
     Object.assign(this, partial);
   }
 }

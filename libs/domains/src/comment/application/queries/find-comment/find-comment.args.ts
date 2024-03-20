@@ -6,7 +6,7 @@ export class FindCommentArgs {
   @IsOptional()
   @IsUUID()
   @Field(() => ID, { nullable: true })
-  id: string;
+  id?: string;
 
   @IsOptional()
   @IsString()
@@ -16,15 +16,5 @@ export class FindCommentArgs {
   @IsOptional()
   @IsUUID()
   @Field(() => ID, { nullable: true })
-  postId?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  reportId?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  auctionId?: string;
+  refId?: string;
 }

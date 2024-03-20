@@ -16,34 +16,18 @@ export class FindCommentHandler extends PrismaQueryHandler<FindCommentQuery, Com
       ? {
           id: query.id,
         }
-      : query.type && (query.postId || query.reportId || query.auctionId)
+      : query.type
       ? {
           type: query.type,
-          postId: query.postId,
-          reportId: query.reportId,
-          auctionId: query.auctionId,
+          postId: query.type === 'post' ? query.refId : undefined,
+          reportId: query.type === 'report' ? query.refId : undefined,
+          auctionId: query.type === 'auction' ? query.refId : undefined,
         }
-      : null;
-    if (!where) throw new NotFoundException(CommentErrorMessage.COMMENT_IS_NOT_FOUND);
+      : undefined;
+    if (!where) throw new NotFoundException(CommentErrorMessage.COMMENT_NOT_FOUND);
 
     const comment = await this.prismaService.comment.findFirst({
       where,
-      include: {
-        author: {
-          include: {
-            members: {
-              include: {
-                roles: {
-                  orderBy: {
-                    position: 'asc',
-                  },
-                },
-              },
-            },
-            socialAccounts: true,
-          },
-        },
-      },
     });
     return this.parseResponse(comment);
   }

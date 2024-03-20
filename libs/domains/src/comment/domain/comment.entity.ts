@@ -1,7 +1,8 @@
-import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
+import { identity, pickBy } from 'lodash';
 import { CommentCreatedEvent } from '../application/events/comment-created/comment-created.event';
 import { CommentTypeIdString, CommentType } from './comment.types';
+import { UpdateCommentProps } from './comment.interfaces';
 
 export class CommentEntity extends AggregateRoot {
   id: string;
@@ -13,8 +14,6 @@ export class CommentEntity extends AggregateRoot {
   type: CommentType;
 
   authorId: string;
-
-  author: UserEntity;
 
   content: string;
 
@@ -32,10 +31,9 @@ export class CommentEntity extends AggregateRoot {
 
   comments: CommentEntity[];
 
-  constructor({ partial, refId }: { partial: Partial<CommentEntity>; refId: string }) {
+  constructor(partial: Partial<CommentEntity>) {
     super();
     Object.assign(this, partial);
-    this.setRefId(refId);
   }
 
   setRefId(refId: string) {
@@ -55,5 +53,13 @@ export class CommentEntity extends AggregateRoot {
         refId,
       }),
     );
+  }
+
+  isAuthorized(authorId: string) {
+    return this.authorId === authorId;
+  }
+
+  update(props: UpdateCommentProps) {
+    Object.assign(this, pickBy(props, identity));
   }
 }

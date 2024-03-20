@@ -3,7 +3,7 @@ import { IsOptional } from 'class-validator';
 import { GraphQLJSON } from 'graphql-type-json';
 
 @ArgsType()
-export class FindReportsWhereArgs {
+export class FindReportPreviewsWhereArgs {
   @IsOptional()
   @Field(() => String, { nullable: true })
   type?: string;
