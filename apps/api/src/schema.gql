@@ -453,7 +453,7 @@ type Mutation {
   logout: SocialUserResponse!
   refreshTokens: JwtResponse!
   updateAuction(input: UpdateAuctionInput!): String!
-  updateComment(input: UpdateCommentInput!): String!
+  updateComment(input: UpdateCommentInput!): CommentResponse!
   updateDemand(input: UpdateDemandInput!): String!
   updateGroup(input: UpdateGroupInput!): String!
   updateMember(input: UpdateMemberInput!): String!
@@ -589,7 +589,7 @@ type ProductCategoryResponse {
 type Query {
   findAuctionById(id: ID!): AuctionResponse
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
-  findComment(auctionId: ID, id: ID, postId: ID, reportId: ID, type: String): CommentResponse!
+  findComment(auctionId: ID, id: ID, postId: ID, reportId: ID, type: String): CommentResponse
   findDemand(id: ID, slug: String): DemandResponse
   findDemandPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
   findGroup(id: ID, slug: String): GroupResponse

@@ -18,7 +18,7 @@ export class CommentResolver {
     private readonly queryBus: QueryBus,
   ) {}
 
-  @Query(() => CommentResponse)
+  @Query(() => CommentResponse, { nullable: true })
   async findComment(@Args() args: FindCommentArgs) {
     const query = new FindCommentQuery(args);
     return this.queryBus.execute(query);
@@ -30,9 +30,8 @@ export class CommentResolver {
     return input.id;
   }
 
-  @Mutation(() => String)
-  async updateComment(@Args('input') input: UpdateCommentInput): Promise<string> {
-    await this.commandBus.execute(new UpdateCommentCommand(input));
-    return input.id;
+  @Mutation(() => CommentResponse)
+  async updateComment(@Args('input') input: UpdateCommentInput) {
+    return this.commandBus.execute(new UpdateCommentCommand(input));
   }
 }
