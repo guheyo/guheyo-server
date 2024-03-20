@@ -166,6 +166,8 @@ input CreateDemandInput {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
+  shippingCost: Int!
+  shippingType: String!
   source: String!
   status: String! = "open"
 }
@@ -317,6 +319,8 @@ type DemandPreviewResponse {
   priceCurrency: String!
   productCategoryId: String!
   reports: [ReportResponse!]!
+  shippingCost: Int!
+  shippingType: String!
   slug: String
   source: String!
   status: String!
@@ -343,6 +347,8 @@ type DemandResponse {
   priceCurrency: String!
   productCategoryId: String!
   reports: [ReportResponse!]!
+  shippingCost: Int!
+  shippingType: String!
   slug: String
   source: String!
   status: String!
@@ -787,6 +793,8 @@ input UpdateDemandInput {
   price: Int
   priceCurrency: String
   productCategoryId: ID
+  shippingCost: Int
+  shippingType: String
   source: String!
   status: String
 }

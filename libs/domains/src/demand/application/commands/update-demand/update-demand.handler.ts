@@ -35,6 +35,8 @@ export class UpdateDemandHandler extends PrismaCommandHandler<
         'description',
         'price',
         'priceCurrency',
+        'shippingCost',
+        'shippingType',
         'businessFunction',
         'productCategoryId',
         'status',

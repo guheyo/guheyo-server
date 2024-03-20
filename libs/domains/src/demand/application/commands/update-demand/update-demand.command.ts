@@ -12,6 +12,10 @@ export class UpdateDemandCommand implements ICommand {
 
   priceCurrency?: string;
 
+  shippingCost?: number;
+
+  shippingType?: string;
+
   businessFunction?: string;
 
   productCategoryId?: string;

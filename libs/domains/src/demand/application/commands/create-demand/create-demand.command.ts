@@ -12,6 +12,10 @@ export class CreateDemandCommand implements ICommand {
 
   priceCurrency: string;
 
+  shippingCost: number;
+
+  shippingType: string;
+
   businessFunction: string;
 
   status: string;

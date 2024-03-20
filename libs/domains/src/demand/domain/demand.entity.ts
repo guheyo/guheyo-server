@@ -30,6 +30,10 @@ export class DemandEntity extends AggregateRoot {
 
   priceCurrency: string;
 
+  shippingCost: number;
+
+  shippingType: string;
+
   businessFunction: string;
 
   status: string;
