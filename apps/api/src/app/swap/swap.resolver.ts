@@ -68,10 +68,9 @@ export class SwapResolver {
 
   @AuthorIdPath('input.proposerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
-  @Mutation(() => String)
-  async bumpSwap(@Args('input') input: BumpSwapInput): Promise<string> {
-    await this.commandBus.execute(new BumpSwapCommand(input));
-    return input.id;
+  @Mutation(() => SwapPreviewResponse)
+  async bumpSwap(@Args('input') input: BumpSwapInput): Promise<SwapPreviewResponse> {
+    return this.commandBus.execute(new BumpSwapCommand(input));
   }
 
   @AuthorIdPath('input.authorId')

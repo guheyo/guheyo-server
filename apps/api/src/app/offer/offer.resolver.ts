@@ -68,10 +68,9 @@ export class OfferResolver {
 
   @AuthorIdPath('input.sellerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
-  @Mutation(() => String)
-  async bumpOffer(@Args('input') input: BumpOfferInput): Promise<string> {
-    await this.commandBus.execute(new BumpOfferCommand(input));
-    return input.id;
+  @Mutation(() => OfferPreviewResponse)
+  async bumpOffer(@Args('input') input: BumpOfferInput): Promise<OfferPreviewResponse> {
+    return this.commandBus.execute(new BumpOfferCommand(input));
   }
 
   @AuthorIdPath('input.authorId')

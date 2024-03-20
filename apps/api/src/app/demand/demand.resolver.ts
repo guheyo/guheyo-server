@@ -68,10 +68,9 @@ export class DemandResolver {
 
   @AuthorIdPath('input.buyerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
-  @Mutation(() => String)
-  async bumpDemand(@Args('input') input: BumpDemandInput): Promise<string> {
-    await this.commandBus.execute(new BumpDemandCommand(input));
-    return input.id;
+  @Mutation(() => DemandPreviewResponse)
+  async bumpDemand(@Args('input') input: BumpDemandInput): Promise<DemandPreviewResponse> {
+    return this.commandBus.execute(new BumpDemandCommand(input));
   }
 
   @AuthorIdPath('input.authorId')

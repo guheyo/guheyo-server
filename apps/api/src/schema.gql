@@ -413,9 +413,9 @@ type MemberWithRolesResponse {
 
 type Mutation {
   addBid(input: AddBidInput!): String!
-  bumpDemand(input: BumpDemandInput!): String!
-  bumpOffer(input: BumpOfferInput!): String!
-  bumpSwap(input: BumpSwapInput!): String!
+  bumpDemand(input: BumpDemandInput!): DemandPreviewResponse!
+  bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
+  bumpSwap(input: BumpSwapInput!): SwapPreviewResponse!
   cancelBid(input: CancelBidInput!): String!
   commentDemandReport(input: CommentDemandReportInput!): String!
   commentOfferReport(input: CommentOfferReportInput!): String!
