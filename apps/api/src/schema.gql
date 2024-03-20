@@ -413,9 +413,9 @@ type MemberWithRolesResponse {
 
 type Mutation {
   addBid(input: AddBidInput!): String!
-  bumpDemand(input: BumpDemandInput!): String!
-  bumpOffer(input: BumpOfferInput!): String!
-  bumpSwap(input: BumpSwapInput!): String!
+  bumpDemand(input: BumpDemandInput!): DemandPreviewResponse!
+  bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
+  bumpSwap(input: BumpSwapInput!): SwapPreviewResponse!
   cancelBid(input: CancelBidInput!): String!
   commentDemandReport(input: CommentDemandReportInput!): String!
   commentOfferReport(input: CommentOfferReportInput!): String!
@@ -454,14 +454,14 @@ type Mutation {
   refreshTokens: JwtResponse!
   updateAuction(input: UpdateAuctionInput!): String!
   updateComment(input: UpdateCommentInput!): CommentResponse!
-  updateDemand(input: UpdateDemandInput!): String!
+  updateDemand(input: UpdateDemandInput!): DemandPreviewResponse!
   updateGroup(input: UpdateGroupInput!): String!
   updateMember(input: UpdateMemberInput!): String!
-  updateOffer(input: UpdateOfferInput!): String!
+  updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
   updateRole(input: UpdateRoleInput!): String!
   updateSession(input: UpdateSessionInput!): String!
   updateSocialAccount(input: UpdateSocialAccountInput!): String!
-  updateSwap(input: UpdateSwapInput!): String!
+  updateSwap(input: UpdateSwapInput!): SwapPreviewResponse!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
 }
@@ -849,6 +849,7 @@ input UpdateSwapInput {
   name1: String
   price: Int
   priceCurrency: String
+  productCategoryId: ID
   proposerId: ID!
   source: String!
   status: String

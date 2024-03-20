@@ -20,6 +20,7 @@ import { BumpDemandInput } from '@lib/domains/demand/application/commands/bump-d
 import { BumpDemandCommand } from '@lib/domains/demand/application/commands/bump-demand/bump-demand.command';
 import { CommentDemandReportInput } from '@lib/domains/demand/application/commands/comment-demand-report/comment-demand-report.input';
 import { CommentDemandReportCommand } from '@lib/domains/demand/application/commands/comment-demand-report/comment-demand-report.command';
+import { DemandPreviewResponse } from '@lib/domains/demand/application/dtos/demand-preview.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -52,10 +53,9 @@ export class DemandResolver {
 
   @AuthorIdPath('input.buyerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
-  @Mutation(() => String)
-  async updateDemand(@Args('input') input: UpdateDemandInput): Promise<string> {
-    await this.commandBus.execute(new UpdateDemandCommand(input));
-    return input.id;
+  @Mutation(() => DemandPreviewResponse)
+  async updateDemand(@Args('input') input: UpdateDemandInput): Promise<DemandPreviewResponse> {
+    return this.commandBus.execute(new UpdateDemandCommand(input));
   }
 
   @AuthorIdPath('input.buyerId')
@@ -68,10 +68,9 @@ export class DemandResolver {
 
   @AuthorIdPath('input.buyerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
-  @Mutation(() => String)
-  async bumpDemand(@Args('input') input: BumpDemandInput): Promise<string> {
-    await this.commandBus.execute(new BumpDemandCommand(input));
-    return input.id;
+  @Mutation(() => DemandPreviewResponse)
+  async bumpDemand(@Args('input') input: BumpDemandInput): Promise<DemandPreviewResponse> {
+    return this.commandBus.execute(new BumpDemandCommand(input));
   }
 
   @AuthorIdPath('input.authorId')

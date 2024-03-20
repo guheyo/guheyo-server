@@ -20,6 +20,7 @@ import { BumpOfferInput } from '@lib/domains/offer/application/commands/bump-off
 import { BumpOfferCommand } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.command';
 import { CommentOfferReportInput } from '@lib/domains/offer/application/commands/comment-offer-report/comment-offer-report.input';
 import { CommentOfferReportCommand } from '@lib/domains/offer/application/commands/comment-offer-report/comment-offer-report.command';
+import { OfferPreviewResponse } from '@lib/domains/offer/application/dtos/offer-preview.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -52,10 +53,9 @@ export class OfferResolver {
 
   @AuthorIdPath('input.sellerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
-  @Mutation(() => String)
-  async updateOffer(@Args('input') input: UpdateOfferInput): Promise<string> {
-    await this.commandBus.execute(new UpdateOfferCommand(input));
-    return input.id;
+  @Mutation(() => OfferPreviewResponse)
+  async updateOffer(@Args('input') input: UpdateOfferInput): Promise<OfferPreviewResponse> {
+    return this.commandBus.execute(new UpdateOfferCommand(input));
   }
 
   @AuthorIdPath('input.sellerId')
@@ -68,10 +68,9 @@ export class OfferResolver {
 
   @AuthorIdPath('input.sellerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
-  @Mutation(() => String)
-  async bumpOffer(@Args('input') input: BumpOfferInput): Promise<string> {
-    await this.commandBus.execute(new BumpOfferCommand(input));
-    return input.id;
+  @Mutation(() => OfferPreviewResponse)
+  async bumpOffer(@Args('input') input: BumpOfferInput): Promise<OfferPreviewResponse> {
+    return this.commandBus.execute(new BumpOfferCommand(input));
   }
 
   @AuthorIdPath('input.authorId')
