@@ -42,6 +42,11 @@ export class UpdateSwapInput {
   @Field(() => String, { nullable: true })
   businessFunction?: string;
 
+  @IsOptional()
+  @IsUUID()
+  @Field(() => ID, { nullable: true })
+  productCategoryId?: string;
+
   @IsUUID()
   @Field(() => ID)
   proposerId: string;

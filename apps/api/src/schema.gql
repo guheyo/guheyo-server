@@ -849,6 +849,7 @@ input UpdateSwapInput {
   name1: String
   price: Int
   priceCurrency: String
+  productCategoryId: ID
   proposerId: ID!
   source: String!
   status: String
