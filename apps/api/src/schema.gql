@@ -208,6 +208,8 @@ input CreateOfferInput {
   priceCurrency: String!
   productCategoryId: String!
   sellerId: ID!
+  shippingCost: Int!
+  shippingType: String!
   source: String!
   status: String! = "open"
 }
@@ -491,6 +493,8 @@ type OfferPreviewResponse {
   productCategoryId: String!
   reports: [ReportResponse!]!
   seller: UserResponse!
+  shippingCost: Int!
+  shippingType: String!
   slug: String
   source: String!
   status: String!
@@ -518,6 +522,8 @@ type OfferResponse {
   productCategoryId: String!
   reports: [ReportResponse!]!
   seller: AuthorResponse!
+  shippingCost: Int!
+  shippingType: String!
   slug: String
   source: String!
   status: String!
@@ -808,6 +814,8 @@ input UpdateOfferInput {
   priceCurrency: String
   productCategoryId: ID
   sellerId: ID!
+  shippingCost: Int
+  shippingType: String
   source: String!
   status: String
 }

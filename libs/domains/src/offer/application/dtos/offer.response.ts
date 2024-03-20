@@ -33,6 +33,12 @@ export class OfferResponse {
   @Field()
   priceCurrency: string;
 
+  @Field(() => Int)
+  shippingCost: Number;
+
+  @Field()
+  shippingType: string;
+
   @Field()
   businessFunction: string;
 

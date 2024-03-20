@@ -35,6 +35,8 @@ export class UpdateOfferHandler extends PrismaCommandHandler<
         'description',
         'price',
         'priceCurrency',
+        'shippingCost',
+        'shippingType',
         'businessFunction',
         'productCategoryId',
         'status',

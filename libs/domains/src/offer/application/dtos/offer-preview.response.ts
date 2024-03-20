@@ -29,6 +29,12 @@ export class OfferPreviewResponse {
   @Field()
   priceCurrency: string;
 
+  @Field(() => Int)
+  shippingCost: Number;
+
+  @Field()
+  shippingType: string;
+
   @Field()
   businessFunction: string;
 
