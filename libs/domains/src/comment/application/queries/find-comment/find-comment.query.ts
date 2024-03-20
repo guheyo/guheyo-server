@@ -6,17 +6,11 @@ export class FindCommentQuery implements IQuery {
 
   type?: string;
 
-  postId?: string;
-
-  reportId?: string;
-
-  auctionId?: string;
+  refId?: string;
 
   constructor(args: FindCommentArgs) {
     this.id = args.id;
     this.type = args.type;
-    this.postId = args.postId;
-    this.reportId = args.reportId;
-    this.auctionId = args.auctionId;
+    this.refId = args.refId;
   }
 }
