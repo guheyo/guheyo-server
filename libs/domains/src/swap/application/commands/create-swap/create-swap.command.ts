@@ -16,6 +16,10 @@ export class CreateSwapCommand implements ICommand {
 
   priceCurrency: string;
 
+  shippingCost: number;
+
+  shippingType: string;
+
   businessFunction: string;
 
   status: string;
@@ -38,6 +42,8 @@ export class CreateSwapCommand implements ICommand {
     this.description1 = input.description1;
     this.price = input.price;
     this.priceCurrency = input.priceCurrency;
+    this.shippingCost = input.shippingCost;
+    this.shippingType = input.shippingType;
     this.businessFunction = input.businessFunction;
     this.status = input.status;
     this.groupId = input.groupId;

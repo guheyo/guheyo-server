@@ -36,6 +36,8 @@ export class CreateDemandCommand implements ICommand {
     this.description = input.description;
     this.price = input.price;
     this.priceCurrency = input.priceCurrency;
+    this.shippingCost = input.shippingCost;
+    this.shippingType = input.shippingType;
     this.businessFunction = input.businessFunction;
     this.status = input.status;
     this.groupId = input.groupId;

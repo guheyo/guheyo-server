@@ -273,6 +273,8 @@ input CreateSwapInput {
   priceCurrency: String!
   productCategoryId: String!
   proposerId: ID!
+  shippingCost: Int!
+  shippingType: String!
   source: String!
   status: String! = "open"
 }
@@ -720,6 +722,8 @@ type SwapPreviewResponse {
   productCategoryId: String!
   proposer: UserResponse!
   reports: [ReportResponse!]!
+  shippingCost: Int!
+  shippingType: String!
   slug: String
   source: String!
   status: String!
@@ -749,6 +753,8 @@ type SwapResponse {
   productCategoryId: String!
   proposer: AuthorResponse!
   reports: [ReportResponse!]!
+  shippingCost: Int!
+  shippingType: String!
   slug: String
   source: String!
   status: String!
@@ -867,6 +873,8 @@ input UpdateSwapInput {
   priceCurrency: String
   productCategoryId: ID
   proposerId: ID!
+  shippingCost: Int
+  shippingType: String
   source: String!
   status: String
 }

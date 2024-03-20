@@ -26,6 +26,10 @@ export class SwapEntity extends AggregateRoot {
 
   priceCurrency: string;
 
+  shippingCost: number;
+
+  shippingType: string;
+
   name0: string;
 
   name1: string;
