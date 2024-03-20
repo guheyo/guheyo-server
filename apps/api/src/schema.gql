@@ -555,8 +555,8 @@ type PaginatedOfferPreviewsResponse {
   pageInfo: PageInfo!
 }
 
-type PaginatedReportsResponse {
-  edges: [ReportResponseEdge!]!
+type PaginatedReportPreviewsResponse {
+  edges: [ReportPreviewResponseEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -602,7 +602,7 @@ type Query {
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
   findReport(authorId: ID, demandId: ID, id: ID, offerId: ID, swapId: ID, type: String): ReportResponse!
-  findReports(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportsResponse!
+  findReportPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
   findSwap(id: ID, slug: String): SwapResponse
@@ -613,6 +613,24 @@ type Query {
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   getSocialAccountsByUserId(id: ID!): String!
+}
+
+type ReportPreviewResponse {
+  content: String
+  createdAt: DateTime!
+  demandId: ID
+  id: ID!
+  offerId: ID
+  status: String!
+  swapId: ID
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+}
+
+type ReportPreviewResponseEdge {
+  cursor: String!
+  node: ReportPreviewResponse!
 }
 
 type ReportResponse {
@@ -627,11 +645,6 @@ type ReportResponse {
   title: String!
   type: String!
   updatedAt: DateTime!
-}
-
-type ReportResponseEdge {
-  cursor: String!
-  node: ReportResponse!
 }
 
 type RoleResponse {
