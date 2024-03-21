@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 
-const totalPrice = {
+export const totalPrice = {
   needs: { price: true, shippingCost: true, shippingType: true },
   compute(deal: any) {
     if (deal.shippingType === 'charge') return deal.price + deal.shippingCost;

@@ -6,6 +6,7 @@ import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { ReportEntity } from '@lib/domains/report/domain/report.entity';
 import { ReportCommentedEvent } from '@lib/domains/report/application/events/report-commented/report-commented.event';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
+import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price';
 import { UpdateSwapProps } from './swap.types';
 import { SwapCreatedEvent } from '../application/events/swap-created/swap-created.event';
 import { SwapUpdatedEvent } from '../application/events/swap-updated/swap-updated.event';
@@ -79,6 +80,7 @@ export class SwapEntity extends AggregateRoot {
 
   update(props: UpdateSwapProps) {
     Object.assign(this, _.pickBy(props, _.identity));
+    this.totalPrice = totalPrice.compute(this);
     this.apply(new SwapUpdatedEvent(this.id));
   }
 

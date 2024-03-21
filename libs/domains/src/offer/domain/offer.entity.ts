@@ -13,6 +13,7 @@ import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-upd
 import { BumpOfferInput } from '../application/commands/bump-offer/bump-offer.input';
 import { CommentOfferReportInput } from '../application/commands/comment-offer-report/comment-offer-report.input';
 import { OFFER_REPORTED_PREFIX } from './offer.constants';
+import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price';
 
 export class OfferEntity extends AggregateRoot {
   id: string;
@@ -76,6 +77,7 @@ export class OfferEntity extends AggregateRoot {
 
   update(props: UpdateOfferProps) {
     Object.assign(this, _.pickBy(props, _.identity));
+    this.totalPrice = totalPrice.compute(this);
     this.apply(new OfferUpdatedEvent(this.id));
   }
 
