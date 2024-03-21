@@ -28,6 +28,16 @@ export class UpdateOfferInput {
   priceCurrency?: string;
 
   @IsOptional()
+  @IsInt()
+  @Field(() => Int, { nullable: true })
+  shippingCost?: number;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  shippingType?: string;
+
+  @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
   businessFunction?: string;

@@ -166,6 +166,8 @@ input CreateDemandInput {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
+  shippingCost: Int!
+  shippingType: String!
   source: String!
   status: String! = "open"
 }
@@ -208,6 +210,8 @@ input CreateOfferInput {
   priceCurrency: String!
   productCategoryId: String!
   sellerId: ID!
+  shippingCost: Int!
+  shippingType: String!
   source: String!
   status: String! = "open"
 }
@@ -269,6 +273,8 @@ input CreateSwapInput {
   priceCurrency: String!
   productCategoryId: String!
   proposerId: ID!
+  shippingCost: Int!
+  shippingType: String!
   source: String!
   status: String! = "open"
 }
@@ -315,9 +321,12 @@ type DemandPreviewResponse {
   priceCurrency: String!
   productCategoryId: String!
   reports: [ReportResponse!]!
+  shippingCost: Int!
+  shippingType: String!
   slug: String
   source: String!
   status: String!
+  totalPrice: Int!
   updatedAt: DateTime!
 }
 
@@ -341,9 +350,12 @@ type DemandResponse {
   priceCurrency: String!
   productCategoryId: String!
   reports: [ReportResponse!]!
+  shippingCost: Int!
+  shippingType: String!
   slug: String
   source: String!
   status: String!
+  totalPrice: Int!
   updatedAt: DateTime!
 }
 
@@ -491,10 +503,13 @@ type OfferPreviewResponse {
   productCategoryId: String!
   reports: [ReportResponse!]!
   seller: UserResponse!
+  shippingCost: Int!
+  shippingType: String!
   slug: String
   source: String!
   status: String!
   thumbnail: UserImageResponse
+  totalPrice: Int!
   updatedAt: DateTime!
 }
 
@@ -518,10 +533,13 @@ type OfferResponse {
   productCategoryId: String!
   reports: [ReportResponse!]!
   seller: AuthorResponse!
+  shippingCost: Int!
+  shippingType: String!
   slug: String
   source: String!
   status: String!
   thumbnail: UserImageResponse
+  totalPrice: Int!
   updatedAt: DateTime!
 }
 
@@ -708,10 +726,13 @@ type SwapPreviewResponse {
   productCategoryId: String!
   proposer: UserResponse!
   reports: [ReportResponse!]!
+  shippingCost: Int!
+  shippingType: String!
   slug: String
   source: String!
   status: String!
   thumbnail: UserImageResponse
+  totalPrice: Int!
   updatedAt: DateTime!
 }
 
@@ -737,10 +758,13 @@ type SwapResponse {
   productCategoryId: String!
   proposer: AuthorResponse!
   reports: [ReportResponse!]!
+  shippingCost: Int!
+  shippingType: String!
   slug: String
   source: String!
   status: String!
   thumbnail: UserImageResponse
+  totalPrice: Int!
   updatedAt: DateTime!
 }
 
@@ -781,6 +805,8 @@ input UpdateDemandInput {
   price: Int
   priceCurrency: String
   productCategoryId: ID
+  shippingCost: Int
+  shippingType: String
   source: String!
   status: String
 }
@@ -808,6 +834,8 @@ input UpdateOfferInput {
   priceCurrency: String
   productCategoryId: ID
   sellerId: ID!
+  shippingCost: Int
+  shippingType: String
   source: String!
   status: String
 }
@@ -851,6 +879,8 @@ input UpdateSwapInput {
   priceCurrency: String
   productCategoryId: ID
   proposerId: ID!
+  shippingCost: Int
+  shippingType: String
   source: String!
   status: String
 }

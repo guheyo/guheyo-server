@@ -39,6 +39,15 @@ export class SwapResponse {
   @Field()
   priceCurrency: string;
 
+  @Field(() => Int)
+  shippingCost: Number;
+
+  @Field()
+  shippingType: string;
+
+  @Field(() => Int)
+  totalPrice: number;
+
   @Field()
   businessFunction: string;
 

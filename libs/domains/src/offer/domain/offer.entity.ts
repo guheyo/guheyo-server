@@ -31,6 +31,12 @@ export class OfferEntity extends AggregateRoot {
 
   priceCurrency: string;
 
+  shippingCost: number;
+
+  shippingType: string;
+
+  totalPrice: number;
+
   businessFunction: string;
 
   status: string;

@@ -16,6 +16,10 @@ export class UpdateSwapCommand implements ICommand {
 
   priceCurrency?: string;
 
+  shippingCost?: number;
+
+  shippingType?: string;
+
   businessFunction?: string;
 
   productCategoryId?: string;
@@ -36,6 +40,8 @@ export class UpdateSwapCommand implements ICommand {
     this.description1 = input.description1;
     this.price = input.price;
     this.priceCurrency = input.priceCurrency;
+    this.shippingCost = input.shippingCost;
+    this.shippingType = input.shippingType;
     this.businessFunction = input.businessFunction;
     this.productCategoryId = input.productCategoryId;
     this.proposerId = input.proposerId;

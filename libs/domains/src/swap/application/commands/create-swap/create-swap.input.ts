@@ -34,6 +34,14 @@ export class CreateSwapInput {
   @Field()
   priceCurrency: string;
 
+  @IsInt()
+  @Field(() => Int)
+  shippingCost: number;
+
+  @IsString()
+  @Field()
+  shippingType: string;
+
   @IsString()
   @Field()
   businessFunction: string;

@@ -12,6 +12,10 @@ export class UpdateOfferCommand implements ICommand {
 
   priceCurrency?: string;
 
+  shippingCost?: number;
+
+  shippingType?: string;
+
   businessFunction?: string;
 
   productCategoryId?: string;
@@ -30,6 +34,8 @@ export class UpdateOfferCommand implements ICommand {
     this.description = input.description;
     this.price = input.price;
     this.priceCurrency = input.priceCurrency;
+    this.shippingCost = input.shippingCost;
+    this.shippingType = input.shippingType;
     this.businessFunction = input.businessFunction;
     this.productCategoryId = input.productCategoryId;
     this.sellerId = input.sellerId;

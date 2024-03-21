@@ -251,6 +251,8 @@ model Offer {
   description       String?
   price             Int
   priceCurrency     String
+  shippingCost      Int             @default(0)
+  shippingType      String          @default("free")
   businessFunction  String
   status            String
   source            String
@@ -313,6 +315,8 @@ model Demand {
   description       String?
   price             Int
   priceCurrency     String
+  shippingCost      Int             @default(0)
+  shippingType      String          @default("free")
   businessFunction  String
   status            String
   source            String
@@ -341,6 +345,8 @@ model Swap {
   description1        String?
   price               Int
   priceCurrency       String
+  shippingCost        Int             @default(0)
+  shippingType        String          @default("free")
   businessFunction    String
   status              String
   source              String

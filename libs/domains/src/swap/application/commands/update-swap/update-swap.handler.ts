@@ -37,6 +37,8 @@ export class UpdateSwapHandler extends PrismaCommandHandler<
         'description1',
         'price',
         'priceCurrency',
+        'shippingCost',
+        'shippingType',
         'businessFunction',
         'productCategoryId',
         'status',
