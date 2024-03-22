@@ -7,13 +7,13 @@ import { ReportCommentedEvent } from '@lib/domains/report/application/events/rep
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
 import { REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
+import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price.extension';
 import { UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
 import { BumpOfferInput } from '../application/commands/bump-offer/bump-offer.input';
 import { CommentOfferReportInput } from '../application/commands/comment-offer-report/comment-offer-report.input';
 import { OFFER_REPORTED_PREFIX } from './offer.constants';
-import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price';
 
 export class OfferEntity extends AggregateRoot {
   id: string;

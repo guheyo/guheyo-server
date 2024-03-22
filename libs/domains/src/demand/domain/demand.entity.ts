@@ -6,7 +6,7 @@ import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { ReportEntity } from '@lib/domains/report/domain/report.entity';
 import { ReportCommentedEvent } from '@lib/domains/report/application/events/report-commented/report-commented.event';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
-import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price';
+import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price.extension';
 import { UpdateDemandProps } from './demand.types';
 import { DemandCreatedEvent } from '../application/events/demand-created/demand-created.event';
 import { DemandUpdatedEvent } from '../application/events/demand-updated/demand-updated.event';
