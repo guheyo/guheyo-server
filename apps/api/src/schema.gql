@@ -202,6 +202,7 @@ input CreateReportInput {
   content: String
   id: ID!
   refId: ID!
+  refVersionId: ID!
   title: String!
   type: String!
 }
@@ -613,6 +614,7 @@ type Query {
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
+  findVersion(id: ID, refId: ID): VersionResponse!
   getSocialAccountsByUserId(id: ID!): String!
 }
 
@@ -620,6 +622,7 @@ type ReportPreviewResponse {
   content: String
   createdAt: DateTime!
   id: ID!
+  refId: ID!
   refVersionId: ID!
   status: String!
   title: String!
@@ -637,6 +640,7 @@ type ReportResponse {
   content: String
   createdAt: DateTime!
   id: ID!
+  refId: ID!
   refVersionId: ID!
   status: String!
   title: String!
@@ -908,4 +912,15 @@ type UserResponse {
 type UserResponseEdge {
   cursor: String!
   node: UserResponse!
+}
+
+type VersionResponse {
+  createdAt: DateTime!
+  id: ID!
+  op: String!
+  refId: ID!
+  schemaName: String!
+  tableName: String!
+  updatedAt: DateTime!
+  values: JSON!
 }
