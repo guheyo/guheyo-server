@@ -268,31 +268,32 @@ model Comment {
 }
 
 model Offer {
-  id                String          @id @default(uuid())
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  bumpedAt          DateTime        @default(now())
-  deletedAt         DateTime?
-  name              String
-  slug              String?
-  description       String?
-  price             Int
-  priceCurrency     String
-  shippingCost      Int             @default(0)
-  shippingType      String          @default("free")
-  businessFunction  String
-  status            String
-  source            String
-  groupId           String
-  group             Group           @relation(fields: [groupId], references: [id])
-  productCategoryId String
-  productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
-  sellerId          String
-  seller            User            @relation(fields: [sellerId], references: [id])
-  brandId           String?
-  brand             Brand?          @relation(fields: [brandId], references: [id])
-  bumps             Bump[]
-  reports           Report[]
+  id                  String          @id @default(uuid())
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  bumpedAt            DateTime        @default(now())
+  deletedAt           DateTime?
+  name                String
+  slug                String?
+  description         String?
+  price               Int
+  priceCurrency       String
+  shippingCost        Int             @default(0)
+  shippingType        String          @default("free")
+  businessFunction    String
+  status              String
+  source              String
+  groupId             String
+  group               Group           @relation(fields: [groupId], references: [id])
+  productCategoryId   String
+  productCategory     ProductCategory @relation(fields: [productCategoryId], references: [id])
+  sellerId            String
+  seller              User            @relation(fields: [sellerId], references: [id])
+  brandId             String?
+  brand               Brand?          @relation(fields: [brandId], references: [id])
+  bumps               Bump[]
+  reportCount         Int             @default(0)
+  reportCommentCount  Int             @default(0)
 
   @@schema("public")
 }
@@ -321,12 +322,8 @@ model Report {
   updatedAt         DateTime          @updatedAt
   deletedAt         DateTime?
   type              String
-  offerId           String?
-  offer             Offer?            @relation(fields: [offerId], references: [id])
-  demandId          String?
-  demand            Demand?           @relation(fields: [demandId], references: [id])
-  swapId            String?
-  swap              Swap?             @relation(fields: [swapId], references: [id])
+  refId             String
+  ref               Version           @relation(fields: [refId], references: [id])
   authorId          String
   author            User              @relation(fields: [authorId], references: [id])
   title             String
@@ -338,31 +335,32 @@ model Report {
 }
 
 model Demand {
-  id                String          @id @default(uuid())
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  bumpedAt          DateTime        @default(now())
-  deletedAt         DateTime?
-  name              String
-  slug              String?
-  description       String?
-  price             Int
-  priceCurrency     String
-  shippingCost      Int             @default(0)
-  shippingType      String          @default("free")
-  businessFunction  String
-  status            String
-  source            String
-  groupId           String
-  group             Group           @relation(fields: [groupId], references: [id])
-  productCategoryId String
-  productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
-  buyerId           String
-  buyer             User            @relation(fields: [buyerId], references: [id])
-  brandId           String?
-  brand             Brand?          @relation(fields: [brandId], references: [id])
-  bumps             Bump[]
-  reports           Report[]
+  id                  String          @id @default(uuid())
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  bumpedAt            DateTime        @default(now())
+  deletedAt           DateTime?
+  name                String
+  slug                String?
+  description         String?
+  price               Int
+  priceCurrency       String
+  shippingCost        Int             @default(0)
+  shippingType        String          @default("free")
+  businessFunction    String
+  status              String
+  source              String
+  groupId             String
+  group               Group           @relation(fields: [groupId], references: [id])
+  productCategoryId   String
+  productCategory     ProductCategory @relation(fields: [productCategoryId], references: [id])
+  buyerId             String
+  buyer               User            @relation(fields: [buyerId], references: [id])
+  brandId             String?
+  brand               Brand?          @relation(fields: [brandId], references: [id])
+  bumps               Bump[]
+  reportCount         Int             @default(0)
+  reportCommentCount  Int             @default(0)
 
   @@schema("public")
 }
@@ -394,7 +392,8 @@ model Swap {
   brandId             String?
   brand               Brand?          @relation(fields: [brandId], references: [id])
   bumps               Bump[]
-  reports             Report[]
+  reportCount         Int             @default(0)
+  reportCommentCount  Int             @default(0)
 
   @@schema("public")
 }
@@ -482,6 +481,7 @@ model Version {
   op                String
   refId             String
   values            Json
+  reports           Report[]
 
   @@schema("audit")
 }
