@@ -2,7 +2,6 @@ import { CreateDemandHandler } from './create-demand/create-demand.handler';
 import { UpdateDemandHandler } from './update-demand/update-demand.handler';
 import { DeleteDemandHandler } from './delete-demand/delete-demand.handler';
 import { BumpDemandHandler } from './bump-demand/bump-demand.handler';
-import { CommentDemandReportHandler } from './comment-demand-report/comment-demand-report.handler';
 import { CheckDemandReportsHandler } from './check-demand-reports/check-demand-reports.handler';
 
 export const DEMAND_COMMAND_PROVIDERS = [
@@ -10,6 +9,5 @@ export const DEMAND_COMMAND_PROVIDERS = [
   UpdateDemandHandler,
   DeleteDemandHandler,
   BumpDemandHandler,
-  CommentDemandReportHandler,
   CheckDemandReportsHandler,
 ];
