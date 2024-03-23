@@ -1,11 +1,12 @@
 datasource db {
   provider = "postgresql"
   url      = env("DB_URL")
+  schemas  = ["public", "audit"]
 }
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  previewFeatures = ["fullTextSearch", "multiSchema"]
   binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
@@ -40,6 +41,8 @@ model User {
   posts             Post[]
   discordMessages   DiscordMessage[]
   reports           Report[]
+
+  @@schema("public")
 }
 
 model UserImage {
@@ -61,6 +64,8 @@ model UserImage {
   source            String
   userId            String
   user              User          @relation(fields: [userId], references: [id])
+
+  @@schema("public")
 }
 
 model Member {
@@ -73,6 +78,8 @@ model Member {
   groupId           String
   group             Group       @relation(fields: [groupId], references: [id])
   roles             Role[]
+
+  @@schema("public")
 }
 
 model SocialAccount {
@@ -93,6 +100,8 @@ model SocialAccount {
   sessionState      String?
 
   @@unique([provider, socialId])
+
+  @@schema("public")
 }
 
 model Session {
@@ -104,6 +113,8 @@ model Session {
   expires           DateTime
   userId            String
   user              User        @relation(fields: [userId], references: [id])
+
+  @@schema("public")
 }
 
 model VerificationToken {
@@ -116,6 +127,8 @@ model VerificationToken {
   expires           DateTime
 
   @@unique([identifier, token])
+
+  @@schema("public")
 }
 
 model Role {
@@ -129,6 +142,8 @@ model Role {
   groupId           String
   group             Group       @relation(fields: [groupId], references: [id])
   members           Member[]
+
+  @@schema("public")
 }
 
 model Group {
@@ -151,6 +166,8 @@ model Group {
   auctions          Auction[]
   postCategories    PostCategory[]
   posts             Post[]
+
+  @@schema("public")
 }
 
 model PostCategory {
@@ -165,6 +182,8 @@ model PostCategory {
   groupId           String
   group             Group       @relation(fields: [groupId], references: [id])
   posts Post[]
+
+  @@schema("public")
 }
 
 model ProductCategory {
@@ -182,6 +201,8 @@ model ProductCategory {
   demands           Demand[]
   swaps             Swap[]
   auctions          Auction[]
+
+  @@schema("public")
 }
 
 model Brand {
@@ -199,6 +220,8 @@ model Brand {
   swaps             Swap[]
   auctions          Auction[]
   groups            Group[]
+
+  @@schema("public")
 }
 
 model Post {
@@ -217,6 +240,8 @@ model Post {
   authorId          String
   author            User          @relation(fields: [authorId], references: [id])
   comments          Comment[]
+
+  @@schema("public")
 }
 
 model Comment {
@@ -238,6 +263,8 @@ model Comment {
   report            Report?       @relation(fields: [reportId], references: [id])
   auctionId         String?
   auction           Auction?      @relation(fields: [auctionId], references: [id])
+
+  @@schema("public")
 }
 
 model Offer {
@@ -266,6 +293,8 @@ model Offer {
   brand             Brand?          @relation(fields: [brandId], references: [id])
   bumps             Bump[]
   reports           Report[]
+
+  @@schema("public")
 }
 
 model Bump {
@@ -282,6 +311,8 @@ model Bump {
   swap              Swap?             @relation(fields: [swapId], references: [id])
   oldPrice          Int
   newPrice          Int
+
+  @@schema("public")
 }
 
 model Report {
@@ -302,6 +333,8 @@ model Report {
   content           String?
   status            String
   comments          Comment[]
+
+  @@schema("public")
 }
 
 model Demand {
@@ -330,6 +363,8 @@ model Demand {
   brand             Brand?          @relation(fields: [brandId], references: [id])
   bumps             Bump[]
   reports           Report[]
+
+  @@schema("public")
 }
 
 model Swap {
@@ -360,6 +395,8 @@ model Swap {
   brand               Brand?          @relation(fields: [brandId], references: [id])
   bumps               Bump[]
   reports             Report[]
+
+  @@schema("public")
 }
 
 model Auction {
@@ -384,6 +421,8 @@ model Auction {
   seller            User              @relation(fields: [sellerId], references: [id])
   comments          Comment[]
   status            String
+
+  @@schema("public")
 }
 
 model Bid {
@@ -400,6 +439,8 @@ model Bid {
   bidder            User              @relation(fields: [bidderId], references: [id])
   status            String
   source            String
+
+  @@schema("public")
 }
 
 model DiscordMessage {
@@ -415,6 +456,8 @@ model DiscordMessage {
   userId            String
   user              User              @relation(fields: [userId], references: [id])
   bot               Boolean           @default(false)
+
+  @@schema("public")
 }
 
 model Term {
@@ -426,4 +469,19 @@ model Term {
   title             String
   content           String
   meta              Json?             @default("{}")
+
+  @@schema("public")
+}
+
+model Version {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  deletedAt         DateTime?
+  schemaName        String
+  tableName         String
+  op                String
+  refId             String
+  values            Json
+
+  @@schema("audit")
 }

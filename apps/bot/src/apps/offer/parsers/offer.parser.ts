@@ -6,6 +6,7 @@ import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
 import { OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
+import { SHIPPING_FREE } from '@lib/shared/shipping/shipping.constants';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { OfferErrorMessage } from './offer.error-message';
 
@@ -25,6 +26,8 @@ export class OfferParser extends DealParser {
       id: this.parseIdFromMessage(message),
       name: match[1].trim(),
       price: this.parsePrice(match[2]),
+      shippingCost: 0,
+      shippingType: SHIPPING_FREE,
       description: match[3].trim(),
       source: 'discord',
     };

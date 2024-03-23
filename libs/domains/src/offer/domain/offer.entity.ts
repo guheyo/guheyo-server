@@ -7,6 +7,7 @@ import { ReportCommentedEvent } from '@lib/domains/report/application/events/rep
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
 import { REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
+import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price.extension';
 import { UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
@@ -76,6 +77,7 @@ export class OfferEntity extends AggregateRoot {
 
   update(props: UpdateOfferProps) {
     Object.assign(this, _.pickBy(props, _.identity));
+    this.totalPrice = totalPrice.compute(this);
     this.apply(new OfferUpdatedEvent(this.id));
   }
 
