@@ -1,17 +1,19 @@
 -- Audit trigger function
 CREATE OR REPLACE FUNCTION "audit"."audit_trail"() RETURNS TRIGGER AS $$
+    DECLARE
+        ID UUID := gen_random_uuid();
     BEGIN
         IF (TG_OP = 'DELETE') THEN
             INSERT INTO "audit"."Version"
-            VALUES (DEFAULT, now(), NULL, TG_TABLE_SCHEMA, TG_TABLE_NAME, TG_OP, OLD."id", to_jsonb(OLD));
+            VALUES (ID, now(), NULL, TG_TABLE_SCHEMA, TG_TABLE_NAME, TG_OP, OLD."id", to_jsonb(OLD));
             RETURN OLD;
         ELSIF (TG_OP = 'UPDATE') THEN
             INSERT INTO "audit"."Version"
-            VALUES (DEFAULT, now(), NULL, TG_TABLE_SCHEMA, TG_TABLE_NAME, TG_OP, NEW."id", to_jsonb(NEW));
+            VALUES (ID, now(), NULL, TG_TABLE_SCHEMA, TG_TABLE_NAME, TG_OP, NEW."id", to_jsonb(NEW));
             RETURN NEW;
         ELSIF (TG_OP = 'INSERT') THEN
             INSERT INTO "audit"."Version"
-            VALUES (DEFAULT, now(), NULL, TG_TABLE_SCHEMA, TG_TABLE_NAME, TG_OP, NEW."id", to_jsonb(NEW));
+            VALUES (ID, now(), NULL, TG_TABLE_SCHEMA, TG_TABLE_NAME, TG_OP, NEW."id", to_jsonb(NEW));
             RETURN NEW;
         END IF;
         RETURN NULL;
