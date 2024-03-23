@@ -16,13 +16,11 @@ export class FindReportHandler extends PrismaQueryHandler<FindReportQuery, Repor
       ? {
           id: query.id,
         }
-      : query.authorId && query.type && (query.demandId || query.offerId || query.swapId)
+      : query.authorId && query.type && query.refId
       ? {
           authorId: query.authorId,
           type: query.type,
-          offerId: query.offerId,
-          demandId: query.demandId,
-          swapId: query.swapId,
+          refId: query.refId,
         }
       : null;
     if (!where) throw new NotFoundException(ReportErrorMessage.REPORT_IS_NOT_FOUND);

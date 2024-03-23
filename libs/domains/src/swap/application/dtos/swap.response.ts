@@ -2,7 +2,6 @@ import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 import { UserImageResponse } from '@lib/domains/user-image/application/dtos/user-image.response';
 import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
 import { GroupProfileResponse } from '@lib/domains/group/application/dtos/group-profile.response';
-import { ReportResponse } from '@lib/domains/report/application/dtos/report.response';
 
 @ObjectType()
 export class SwapResponse {
@@ -75,8 +74,11 @@ export class SwapResponse {
   @Field()
   source: string;
 
-  @Field(() => [ReportResponse])
-  reports: ReportResponse[];
+  @Field(() => Int)
+  reportCount: number;
+
+  @Field(() => Int)
+  reportCommentCount: number;
 
   constructor(partial: Partial<SwapResponse>) {
     Object.assign(this, partial);

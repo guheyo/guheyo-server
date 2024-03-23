@@ -6,8 +6,11 @@ export class CheckOfferReportsCommand implements ICommand {
 
   refId: string;
 
+  reportStatus: string;
+
   constructor(input: CheckOfferReportsInput) {
     this.type = input.type;
     this.refId = input.refId;
+    this.reportStatus = input.reportStatus;
   }
 }

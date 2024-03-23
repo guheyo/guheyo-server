@@ -18,7 +18,7 @@ export class CheckOfferReportsHandler implements ICommandHandler<CheckOfferRepor
     const offer = await this.loadPort.findById(event.refId);
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_FROM_REPORTED_NOT_FOUND);
 
-    offer.checkReports();
+    offer.checkReports(event.reportStatus);
     this.savePort.save(offer);
   }
 }

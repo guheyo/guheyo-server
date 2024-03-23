@@ -85,20 +85,10 @@ input CancelBidInput {
   bidderId: String!
 }
 
-input CommentDemandReportInput {
-  authorId: ID!
-  content: String!
-  demandId: ID!
-  id: ID!
-  reportId: ID!
-  source: String!
-}
-
-input CommentOfferReportInput {
+input CommentReportInput {
   authorId: ID!
   content: String!
   id: ID!
-  offerId: ID!
   reportId: ID!
   source: String!
 }
@@ -113,15 +103,6 @@ type CommentResponse {
   reportId: ID
   type: String!
   updatedAt: DateTime!
-}
-
-input CommentSwapReportInput {
-  authorId: ID!
-  content: String!
-  id: ID!
-  reportId: ID!
-  source: String!
-  swapId: ID!
 }
 
 input ConnectRolesInput {
@@ -320,7 +301,8 @@ type DemandPreviewResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  reports: [ReportResponse!]!
+  reportCommentCount: Int!
+  reportCount: Int!
   shippingCost: Int!
   shippingType: String!
   slug: String
@@ -349,7 +331,8 @@ type DemandResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  reports: [ReportResponse!]!
+  reportCommentCount: Int!
+  reportCount: Int!
   shippingCost: Int!
   shippingType: String!
   slug: String
@@ -429,9 +412,7 @@ type Mutation {
   bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
   bumpSwap(input: BumpSwapInput!): SwapPreviewResponse!
   cancelBid(input: CancelBidInput!): String!
-  commentDemandReport(input: CommentDemandReportInput!): String!
-  commentOfferReport(input: CommentOfferReportInput!): String!
-  commentSwapReport(input: CommentSwapReportInput!): String!
+  commentReport(input: CommentReportInput!): String!
   connectRoles(input: ConnectRolesInput!): String!
   createAuction(input: CreateAuctionInput!): String!
   createComment(input: CreateCommentInput!): String!
@@ -501,7 +482,8 @@ type OfferPreviewResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  reports: [ReportResponse!]!
+  reportCommentCount: Int!
+  reportCount: Int!
   seller: UserResponse!
   shippingCost: Int!
   shippingType: String!
@@ -531,7 +513,8 @@ type OfferResponse {
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
-  reports: [ReportResponse!]!
+  reportCommentCount: Int!
+  reportCount: Int!
   seller: AuthorResponse!
   shippingCost: Int!
   shippingType: String!
@@ -619,7 +602,7 @@ type Query {
   findMyUserByUsername(username: ID!): MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
-  findReport(authorId: ID, demandId: ID, id: ID, offerId: ID, swapId: ID, type: String): ReportResponse!
+  findReport(authorId: ID, id: ID, refId: ID, type: String): ReportResponse!
   findReportPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
   findSession(sessionToken: String!): SessionResponse
@@ -636,11 +619,9 @@ type Query {
 type ReportPreviewResponse {
   content: String
   createdAt: DateTime!
-  demandId: ID
   id: ID!
-  offerId: ID
+  refid: ID!
   status: String!
-  swapId: ID
   title: String!
   type: String!
   updatedAt: DateTime!
@@ -655,11 +636,9 @@ type ReportResponse {
   comments: [CommentResponse!]!
   content: String
   createdAt: DateTime!
-  demandId: ID
   id: ID!
-  offerId: ID
+  refid: ID!
   status: String!
-  swapId: ID
   title: String!
   type: String!
   updatedAt: DateTime!
@@ -725,7 +704,8 @@ type SwapPreviewResponse {
   priceCurrency: String!
   productCategoryId: String!
   proposer: UserResponse!
-  reports: [ReportResponse!]!
+  reportCommentCount: Int!
+  reportCount: Int!
   shippingCost: Int!
   shippingType: String!
   slug: String
@@ -757,7 +737,8 @@ type SwapResponse {
   priceCurrency: String!
   productCategoryId: String!
   proposer: AuthorResponse!
-  reports: [ReportResponse!]!
+  reportCommentCount: Int!
+  reportCount: Int!
   shippingCost: Int!
   shippingType: String!
   slug: String

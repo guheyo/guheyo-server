@@ -30,11 +30,6 @@ export class SwapRepository extends PrismaRepository<SwapEntity> {
           },
         },
         bumps: true,
-        reports: {
-          orderBy: {
-            createdAt: 'asc',
-          },
-        },
       },
     });
     return this.toEntity(swap);
@@ -109,6 +104,8 @@ export class SwapRepository extends PrismaRepository<SwapEntity> {
         'productCategoryId',
         'proposerId',
         'status',
+        'reportCount',
+        'reportCommentCount',
       ]),
     });
   }

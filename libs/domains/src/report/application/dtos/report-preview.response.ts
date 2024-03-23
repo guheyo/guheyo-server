@@ -14,14 +14,8 @@ export class ReportPreviewResponse {
   @Field()
   type: string;
 
-  @Field(() => ID, { nullable: true })
-  offerId: string | null;
-
-  @Field(() => ID, { nullable: true })
-  demandId: string | null;
-
-  @Field(() => ID, { nullable: true })
-  swapId: string | null;
+  @Field(() => ID)
+  refid: string;
 
   @Field()
   status: string;

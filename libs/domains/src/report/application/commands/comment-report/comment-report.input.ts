@@ -2,7 +2,7 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsString, IsUUID } from 'class-validator';
 
 @InputType()
-export class CommentSwapReportInput {
+export class CommentReportInput {
   @IsUUID()
   @Field(() => ID)
   id: string;
@@ -14,10 +14,6 @@ export class CommentSwapReportInput {
   @IsUUID()
   @Field(() => ID)
   authorId: string;
-
-  @IsUUID()
-  @Field(() => ID)
-  swapId: string;
 
   @IsString()
   @Field()

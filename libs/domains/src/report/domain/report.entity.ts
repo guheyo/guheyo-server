@@ -1,11 +1,11 @@
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
-import { InternalServerErrorException } from '@nestjs/common';
+import { VersionEntity } from '@lib/domains/version/domain/version.entity';
 import { ReportCreatedEvent } from '../application/events/report-created/report-created.event';
 import { ReportStatusUpdatedEvent } from '../application/events/report-status-updated/report-status-updated.event';
-import { ReportTypeIdString } from './report.types';
-import { ReportErrorMessage } from './report.error.message';
 import { REPORT_COMMENTED_PREFIX, REPORT_OPEN } from './report.constants';
+import { CommentReportInput } from '../application/commands/comment-report/comment-report.input';
+import { ReportCommentedEvent } from '../application/events/report-commented/report-commented.event';
 
 export class ReportEntity extends AggregateRoot {
   id: string;
@@ -16,11 +16,9 @@ export class ReportEntity extends AggregateRoot {
 
   type: string;
 
-  offerId: string | null;
+  refVersionId: string;
 
-  demandId: string | null;
-
-  swapId: string | null;
+  refVersion: VersionEntity;
 
   status: string;
 
@@ -43,6 +41,19 @@ export class ReportEntity extends AggregateRoot {
       new ReportCreatedEvent({
         type: this.type,
         refId,
+        reportStatus: this.status,
+      }),
+    );
+  }
+
+  commentReport(input: CommentReportInput) {
+    this.apply(
+      new ReportCommentedEvent({
+        id: input.id,
+        reportId: input.reportId,
+        authorId: input.authorId,
+        content: input.content,
+        source: input.source,
       }),
     );
   }
@@ -52,28 +63,15 @@ export class ReportEntity extends AggregateRoot {
     this.status = this.comments.length
       ? `${REPORT_COMMENTED_PREFIX}#${this.comments.length}`
       : REPORT_OPEN;
-    const refId = this.getRefId();
-
-    if (!refId) {
-      throw new InternalServerErrorException(ReportErrorMessage.FAILED_TO_FIND_REF_ID_OF_REPORT);
-    }
 
     if (this.status !== prevStatus) {
       this.apply(
         new ReportStatusUpdatedEvent({
           type: this.type,
-          refId,
+          refId: this.refVersionId,
+          reportStatus: this.status,
         }),
       );
     }
-  }
-
-  parseTypeIdString(): ReportTypeIdString {
-    return `${this.type}Id` as ReportTypeIdString;
-  }
-
-  getRefId() {
-    const key = this.parseTypeIdString();
-    return this[key];
   }
 }

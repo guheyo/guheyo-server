@@ -18,8 +18,6 @@ import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author
 import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
 import { BumpOfferInput } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.input';
 import { BumpOfferCommand } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.command';
-import { CommentOfferReportInput } from '@lib/domains/offer/application/commands/comment-offer-report/comment-offer-report.input';
-import { CommentOfferReportCommand } from '@lib/domains/offer/application/commands/comment-offer-report/comment-offer-report.command';
 import { OfferPreviewResponse } from '@lib/domains/offer/application/dtos/offer-preview.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
@@ -71,13 +69,5 @@ export class OfferResolver {
   @Mutation(() => OfferPreviewResponse)
   async bumpOffer(@Args('input') input: BumpOfferInput): Promise<OfferPreviewResponse> {
     return this.commandBus.execute(new BumpOfferCommand(input));
-  }
-
-  @AuthorIdPath('input.authorId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
-  @Mutation(() => String)
-  async commentOfferReport(@Args('input') input: CommentOfferReportInput): Promise<string> {
-    await this.commandBus.execute(new CommentOfferReportCommand(input));
-    return input.id;
   }
 }
