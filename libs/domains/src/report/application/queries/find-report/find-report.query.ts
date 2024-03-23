@@ -6,20 +6,14 @@ export class FindReportQuery implements IQuery {
 
   type?: string;
 
-  offerId?: string;
-
-  demandId?: string;
-
-  swapId?: string;
+  refId?: string;
 
   authorId?: string;
 
   constructor(args: FindReportArgs) {
     this.id = args.id;
     this.type = args.type;
-    this.offerId = args.offerId;
-    this.demandId = args.demandId;
-    this.swapId = args.swapId;
+    this.refId = args.refId;
     this.authorId = args.authorId;
   }
 }

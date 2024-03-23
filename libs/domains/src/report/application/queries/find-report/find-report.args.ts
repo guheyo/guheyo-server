@@ -16,17 +16,7 @@ export class FindReportArgs {
   @IsOptional()
   @IsUUID()
   @Field(() => ID, { nullable: true })
-  offerId?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  demandId?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  swapId?: string;
+  refId?: string;
 
   @IsOptional()
   @IsUUID()
