@@ -35,18 +35,6 @@ export class FindDemandHandler extends PrismaQueryHandler<FindDemandQuery, Deman
             socialAccounts: true,
           },
         },
-        reports: {
-          include: {
-            comments: {
-              orderBy: {
-                createdAt: 'desc',
-              },
-            },
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-        },
       },
     });
     if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_NOT_FOUND);

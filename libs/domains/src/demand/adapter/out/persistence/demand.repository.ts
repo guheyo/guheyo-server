@@ -30,11 +30,6 @@ export class DemandRepository extends PrismaRepository<DemandEntity> {
           },
         },
         bumps: true,
-        reports: {
-          orderBy: {
-            createdAt: 'asc',
-          },
-        },
       },
     });
     return this.toEntity(demand);
@@ -103,6 +98,8 @@ export class DemandRepository extends PrismaRepository<DemandEntity> {
         'productCategoryId',
         'buyerId',
         'status',
+        'reportCount',
+        'reportCommentCount',
       ]),
     });
   }

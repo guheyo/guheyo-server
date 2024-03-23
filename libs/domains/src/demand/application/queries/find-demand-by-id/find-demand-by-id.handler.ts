@@ -32,18 +32,6 @@ export class FindDemandByIdHandler extends PrismaQueryHandler<FindDemandByIdQuer
             socialAccounts: true,
           },
         },
-        reports: {
-          include: {
-            comments: {
-              orderBy: {
-                createdAt: 'desc',
-              },
-            },
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-        },
       },
     });
     if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_NOT_FOUND);
