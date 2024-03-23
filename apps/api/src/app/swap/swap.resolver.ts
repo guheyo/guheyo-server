@@ -18,8 +18,6 @@ import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth
 import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { BumpSwapInput } from '@lib/domains/swap/application/commands/bump-swap/bump-swap.input';
 import { BumpSwapCommand } from '@lib/domains/swap/application/commands/bump-swap/bump-swap.command';
-import { CommentSwapReportInput } from '@lib/domains/swap/application/commands/comment-swap-report/comment-swap-report.input';
-import { CommentSwapReportCommand } from '@lib/domains/swap/application/commands/comment-swap-report/comment-swap-report.command';
 import { SwapPreviewResponse } from '@lib/domains/swap/application/dtos/swap-preview.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
@@ -71,13 +69,5 @@ export class SwapResolver {
   @Mutation(() => SwapPreviewResponse)
   async bumpSwap(@Args('input') input: BumpSwapInput): Promise<SwapPreviewResponse> {
     return this.commandBus.execute(new BumpSwapCommand(input));
-  }
-
-  @AuthorIdPath('input.authorId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
-  @Mutation(() => String)
-  async commentSwapReport(@Args('input') input: CommentSwapReportInput): Promise<string> {
-    await this.commandBus.execute(new CommentSwapReportCommand(input));
-    return input.id;
   }
 }
