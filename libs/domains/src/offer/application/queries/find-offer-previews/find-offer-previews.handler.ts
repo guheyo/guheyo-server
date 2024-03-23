@@ -44,18 +44,6 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
             bot: true,
           },
         },
-        reports: {
-          include: {
-            comments: {
-              orderBy: {
-                createdAt: 'desc',
-              },
-            },
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-        },
       },
       orderBy: [
         {
