@@ -15,7 +15,7 @@ export class VersionEntity extends AggregateRoot {
 
   refId: string;
 
-  values: JSON;
+  values: any;
 
   constructor(partial: Partial<VersionEntity>) {
     super();

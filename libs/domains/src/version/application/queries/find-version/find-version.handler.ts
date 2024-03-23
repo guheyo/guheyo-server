@@ -16,9 +16,8 @@ export class FindVersionHandler extends PrismaQueryHandler<FindVersionQuery, Ver
       ? {
           id: query.id,
         }
-      : query.tableName && query.refId
+      : query.refId
       ? {
-          tableName: query.tableName,
           refId: query.refId,
         }
       : null;
@@ -26,6 +25,9 @@ export class FindVersionHandler extends PrismaQueryHandler<FindVersionQuery, Ver
 
     const version = await this.prismaService.version.findFirst({
       where,
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
     return this.parseResponse(version);
   }
