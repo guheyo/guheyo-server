@@ -9,6 +9,8 @@ import { FindReportQuery } from '@lib/domains/report/application/queries/find-re
 import { PaginatedReportPreviewsResponse } from '@lib/domains/report/application/queries/find-report-previews/paginated-report-previews.response';
 import { FindReportPreviewsArgs } from '@lib/domains/report/application/queries/find-report-previews/find-report-previews.args';
 import { FindReportPreviewsQuery } from '@lib/domains/report/application/queries/find-report-previews/find-report-previews.query';
+import { CommentReportInput } from '@lib/domains/report/application/commands/comment-report/comment-report.input';
+import { CommentReportCommand } from '@lib/domains/report/application/commands/comment-report/comment-report.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -18,12 +20,6 @@ export class ReportResolver {
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
   ) {}
-
-  @Mutation(() => String)
-  async createReport(@Args('input') input: CreateReportInput): Promise<string> {
-    await this.commandBus.execute(new CreateReportCommand(input));
-    return input.id;
-  }
 
   @Query(() => ReportResponse)
   async findReport(@Args() args: FindReportArgs) {
@@ -35,5 +31,17 @@ export class ReportResolver {
   async findReportPreviews(@Args() args: FindReportPreviewsArgs) {
     const query = new FindReportPreviewsQuery(args);
     return this.queryBus.execute(query);
+  }
+
+  @Mutation(() => String)
+  async createReport(@Args('input') input: CreateReportInput): Promise<string> {
+    await this.commandBus.execute(new CreateReportCommand(input));
+    return input.id;
+  }
+
+  @Mutation(() => String)
+  async commentReport(@Args('input') input: CommentReportInput): Promise<string> {
+    await this.commandBus.execute(new CommentReportCommand(input));
+    return input.id;
   }
 }
