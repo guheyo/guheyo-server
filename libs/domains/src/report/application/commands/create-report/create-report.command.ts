@@ -8,6 +8,8 @@ export class CreateReportCommand implements ICommand {
 
   refId: string;
 
+  refVersionId: string;
+
   authorId: string;
 
   title: string;
@@ -18,6 +20,7 @@ export class CreateReportCommand implements ICommand {
     this.id = input.id;
     this.type = input.type;
     this.refId = input.refId;
+    this.refVersionId = input.refVersionId;
     this.authorId = input.authorId;
     this.title = input.title;
     this.content = input.content;

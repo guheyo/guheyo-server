@@ -13,18 +13,12 @@ export class CreateReportHandler implements ICommandHandler<CreateReportCommand>
   ) {}
 
   async execute(command: CreateReportCommand): Promise<void> {
-    const ref = {
-      offerId: command.type === 'offer' ? command.refId : undefined,
-      demandId: command.type === 'demand' ? command.refId : undefined,
-      swapId: command.type === 'swap' ? command.refId : undefined,
-    };
     const report = this.publisher.mergeObjectContext(
       new ReportEntity({
-        ...pick(command, ['id', 'type', 'authorId', 'title', 'content']),
-        ...ref,
+        ...pick(command, ['id', 'type', 'refId', 'refVersionId', 'authorId', 'title', 'content']),
       }),
     );
-    report.create(command.refId);
+    report.create();
     await this.savePort.create(report);
     report.commit();
   }
