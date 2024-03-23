@@ -1,10 +1,8 @@
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
-import { InternalServerErrorException } from '@nestjs/common';
 import { ReportCreatedEvent } from '../application/events/report-created/report-created.event';
 import { ReportStatusUpdatedEvent } from '../application/events/report-status-updated/report-status-updated.event';
 import { ReportTypeIdString } from './report.types';
-import { ReportErrorMessage } from './report.error.message';
 import { REPORT_COMMENTED_PREFIX, REPORT_OPEN } from './report.constants';
 
 export class ReportEntity extends AggregateRoot {
@@ -16,11 +14,7 @@ export class ReportEntity extends AggregateRoot {
 
   type: string;
 
-  offerId: string | null;
-
-  demandId: string | null;
-
-  swapId: string | null;
+  refId: string;
 
   status: string;
 
@@ -52,17 +46,12 @@ export class ReportEntity extends AggregateRoot {
     this.status = this.comments.length
       ? `${REPORT_COMMENTED_PREFIX}#${this.comments.length}`
       : REPORT_OPEN;
-    const refId = this.getRefId();
-
-    if (!refId) {
-      throw new InternalServerErrorException(ReportErrorMessage.FAILED_TO_FIND_REF_ID_OF_REPORT);
-    }
 
     if (this.status !== prevStatus) {
       this.apply(
         new ReportStatusUpdatedEvent({
           type: this.type,
-          refId,
+          refId: this.refId,
         }),
       );
     }
@@ -70,10 +59,5 @@ export class ReportEntity extends AggregateRoot {
 
   parseTypeIdString(): ReportTypeIdString {
     return `${this.type}Id` as ReportTypeIdString;
-  }
-
-  getRefId() {
-    const key = this.parseTypeIdString();
-    return this[key];
   }
 }
