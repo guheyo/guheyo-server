@@ -16,6 +16,8 @@ export class ReportEntity extends AggregateRoot {
 
   type: string;
 
+  refId: string;
+
   refVersionId: string;
 
   refVersion: VersionEntity;
@@ -36,14 +38,31 @@ export class ReportEntity extends AggregateRoot {
     this.status = REPORT_OPEN;
   }
 
-  create(refId: string) {
+  create() {
     this.apply(
       new ReportCreatedEvent({
         type: this.type,
-        refId,
+        refId: this.refId,
         reportStatus: this.status,
       }),
     );
+  }
+
+  isAuthorized(authorId: string) {
+    const refValues = JSON.parse(this.refVersion.values.toString());
+    switch (this.refVersion.tableName) {
+      case 'Offer': {
+        return refValues.sellerId === authorId;
+      }
+      case 'Demand': {
+        return refValues.buyerId === authorId;
+      }
+      case 'Swap': {
+        return refValues.proposerId === authorId;
+      }
+      default:
+        return refValues.authorId === authorId;
+    }
   }
 
   commentReport(input: CommentReportInput) {

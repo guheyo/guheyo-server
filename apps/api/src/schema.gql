@@ -921,6 +921,5 @@ type VersionResponse {
   refId: ID!
   schemaName: String!
   tableName: String!
-  updatedAt: DateTime!
   values: JSON!
 }
