@@ -35,18 +35,6 @@ export class FindSwapHandler extends PrismaQueryHandler<FindSwapQuery, SwapRespo
             socialAccounts: true,
           },
         },
-        reports: {
-          include: {
-            comments: {
-              orderBy: {
-                createdAt: 'desc',
-              },
-            },
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-        },
       },
     });
     if (!swap) throw new NotFoundException(SwapErrorMessage.SWAP_NOT_FOUND);

@@ -3,16 +3,14 @@ import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import _ from 'lodash';
 import { validateBump } from '@lib/shared/deal/validate-bump';
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
-import { ReportEntity } from '@lib/domains/report/domain/report.entity';
-import { ReportCommentedEvent } from '@lib/domains/report/application/events/report-commented/report-commented.event';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
 import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price.extension';
+import { REPORT_COMMENTED_PREFIX, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
 import { UpdateSwapProps } from './swap.types';
 import { SwapCreatedEvent } from '../application/events/swap-created/swap-created.event';
 import { SwapUpdatedEvent } from '../application/events/swap-updated/swap-updated.event';
 import { BumpSwapInput } from '../application/commands/bump-swap/bump-swap.input';
 import { SWAP_OPEN, SWAP_REPORTED_PREFIX } from './swap.constants';
-import { CommentSwapReportInput } from '../application/commands/comment-swap-report/comment-swap-report.input';
 
 export class SwapEntity extends AggregateRoot {
   id: string;
@@ -59,7 +57,9 @@ export class SwapEntity extends AggregateRoot {
 
   bumps: BumpEntity[];
 
-  reports: ReportEntity[];
+  reportCount: number;
+
+  reportCommentCount: number;
 
   constructor(partial: Partial<SwapEntity>) {
     super();
@@ -102,32 +102,17 @@ export class SwapEntity extends AggregateRoot {
     this.price = input.newPrice;
   }
 
-  findUncheckedReportsCount() {
-    return this.reports.filter((report) => report.status === SWAP_OPEN).length;
-  }
+  checkReports(reportStatus: string) {
+    if (reportStatus === REPORT_OPEN) {
+      this.reportCount += 1;
+    } else if (reportStatus.startsWith(REPORT_COMMENTED_PREFIX)) {
+      this.reportCommentCount += 1;
+    }
 
-  checkReports() {
-    const uncheckedReportsCount = this.findUncheckedReportsCount();
-    if (uncheckedReportsCount) {
-      this.status = `${SWAP_REPORTED_PREFIX}#${uncheckedReportsCount}`;
+    if (this.reportCount > this.reportCommentCount) {
+      this.status = `${SWAP_REPORTED_PREFIX}#${this.reportCount - this.reportCommentCount}`;
     } else if (this.status.startsWith(SWAP_REPORTED_PREFIX)) {
       this.status = SWAP_OPEN;
     }
-  }
-
-  findReport({ reportId }: { reportId: string }) {
-    return this.reports.find((report) => report.id === reportId);
-  }
-
-  commentReport(input: CommentSwapReportInput) {
-    this.apply(
-      new ReportCommentedEvent({
-        id: input.id,
-        reportId: input.reportId,
-        authorId: input.authorId,
-        content: input.content,
-        source: input.source,
-      }),
-    );
   }
 }

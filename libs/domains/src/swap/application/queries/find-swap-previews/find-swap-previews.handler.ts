@@ -62,18 +62,6 @@ export class FindSwapPreviewsHandler extends PrismaQueryHandler<
             bot: true,
           },
         },
-        reports: {
-          include: {
-            comments: {
-              orderBy: {
-                createdAt: 'desc',
-              },
-            },
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-        },
       },
       distinct: query.distinct ? ['name0', 'name1', 'proposerId'] : undefined,
     });
