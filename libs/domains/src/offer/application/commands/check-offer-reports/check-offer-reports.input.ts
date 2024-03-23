@@ -10,4 +10,8 @@ export class CheckOfferReportsInput {
   @IsUUID()
   @Field(() => ID)
   refId: string;
+
+  @IsString()
+  @Field(() => String)
+  reportStatus: string;
 }

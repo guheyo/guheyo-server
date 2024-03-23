@@ -2,7 +2,6 @@ import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { ReportCreatedEvent } from '../application/events/report-created/report-created.event';
 import { ReportStatusUpdatedEvent } from '../application/events/report-status-updated/report-status-updated.event';
-import { ReportTypeIdString } from './report.types';
 import { REPORT_COMMENTED_PREFIX, REPORT_OPEN } from './report.constants';
 
 export class ReportEntity extends AggregateRoot {
@@ -37,7 +36,7 @@ export class ReportEntity extends AggregateRoot {
       new ReportCreatedEvent({
         type: this.type,
         refId,
-        status: this.status,
+        reportStatus: this.status,
       }),
     );
   }
@@ -53,13 +52,9 @@ export class ReportEntity extends AggregateRoot {
         new ReportStatusUpdatedEvent({
           type: this.type,
           refId: this.refId,
-          status: this.status,
+          reportStatus: this.status,
         }),
       );
     }
-  }
-
-  parseTypeIdString(): ReportTypeIdString {
-    return `${this.type}Id` as ReportTypeIdString;
   }
 }
