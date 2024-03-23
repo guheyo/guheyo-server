@@ -6,6 +6,7 @@ import { UpdateDemandInput } from '@lib/domains/demand/application/commands/upda
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { DeleteDemandArgs } from '@lib/domains/demand/application/commands/delete-demand/delete-demand.args';
 import { DEMAND_OPEN } from '@lib/domains/demand/domain/demand.constants';
+import { SHIPPING_FREE } from '@lib/shared/shipping/shipping.constants';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { DemandErrorMessage } from './demand.error-message';
 
@@ -25,6 +26,8 @@ export class DemandParser extends DealParser {
       id: this.parseIdFromMessage(message),
       name: match[1].trim(),
       price: this.parsePrice(match[2]),
+      shippingCost: 0,
+      shippingType: SHIPPING_FREE,
       description: match[3].trim(),
       source: 'discord',
     };

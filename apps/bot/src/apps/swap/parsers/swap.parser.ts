@@ -6,6 +6,7 @@ import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-s
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { DeleteSwapArgs } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.args';
 import { SWAP_OPEN } from '@lib/domains/swap/domain/swap.constants';
+import { SHIPPING_FREE } from '@lib/shared/shipping/shipping.constants';
 import { DealParser } from '../../deal/parsers/abstracts/deal.parser';
 import { SwapErrorMessage } from './swap.error-message';
 
@@ -27,6 +28,8 @@ export class SwapParser extends DealParser {
       name1: match[2].trim(),
       description0: match[3].trim(),
       price: 0,
+      shippingCost: 0,
+      shippingType: SHIPPING_FREE,
       source: 'discord',
     };
   }
