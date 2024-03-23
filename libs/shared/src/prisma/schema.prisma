@@ -322,6 +322,7 @@ model Report {
   updatedAt         DateTime          @updatedAt
   deletedAt         DateTime?
   type              String
+  refId             String
   refVersionId      String
   refVersion        Version           @relation(fields: [refVersionId], references: [id])
   authorId          String
