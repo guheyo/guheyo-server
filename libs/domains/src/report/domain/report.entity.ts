@@ -37,6 +37,7 @@ export class ReportEntity extends AggregateRoot {
       new ReportCreatedEvent({
         type: this.type,
         refId,
+        status: this.status,
       }),
     );
   }
@@ -52,6 +53,7 @@ export class ReportEntity extends AggregateRoot {
         new ReportStatusUpdatedEvent({
           type: this.type,
           refId: this.refId,
+          status: this.status,
         }),
       );
     }

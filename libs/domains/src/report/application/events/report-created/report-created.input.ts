@@ -3,8 +3,11 @@ export class ReportCreatedInput {
 
   refId: string;
 
-  constructor({ type, refId }: { type: string; refId: string }) {
+  status: string;
+
+  constructor({ type, refId, status }: { type: string; refId: string; status: string }) {
     this.type = type;
     this.refId = refId;
+    this.status = status;
   }
 }
