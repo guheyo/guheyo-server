@@ -620,7 +620,7 @@ type ReportPreviewResponse {
   content: String
   createdAt: DateTime!
   id: ID!
-  refid: ID!
+  refVersionId: ID!
   status: String!
   title: String!
   type: String!
@@ -637,7 +637,7 @@ type ReportResponse {
   content: String
   createdAt: DateTime!
   id: ID!
-  refid: ID!
+  refVersionId: ID!
   status: String!
   title: String!
   type: String!

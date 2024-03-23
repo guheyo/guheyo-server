@@ -15,7 +15,7 @@ export class ReportPreviewResponse {
   type: string;
 
   @Field(() => ID)
-  refid: string;
+  refVersionId: string;
 
   @Field()
   status: string;
