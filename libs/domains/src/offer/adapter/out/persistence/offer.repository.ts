@@ -30,11 +30,6 @@ export class OfferRepository extends PrismaRepository<OfferEntity> {
           },
         },
         bumps: true,
-        reports: {
-          orderBy: {
-            createdAt: 'desc',
-          },
-        },
       },
     });
     return this.toEntity(offer);
@@ -103,6 +98,8 @@ export class OfferRepository extends PrismaRepository<OfferEntity> {
         'productCategoryId',
         'sellerId',
         'status',
+        'reportCount',
+        'reportCommentCount',
       ]),
     });
   }

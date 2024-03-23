@@ -2,18 +2,15 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import _ from 'lodash';
 import { validateBump } from '@lib/shared/deal/validate-bump';
-import { ReportEntity } from '@lib/domains/report/domain/report.entity';
-import { ReportCommentedEvent } from '@lib/domains/report/application/events/report-commented/report-commented.event';
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
-import { REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
+import { REPORT_COMMENTED_PREFIX, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
 import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price.extension';
 import { UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
 import { BumpOfferInput } from '../application/commands/bump-offer/bump-offer.input';
-import { CommentOfferReportInput } from '../application/commands/comment-offer-report/comment-offer-report.input';
-import { OFFER_REPORTED_PREFIX } from './offer.constants';
+import { OFFER_OPEN, OFFER_REPORTED_PREFIX } from './offer.constants';
 
 export class OfferEntity extends AggregateRoot {
   id: string;
@@ -56,7 +53,9 @@ export class OfferEntity extends AggregateRoot {
 
   bumps: BumpEntity[];
 
-  reports: ReportEntity[];
+  reportCount: number;
+
+  reportCommentCount: number;
 
   constructor(partial: Partial<OfferEntity>) {
     super();
@@ -99,32 +98,17 @@ export class OfferEntity extends AggregateRoot {
     this.price = input.newPrice;
   }
 
-  findUncheckedReportsCount() {
-    return this.reports.filter((report) => report.status === REPORT_OPEN).length;
-  }
-
-  checkReports() {
-    const uncheckedReportsCount = this.findUncheckedReportsCount();
-    if (uncheckedReportsCount) {
-      this.status = `${OFFER_REPORTED_PREFIX}#${uncheckedReportsCount}`;
-    } else if (this.status.startsWith(OFFER_REPORTED_PREFIX)) {
-      this.status = REPORT_OPEN;
+  checkReports(reportStatus: string) {
+    if (reportStatus === REPORT_OPEN) {
+      this.reportCount += 1;
+    } else if (reportStatus.startsWith(REPORT_COMMENTED_PREFIX)) {
+      this.reportCommentCount += 1;
     }
-  }
 
-  findReport({ reportId }: { reportId: string }) {
-    return this.reports.find((report) => report.id === reportId);
-  }
-
-  commentReport(input: CommentOfferReportInput) {
-    this.apply(
-      new ReportCommentedEvent({
-        id: input.id,
-        reportId: input.reportId,
-        authorId: input.authorId,
-        content: input.content,
-        source: input.source,
-      }),
-    );
+    if (this.reportCount > this.reportCommentCount) {
+      this.status = `${OFFER_REPORTED_PREFIX}#${this.reportCount - this.reportCommentCount}`;
+    } else if (this.status.startsWith(OFFER_REPORTED_PREFIX)) {
+      this.status = OFFER_OPEN;
+    }
   }
 }
