@@ -23,9 +23,8 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler<
       : undefined;
     const reports = await this.prismaService.report.findMany({
       where: {
-        offerId: query.where?.type === 'offer' ? query.where.refId : undefined,
-        demandId: query.where?.type === 'demand' ? query.where.refId : undefined,
-        swapId: query.where?.type === 'swap' ? query.where.refId : undefined,
+        type: query.where?.type && query.where.refId ? query.where.type : undefined,
+        refId: query.where?.type && query.where.refId ? query.where.refId : undefined,
         title: parseFollowedBySearcher(query.keyword),
         createdAt: query.where?.createdAt
           ? {

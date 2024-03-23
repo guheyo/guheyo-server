@@ -15,6 +15,9 @@ export class ReportPreviewResponse {
   type: string;
 
   @Field(() => ID)
+  refId: string;
+
+  @Field(() => ID)
   refVersionId: string;
 
   @Field()
