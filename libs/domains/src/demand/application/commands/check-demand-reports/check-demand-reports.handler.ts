@@ -18,7 +18,7 @@ export class CheckDemandReportsHandler implements ICommandHandler<CheckDemandRep
     const demand = await this.loadPort.findById(event.refId);
     if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_NOT_FOUND);
 
-    demand.checkReports();
+    demand.checkReports(event.reportStatus);
     this.savePort.save(demand);
   }
 }

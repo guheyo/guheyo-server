@@ -18,7 +18,7 @@ export class CheckSwapReportsHandler implements ICommandHandler<CheckSwapReports
     const swap = await this.loadPort.findById(event.refId);
     if (!swap) throw new NotFoundException(SwapErrorMessage.SWAP_NOT_FOUND);
 
-    swap.checkReports();
+    swap.checkReports(event.reportStatus);
     this.savePort.save(swap);
   }
 }
