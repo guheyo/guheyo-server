@@ -1,8 +1,11 @@
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
+import { VersionEntity } from '@lib/domains/version/domain/version.entity';
 import { ReportCreatedEvent } from '../application/events/report-created/report-created.event';
 import { ReportStatusUpdatedEvent } from '../application/events/report-status-updated/report-status-updated.event';
 import { REPORT_COMMENTED_PREFIX, REPORT_OPEN } from './report.constants';
+import { CommentReportInput } from '../application/commands/comment-report/comment-report.input';
+import { ReportCommentedEvent } from '../application/events/report-commented/report-commented.event';
 
 export class ReportEntity extends AggregateRoot {
   id: string;
@@ -13,7 +16,9 @@ export class ReportEntity extends AggregateRoot {
 
   type: string;
 
-  refId: string;
+  refVersionId: string;
+
+  refVersion: VersionEntity;
 
   status: string;
 
@@ -41,6 +46,18 @@ export class ReportEntity extends AggregateRoot {
     );
   }
 
+  commentReport(input: CommentReportInput) {
+    this.apply(
+      new ReportCommentedEvent({
+        id: input.id,
+        reportId: input.reportId,
+        authorId: input.authorId,
+        content: input.content,
+        source: input.source,
+      }),
+    );
+  }
+
   checkComments() {
     const prevStatus = this.status;
     this.status = this.comments.length
@@ -51,7 +68,7 @@ export class ReportEntity extends AggregateRoot {
       this.apply(
         new ReportStatusUpdatedEvent({
           type: this.type,
-          refId: this.refId,
+          refId: this.refVersionId,
           reportStatus: this.status,
         }),
       );
