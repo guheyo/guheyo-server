@@ -5,8 +5,6 @@ export class VersionEntity extends AggregateRoot {
 
   createdAt: Date;
 
-  updatedAt: Date;
-
   schemaName: string;
 
   tableName: string;

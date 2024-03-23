@@ -10,9 +10,6 @@ export class VersionResponse {
   createdAt: Date;
 
   @Field()
-  updatedAt: Date;
-
-  @Field()
   schemaName: string;
 
   @Field()

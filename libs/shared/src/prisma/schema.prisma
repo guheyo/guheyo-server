@@ -476,7 +476,6 @@ model Term {
 model Version {
   id                String            @id @default(uuid())
   createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
   deletedAt         DateTime?
   schemaName        String
   tableName         String
