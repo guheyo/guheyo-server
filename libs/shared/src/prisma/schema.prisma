@@ -322,8 +322,8 @@ model Report {
   updatedAt         DateTime          @updatedAt
   deletedAt         DateTime?
   type              String
-  refId             String
-  ref               Version           @relation(fields: [refId], references: [id])
+  refVersionId      String
+  refVersion        Version           @relation(fields: [refVersionId], references: [id])
   authorId          String
   author            User              @relation(fields: [authorId], references: [id])
   title             String
@@ -475,6 +475,7 @@ model Term {
 model Version {
   id                String            @id @default(uuid())
   createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
   deletedAt         DateTime?
   schemaName        String
   tableName         String
