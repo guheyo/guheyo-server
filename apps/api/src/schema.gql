@@ -614,7 +614,8 @@ type Query {
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
-  findVersion(id: ID, refId: ID): VersionResponse!
+  findVersion(id: ID!): VersionResponse
+  findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
   getSocialAccountsByUserId(id: ID!): String!
 }
 
@@ -914,9 +915,20 @@ type UserResponseEdge {
   node: UserResponse!
 }
 
+type VersionPreviewResponse {
+  createdAt: DateTime!
+  id: ID!
+  op: String!
+  refId: ID!
+  schemaName: String!
+  tableName: String!
+  values: JSON!
+}
+
 type VersionResponse {
   createdAt: DateTime!
   id: ID!
+  images: [UserImageResponse!]!
   op: String!
   refId: ID!
   schemaName: String!
