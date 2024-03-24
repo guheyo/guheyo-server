@@ -24,6 +24,7 @@ import { CommonModule } from './app/common/common.module';
 import { BumpModule } from './app/bump/bump.module';
 import { ReportModule } from './app/report/report.module';
 import { CommentModule } from './app/comment/comment.module';
+import { VersionModule } from './app/version/version.module';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { CommentModule } from './app/comment/comment.module';
     BumpModule,
     ReportModule,
     CommentModule,
+    VersionModule,
   ],
 })
 export class ApiModule {}

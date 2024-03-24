@@ -5,12 +5,12 @@ import { validateBump } from '@lib/shared/deal/validate-bump';
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
 import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price.extension';
-import { REPORT_COMMENTED_PREFIX, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
+import { REPORT_COMMENTED, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
 import { UpdateDemandProps } from './demand.types';
 import { DemandCreatedEvent } from '../application/events/demand-created/demand-created.event';
 import { DemandUpdatedEvent } from '../application/events/demand-updated/demand-updated.event';
 import { BumpDemandInput } from '../application/commands/bump-demand/bump-demand.input';
-import { DEMAND_OPEN, DEMAND_REPORTED_PREFIX } from './demand.constants';
+import { DEMAND_OPEN, DEMAND_PENDING } from './demand.constants';
 
 export class DemandEntity extends AggregateRoot {
   id: string;
@@ -101,13 +101,13 @@ export class DemandEntity extends AggregateRoot {
   checkReports(reportStatus: string) {
     if (reportStatus === REPORT_OPEN) {
       this.reportCount += 1;
-    } else if (reportStatus.startsWith(REPORT_COMMENTED_PREFIX)) {
+    } else if (reportStatus === REPORT_COMMENTED) {
       this.reportCommentCount += 1;
     }
 
-    if (this.reportCount > this.reportCommentCount) {
-      this.status = `${DEMAND_REPORTED_PREFIX}#${this.reportCount - this.reportCommentCount}`;
-    } else if (this.status.startsWith(DEMAND_REPORTED_PREFIX)) {
+    if (this.reportCount - this.reportCommentCount > 3) {
+      this.status = DEMAND_PENDING;
+    } else {
       this.status = DEMAND_OPEN;
     }
   }

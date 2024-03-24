@@ -5,8 +5,6 @@ export class VersionEntity extends AggregateRoot {
 
   createdAt: Date;
 
-  updatedAt: Date;
-
   schemaName: string;
 
   tableName: string;
@@ -15,7 +13,7 @@ export class VersionEntity extends AggregateRoot {
 
   refId: string;
 
-  values: JSON;
+  values: any;
 
   constructor(partial: Partial<VersionEntity>) {
     super();

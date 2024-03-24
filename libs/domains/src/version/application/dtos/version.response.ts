@@ -10,9 +10,6 @@ export class VersionResponse {
   createdAt: Date;
 
   @Field()
-  updatedAt: Date;
-
-  @Field()
   schemaName: string;
 
   @Field()
@@ -22,7 +19,7 @@ export class VersionResponse {
   op: string;
 
   @Field(() => ID)
-  refid: string;
+  refId: string;
 
   @Field(() => GraphQLJSON)
   values: any;

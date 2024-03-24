@@ -17,6 +17,10 @@ export class CreateReportInput {
 
   @IsUUID()
   @Field(() => ID)
+  refVersionId: string;
+
+  @IsUUID()
+  @Field(() => ID)
   authorId: string;
 
   @IsString()

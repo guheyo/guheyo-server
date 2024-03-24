@@ -20,6 +20,7 @@ export class ReportRepository extends PrismaRepository<ReportEntity> {
             createdAt: 'desc',
           },
         },
+        refVersion: true,
       },
     });
     return this.toEntity(report);
@@ -30,6 +31,7 @@ export class ReportRepository extends PrismaRepository<ReportEntity> {
       data: _.pick(report, [
         'id',
         'type',
+        'refId',
         'refVersionId',
         'authorId',
         'title',
@@ -42,7 +44,16 @@ export class ReportRepository extends PrismaRepository<ReportEntity> {
   async createMany(reports: ReportEntity[]): Promise<void> {
     await this.prismaService.report.createMany({
       data: reports.map((report) =>
-        _.pick(report, ['id', 'type', 'refVersionId', 'authorId', 'title', 'content', 'status']),
+        _.pick(report, [
+          'id',
+          'type',
+          'refId',
+          'refVersionId',
+          'authorId',
+          'title',
+          'content',
+          'status',
+        ]),
       ),
     });
   }
