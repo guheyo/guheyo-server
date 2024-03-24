@@ -3,7 +3,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { VersionEntity } from '@lib/domains/version/domain/version.entity';
 import { ReportCreatedEvent } from '../application/events/report-created/report-created.event';
 import { ReportStatusUpdatedEvent } from '../application/events/report-status-updated/report-status-updated.event';
-import { REPORT_COMMENTED_PREFIX, REPORT_OPEN } from './report.constants';
+import { REPORT_COMMENTED, REPORT_OPEN } from './report.constants';
 import { CommentReportInput } from '../application/commands/comment-report/comment-report.input';
 import { ReportCommentedEvent } from '../application/events/report-commented/report-commented.event';
 
@@ -79,9 +79,7 @@ export class ReportEntity extends AggregateRoot {
 
   checkComments() {
     const prevStatus = this.status;
-    this.status = this.comments.length
-      ? `${REPORT_COMMENTED_PREFIX}#${this.comments.length}`
-      : REPORT_OPEN;
+    this.status = this.comments.length ? REPORT_COMMENTED : REPORT_OPEN;
 
     if (this.status !== prevStatus) {
       this.apply(

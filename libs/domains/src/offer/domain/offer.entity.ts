@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { validateBump } from '@lib/shared/deal/validate-bump';
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
-import { REPORT_COMMENTED_PREFIX, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
+import { REPORT_COMMENTED, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
 import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price.extension';
 import { UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
@@ -101,7 +101,7 @@ export class OfferEntity extends AggregateRoot {
   checkReports(reportStatus: string) {
     if (reportStatus === REPORT_OPEN) {
       this.reportCount += 1;
-    } else if (reportStatus.startsWith(REPORT_COMMENTED_PREFIX)) {
+    } else if (reportStatus === REPORT_COMMENTED) {
       this.reportCommentCount += 1;
     }
 
