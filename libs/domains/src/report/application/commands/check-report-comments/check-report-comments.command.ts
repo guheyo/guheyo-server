@@ -1,5 +1,5 @@
 import { ICommand } from '@nestjs/cqrs/dist';
-import { CheckReportCommentsInput } from './create-report-comments.input';
+import { CheckReportCommentsInput } from './check-report-comments.input';
 
 export class CheckReportCommentsCommand implements ICommand {
   type: string;
