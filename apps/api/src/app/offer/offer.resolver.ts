@@ -56,7 +56,7 @@ export class OfferResolver {
     return this.commandBus.execute(new UpdateOfferCommand(input));
   }
 
-  @AuthorIdPath('input.sellerId')
+  @AuthorIdPath('sellerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async deleteOffer(@Args() args: DeleteOfferArgs): Promise<string> {

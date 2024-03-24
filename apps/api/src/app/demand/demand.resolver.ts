@@ -56,7 +56,7 @@ export class DemandResolver {
     return this.commandBus.execute(new UpdateDemandCommand(input));
   }
 
-  @AuthorIdPath('input.buyerId')
+  @AuthorIdPath('buyerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async deleteDemand(@Args() args: DeleteDemandArgs): Promise<string> {

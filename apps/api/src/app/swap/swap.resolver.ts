@@ -56,7 +56,7 @@ export class SwapResolver {
     return this.commandBus.execute(new UpdateSwapCommand(input));
   }
 
-  @AuthorIdPath('input.proposerId')
+  @AuthorIdPath('proposerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async deleteSwap(@Args() args: DeleteSwapArgs): Promise<string> {
