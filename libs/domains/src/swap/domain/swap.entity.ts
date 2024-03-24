@@ -10,7 +10,7 @@ import { UpdateSwapProps } from './swap.types';
 import { SwapCreatedEvent } from '../application/events/swap-created/swap-created.event';
 import { SwapUpdatedEvent } from '../application/events/swap-updated/swap-updated.event';
 import { BumpSwapInput } from '../application/commands/bump-swap/bump-swap.input';
-import { SWAP_OPEN, SWAP_REPORTED_PREFIX } from './swap.constants';
+import { SWAP_OPEN, SWAP_PENDING } from './swap.constants';
 
 export class SwapEntity extends AggregateRoot {
   id: string;
@@ -109,9 +109,9 @@ export class SwapEntity extends AggregateRoot {
       this.reportCommentCount += 1;
     }
 
-    if (this.reportCount > this.reportCommentCount) {
-      this.status = `${SWAP_REPORTED_PREFIX}#${this.reportCount - this.reportCommentCount}`;
-    } else if (this.status.startsWith(SWAP_REPORTED_PREFIX)) {
+    if (this.reportCount - this.reportCommentCount > 3) {
+      this.status = SWAP_PENDING;
+    } else {
       this.status = SWAP_OPEN;
     }
   }

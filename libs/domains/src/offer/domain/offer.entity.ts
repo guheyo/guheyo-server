@@ -10,7 +10,7 @@ import { UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
 import { BumpOfferInput } from '../application/commands/bump-offer/bump-offer.input';
-import { OFFER_OPEN, OFFER_REPORTED_PREFIX } from './offer.constants';
+import { OFFER_OPEN, OFFER_PENDING } from './offer.constants';
 
 export class OfferEntity extends AggregateRoot {
   id: string;
@@ -105,9 +105,9 @@ export class OfferEntity extends AggregateRoot {
       this.reportCommentCount += 1;
     }
 
-    if (this.reportCount > this.reportCommentCount) {
-      this.status = `${OFFER_REPORTED_PREFIX}#${this.reportCount - this.reportCommentCount}`;
-    } else if (this.status.startsWith(OFFER_REPORTED_PREFIX)) {
+    if (this.reportCount - this.reportCommentCount > 3) {
+      this.status = OFFER_PENDING;
+    } else {
       this.status = OFFER_OPEN;
     }
   }

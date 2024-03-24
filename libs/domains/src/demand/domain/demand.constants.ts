@@ -1,2 +1,2 @@
 export const DEMAND_OPEN = 'open';
-export const DEMAND_REPORTED_PREFIX = 'reported';
+export const DEMAND_PENDING = 'pending';
