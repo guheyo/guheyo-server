@@ -20,6 +20,7 @@ export class ReportRepository extends PrismaRepository<ReportEntity> {
             createdAt: 'desc',
           },
         },
+        refVersion: true,
       },
     });
     return this.toEntity(report);

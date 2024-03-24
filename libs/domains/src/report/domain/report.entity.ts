@@ -49,19 +49,18 @@ export class ReportEntity extends AggregateRoot {
   }
 
   isAuthorized(authorId: string) {
-    const refValues = JSON.parse(this.refVersion.values.toString());
     switch (this.refVersion.tableName) {
       case 'Offer': {
-        return refValues.sellerId === authorId;
+        return this.refVersion.values.sellerId === authorId;
       }
       case 'Demand': {
-        return refValues.buyerId === authorId;
+        return this.refVersion.values.buyerId === authorId;
       }
       case 'Swap': {
-        return refValues.proposerId === authorId;
+        return this.refVersion.values.proposerId === authorId;
       }
       default:
-        return refValues.authorId === authorId;
+        return this.refVersion.values.authorId === authorId;
     }
   }
 
