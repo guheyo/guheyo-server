@@ -84,7 +84,7 @@ export class ReportEntity extends AggregateRoot {
       this.apply(
         new ReportStatusUpdatedEvent({
           type: this.type,
-          refId: this.refVersionId,
+          refId: this.refId,
           reportStatus: this.status,
         }),
       );
