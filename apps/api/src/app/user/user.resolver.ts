@@ -16,6 +16,9 @@ import { FindUserArgs } from '@lib/domains/user/application/queries/find-user/fi
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 import { UseGuards } from '@nestjs/common';
 import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
+import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
+import { FindAuthorArgs } from '@lib/domains/user/application/queries/find-author/find-author.args';
+import { FindAuthorQuery } from '@lib/domains/user/application/queries/find-author/find-author.query';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -35,6 +38,12 @@ export class UserResolver {
   @Query(() => UserResponse, { nullable: true })
   async findUser(@Args() args: FindUserArgs): Promise<UserResponse | null> {
     const query = new FindUserQuery(args);
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => AuthorResponse, { nullable: true })
+  async findAuthor(@Args() args: FindAuthorArgs): Promise<AuthorResponse | null> {
+    const query = new FindAuthorQuery(args);
     return this.queryBus.execute(query);
   }
 
