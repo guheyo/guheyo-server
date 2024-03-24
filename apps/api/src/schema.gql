@@ -591,6 +591,7 @@ type ProductCategoryResponse {
 type Query {
   findAuctionById(id: ID!): AuctionResponse
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
+  findAuthor(id: ID!): AuthorResponse
   findComment(id: ID, refId: ID, type: String): CommentResponse
   findDemand(id: ID, slug: String): DemandResponse
   findDemandPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
@@ -614,7 +615,8 @@ type Query {
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
-  findVersion(id: ID, refId: ID): VersionResponse!
+  findVersion(id: ID!): VersionResponse
+  findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
   getSocialAccountsByUserId(id: ID!): String!
 }
 
@@ -914,9 +916,20 @@ type UserResponseEdge {
   node: UserResponse!
 }
 
+type VersionPreviewResponse {
+  createdAt: DateTime!
+  id: ID!
+  op: String!
+  refId: ID!
+  schemaName: String!
+  tableName: String!
+  values: JSON!
+}
+
 type VersionResponse {
   createdAt: DateTime!
   id: ID!
+  images: [UserImageResponse!]!
   op: String!
   refId: ID!
   schemaName: String!
