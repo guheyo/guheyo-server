@@ -11,6 +11,9 @@ import { FindReportPreviewsArgs } from '@lib/domains/report/application/queries/
 import { FindReportPreviewsQuery } from '@lib/domains/report/application/queries/find-report-previews/find-report-previews.query';
 import { CommentReportInput } from '@lib/domains/report/application/commands/comment-report/comment-report.input';
 import { CommentReportCommand } from '@lib/domains/report/application/commands/comment-report/comment-report.command';
+import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
+import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
+import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -33,12 +36,16 @@ export class ReportResolver {
     return this.queryBus.execute(query);
   }
 
+  @AuthorIdPath('input.authorId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async createReport(@Args('input') input: CreateReportInput): Promise<string> {
     await this.commandBus.execute(new CreateReportCommand(input));
     return input.id;
   }
 
+  @AuthorIdPath('input.authorId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async commentReport(@Args('input') input: CommentReportInput): Promise<string> {
     await this.commandBus.execute(new CommentReportCommand(input));
