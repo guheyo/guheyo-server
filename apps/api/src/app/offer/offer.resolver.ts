@@ -31,9 +31,16 @@ export class OfferResolver {
     private readonly commandBus: CommandBus,
   ) {}
 
+  @UseGuards(JwtAccessAllGuard)
   @Query(() => OfferResponse, { nullable: true })
-  async findOffer(@Args() findOfferArgs: FindOfferArgs): Promise<OfferResponse | null> {
-    const query = new FindOfferQuery(findOfferArgs);
+  async findOffer(
+    @Args() findOfferArgs: FindOfferArgs,
+    @AuthUser() user: any,
+  ): Promise<OfferResponse | null> {
+    const query = new FindOfferQuery({
+      args: findOfferArgs,
+      userId: user?.id,
+    });
     return this.queryBus.execute(query);
   }
 

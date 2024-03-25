@@ -1,9 +1,10 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { NotFoundException } from '@nestjs/common';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
 import { FindOfferQuery } from './find-offer.query';
 import { OfferResponse } from '../../dtos/offer.response';
+import { OFFER_HIDDEN } from '@lib/domains/offer/domain/offer.constants';
 
 @QueryHandler(FindOfferQuery)
 export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferResponse> {
@@ -38,6 +39,8 @@ export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferRe
       },
     });
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
+    if (offer.status === OFFER_HIDDEN && offer.sellerId !== query.userId)
+      throw new ForbiddenException(OfferErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
 
     const images = await this.prismaService.userImage.findMany({
       where: {
