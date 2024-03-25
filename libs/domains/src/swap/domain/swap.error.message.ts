@@ -7,4 +7,5 @@ export enum SwapErrorMessage {
   SWAP_REPORT_NOT_FOUND = 'Swap report not found',
   COMMENT_SWAP_REPORT_REQUEST_FROM_NON_BUYER = 'Comment swap report request from non buyer',
   UNCOMMENTED_REPORT_EXISTS = 'Uncommented report exists',
+  FIND_REQUEST_FROM_UNAUTHORIZED_USER = 'Find request from unauthorized user',
 }

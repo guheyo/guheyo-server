@@ -6,8 +6,11 @@ export class FindSwapQuery implements IQuery {
 
   slug?: string;
 
-  constructor(findSwapArgs: FindSwapArgs) {
-    this.id = findSwapArgs.id;
-    this.slug = findSwapArgs.slug;
+  userId?: string;
+
+  constructor({ args, userId }: { args: FindSwapArgs; userId?: string }) {
+    this.id = args.id;
+    this.slug = args.slug;
+    this.userId = userId;
   }
 }

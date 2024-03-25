@@ -1,10 +1,10 @@
 import { PaginationQuery } from '@lib/shared/cqrs/queries/pagination/pagination.query';
-import { FindOffersWhereArgs } from '@lib/domains/offer/application/queries/find-offer-previews/find-offers-where.args';
 import { FindOffersOrderByArgs } from '@lib/domains/offer/application/queries/find-offer-previews/find-offers-order-by.args';
 import { FindSwapPreviewsArgs } from './find-swap-previews.args';
+import { FindSwapsWhereArgs } from './find-swaps-where.args';
 
 export class FindSwapPreviewsQuery extends PaginationQuery {
-  where?: FindOffersWhereArgs;
+  where?: FindSwapsWhereArgs;
 
   orderBy?: FindOffersOrderByArgs;
 
@@ -12,11 +12,14 @@ export class FindSwapPreviewsQuery extends PaginationQuery {
 
   distinct?: boolean;
 
-  constructor(findSwapPreviewsArgs: FindSwapPreviewsArgs) {
-    super(findSwapPreviewsArgs);
-    this.where = findSwapPreviewsArgs.where;
-    this.orderBy = findSwapPreviewsArgs.orderBy;
-    this.keyword = findSwapPreviewsArgs.keyword;
-    this.distinct = findSwapPreviewsArgs.distinct;
+  userId?: string;
+
+  constructor({ args, userId }: { args: FindSwapPreviewsArgs; userId?: string }) {
+    super(args);
+    this.where = args.where;
+    this.orderBy = args.orderBy;
+    this.keyword = args.keyword;
+    this.distinct = args.distinct;
+    this.userId = userId;
   }
 }
