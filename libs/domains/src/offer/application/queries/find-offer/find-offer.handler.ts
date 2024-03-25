@@ -2,9 +2,9 @@ import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
+import { OFFER_HIDDEN } from '@lib/domains/offer/domain/offer.constants';
 import { FindOfferQuery } from './find-offer.query';
 import { OfferResponse } from '../../dtos/offer.response';
-import { OFFER_HIDDEN } from '@lib/domains/offer/domain/offer.constants';
 
 @QueryHandler(FindOfferQuery)
 export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferResponse> {
