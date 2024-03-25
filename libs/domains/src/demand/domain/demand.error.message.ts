@@ -6,4 +6,5 @@ export enum DemandErrorMessage {
   DEMAND_BUMP_STUCK_ON_COOLDOWN = 'Demand bump stuck on cooldown',
   DEMAND_REPORT_NOT_FOUND = 'Demand report not found',
   COMMENT_DEMAND_REPORT_REQUEST_FROM_NON_BUYER = 'Comment demand report request from non buyer',
+  UNCOMMENTED_REPORT_EXISTS = 'Uncommented report exists',
 }

@@ -111,4 +111,8 @@ export class DemandEntity extends AggregateRoot {
       this.status = DEMAND_OPEN;
     }
   }
+
+  hasUncommentedReports() {
+    return this.reportCount - this.reportCommentCount > 0;
+  }
 }

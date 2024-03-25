@@ -115,4 +115,8 @@ export class SwapEntity extends AggregateRoot {
       this.status = SWAP_OPEN;
     }
   }
+
+  hasUncommentedReports() {
+    return this.reportCount - this.reportCommentCount > 0;
+  }
 }

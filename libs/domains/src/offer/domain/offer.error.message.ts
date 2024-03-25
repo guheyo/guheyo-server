@@ -7,4 +7,5 @@ export enum OfferErrorMessage {
   OFFER_BUMP_STUCK_ON_COOLDOWN = 'Offer bump stuck on cooldown',
   OFFER_REPORT_NOT_FOUND = 'Offer report not found',
   COMMENT_OFFER_REPORT_REQUEST_FROM_NON_SELLER = 'Comment offer report request from non seller',
+  UNCOMMENTED_REPORT_EXISTS = 'Uncommented report exists',
 }

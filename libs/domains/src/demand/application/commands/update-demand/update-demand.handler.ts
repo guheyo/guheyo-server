@@ -26,6 +26,8 @@ export class UpdateDemandHandler extends PrismaCommandHandler<
     if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_NOT_FOUND);
     if (!demand.isAuthorized(command.buyerId))
       throw new ForbiddenException(DemandErrorMessage.DEMAND_CHANGES_FROM_UNAUTHORIZED_USER);
+    if (demand.hasUncommentedReports())
+      throw new ForbiddenException(DemandErrorMessage.UNCOMMENTED_REPORT_EXISTS);
 
     demand = this.publisher.mergeObjectContext(demand);
     demand.update(
