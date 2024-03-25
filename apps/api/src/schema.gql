@@ -153,15 +153,6 @@ input CreateDemandInput {
   status: String! = "open"
 }
 
-input CreateDiscordMessageInput {
-  discordChannelId: String
-  discordGuildId: String
-  discordMessageId: String
-  groupId: ID!
-  modelId: ID!
-  modelName: String!
-}
-
 input CreateGroupInput {
   description: String
   icon: String
@@ -418,7 +409,6 @@ type Mutation {
   createAuction(input: CreateAuctionInput!): String!
   createComment(input: CreateCommentInput!): String!
   createDemand(input: CreateDemandInput!): String!
-  createDiscordMessage(input: CreateDiscordMessageInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
   createMember(input: CreateMemberInput!): String!
