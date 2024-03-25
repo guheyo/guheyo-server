@@ -17,6 +17,8 @@ export class DeleteOfferHandler implements ICommandHandler<DeleteOfferCommand> {
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
     if (!offer.isAuthorized(command.sellerId))
       throw new ForbiddenException(OfferErrorMessage.OFFER_DELETE_COMMAND_FROM_UNAUTHORIZED_USER);
+    if (offer.hasUncommentedReports())
+      throw new ForbiddenException(OfferErrorMessage.UNCOMMENTED_REPORT_EXISTS);
 
     await this.offerSavePort.delete(offer);
   }

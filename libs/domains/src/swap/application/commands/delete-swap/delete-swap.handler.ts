@@ -17,6 +17,8 @@ export class DeleteSwapHandler implements ICommandHandler<DeleteSwapCommand> {
     if (!swap) throw new NotFoundException(SwapErrorMessage.SWAP_NOT_FOUND);
     if (!swap.isAuthorized(command.proposerId))
       throw new ForbiddenException(SwapErrorMessage.SWAP_DELETE_COMMAND_FROM_UNAUTHORIZED_USER);
+    if (swap.hasUncommentedReports())
+      throw new ForbiddenException(SwapErrorMessage.UNCOMMENTED_REPORT_EXISTS);
 
     await this.swapSavePort.delete(swap);
   }
