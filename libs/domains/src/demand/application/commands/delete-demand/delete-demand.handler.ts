@@ -17,6 +17,8 @@ export class DeleteDemandHandler implements ICommandHandler<DeleteDemandCommand>
     if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_NOT_FOUND);
     if (!demand.isAuthorized(command.buyerId))
       throw new ForbiddenException(DemandErrorMessage.DEMAND_DELETE_COMMAND_FROM_UNAUTHORIZED_USER);
+    if (demand.hasUncommentedReports())
+      throw new ForbiddenException(DemandErrorMessage.UNCOMMENTED_REPORT_EXISTS);
 
     await this.demandSavePort.delete(demand);
   }

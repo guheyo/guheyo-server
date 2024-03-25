@@ -26,6 +26,8 @@ export class UpdateOfferHandler extends PrismaCommandHandler<
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
     if (!offer.isAuthorized(command.sellerId))
       throw new ForbiddenException(OfferErrorMessage.OFFER_CHANGES_FROM_UNAUTHORIZED_USER);
+    if (offer.hasUncommentedReports())
+      throw new ForbiddenException(OfferErrorMessage.UNCOMMENTED_REPORT_EXISTS);
 
     offer = this.publisher.mergeObjectContext(offer);
     offer.update(

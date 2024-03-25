@@ -2,6 +2,8 @@ import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseFollowedBySearcher } from '@lib/shared/search/search';
+import { DEMAND_HIDDEN } from '@lib/domains/demand/domain/demand.constants';
+import { Prisma } from '@prisma/client';
 import { FindDemandPreviewsQuery } from './find-demand-previews.query';
 import { DemandPreviewResponse } from '../../dtos/demand-preview.response';
 import { PaginatedDemandPreviewsResponse } from './paginated-demand-previews.response';
@@ -16,6 +18,25 @@ export class FindDemandPreviewsHandler extends PrismaQueryHandler<
   }
 
   async execute(query: FindDemandPreviewsQuery): Promise<PaginatedDemandPreviewsResponse> {
+    let where: Prisma.DemandWhereInput;
+    if (!!query.where?.buyerId && query.where.buyerId === query.userId) {
+      where = query.where;
+    } else {
+      where = {
+        ...query.where,
+        AND: [
+          {
+            status: {
+              notIn: [DEMAND_HIDDEN],
+            },
+          },
+          {
+            status: query.where?.status,
+          },
+        ],
+      };
+    }
+
     const cursor = query.cursor
       ? {
           id: query.cursor,
@@ -23,7 +44,7 @@ export class FindDemandPreviewsHandler extends PrismaQueryHandler<
       : undefined;
     const demands = await this.prismaService.demand.findMany({
       where: {
-        ...query.where,
+        ...where,
         name: parseFollowedBySearcher(query.keyword),
         bumpedAt: query.where?.bumpedAt
           ? {

@@ -1,7 +1,8 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { NotFoundException } from '@nestjs/common';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { DemandErrorMessage } from '@lib/domains/demand/domain/demand.error.message';
+import { DEMAND_HIDDEN } from '@lib/domains/demand/domain/demand.constants';
 import { FindDemandQuery } from './find-demand.query';
 import { DemandResponse } from '../../dtos/demand.response';
 
@@ -38,6 +39,8 @@ export class FindDemandHandler extends PrismaQueryHandler<FindDemandQuery, Deman
       },
     });
     if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_NOT_FOUND);
+    if (demand.status === DEMAND_HIDDEN && demand.buyerId !== query.userId)
+      throw new ForbiddenException(DemandErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
 
     const images = await this.prismaService.userImage.findMany({
       where: {

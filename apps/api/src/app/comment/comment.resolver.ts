@@ -8,6 +8,9 @@ import { FindCommentArgs } from '@lib/domains/comment/application/queries/find-c
 import { FindCommentQuery } from '@lib/domains/comment/application/queries/find-comment/find-comment.query';
 import { UpdateCommentCommand } from '@lib/domains/comment/application/commands/update-comment/update-comment.command';
 import { UpdateCommentInput } from '@lib/domains/comment/application/commands/update-comment/update-comment.input';
+import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
+import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
+import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -24,12 +27,16 @@ export class CommentResolver {
     return this.queryBus.execute(query);
   }
 
+  @AuthorIdPath('input.authorId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async createComment(@Args('input') input: CreateCommentInput): Promise<string> {
     await this.commandBus.execute(new CreateCommentCommand(input));
     return input.id;
   }
 
+  @AuthorIdPath('input.authorId')
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => CommentResponse)
   async updateComment(@Args('input') input: UpdateCommentInput) {
     return this.commandBus.execute(new UpdateCommentCommand(input));

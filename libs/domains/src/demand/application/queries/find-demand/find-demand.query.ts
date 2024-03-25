@@ -6,8 +6,11 @@ export class FindDemandQuery implements IQuery {
 
   slug?: string;
 
-  constructor(findDemandArgs: FindDemandArgs) {
-    this.id = findDemandArgs.id;
-    this.slug = findDemandArgs.slug;
+  userId?: string;
+
+  constructor({ args, userId }: { args: FindDemandArgs; userId?: string }) {
+    this.id = args.id;
+    this.slug = args.slug;
+    this.userId = userId;
   }
 }

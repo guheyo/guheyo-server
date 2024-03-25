@@ -2,6 +2,8 @@ import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseFollowedBySearcher } from '@lib/shared/search/search';
+import { OFFER_HIDDEN } from '@lib/domains/offer/domain/offer.constants';
+import { Prisma } from '@prisma/client';
 import { FindOfferPreviewsQuery } from './find-offer-previews.query';
 import { PaginatedOfferPreviewsResponse } from './paginated-offer-previews.response';
 import { OfferPreviewResponse } from '../../dtos/offer-preview.response';
@@ -16,6 +18,25 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
   }
 
   async execute(query: FindOfferPreviewsQuery): Promise<PaginatedOfferPreviewsResponse> {
+    let where: Prisma.OfferWhereInput;
+    if (!!query.where?.sellerId && query.where.sellerId === query.userId) {
+      where = query.where;
+    } else {
+      where = {
+        ...query.where,
+        AND: [
+          {
+            status: {
+              notIn: [OFFER_HIDDEN],
+            },
+          },
+          {
+            status: query.where?.status,
+          },
+        ],
+      };
+    }
+
     const cursor = query.cursor
       ? {
           id: query.cursor,
@@ -23,7 +44,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
       : undefined;
     const offers = await this.prismaService.offer.findMany({
       where: {
-        ...query.where,
+        ...where,
         name: parseFollowedBySearcher(query.keyword),
         bumpedAt: query.where?.bumpedAt
           ? {

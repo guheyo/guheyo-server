@@ -1,7 +1,8 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { NotFoundException } from '@nestjs/common';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { SwapErrorMessage } from '@lib/domains/swap/domain/swap.error.message';
+import { SWAP_HIDDEN } from '@lib/domains/swap/domain/swap.constants';
 import { FindSwapQuery } from './find-swap.query';
 import { SwapResponse } from '../../dtos/swap.response';
 
@@ -38,6 +39,8 @@ export class FindSwapHandler extends PrismaQueryHandler<FindSwapQuery, SwapRespo
       },
     });
     if (!swap) throw new NotFoundException(SwapErrorMessage.SWAP_NOT_FOUND);
+    if (swap.status === SWAP_HIDDEN && swap.proposerId !== query.userId)
+      throw new ForbiddenException(SwapErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
 
     const images = await this.prismaService.userImage.findMany({
       where: {

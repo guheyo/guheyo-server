@@ -26,6 +26,8 @@ export class UpdateSwapHandler extends PrismaCommandHandler<
     if (!swap) throw new NotFoundException(SwapErrorMessage.SWAP_NOT_FOUND);
     if (!swap.isAuthorized(command.proposerId))
       throw new ForbiddenException(SwapErrorMessage.SWAP_CHANGES_FROM_UNAUTHORIZED_USER);
+    if (swap.hasUncommentedReports())
+      throw new ForbiddenException(SwapErrorMessage.UNCOMMENTED_REPORT_EXISTS);
 
     swap = this.publisher.mergeObjectContext(swap);
     swap.update(

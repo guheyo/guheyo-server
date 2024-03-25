@@ -19,6 +19,8 @@ import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-
 import { BumpOfferInput } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.input';
 import { BumpOfferCommand } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.command';
 import { OfferPreviewResponse } from '@lib/domains/offer/application/dtos/offer-preview.response';
+import { AuthUser } from '@lib/domains/auth/decorators/auth-user/auth-user.decorator';
+import { JwtAccessAllGuard } from '@lib/domains/auth/guards/jwt/jwt-access-all.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -29,15 +31,29 @@ export class OfferResolver {
     private readonly commandBus: CommandBus,
   ) {}
 
+  @UseGuards(JwtAccessAllGuard)
   @Query(() => OfferResponse, { nullable: true })
-  async findOffer(@Args() findOfferArgs: FindOfferArgs): Promise<OfferResponse | null> {
-    const query = new FindOfferQuery(findOfferArgs);
+  async findOffer(
+    @Args() findOfferArgs: FindOfferArgs,
+    @AuthUser() user: any,
+  ): Promise<OfferResponse | null> {
+    const query = new FindOfferQuery({
+      args: findOfferArgs,
+      userId: user?.id,
+    });
     return this.queryBus.execute(query);
   }
 
+  @UseGuards(JwtAccessAllGuard)
   @Query(() => PaginatedOfferPreviewsResponse)
-  async findOfferPreviews(@Args() findOfferPreviewsArgs: FindOfferPreviewsArgs) {
-    const query = new FindOfferPreviewsQuery(findOfferPreviewsArgs);
+  async findOfferPreviews(
+    @Args() findOfferPreviewsArgs: FindOfferPreviewsArgs,
+    @AuthUser() user: any,
+  ) {
+    const query = new FindOfferPreviewsQuery({
+      args: findOfferPreviewsArgs,
+      userId: user?.id,
+    });
     return this.queryBus.execute(query);
   }
 
@@ -56,7 +72,7 @@ export class OfferResolver {
     return this.commandBus.execute(new UpdateOfferCommand(input));
   }
 
-  @AuthorIdPath('input.sellerId')
+  @AuthorIdPath('sellerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async deleteOffer(@Args() args: DeleteOfferArgs): Promise<string> {

@@ -153,15 +153,6 @@ input CreateDemandInput {
   status: String! = "open"
 }
 
-input CreateDiscordMessageInput {
-  discordChannelId: String
-  discordGuildId: String
-  discordMessageId: String
-  groupId: ID!
-  modelId: ID!
-  modelName: String!
-}
-
 input CreateGroupInput {
   description: String
   icon: String
@@ -213,13 +204,6 @@ input CreateRoleInput {
   id: ID!
   name: String!
   position: Int
-}
-
-input CreateSessionInput {
-  expires: DateTime!
-  id: ID!
-  sessionToken: String!
-  userId: ID!
 }
 
 input CreateSignedUrlInput {
@@ -418,14 +402,12 @@ type Mutation {
   createAuction(input: CreateAuctionInput!): String!
   createComment(input: CreateCommentInput!): String!
   createDemand(input: CreateDemandInput!): String!
-  createDiscordMessage(input: CreateDiscordMessageInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
   createMember(input: CreateMemberInput!): String!
   createOffer(input: CreateOfferInput!): String!
   createReport(input: CreateReportInput!): String!
   createRole(input: CreateRoleInput!): String!
-  createSession(input: CreateSessionInput!): String!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
   createSocialAccount(input: CreateSocialAccountInput!): String!
   createSwap(input: CreateSwapInput!): String!
@@ -437,7 +419,6 @@ type Mutation {
   deleteMember(id: ID!, userId: ID!): String!
   deleteOffer(id: ID!, sellerId: ID!): String!
   deleteRole(id: ID!): String!
-  deleteSession(sessionToken: String!): String!
   deleteSocialAccount(id: ID!): String!
   deleteSocialAccountByProvider(provider: String!, socialId: String!): String!
   deleteSwap(id: ID!, proposerId: ID!): String!
@@ -453,7 +434,6 @@ type Mutation {
   updateMember(input: UpdateMemberInput!): String!
   updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
   updateRole(input: UpdateRoleInput!): String!
-  updateSession(input: UpdateSessionInput!): String!
   updateSocialAccount(input: UpdateSocialAccountInput!): String!
   updateSwap(input: UpdateSwapInput!): SwapPreviewResponse!
   updateUser(input: UpdateUserInput!): String!
@@ -607,7 +587,6 @@ type Query {
   findReport(authorId: ID, id: ID, refId: ID, type: String): ReportResponse!
   findReportPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
-  findSession(sessionToken: String!): SessionResponse
   findSwap(id: ID, slug: String): SwapResponse
   findSwapPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedSwapPreviewsResponse!
   findTerm(name: String!): TermResponse
@@ -656,12 +635,6 @@ type RoleResponse {
   id: ID!
   name: String!
   position: Int
-}
-
-type SessionResponse {
-  expires: DateTime!
-  sessionToken: String!
-  userId: String!
 }
 
 type SignedUrlResponse {
@@ -832,12 +805,6 @@ input UpdateRoleInput {
   id: ID!
   name: String
   position: Int
-}
-
-input UpdateSessionInput {
-  expires: DateTime
-  sessionToken: String!
-  userId: ID
 }
 
 input UpdateSocialAccountInput {

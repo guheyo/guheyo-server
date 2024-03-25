@@ -19,6 +19,8 @@ import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { BumpSwapInput } from '@lib/domains/swap/application/commands/bump-swap/bump-swap.input';
 import { BumpSwapCommand } from '@lib/domains/swap/application/commands/bump-swap/bump-swap.command';
 import { SwapPreviewResponse } from '@lib/domains/swap/application/dtos/swap-preview.response';
+import { JwtAccessAllGuard } from '@lib/domains/auth/guards/jwt/jwt-access-all.guard';
+import { AuthUser } from '@lib/domains/auth/decorators/auth-user/auth-user.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -29,15 +31,29 @@ export class SwapResolver {
     private readonly commandBus: CommandBus,
   ) {}
 
+  @UseGuards(JwtAccessAllGuard)
   @Query(() => SwapResponse, { nullable: true })
-  async findSwap(@Args() findSwapArgs: FindSwapArgs): Promise<SwapResponse | null> {
-    const query = new FindSwapQuery(findSwapArgs);
+  async findSwap(
+    @Args() findSwapArgs: FindSwapArgs,
+    @AuthUser() user: any,
+  ): Promise<SwapResponse | null> {
+    const query = new FindSwapQuery({
+      args: findSwapArgs,
+      userId: user?.id,
+    });
     return this.queryBus.execute(query);
   }
 
+  @UseGuards(JwtAccessAllGuard)
   @Query(() => PaginatedSwapPreviewsResponse)
-  async findSwapPreviews(@Args() findSwapPreviewsArgs: FindSwapPreviewsArgs) {
-    const query = new FindSwapPreviewsQuery(findSwapPreviewsArgs);
+  async findSwapPreviews(
+    @Args() findSwapPreviewsArgs: FindSwapPreviewsArgs,
+    @AuthUser() user: any,
+  ) {
+    const query = new FindSwapPreviewsQuery({
+      args: findSwapPreviewsArgs,
+      userId: user?.id,
+    });
     return this.queryBus.execute(query);
   }
 
@@ -56,7 +72,7 @@ export class SwapResolver {
     return this.commandBus.execute(new UpdateSwapCommand(input));
   }
 
-  @AuthorIdPath('input.proposerId')
+  @AuthorIdPath('proposerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async deleteSwap(@Args() args: DeleteSwapArgs): Promise<string> {

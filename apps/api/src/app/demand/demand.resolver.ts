@@ -19,6 +19,8 @@ import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { BumpDemandInput } from '@lib/domains/demand/application/commands/bump-demand/bump-demand.input';
 import { BumpDemandCommand } from '@lib/domains/demand/application/commands/bump-demand/bump-demand.command';
 import { DemandPreviewResponse } from '@lib/domains/demand/application/dtos/demand-preview.response';
+import { JwtAccessAllGuard } from '@lib/domains/auth/guards/jwt/jwt-access-all.guard';
+import { AuthUser } from '@lib/domains/auth/decorators/auth-user/auth-user.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -29,15 +31,29 @@ export class DemandResolver {
     private readonly commandBus: CommandBus,
   ) {}
 
+  @UseGuards(JwtAccessAllGuard)
   @Query(() => DemandResponse, { nullable: true })
-  async findDemand(@Args() findDemandArgs: FindDemandArgs): Promise<DemandResponse | null> {
-    const query = new FindDemandQuery(findDemandArgs);
+  async findDemand(
+    @Args() findDemandArgs: FindDemandArgs,
+    @AuthUser() user: any,
+  ): Promise<DemandResponse | null> {
+    const query = new FindDemandQuery({
+      args: findDemandArgs,
+      userId: user?.id,
+    });
     return this.queryBus.execute(query);
   }
 
+  @UseGuards(JwtAccessAllGuard)
   @Query(() => PaginatedDemandPreviewsResponse)
-  async findDemandPreviews(@Args() findDemandPreviewsArgs: FindDemandPreviewsArgs) {
-    const query = new FindDemandPreviewsQuery(findDemandPreviewsArgs);
+  async findDemandPreviews(
+    @Args() findDemandPreviewsArgs: FindDemandPreviewsArgs,
+    @AuthUser() user: any,
+  ) {
+    const query = new FindDemandPreviewsQuery({
+      args: findDemandPreviewsArgs,
+      userId: user?.id,
+    });
     return this.queryBus.execute(query);
   }
 
@@ -56,7 +72,7 @@ export class DemandResolver {
     return this.commandBus.execute(new UpdateDemandCommand(input));
   }
 
-  @AuthorIdPath('input.buyerId')
+  @AuthorIdPath('buyerId')
   @UseGuards(JwtAccessAuthGuard, AuthorGuard)
   @Mutation(() => String)
   async deleteDemand(@Args() args: DeleteDemandArgs): Promise<string> {

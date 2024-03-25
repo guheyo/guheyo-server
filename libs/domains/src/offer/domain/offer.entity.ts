@@ -111,4 +111,8 @@ export class OfferEntity extends AggregateRoot {
       this.status = OFFER_OPEN;
     }
   }
+
+  hasUncommentedReports() {
+    return this.reportCount - this.reportCommentCount > 0;
+  }
 }
