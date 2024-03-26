@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { identity, pickBy } from 'lodash';
+import { isUndefined, omitBy } from 'lodash';
 import { CommentCreatedEvent } from '../application/events/comment-created/comment-created.event';
 import { CommentTypeIdString, CommentType } from './comment.types';
 import { UpdateCommentProps } from './comment.interfaces';
@@ -60,6 +60,6 @@ export class CommentEntity extends AggregateRoot {
   }
 
   update(props: UpdateCommentProps) {
-    Object.assign(this, pickBy(props, identity));
+    Object.assign(this, omitBy(props, isUndefined));
   }
 }

@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import _ from 'lodash';
+import { isUndefined, omitBy } from 'lodash';
 import { UpdateSessionProps } from './session.types';
 
 export class SessionEntity extends AggregateRoot {
@@ -23,6 +23,6 @@ export class SessionEntity extends AggregateRoot {
   }
 
   update(props: UpdateSessionProps) {
-    Object.assign(this, _.pickBy(props, _.identity));
+    Object.assign(this, omitBy(props, isUndefined));
   }
 }

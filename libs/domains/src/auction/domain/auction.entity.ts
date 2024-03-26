@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import dayjs from 'dayjs';
-import _ from 'lodash';
+import { isUndefined, omitBy } from 'lodash';
 import { UpdateAuctionProps } from './auction.types';
 import { AuctionCreatedEvent } from '../application/events/auction-created/auction-created.event';
 import { AuctionUpdatedEvent } from '../application/events/auction-updated/auction-updated.event';
@@ -56,7 +56,7 @@ export class AuctionEntity extends AggregateRoot {
   }
 
   update(props: UpdateAuctionProps) {
-    Object.assign(this, _.pickBy(props, _.identity));
+    Object.assign(this, omitBy(props, isUndefined));
     this.apply(new AuctionUpdatedEvent(this.id));
   }
 

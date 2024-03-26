@@ -1,6 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
-import _ from 'lodash';
+import { isUndefined, omitBy } from 'lodash';
 import { validateBump } from '@lib/shared/deal/validate-bump';
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
@@ -78,7 +78,7 @@ export class OfferEntity extends AggregateRoot {
   }
 
   update(props: UpdateOfferProps) {
-    Object.assign(this, _.pickBy(props, _.identity));
+    Object.assign(this, omitBy(props, isUndefined));
     this.totalPrice = totalPrice.compute(this);
     this.apply(new OfferUpdatedEvent(this.id));
   }
