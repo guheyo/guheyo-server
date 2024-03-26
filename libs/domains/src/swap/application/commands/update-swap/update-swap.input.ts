@@ -1,5 +1,5 @@
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsBoolean, IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class UpdateSwapInput {
@@ -65,6 +65,11 @@ export class UpdateSwapInput {
   @IsString()
   @Field(() => String, { nullable: true })
   status?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  @Field(() => Boolean, { nullable: true })
+  hidden?: boolean;
 
   @IsOptional()
   @IsUUID()

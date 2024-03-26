@@ -684,9 +684,11 @@ type SwapPreviewResponse {
   businessFunction: String!
   createdAt: DateTime!
   groupId: String!
+  hidden: Boolean!
   id: ID!
   name0: String!
   name1: String!
+  pending: String
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
@@ -716,10 +718,12 @@ type SwapResponse {
   description0: String
   description1: String
   group: GroupProfileResponse!
+  hidden: Boolean!
   id: ID!
   images: [UserImageResponse!]!
   name0: String!
   name1: String!
+  pending: String
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
@@ -836,6 +840,7 @@ input UpdateSwapInput {
   businessFunction: String
   description0: String
   description1: String
+  hidden: Boolean
   id: ID!
   name0: String
   name1: String

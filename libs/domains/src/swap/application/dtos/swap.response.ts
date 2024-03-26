@@ -53,6 +53,12 @@ export class SwapResponse {
   @Field()
   status: string;
 
+  @Field(() => Boolean)
+  hidden: boolean;
+
+  @Field(() => String, { nullable: true })
+  pending: string | null;
+
   @Field(() => [UserImageResponse])
   images: UserImageResponse[];
 
