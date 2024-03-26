@@ -3,6 +3,8 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
+import { ForbiddenException } from '@nestjs/common';
+import { SwapErrorMessage } from '@lib/domains/swap/domain/swap.error.message';
 import { FindSwapPreviewsQuery } from './find-swap-previews.query';
 import { SwapPreviewResponse } from '../../dtos/swap-preview.response';
 import { PaginatedSwapPreviewsResponse } from './paginated-swap-previews.response';
@@ -24,9 +26,10 @@ export class FindSwapPreviewsHandler extends PrismaQueryHandler<
         isHidden: !!query.where.isHidden,
       };
     } else {
+      if (query.where?.isHidden)
+        throw new ForbiddenException(SwapErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
       where = {
         ...query.where,
-        isHidden: false,
       };
     }
 
