@@ -282,6 +282,8 @@ model Offer {
   shippingType        String          @default("free")
   businessFunction    String
   status              String
+  hidden              Boolean         @default(false)
+  pending             String?
   source              String
   groupId             String
   group               Group           @relation(fields: [groupId], references: [id])
@@ -350,6 +352,8 @@ model Demand {
   shippingType        String          @default("free")
   businessFunction    String
   status              String
+  hidden              Boolean         @default(false)
+  pending             String?
   source              String
   groupId             String
   group               Group           @relation(fields: [groupId], references: [id])
@@ -383,6 +387,8 @@ model Swap {
   shippingType        String          @default("free")
   businessFunction    String
   status              String
+  hidden              Boolean         @default(false)
+  pending             String?
   source              String
   groupId             String
   group               Group           @relation(fields: [groupId], references: [id])
@@ -421,6 +427,7 @@ model Auction {
   seller            User              @relation(fields: [sellerId], references: [id])
   comments          Comment[]
   status            String
+  pending           String?
 
   @@schema("public")
 }
