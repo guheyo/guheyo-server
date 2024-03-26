@@ -95,6 +95,7 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> implement
         'productCategoryId',
         'sellerId',
         'status',
+        'pending',
       ]),
     });
   }
