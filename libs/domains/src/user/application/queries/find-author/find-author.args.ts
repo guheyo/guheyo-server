@@ -1,9 +1,15 @@
 import { ArgsType, Field, ID } from '@nestjs/graphql';
-import { IsUUID } from 'class-validator';
+import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 @ArgsType()
 export class FindAuthorArgs {
+  @IsOptional()
   @IsUUID()
-  @Field(() => ID)
-  id: string;
+  @Field(() => ID, { nullable: true })
+  id?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  username?: string;
 }

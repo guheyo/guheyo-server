@@ -13,6 +13,7 @@ export class FindAuthorHandler extends PrismaQueryHandler<FindAuthorQuery, Autho
     const user = await this.prismaService.user.findUnique({
       where: {
         id: query.id,
+        username: query.username,
       },
       include: {
         members: {

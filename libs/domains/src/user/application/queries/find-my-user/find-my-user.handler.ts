@@ -6,10 +6,7 @@ import { FindMyUserQuery } from './find-my-user.query';
 import { MyUserResponse } from '../../dtos/my-user.response';
 
 @QueryHandler(FindMyUserQuery)
-export class FindMyUserByUsernameHandler extends PrismaQueryHandler<
-  FindMyUserQuery,
-  MyUserResponse
-> {
+export class FindMyUserHandler extends PrismaQueryHandler<FindMyUserQuery, MyUserResponse> {
   constructor() {
     super(MyUserResponse);
   }
