@@ -1,6 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
-import _ from 'lodash';
+import { isUndefined, omitBy } from 'lodash';
 import { validateBump } from '@lib/shared/deal/validate-bump';
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
@@ -10,7 +10,6 @@ import { UpdateSwapProps } from './swap.types';
 import { SwapCreatedEvent } from '../application/events/swap-created/swap-created.event';
 import { SwapUpdatedEvent } from '../application/events/swap-updated/swap-updated.event';
 import { BumpSwapInput } from '../application/commands/bump-swap/bump-swap.input';
-import { SWAP_OPEN, SWAP_PENDING } from './swap.constants';
 
 export class SwapEntity extends AggregateRoot {
   id: string;
@@ -42,6 +41,10 @@ export class SwapEntity extends AggregateRoot {
   businessFunction: string;
 
   status: string;
+
+  isHidden: boolean = false;
+
+  pending?: string;
 
   groupId: string;
 
@@ -79,7 +82,7 @@ export class SwapEntity extends AggregateRoot {
   }
 
   update(props: UpdateSwapProps) {
-    Object.assign(this, _.pickBy(props, _.identity));
+    Object.assign(this, omitBy(props, isUndefined));
     this.totalPrice = totalPrice.compute(this);
     this.apply(new SwapUpdatedEvent(this.id));
   }
@@ -107,12 +110,6 @@ export class SwapEntity extends AggregateRoot {
       this.reportCount += 1;
     } else if (reportStatus === REPORT_COMMENTED) {
       this.reportCommentCount += 1;
-    }
-
-    if (this.reportCount - this.reportCommentCount > 3) {
-      this.status = SWAP_PENDING;
-    } else {
-      this.status = SWAP_OPEN;
     }
   }
 

@@ -5,6 +5,10 @@ export interface UpdateSwapProps {
 
   priceCurrency?: string;
 
+  shippingCost?: number;
+
+  shippingType?: string;
+
   name0?: string;
 
   name1?: string;
@@ -15,5 +19,13 @@ export interface UpdateSwapProps {
 
   businessFunction?: string;
 
+  productCategoryId?: string;
+
+  status?: SwapStatus;
+
+  isHidden?: boolean;
+
   brandId?: string;
 }
+
+export type SwapStatus = 'open' | 'closed';

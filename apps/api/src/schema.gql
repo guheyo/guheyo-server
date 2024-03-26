@@ -282,7 +282,9 @@ type DemandPreviewResponse {
   createdAt: DateTime!
   groupId: String!
   id: ID!
+  isHidden: Boolean!
   name: String!
+  pending: String
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
@@ -312,7 +314,9 @@ type DemandResponse {
   group: GroupProfileResponse!
   id: ID!
   images: [UserImageResponse!]!
+  isHidden: Boolean!
   name: String!
+  pending: String
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
@@ -459,7 +463,9 @@ type OfferPreviewResponse {
   createdAt: DateTime!
   groupId: String!
   id: ID!
+  isHidden: Boolean!
   name: String!
+  pending: String
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
@@ -490,7 +496,9 @@ type OfferResponse {
   group: GroupProfileResponse!
   id: ID!
   images: [UserImageResponse!]!
+  isHidden: Boolean!
   name: String!
+  pending: String
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
@@ -677,8 +685,10 @@ type SwapPreviewResponse {
   createdAt: DateTime!
   groupId: String!
   id: ID!
+  isHidden: Boolean!
   name0: String!
   name1: String!
+  pending: String
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
@@ -710,8 +720,10 @@ type SwapResponse {
   group: GroupProfileResponse!
   id: ID!
   images: [UserImageResponse!]!
+  isHidden: Boolean!
   name0: String!
   name1: String!
+  pending: String
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
@@ -761,6 +773,7 @@ input UpdateDemandInput {
   buyerId: ID!
   description: String
   id: ID!
+  isHidden: Boolean
   name: String
   price: Int
   priceCurrency: String
@@ -789,6 +802,7 @@ input UpdateOfferInput {
   businessFunction: String
   description: String
   id: ID!
+  isHidden: Boolean
   name: String
   price: Int
   priceCurrency: String
@@ -827,6 +841,7 @@ input UpdateSwapInput {
   description0: String
   description1: String
   id: ID!
+  isHidden: Boolean
   name0: String
   name1: String
   price: Int

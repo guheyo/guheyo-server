@@ -44,6 +44,7 @@ export class UpdateSwapHandler extends PrismaCommandHandler<
         'businessFunction',
         'productCategoryId',
         'status',
+        'isHidden',
         'brandId',
       ]),
     );

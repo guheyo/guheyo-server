@@ -1,16 +1,15 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
-import _ from 'lodash';
+import { isUndefined, omitBy } from 'lodash';
 import { validateBump } from '@lib/shared/deal/validate-bump';
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
 import { REPORT_COMMENTED, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
 import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price.extension';
-import { UpdateOfferProps } from './offer.types';
+import { OfferStatus, UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
 import { BumpOfferInput } from '../application/commands/bump-offer/bump-offer.input';
-import { OFFER_OPEN, OFFER_PENDING } from './offer.constants';
 
 export class OfferEntity extends AggregateRoot {
   id: string;
@@ -37,7 +36,11 @@ export class OfferEntity extends AggregateRoot {
 
   businessFunction: string;
 
-  status: string;
+  status: OfferStatus;
+
+  isHidden: boolean = false;
+
+  pending?: string;
 
   source: string;
 
@@ -75,7 +78,7 @@ export class OfferEntity extends AggregateRoot {
   }
 
   update(props: UpdateOfferProps) {
-    Object.assign(this, _.pickBy(props, _.identity));
+    Object.assign(this, omitBy(props, isUndefined));
     this.totalPrice = totalPrice.compute(this);
     this.apply(new OfferUpdatedEvent(this.id));
   }
@@ -103,12 +106,6 @@ export class OfferEntity extends AggregateRoot {
       this.reportCount += 1;
     } else if (reportStatus === REPORT_COMMENTED) {
       this.reportCommentCount += 1;
-    }
-
-    if (this.reportCount - this.reportCommentCount > 3) {
-      this.status = OFFER_PENDING;
-    } else {
-      this.status = OFFER_OPEN;
     }
   }
 

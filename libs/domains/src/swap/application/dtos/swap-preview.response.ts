@@ -46,6 +46,12 @@ export class SwapPreviewResponse {
   @Field()
   status: string;
 
+  @Field(() => Boolean)
+  isHidden: boolean;
+
+  @Field(() => String, { nullable: true })
+  pending: string | null;
+
   @Field(() => UserImageResponse, { nullable: true })
   thumbnail: UserImageResponse | null;
 

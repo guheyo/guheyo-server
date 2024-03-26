@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import _ from 'lodash';
+import { isUndefined, omitBy } from 'lodash';
 import { UpdateRoleProps } from './role.types';
 
 export class RoleEntity extends AggregateRoot {
@@ -25,6 +25,6 @@ export class RoleEntity extends AggregateRoot {
   }
 
   update(props: UpdateRoleProps) {
-    Object.assign(this, _.pickBy(props, _.identity));
+    Object.assign(this, omitBy(props, isUndefined));
   }
 }

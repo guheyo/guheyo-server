@@ -1,4 +1,5 @@
 import { ICommand } from '@nestjs/cqrs/dist';
+import { DemandStatus } from '@lib/domains/demand/domain/demand.types';
 import { CreateDemandInput } from './create-demand.input';
 
 export class CreateDemandCommand implements ICommand {
@@ -18,7 +19,7 @@ export class CreateDemandCommand implements ICommand {
 
   businessFunction: string;
 
-  status: string;
+  status: DemandStatus;
 
   groupId: string;
 
@@ -39,7 +40,7 @@ export class CreateDemandCommand implements ICommand {
     this.shippingCost = input.shippingCost;
     this.shippingType = input.shippingType;
     this.businessFunction = input.businessFunction;
-    this.status = input.status;
+    this.status = input.status as DemandStatus;
     this.groupId = input.groupId;
     this.productCategoryId = input.productCategoryId;
     this.buyerId = input.buyerId;

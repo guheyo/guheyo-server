@@ -42,6 +42,7 @@ export class UpdateOfferHandler extends PrismaCommandHandler<
         'businessFunction',
         'productCategoryId',
         'status',
+        'isHidden',
         'brandId',
       ]),
     );

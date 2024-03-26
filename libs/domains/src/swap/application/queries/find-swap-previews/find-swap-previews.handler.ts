@@ -2,7 +2,6 @@ import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseFollowedBySearcher } from '@lib/shared/search/search';
-import { SWAP_HIDDEN } from '@lib/domains/swap/domain/swap.constants';
 import { Prisma } from '@prisma/client';
 import { FindSwapPreviewsQuery } from './find-swap-previews.query';
 import { SwapPreviewResponse } from '../../dtos/swap-preview.response';
@@ -20,20 +19,14 @@ export class FindSwapPreviewsHandler extends PrismaQueryHandler<
   async execute(query: FindSwapPreviewsQuery): Promise<PaginatedSwapPreviewsResponse> {
     let where: Prisma.SwapWhereInput;
     if (!!query.where?.proposerId && query.where.proposerId === query.userId) {
-      where = query.where;
+      where = {
+        ...query.where,
+        isHidden: !!query.where.isHidden,
+      };
     } else {
       where = {
         ...query.where,
-        AND: [
-          {
-            status: {
-              notIn: [SWAP_HIDDEN],
-            },
-          },
-          {
-            status: query.where?.status,
-          },
-        ],
+        isHidden: false,
       };
     }
 

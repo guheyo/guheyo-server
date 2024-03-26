@@ -1,4 +1,5 @@
 import { ICommand } from '@nestjs/cqrs/dist';
+import { SwapStatus } from '@lib/domains/swap/domain/swap.types';
 import { CreateSwapInput } from './create-swap.input';
 
 export class CreateSwapCommand implements ICommand {
@@ -22,7 +23,7 @@ export class CreateSwapCommand implements ICommand {
 
   businessFunction: string;
 
-  status: string;
+  status: SwapStatus;
 
   groupId: string;
 
@@ -45,7 +46,7 @@ export class CreateSwapCommand implements ICommand {
     this.shippingCost = input.shippingCost;
     this.shippingType = input.shippingType;
     this.businessFunction = input.businessFunction;
-    this.status = input.status;
+    this.status = input.status as SwapStatus;
     this.groupId = input.groupId;
     this.productCategoryId = input.productCategoryId;
     this.proposerId = input.proposerId;

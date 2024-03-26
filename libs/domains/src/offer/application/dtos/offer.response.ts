@@ -47,6 +47,12 @@ export class OfferResponse {
   @Field()
   status: string;
 
+  @Field(() => Boolean)
+  isHidden: boolean;
+
+  @Field(() => String, { nullable: true })
+  pending: string | null;
+
   @Field(() => [UserImageResponse])
   images: UserImageResponse[];
 

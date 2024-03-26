@@ -1,6 +1,6 @@
 import { RoleEntity } from '@lib/domains/role/domain/role.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
-import _ from 'lodash';
+import { isUndefined, omitBy } from 'lodash';
 import { UpdateGroupProps } from './group.types';
 
 export class GroupEntity extends AggregateRoot {
@@ -26,6 +26,6 @@ export class GroupEntity extends AggregateRoot {
   }
 
   update(props: UpdateGroupProps) {
-    Object.assign(this, _.pickBy(props, _.identity));
+    Object.assign(this, omitBy(props, isUndefined));
   }
 }

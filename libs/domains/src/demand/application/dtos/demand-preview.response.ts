@@ -42,6 +42,12 @@ export class DemandPreviewResponse {
   @Field()
   status: string;
 
+  @Field(() => Boolean)
+  isHidden: boolean;
+
+  @Field(() => String, { nullable: true })
+  pending: string | null;
+
   @Field()
   groupId: string;
 

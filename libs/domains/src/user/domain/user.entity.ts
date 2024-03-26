@@ -1,7 +1,7 @@
 import { MemberEntity } from '@lib/domains/member/domain/member.entity';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
-import _ from 'lodash';
+import { isUndefined, omitBy } from 'lodash';
 import { UpdateUserProps } from './user.types';
 import { SocialAccountLinkedEvent } from '../application/events/social-account-linked/social-account-linked.event';
 import { UserUpdatedEvent } from '../application/events/user-updated/user-updated.event';
@@ -36,7 +36,7 @@ export class UserEntity extends AggregateRoot {
   }
 
   update(props: UpdateUserProps) {
-    Object.assign(this, _.pickBy(props, _.identity));
+    Object.assign(this, omitBy(props, isUndefined));
     this.apply(new UserUpdatedEvent(this.id));
   }
 
