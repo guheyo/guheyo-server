@@ -282,7 +282,7 @@ model Offer {
   shippingType        String          @default("free")
   businessFunction    String
   status              String
-  hidden              Boolean         @default(false)
+  isHidden            Boolean         @default(false)
   pending             String?
   source              String
   groupId             String
@@ -352,7 +352,7 @@ model Demand {
   shippingType        String          @default("free")
   businessFunction    String
   status              String
-  hidden              Boolean         @default(false)
+  isHidden            Boolean         @default(false)
   pending             String?
   source              String
   groupId             String
@@ -387,7 +387,7 @@ model Swap {
   shippingType        String          @default("free")
   businessFunction    String
   status              String
-  hidden              Boolean         @default(false)
+  isHidden            Boolean         @default(false)
   pending             String?
   source              String
   groupId             String
