@@ -9,7 +9,19 @@ export interface UpdateOfferProps {
 
   priceCurrency?: string;
 
+  shippingCost?: number;
+
+  shippingType?: string;
+
   businessFunction?: string;
+
+  productCategoryId?: string;
+
+  status?: OfferStatus;
+
+  hidden?: boolean;
 
   brandId?: string;
 }
+
+export type OfferStatus = 'open' | 'closed';
