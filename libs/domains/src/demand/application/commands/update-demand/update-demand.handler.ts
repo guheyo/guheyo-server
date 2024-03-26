@@ -42,6 +42,7 @@ export class UpdateDemandHandler extends PrismaCommandHandler<
         'businessFunction',
         'productCategoryId',
         'status',
+        'hidden',
         'brandId',
       ]),
     );

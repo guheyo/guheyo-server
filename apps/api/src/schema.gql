@@ -281,8 +281,10 @@ type DemandPreviewResponse {
   buyer: UserResponse!
   createdAt: DateTime!
   groupId: String!
+  hidden: Boolean!
   id: ID!
   name: String!
+  pending: String
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
@@ -310,9 +312,11 @@ type DemandResponse {
   createdAt: DateTime!
   description: String
   group: GroupProfileResponse!
+  hidden: Boolean!
   id: ID!
   images: [UserImageResponse!]!
   name: String!
+  pending: String
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
@@ -764,6 +768,7 @@ input UpdateDemandInput {
   businessFunction: String
   buyerId: ID!
   description: String
+  hidden: Boolean
   id: ID!
   name: String
   price: Int

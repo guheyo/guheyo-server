@@ -9,7 +9,19 @@ export interface UpdateDemandProps {
 
   priceCurrency?: string;
 
+  shippingCost?: number;
+
+  shippingType?: string;
+
   businessFunction?: string;
+
+  productCategoryId?: string;
+
+  status?: DemandStatus;
+
+  hidden?: boolean;
 
   brandId?: string;
 }
+
+export type DemandStatus = 'open' | 'closed';
