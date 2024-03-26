@@ -38,7 +38,7 @@ export class OfferEntity extends AggregateRoot {
 
   status: OfferStatus;
 
-  hidden: boolean = false;
+  isHidden: boolean = false;
 
   pending?: string;
 

@@ -22,7 +22,7 @@ export class FindDemandsWhereArgs {
 
   @IsOptional()
   @Field(() => Boolean, { nullable: true })
-  hidden?: boolean;
+  isHidden?: boolean;
 
   @IsOptional()
   @Field(() => String, { nullable: true })

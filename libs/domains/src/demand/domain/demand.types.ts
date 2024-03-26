@@ -19,7 +19,7 @@ export interface UpdateDemandProps {
 
   status?: DemandStatus;
 
-  hidden?: boolean;
+  isHidden?: boolean;
 
   brandId?: string;
 }

@@ -48,7 +48,7 @@ export class DemandResponse {
   status: string;
 
   @Field(() => Boolean)
-  hidden: boolean;
+  isHidden: boolean;
 
   @Field(() => String, { nullable: true })
   pending: string | null;

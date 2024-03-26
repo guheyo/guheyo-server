@@ -38,7 +38,7 @@ export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferRe
       },
     });
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
-    if (offer.hidden && offer.sellerId !== query.userId)
+    if (offer.isHidden && offer.sellerId !== query.userId)
       throw new ForbiddenException(OfferErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
 
     const images = await this.prismaService.userImage.findMany({

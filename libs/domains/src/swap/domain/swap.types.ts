@@ -23,7 +23,7 @@ export interface UpdateSwapProps {
 
   status?: SwapStatus;
 
-  hidden?: boolean;
+  isHidden?: boolean;
 
   brandId?: string;
 }

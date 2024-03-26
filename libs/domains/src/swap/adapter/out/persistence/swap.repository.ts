@@ -104,7 +104,7 @@ export class SwapRepository extends PrismaRepository<SwapEntity> {
         'productCategoryId',
         'proposerId',
         'status',
-        'hidden',
+        'isHidden',
         'pending',
         'reportCount',
         'reportCommentCount',

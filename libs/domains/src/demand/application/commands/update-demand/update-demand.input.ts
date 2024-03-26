@@ -59,7 +59,7 @@ export class UpdateDemandInput {
   @IsOptional()
   @IsBoolean()
   @Field(() => Boolean, { nullable: true })
-  hidden?: boolean;
+  isHidden?: boolean;
 
   @IsOptional()
   @IsUUID()

@@ -22,7 +22,7 @@ export class FindOffersWhereArgs {
 
   @IsOptional()
   @Field(() => Boolean, { nullable: true })
-  hidden?: boolean;
+  isHidden?: boolean;
 
   @IsOptional()
   @Field(() => String, { nullable: true })

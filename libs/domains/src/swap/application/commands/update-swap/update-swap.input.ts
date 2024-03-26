@@ -69,7 +69,7 @@ export class UpdateSwapInput {
   @IsOptional()
   @IsBoolean()
   @Field(() => Boolean, { nullable: true })
-  hidden?: boolean;
+  isHidden?: boolean;
 
   @IsOptional()
   @IsUUID()

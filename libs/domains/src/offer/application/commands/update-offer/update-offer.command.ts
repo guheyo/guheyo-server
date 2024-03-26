@@ -25,7 +25,7 @@ export class UpdateOfferCommand implements ICommand {
 
   status?: OfferStatus;
 
-  hidden?: boolean;
+  isHidden?: boolean;
 
   brandId?: string;
 
@@ -43,7 +43,7 @@ export class UpdateOfferCommand implements ICommand {
     this.productCategoryId = input.productCategoryId;
     this.sellerId = input.sellerId;
     this.status = input.status as OfferStatus;
-    this.hidden = input.hidden;
+    this.isHidden = input.isHidden;
     this.brandId = input.brandId;
     this.source = input.source;
   }

@@ -29,7 +29,7 @@ export class UpdateSwapCommand implements ICommand {
 
   status?: SwapStatus;
 
-  hidden?: boolean;
+  isHidden?: boolean;
 
   brandId?: string;
 
@@ -49,7 +49,7 @@ export class UpdateSwapCommand implements ICommand {
     this.productCategoryId = input.productCategoryId;
     this.proposerId = input.proposerId;
     this.status = input.status as SwapStatus;
-    this.hidden = input.hidden;
+    this.isHidden = input.isHidden;
     this.brandId = input.brandId;
     this.source = input.source;
   }

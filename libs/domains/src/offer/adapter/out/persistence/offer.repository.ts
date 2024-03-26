@@ -98,7 +98,7 @@ export class OfferRepository extends PrismaRepository<OfferEntity> {
         'productCategoryId',
         'sellerId',
         'status',
-        'hidden',
+        'isHidden',
         'pending',
         'reportCount',
         'reportCommentCount',

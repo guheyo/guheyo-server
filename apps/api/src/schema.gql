@@ -281,8 +281,8 @@ type DemandPreviewResponse {
   buyer: UserResponse!
   createdAt: DateTime!
   groupId: String!
-  hidden: Boolean!
   id: ID!
+  isHidden: Boolean!
   name: String!
   pending: String
   price: Int!
@@ -312,9 +312,9 @@ type DemandResponse {
   createdAt: DateTime!
   description: String
   group: GroupProfileResponse!
-  hidden: Boolean!
   id: ID!
   images: [UserImageResponse!]!
+  isHidden: Boolean!
   name: String!
   pending: String
   price: Int!
@@ -462,8 +462,8 @@ type OfferPreviewResponse {
   businessFunction: String!
   createdAt: DateTime!
   groupId: String!
-  hidden: Boolean!
   id: ID!
+  isHidden: Boolean!
   name: String!
   pending: String
   price: Int!
@@ -494,9 +494,9 @@ type OfferResponse {
   createdAt: DateTime!
   description: String
   group: GroupProfileResponse!
-  hidden: Boolean!
   id: ID!
   images: [UserImageResponse!]!
+  isHidden: Boolean!
   name: String!
   pending: String
   price: Int!
@@ -684,8 +684,8 @@ type SwapPreviewResponse {
   businessFunction: String!
   createdAt: DateTime!
   groupId: String!
-  hidden: Boolean!
   id: ID!
+  isHidden: Boolean!
   name0: String!
   name1: String!
   pending: String
@@ -718,9 +718,9 @@ type SwapResponse {
   description0: String
   description1: String
   group: GroupProfileResponse!
-  hidden: Boolean!
   id: ID!
   images: [UserImageResponse!]!
+  isHidden: Boolean!
   name0: String!
   name1: String!
   pending: String
@@ -772,8 +772,8 @@ input UpdateDemandInput {
   businessFunction: String
   buyerId: ID!
   description: String
-  hidden: Boolean
   id: ID!
+  isHidden: Boolean
   name: String
   price: Int
   priceCurrency: String
@@ -801,8 +801,8 @@ input UpdateOfferInput {
   brandId: ID
   businessFunction: String
   description: String
-  hidden: Boolean
   id: ID!
+  isHidden: Boolean
   name: String
   price: Int
   priceCurrency: String
@@ -840,8 +840,8 @@ input UpdateSwapInput {
   businessFunction: String
   description0: String
   description1: String
-  hidden: Boolean
   id: ID!
+  isHidden: Boolean
   name0: String
   name1: String
   price: Int

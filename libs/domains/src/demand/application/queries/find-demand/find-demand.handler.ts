@@ -38,7 +38,7 @@ export class FindDemandHandler extends PrismaQueryHandler<FindDemandQuery, Deman
       },
     });
     if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_NOT_FOUND);
-    if (demand.hidden && demand.buyerId !== query.userId)
+    if (demand.isHidden && demand.buyerId !== query.userId)
       throw new ForbiddenException(DemandErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
 
     const images = await this.prismaService.userImage.findMany({

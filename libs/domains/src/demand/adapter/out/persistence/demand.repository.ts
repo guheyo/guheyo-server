@@ -98,7 +98,7 @@ export class DemandRepository extends PrismaRepository<DemandEntity> {
         'productCategoryId',
         'buyerId',
         'status',
-        'hidden',
+        'isHidden',
         'pending',
         'reportCount',
         'reportCommentCount',

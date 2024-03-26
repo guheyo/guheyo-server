@@ -19,7 +19,7 @@ export interface UpdateOfferProps {
 
   status?: OfferStatus;
 
-  hidden?: boolean;
+  isHidden?: boolean;
 
   brandId?: string;
 }

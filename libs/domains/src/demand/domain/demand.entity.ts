@@ -38,7 +38,7 @@ export class DemandEntity extends AggregateRoot {
 
   status: DemandStatus;
 
-  hidden: boolean = false;
+  isHidden: boolean = false;
 
   pending?: string;
 

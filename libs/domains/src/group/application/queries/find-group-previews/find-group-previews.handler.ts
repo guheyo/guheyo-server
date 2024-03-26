@@ -28,7 +28,7 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
         offers: {
           where: {
             status: OFFER_OPEN,
-            hidden: false,
+            isHidden: false,
           },
           include: {
             seller: {
@@ -49,7 +49,7 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
         demands: {
           where: {
             status: DEMAND_OPEN,
-            hidden: false,
+            isHidden: false,
           },
           include: {
             buyer: {

@@ -22,7 +22,7 @@ export class FindSwapsWhereArgs {
 
   @IsOptional()
   @Field(() => Boolean, { nullable: true })
-  hidden?: boolean;
+  isHidden?: boolean;
 
   @IsOptional()
   @Field(() => String, { nullable: true })

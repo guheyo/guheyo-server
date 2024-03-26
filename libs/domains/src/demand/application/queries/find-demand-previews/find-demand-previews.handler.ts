@@ -21,12 +21,12 @@ export class FindDemandPreviewsHandler extends PrismaQueryHandler<
     if (!!query.where?.buyerId && query.where.buyerId === query.userId) {
       where = {
         ...query.where,
-        hidden: !!query.where.hidden,
+        isHidden: !!query.where.isHidden,
       };
     } else {
       where = {
         ...query.where,
-        hidden: false,
+        isHidden: false,
       };
     }
 

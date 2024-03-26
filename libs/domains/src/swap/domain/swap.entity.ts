@@ -42,7 +42,7 @@ export class SwapEntity extends AggregateRoot {
 
   status: string;
 
-  hidden: boolean = false;
+  isHidden: boolean = false;
 
   pending?: string;
 
