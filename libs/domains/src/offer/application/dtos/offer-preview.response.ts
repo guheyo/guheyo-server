@@ -43,6 +43,12 @@ export class OfferPreviewResponse {
   @Field()
   status: string;
 
+  @Field(() => Boolean)
+  hidden: boolean;
+
+  @Field(() => String, { nullable: true })
+  pending: string | null;
+
   @Field(() => UserImageResponse, { nullable: true })
   thumbnail: UserImageResponse | null;
 

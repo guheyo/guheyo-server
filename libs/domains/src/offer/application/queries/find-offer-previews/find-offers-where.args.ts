@@ -21,6 +21,14 @@ export class FindOffersWhereArgs {
   status?: string;
 
   @IsOptional()
+  @Field(() => Boolean, { nullable: true })
+  hidden?: boolean;
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  pending?: string;
+
+  @IsOptional()
   @Field(() => GraphQLJSON, { nullable: true })
   bumpedAt?: {
     gt: string;

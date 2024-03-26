@@ -1,4 +1,5 @@
 import { ICommand } from '@nestjs/cqrs/dist';
+import { OfferStatus } from '@lib/domains/offer/domain/offer.types';
 import { CreateOfferInput } from './create-offer.input';
 
 export class CreateOfferCommand implements ICommand {
@@ -18,7 +19,7 @@ export class CreateOfferCommand implements ICommand {
 
   businessFunction: string;
 
-  status: string;
+  status: OfferStatus;
 
   source: string;
 
@@ -39,7 +40,7 @@ export class CreateOfferCommand implements ICommand {
     this.shippingCost = input.shippingCost;
     this.shippingType = input.shippingType;
     this.businessFunction = input.businessFunction;
-    this.status = input.status;
+    this.status = input.status as OfferStatus;
     this.source = input.source;
     this.groupId = input.groupId;
     this.productCategoryId = input.productCategoryId;

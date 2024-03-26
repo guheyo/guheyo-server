@@ -458,8 +458,10 @@ type OfferPreviewResponse {
   businessFunction: String!
   createdAt: DateTime!
   groupId: String!
+  hidden: Boolean!
   id: ID!
   name: String!
+  pending: String
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
@@ -488,9 +490,11 @@ type OfferResponse {
   createdAt: DateTime!
   description: String
   group: GroupProfileResponse!
+  hidden: Boolean!
   id: ID!
   images: [UserImageResponse!]!
   name: String!
+  pending: String
   price: Int!
   priceCurrency: String!
   productCategoryId: String!
@@ -788,6 +792,7 @@ input UpdateOfferInput {
   brandId: ID
   businessFunction: String
   description: String
+  hidden: Boolean
   id: ID!
   name: String
   price: Int
