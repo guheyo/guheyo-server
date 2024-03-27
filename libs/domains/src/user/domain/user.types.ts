@@ -3,6 +3,8 @@ export interface UpdateUserProps {
 
   name?: string;
 
+  about?: string;
+
   phoneNumber?: string;
 
   avatarURL?: string;

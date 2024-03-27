@@ -8,6 +8,8 @@ export class UpdateUserCommand implements ICommand {
 
   name?: string;
 
+  about?: string;
+
   phoneNumber?: string;
 
   avatarURL?: string;
@@ -16,6 +18,7 @@ export class UpdateUserCommand implements ICommand {
     this.id = input.id;
     this.username = input.username;
     this.name = input.name;
+    this.about = input.about;
     this.phoneNumber = input.phoneNumber;
     this.avatarURL = input.avatarURL;
   }

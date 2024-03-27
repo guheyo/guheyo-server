@@ -12,6 +12,9 @@ export class UserResponse {
   username: string;
 
   @Field(() => String, { nullable: true })
+  about: string | null;
+
+  @Field(() => String, { nullable: true })
   avatarURL: string | null;
 
   @Field()
