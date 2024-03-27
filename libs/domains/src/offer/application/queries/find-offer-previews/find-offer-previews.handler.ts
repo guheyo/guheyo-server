@@ -3,6 +3,8 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
+import { ForbiddenException } from '@nestjs/common';
+import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
 import { FindOfferPreviewsQuery } from './find-offer-previews.query';
 import { PaginatedOfferPreviewsResponse } from './paginated-offer-previews.response';
 import { OfferPreviewResponse } from '../../dtos/offer-preview.response';
@@ -24,9 +26,10 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
         isHidden: !!query.where.isHidden,
       };
     } else {
+      if (query.where?.isHidden)
+        throw new ForbiddenException(OfferErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
       where = {
         ...query.where,
-        isHidden: false,
       };
     }
 

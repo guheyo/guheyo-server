@@ -6,11 +6,10 @@ import { UpdateUserInput } from '@lib/domains/user/application/commands/update-u
 import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
 import { DeleteUserCommand } from '@lib/domains/user/application/commands/delete-user/delete-user.command';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
-import { FindMyUserByIdQuery } from '@lib/domains/user/application/queries/find-my-user-by-id/find-my-user-by-id.query';
 import { PaginationArgs } from '@lib/shared/cqrs/queries/pagination/pagination.args';
 import { FindUsersQuery } from '@lib/domains/user/application/queries/find-users/find-users.query';
 import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/find-users/paginated-users.response';
-import { FindMyUserByUsernameQuery } from '@lib/domains/user/application/queries/find-my-user-by-username/find-my-user-by-username.query';
+import { FindMyUserQuery } from '@lib/domains/user/application/queries/find-my-user/find-my-user.query';
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { FindUserArgs } from '@lib/domains/user/application/queries/find-user/find-user.args';
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
@@ -19,6 +18,8 @@ import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth
 import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
 import { FindAuthorArgs } from '@lib/domains/user/application/queries/find-author/find-author.args';
 import { FindAuthorQuery } from '@lib/domains/user/application/queries/find-author/find-author.query';
+import { FindMyUserArgs } from '@lib/domains/user/application/queries/find-my-user/find-my-user.args';
+import { AuthUser } from '@lib/domains/auth/decorators/auth-user/auth-user.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -29,9 +30,16 @@ export class UserResolver {
     private readonly queryBus: QueryBus,
   ) {}
 
+  @UseGuards(JwtAccessAuthGuard)
   @Query(() => MyUserResponse, { nullable: true })
-  async findMyUserById(@Args('id', { type: () => ID }) id: string): Promise<MyUserResponse | null> {
-    const query = new FindMyUserByIdQuery(id);
+  async findMyUser(
+    @Args() args: FindMyUserArgs,
+    @AuthUser() user: any,
+  ): Promise<MyUserResponse | null> {
+    const query = new FindMyUserQuery({
+      args,
+      userId: user?.id,
+    });
     return this.queryBus.execute(query);
   }
 
@@ -44,15 +52,6 @@ export class UserResolver {
   @Query(() => AuthorResponse, { nullable: true })
   async findAuthor(@Args() args: FindAuthorArgs): Promise<AuthorResponse | null> {
     const query = new FindAuthorQuery(args);
-    return this.queryBus.execute(query);
-  }
-
-  @UseGuards(JwtAccessAuthGuard)
-  @Query(() => MyUserResponse, { nullable: true })
-  async findMyUserByUsername(
-    @Args('username', { type: () => ID }) username: string,
-  ): Promise<MyUserResponse | null> {
-    const query = new FindMyUserByUsernameQuery(username);
     return this.queryBus.execute(query);
   }
 

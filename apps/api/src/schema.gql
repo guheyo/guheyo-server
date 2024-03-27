@@ -579,7 +579,7 @@ type ProductCategoryResponse {
 type Query {
   findAuctionById(id: ID!): AuctionResponse
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
-  findAuthor(id: ID!): AuthorResponse
+  findAuthor(id: ID, username: String): AuthorResponse
   findComment(id: ID, refId: ID, type: String): CommentResponse
   findDemand(id: ID, slug: String): DemandResponse
   findDemandPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
@@ -588,8 +588,7 @@ type Query {
   findGroupProfiles(cursor: ID, distinct: Boolean, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
   findMemberByUserAndGroup(groupId: ID!, userId: ID!): MemberWithRolesResponse
-  findMyUserById(id: ID!): MyUserResponse
-  findMyUserByUsername(username: ID!): MyUserResponse
+  findMyUser(id: ID, username: String): MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
   findReport(authorId: ID, id: ID, refId: ID, type: String): ReportResponse!
