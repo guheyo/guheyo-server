@@ -59,13 +59,15 @@ export class UserRepository extends PrismaRepository<UserEntity> implements User
 
   async create(user: UserEntity): Promise<void> {
     await this.prismaService.user.create({
-      data: _.pick(user, 'id', 'username', 'name', 'phoneNumber', 'avatarURL'),
+      data: _.pick(user, 'id', 'username', 'name', 'about', 'phoneNumber', 'avatarURL'),
     });
   }
 
   async createMany(users: UserEntity[]): Promise<void> {
     await this.prismaService.user.createMany({
-      data: users.map((user) => _.pick(user, 'id', 'username', 'name', 'phoneNumber', 'avatarURL')),
+      data: users.map((user) =>
+        _.pick(user, 'id', 'username', 'name', 'about', 'phoneNumber', 'avatarURL'),
+      ),
     });
   }
 
@@ -74,7 +76,7 @@ export class UserRepository extends PrismaRepository<UserEntity> implements User
       where: {
         id: user.id,
       },
-      data: _.pick(user, ['username', 'name', 'phoneNumber', 'avatarURL']),
+      data: _.pick(user, ['username', 'name', 'about', 'phoneNumber', 'avatarURL']),
     });
   }
 

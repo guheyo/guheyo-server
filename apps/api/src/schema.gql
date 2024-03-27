@@ -38,6 +38,7 @@ type AuctionResponseEdge {
 }
 
 type AuthorResponse {
+  about: String
   avatarURL: String
   bot: Boolean!
   createdAt: DateTime!
@@ -445,6 +446,7 @@ type Mutation {
 }
 
 type MyUserResponse {
+  about: String
   avatarURL: String
   bot: Boolean!
   createdAt: DateTime!
@@ -859,6 +861,7 @@ input UpdateUserImageInput {
 }
 
 input UpdateUserInput {
+  about: String
   avatarURL: String
   id: String!
   name: String
@@ -885,6 +888,7 @@ type UserImageResponse {
 }
 
 type UserResponse {
+  about: String
   avatarURL: String
   bot: Boolean!
   createdAt: DateTime!

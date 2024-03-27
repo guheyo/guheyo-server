@@ -18,6 +18,10 @@ export class UpdateUserInput {
 
   @IsOptional()
   @Field({ nullable: true })
+  about?: string;
+
+  @IsOptional()
+  @Field({ nullable: true })
   phoneNumber?: string;
 
   @IsOptional()

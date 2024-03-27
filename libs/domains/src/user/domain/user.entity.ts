@@ -20,6 +20,8 @@ export class UserEntity extends AggregateRoot {
 
   name: string | null;
 
+  about: string | null;
+
   phoneNumber: string | null;
 
   avatarURL: string | null;
