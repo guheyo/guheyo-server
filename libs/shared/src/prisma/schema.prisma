@@ -25,6 +25,7 @@ model User {
   deletedAt         DateTime?
   username          String      @unique
   name              String?
+  about             String?
   phoneNumber       String?     @unique
   socialAccounts    SocialAccount[]
   avatarURL         String?
