@@ -3,28 +3,32 @@ import { ConfigService } from '@nestjs/config';
 import { CookieOptions, Request, Response } from 'express';
 import { sign, verify } from 'jsonwebtoken';
 import _ from 'lodash';
-import { Profile } from './jwt.interfaces';
+import { JwtPayload, SocialProfile, UserPayload } from './jwt.interfaces';
 
 @Injectable()
 export class JwtService {
   constructor(private readonly configService: ConfigService) {}
 
-  signAccessToken(profile: Profile): string {
-    return sign(profile, this.configService.get('jwt.access.secret')!, {
+  signAccessToken(userPayload: UserPayload): string {
+    return sign(userPayload, this.configService.get('jwt.access.secret')!, {
       expiresIn: this.configService.get('jwt.access.expiresIn'),
     });
   }
 
-  signRefreshToken(profile: Profile): string {
-    return sign(profile, this.configService.get('jwt.refresh.secret')!, {
+  signRefreshToken(userPayload: UserPayload): string {
+    return sign(userPayload, this.configService.get('jwt.refresh.secret')!, {
       expiresIn: this.configService.get('jwt.refresh.expiresIn'),
     });
   }
 
-  parseProfile(partial: any): Profile {
+  parseSocialProfile(partial: any): SocialProfile {
     return {
-      ..._.pick(partial, ['id', 'username', 'provider', 'socialId', 'avatarURL']),
+      ..._.pick(partial, ['id', 'username', 'provider', 'avatarURL']),
     };
+  }
+
+  parseUserPayload(jwtPayload: JwtPayload): UserPayload {
+    return _.omit(jwtPayload, ['iat', 'exp']);
   }
 
   verifyRefreshToken(token: string) {
