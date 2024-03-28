@@ -436,6 +436,7 @@ type Mutation {
   disconnectRoles(input: DisconnectRolesInput!): String!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
+  reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
   updateAuction(input: UpdateAuctionInput!): String!
   updateComment(input: UpdateCommentInput!): CommentResponse!
