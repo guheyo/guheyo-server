@@ -1,12 +1,18 @@
-export interface Profile {
+export interface SocialProfile {
   id: string;
   username: string;
   provider: string;
-  socialId: string;
   avatarURL?: string;
 }
 
-export interface UserPayload extends Profile {
+export interface UserPayload {
+  socialProfile: SocialProfile;
+  id: string;
+  username: string;
+  avatarURL?: string;
+}
+
+export interface JwtPayload extends UserPayload {
   iat: number;
   exp: number;
 }
