@@ -19,8 +19,9 @@ import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-
 import { BumpOfferInput } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.input';
 import { BumpOfferCommand } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.command';
 import { OfferPreviewResponse } from '@lib/domains/offer/application/dtos/offer-preview.response';
-import { AuthUser } from '@lib/domains/auth/decorators/auth-user/auth-user.decorator';
+import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
 import { JwtAccessAllGuard } from '@lib/domains/auth/guards/jwt/jwt-access-all.guard';
+import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -35,11 +36,11 @@ export class OfferResolver {
   @Query(() => OfferResponse, { nullable: true })
   async findOffer(
     @Args() findOfferArgs: FindOfferArgs,
-    @AuthUser() user: any,
+    @ExtractedJwtPayload() jwtPayload: JwtPayload,
   ): Promise<OfferResponse | null> {
     const query = new FindOfferQuery({
       args: findOfferArgs,
-      userId: user?.id,
+      userId: jwtPayload.id,
     });
     return this.queryBus.execute(query);
   }
@@ -48,11 +49,11 @@ export class OfferResolver {
   @Query(() => PaginatedOfferPreviewsResponse)
   async findOfferPreviews(
     @Args() findOfferPreviewsArgs: FindOfferPreviewsArgs,
-    @AuthUser() user: any,
+    @ExtractedJwtPayload() jwtPayload: JwtPayload,
   ) {
     const query = new FindOfferPreviewsQuery({
       args: findOfferPreviewsArgs,
-      userId: user?.id,
+      userId: jwtPayload.id,
     });
     return this.queryBus.execute(query);
   }

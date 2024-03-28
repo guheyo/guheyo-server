@@ -388,6 +388,10 @@ type JwtResponse {
   refreshToken: String!
 }
 
+input LinkSocialProfileInput {
+  provider: String!
+}
+
 type MemberWithRolesResponse {
   createdAt: DateTime!
   groupId: String!
@@ -430,6 +434,7 @@ type Mutation {
   deleteUser(id: ID!): String!
   deleteUserImage(id: ID!): String!
   disconnectRoles(input: DisconnectRolesInput!): String!
+  linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
   refreshTokens: JwtResponse!
   updateAuction(input: UpdateAuctionInput!): String!

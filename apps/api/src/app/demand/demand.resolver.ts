@@ -20,7 +20,8 @@ import { BumpDemandInput } from '@lib/domains/demand/application/commands/bump-d
 import { BumpDemandCommand } from '@lib/domains/demand/application/commands/bump-demand/bump-demand.command';
 import { DemandPreviewResponse } from '@lib/domains/demand/application/dtos/demand-preview.response';
 import { JwtAccessAllGuard } from '@lib/domains/auth/guards/jwt/jwt-access-all.guard';
-import { AuthUser } from '@lib/domains/auth/decorators/auth-user/auth-user.decorator';
+import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
+import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -35,11 +36,11 @@ export class DemandResolver {
   @Query(() => DemandResponse, { nullable: true })
   async findDemand(
     @Args() findDemandArgs: FindDemandArgs,
-    @AuthUser() user: any,
+    @ExtractedJwtPayload() jwtPayload: JwtPayload,
   ): Promise<DemandResponse | null> {
     const query = new FindDemandQuery({
       args: findDemandArgs,
-      userId: user?.id,
+      userId: jwtPayload.id,
     });
     return this.queryBus.execute(query);
   }
@@ -48,11 +49,11 @@ export class DemandResolver {
   @Query(() => PaginatedDemandPreviewsResponse)
   async findDemandPreviews(
     @Args() findDemandPreviewsArgs: FindDemandPreviewsArgs,
-    @AuthUser() user: any,
+    @ExtractedJwtPayload() jwtPayload: JwtPayload,
   ) {
     const query = new FindDemandPreviewsQuery({
       args: findDemandPreviewsArgs,
-      userId: user?.id,
+      userId: jwtPayload.id,
     });
     return this.queryBus.execute(query);
   }
