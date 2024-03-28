@@ -20,6 +20,8 @@ import { FindAuthorArgs } from '@lib/domains/user/application/queries/find-autho
 import { FindAuthorQuery } from '@lib/domains/user/application/queries/find-author/find-author.query';
 import { FindMyUserArgs } from '@lib/domains/user/application/queries/find-my-user/find-my-user.args';
 import { AuthUser } from '@lib/domains/auth/decorators/auth-user/auth-user.decorator';
+import { LinkSocialProfileInput } from '@lib/domains/user/application/commands/link-social-profile/link-social-profile.input';
+import { LinkSocialProfileCommand } from '@lib/domains/user/application/commands/link-social-profile/link-social-profile.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -77,5 +79,22 @@ export class UserResolver {
   async deleteUser(@Args('id', { type: () => ID }) id: string): Promise<string> {
     await this.commandBus.execute(new DeleteUserCommand(id));
     return id;
+  }
+
+  @UseGuards(JwtAccessAuthGuard)
+  @Mutation(() => String)
+  async linkSocialProfile(
+    @Args('input') input: LinkSocialProfileInput,
+    @AuthUser() user: any,
+  ): Promise<string> {
+    await this.commandBus.execute(
+      new LinkSocialProfileCommand({
+        input,
+        userId: user.id,
+        username: user.username,
+        avatarURL: user.avatarURL,
+      }),
+    );
+    return user.id;
   }
 }
