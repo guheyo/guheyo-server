@@ -91,8 +91,8 @@ export class UserResolver {
       new LinkSocialProfileCommand({
         input,
         userId: user.id,
-        username: user.username,
-        avatarURL: user.avatarURL,
+        username: user.socialProfile.username,
+        avatarURL: user.socialProfile.avatarURL,
       }),
     );
     return user.id;
