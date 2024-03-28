@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-discord';
 import { parseAvatarURL } from '@lib/shared/discord/discord.parser';
+import { SocialProfile } from '@lib/shared/jwt/jwt.interfaces';
 
 @Injectable()
 export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
@@ -17,13 +18,13 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
 
   async validate(accessToken: string, refreshToken: string, profile: any, done: any) {
     try {
-      const user = {
+      const socialProfile: SocialProfile = {
+        id: profile.id,
         username: profile.username,
-        avatarURL: parseAvatarURL(profile.id, profile.avatar) || undefined,
         provider: profile.provider,
-        socialId: profile.id,
+        avatarURL: parseAvatarURL(profile.id, profile.avatar) || undefined,
       };
-      done(null, user);
+      done(null, socialProfile);
     } catch (err) {
       done(err);
     }
