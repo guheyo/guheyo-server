@@ -19,9 +19,10 @@ import { AuthorResponse } from '@lib/domains/user/application/dtos/author.respon
 import { FindAuthorArgs } from '@lib/domains/user/application/queries/find-author/find-author.args';
 import { FindAuthorQuery } from '@lib/domains/user/application/queries/find-author/find-author.query';
 import { FindMyUserArgs } from '@lib/domains/user/application/queries/find-my-user/find-my-user.args';
-import { AuthUser } from '@lib/domains/auth/decorators/auth-user/auth-user.decorator';
+import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
 import { LinkSocialProfileInput } from '@lib/domains/user/application/commands/link-social-profile/link-social-profile.input';
 import { LinkSocialProfileCommand } from '@lib/domains/user/application/commands/link-social-profile/link-social-profile.command';
+import { JwtPayload } from 'jsonwebtoken';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -36,11 +37,11 @@ export class UserResolver {
   @Query(() => MyUserResponse, { nullable: true })
   async findMyUser(
     @Args() args: FindMyUserArgs,
-    @AuthUser() user: any,
+    @ExtractedJwtPayload() jwtPayload: JwtPayload,
   ): Promise<MyUserResponse | null> {
     const query = new FindMyUserQuery({
       args,
-      userId: user?.id,
+      userId: jwtPayload.id,
     });
     return this.queryBus.execute(query);
   }
@@ -85,16 +86,16 @@ export class UserResolver {
   @Mutation(() => String)
   async linkSocialProfile(
     @Args('input') input: LinkSocialProfileInput,
-    @AuthUser() user: any,
+    @ExtractedJwtPayload() jwtPayload: JwtPayload,
   ): Promise<string> {
     await this.commandBus.execute(
       new LinkSocialProfileCommand({
         input,
-        userId: user.id,
-        username: user.socialProfile.username,
-        avatarURL: user.socialProfile.avatarURL,
+        userId: jwtPayload.id,
+        username: jwtPayload.socialProfile.username,
+        avatarURL: jwtPayload.socialProfile.avatarURL,
       }),
     );
-    return user.id;
+    return jwtPayload.id;
   }
 }
