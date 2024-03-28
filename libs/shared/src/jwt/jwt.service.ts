@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { CookieOptions, Request, Response } from 'express';
 import { sign, verify } from 'jsonwebtoken';
 import _ from 'lodash';
-import { SocialProfile, UserPayload } from './jwt.interfaces';
+import { JwtPayload, SocialProfile, UserPayload } from './jwt.interfaces';
 
 @Injectable()
 export class JwtService {
@@ -25,6 +25,10 @@ export class JwtService {
     return {
       ..._.pick(partial, ['id', 'username', 'provider', 'avatarURL']),
     };
+  }
+
+  parseUserPayload(jwtPayload: JwtPayload): UserPayload {
+    return _.omit(jwtPayload, ['iat', 'exp']);
   }
 
   verifyRefreshToken(token: string) {
