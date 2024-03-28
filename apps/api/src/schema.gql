@@ -587,7 +587,7 @@ type ProductCategoryResponse {
 type Query {
   findAuctionById(id: ID!): AuctionResponse
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
-  findAuthor(id: ID, username: String): AuthorResponse
+  findAuthor(id: ID, provider: String, socialId: String, username: String): AuthorResponse
   findComment(id: ID, refId: ID, type: String): CommentResponse
   findDemand(id: ID, slug: String): DemandResponse
   findDemandPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
