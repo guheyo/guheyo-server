@@ -3,12 +3,12 @@ import { Response } from 'express';
 import { v4 as uuid4 } from 'uuid';
 import { QueryBus, CommandBus } from '@nestjs/cqrs';
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
-import { SignInUserInput } from '@lib/domains/user/application/commands/sign-in-user/sing-in-user.input';
 import { SignInUserCommand } from '@lib/domains/user/application/commands/sign-in-user/sign-in-user.command';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@lib/shared/jwt/jwt.service';
 import { UpdateSocialAccountCommand } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.command';
 import { ConfigService } from '@nestjs/config';
+import { SocialProfile } from '@lib/shared/jwt/jwt.interfaces';
 import { ThrottlerBehindProxyGuard } from '../throttler/throttler-behind-proxy.guard';
 
 @UseGuards(ThrottlerBehindProxyGuard)
@@ -30,53 +30,56 @@ export class AuthController {
   @Get('discord/callback')
   @UseGuards(AuthGuard('discord'))
   async discordLoginCallback(@Req() req: any, @Res() res: Response) {
-    const input = req.user as SignInUserInput;
+    const socialProfile = req.user as SocialProfile;
     const user = await this.queryBus.execute(
       new FindUserQuery({
-        provider: input.provider,
-        socialId: input.socialId,
+        provider: socialProfile.provider,
+        socialId: socialProfile.id,
       }),
     );
     let accessToken: string;
     let refreshToken: string;
     if (user) {
-      accessToken = this.jwtService.signAccessToken(
-        this.jwtService.parseProfile({
-          ...input,
-          id: user.id,
-        }),
-      );
-      refreshToken = this.jwtService.signRefreshToken(
-        this.jwtService.parseProfile({
-          ...input,
-          id: user.id,
-        }),
-      );
+      accessToken = this.jwtService.signAccessToken({
+        socialProfile: this.jwtService.parseSocialProfile(socialProfile),
+        id: user.id,
+        username: user.username,
+        avatarURL: user.avatarURL,
+      });
+      refreshToken = this.jwtService.signRefreshToken({
+        socialProfile: this.jwtService.parseSocialProfile(socialProfile),
+        id: user.id,
+        username: user.username,
+        avatarURL: user.avatarURL,
+      });
       await this.commandBus.execute(
         new UpdateSocialAccountCommand({
-          provider: input.provider,
-          socialId: input.socialId,
+          provider: socialProfile.provider,
+          socialId: socialProfile.id,
           accessToken,
           refreshToken,
         }),
       );
     } else {
       const id = uuid4();
-      accessToken = this.jwtService.signAccessToken(
-        this.jwtService.parseProfile({
-          ...input,
-          id,
-        }),
-      );
-      refreshToken = this.jwtService.signRefreshToken(
-        this.jwtService.parseProfile({
-          ...input,
-          id,
-        }),
-      );
+      accessToken = this.jwtService.signAccessToken({
+        socialProfile: this.jwtService.parseSocialProfile(socialProfile),
+        id,
+        username: socialProfile.username,
+        avatarURL: socialProfile.avatarURL,
+      });
+      refreshToken = this.jwtService.signRefreshToken({
+        socialProfile: this.jwtService.parseSocialProfile(socialProfile),
+        id,
+        username: socialProfile.username,
+        avatarURL: socialProfile.avatarURL,
+      });
       await this.commandBus.execute(
         new SignInUserCommand({
-          ...input,
+          socialId: socialProfile.id,
+          username: socialProfile.username,
+          provider: socialProfile.provider,
+          avatarURL: socialProfile.avatarURL,
           id,
           accessToken,
           refreshToken,
