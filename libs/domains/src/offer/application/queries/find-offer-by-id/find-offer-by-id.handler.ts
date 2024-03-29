@@ -22,6 +22,7 @@ export class FindOfferByIdHandler extends PrismaQueryHandler<FindOfferByIdQuery,
           include: {
             members: {
               include: {
+                group: true,
                 roles: {
                   orderBy: {
                     position: 'asc',

@@ -22,6 +22,7 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> implement
             socialAccounts: true,
             members: {
               include: {
+                group: true,
                 roles: {
                   orderBy: {
                     position: 'asc',

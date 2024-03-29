@@ -33,6 +33,7 @@ export class FindAuthorHandler extends PrismaQueryHandler<FindAuthorQuery, Autho
       include: {
         members: {
           include: {
+            group: true,
             roles: {
               orderBy: {
                 position: 'asc',

@@ -22,6 +22,7 @@ export class FindDemandByIdHandler extends PrismaQueryHandler<FindDemandByIdQuer
           include: {
             members: {
               include: {
+                group: true,
                 roles: {
                   orderBy: {
                     position: 'asc',
