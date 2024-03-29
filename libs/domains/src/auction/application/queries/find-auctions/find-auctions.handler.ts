@@ -30,6 +30,7 @@ export class FindAuctionsHandler extends PrismaQueryHandler<FindAuctionsQuery, A
           include: {
             members: {
               include: {
+                group: true,
                 roles: {
                   orderBy: {
                     position: 'asc',

@@ -20,6 +20,7 @@ export class SwapRepository extends PrismaRepository<SwapEntity> {
             socialAccounts: true,
             members: {
               include: {
+                group: true,
                 roles: {
                   orderBy: {
                     position: 'asc',

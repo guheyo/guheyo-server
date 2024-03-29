@@ -6,7 +6,7 @@ import { MemberRepository } from '@lib/domains/member/adapter/out/persistence/me
 import { CreateMemberHandler } from '@lib/domains/member/application/commands/create-member/create-member.handler';
 import { UpdateMemberHandler } from '@lib/domains/member/application/commands/update-member/update-member.handler';
 import { DeleteMemberHandler } from '@lib/domains/member/application/commands/delete-member/delete-member.handler';
-import { FindMemberHandler } from '@lib/domains/member/application/queries/find-member-by-user-and-group/find-member.handler';
+import { FindMemberHandler } from '@lib/domains/member/application/queries/find-member/find-member.handler';
 import { MemberSavePort } from '@lib/domains/member/application/ports/out/member.save.port';
 import { MemberLoadPort } from '@lib/domains/member/application/ports/out/member.load.port';
 import { ThrottlerModule } from '@nestjs/throttler';

@@ -22,6 +22,7 @@ export class MemberRepository
         id,
       },
       include: {
+        group: true,
         roles: {
           orderBy: {
             position: 'asc',
@@ -39,6 +40,7 @@ export class MemberRepository
         userId,
       },
       include: {
+        group: true,
         roles: {
           orderBy: {
             position: 'asc',

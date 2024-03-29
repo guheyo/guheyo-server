@@ -9,7 +9,7 @@ import { DisconnectRolesCommand } from '@lib/domains/member/application/commands
 import { SignInUserCommand } from '@lib/domains/user/application/commands/sign-in-user/sign-in-user.command';
 import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
 import { MemberResponse } from '@lib/domains/member/application/dtos/member.response';
-import { FindMemberQuery } from '@lib/domains/member/application/queries/find-member-by-user-and-group/find-member.query';
+import { FindMemberQuery } from '@lib/domains/member/application/queries/find-member/find-member.query';
 import { CreateUserImageCommand } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.command';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { SimpleUser } from '../parsers/user.types';

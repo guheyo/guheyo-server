@@ -17,6 +17,7 @@ export class UserRepository extends PrismaRepository<UserEntity> implements User
         socialAccounts: true,
         members: {
           include: {
+            group: true,
             roles: {
               orderBy: {
                 position: 'asc',
@@ -44,6 +45,7 @@ export class UserRepository extends PrismaRepository<UserEntity> implements User
         socialAccounts: true,
         members: {
           include: {
+            group: true,
             roles: {
               orderBy: {
                 position: 'asc',

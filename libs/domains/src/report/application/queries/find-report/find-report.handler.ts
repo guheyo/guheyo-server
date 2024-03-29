@@ -28,18 +28,9 @@ export class FindReportHandler extends PrismaQueryHandler<FindReportQuery, Repor
     const report = await this.prismaService.report.findFirst({
       where,
       include: {
-        author: {
-          include: {
-            members: {
-              include: {
-                roles: {
-                  orderBy: {
-                    position: 'asc',
-                  },
-                },
-              },
-            },
-            socialAccounts: true,
+        comments: {
+          orderBy: {
+            createdAt: 'desc',
           },
         },
       },

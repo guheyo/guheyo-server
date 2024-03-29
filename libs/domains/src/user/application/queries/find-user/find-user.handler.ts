@@ -11,7 +11,7 @@ export class FindUserHandler extends PrismaQueryHandler<FindUserQuery, UserRespo
 
   async execute(query: FindUserQuery): Promise<UserResponse | null> {
     if (query.provider && query.socialId) {
-      const users = await this.prismaService.user.findMany({
+      const user = await this.prismaService.user.findFirst({
         where: {
           socialAccounts: {
             some: {
@@ -21,10 +21,10 @@ export class FindUserHandler extends PrismaQueryHandler<FindUserQuery, UserRespo
           },
         },
       });
-      return this.parseResponse(users[0]);
+      return this.parseResponse(user);
     }
     if (query.sessionToken) {
-      const users = await this.prismaService.user.findMany({
+      const user = await this.prismaService.user.findFirst({
         where: {
           sessions: {
             some: {
@@ -33,7 +33,7 @@ export class FindUserHandler extends PrismaQueryHandler<FindUserQuery, UserRespo
           },
         },
       });
-      return this.parseResponse(users[0]);
+      return this.parseResponse(user);
     }
     if (query.username) {
       const user = await this.prismaService.user.findUnique({

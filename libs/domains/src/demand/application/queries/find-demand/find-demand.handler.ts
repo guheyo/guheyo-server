@@ -25,6 +25,7 @@ export class FindDemandHandler extends PrismaQueryHandler<FindDemandQuery, Deman
           include: {
             members: {
               include: {
+                group: true,
                 roles: {
                   orderBy: {
                     position: 'asc',

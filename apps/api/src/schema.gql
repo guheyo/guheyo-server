@@ -394,7 +394,7 @@ input LinkSocialProfileInput {
 
 type MemberWithRolesResponse {
   createdAt: DateTime!
-  groupId: String!
+  group: GroupProfileResponse!
   id: ID!
   roles: [RoleResponse!]!
   userId: String!
@@ -436,6 +436,7 @@ type Mutation {
   disconnectRoles(input: DisconnectRolesInput!): String!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
+  reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
   updateAuction(input: UpdateAuctionInput!): String!
   updateComment(input: UpdateCommentInput!): CommentResponse!
@@ -586,7 +587,7 @@ type ProductCategoryResponse {
 type Query {
   findAuctionById(id: ID!): AuctionResponse
   findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
-  findAuthor(id: ID, username: String): AuthorResponse
+  findAuthor(id: ID, provider: String, socialId: String, username: String): AuthorResponse
   findComment(id: ID, refId: ID, type: String): CommentResponse
   findDemand(id: ID, slug: String): DemandResponse
   findDemandPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
@@ -594,7 +595,7 @@ type Query {
   findGroupPreviews: [GroupPreviewResponse!]!
   findGroupProfiles(cursor: ID, distinct: Boolean, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
-  findMemberByUserAndGroup(groupId: ID!, userId: ID!): MemberWithRolesResponse
+  findMember(groupId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUser(id: ID, username: String): MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!

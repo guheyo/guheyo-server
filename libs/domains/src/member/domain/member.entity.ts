@@ -1,5 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { RoleEntity } from '@lib/domains/role/domain/role.entity';
+import { GroupEntity } from '@lib/domains/group/domain/group.entity';
 
 export class MemberEntity extends AggregateRoot {
   id: string;
@@ -13,6 +14,8 @@ export class MemberEntity extends AggregateRoot {
   userId: string;
 
   groupId: string;
+
+  group: GroupEntity;
 
   roles: RoleEntity[];
 

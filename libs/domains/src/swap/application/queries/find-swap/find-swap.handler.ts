@@ -25,6 +25,7 @@ export class FindSwapHandler extends PrismaQueryHandler<FindSwapQuery, SwapRespo
           include: {
             members: {
               include: {
+                group: true,
                 roles: {
                   orderBy: {
                     position: 'asc',

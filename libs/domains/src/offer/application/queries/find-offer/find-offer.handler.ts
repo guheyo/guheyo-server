@@ -25,6 +25,7 @@ export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferRe
           include: {
             members: {
               include: {
+                group: true,
                 roles: {
                   orderBy: {
                     position: 'asc',

@@ -21,7 +21,12 @@ export class FindMyUserHandler extends PrismaQueryHandler<FindMyUserQuery, MyUse
         socialAccounts: true,
         members: {
           include: {
-            roles: true,
+            group: true,
+            roles: {
+              orderBy: {
+                position: 'asc',
+              },
+            },
           },
         },
       },

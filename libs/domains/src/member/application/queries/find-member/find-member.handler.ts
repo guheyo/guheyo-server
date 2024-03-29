@@ -19,6 +19,7 @@ export class FindMemberHandler extends PrismaQueryHandler<
         groupId: query.groupId,
       },
       include: {
+        group: true,
         roles: {
           orderBy: {
             position: 'asc',
