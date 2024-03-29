@@ -26,7 +26,7 @@ export class FindMyUserHandler extends PrismaQueryHandler<FindMyUserQuery, MyUse
               orderBy: {
                 position: 'asc',
               },
-            }
+            },
           },
         },
       },
