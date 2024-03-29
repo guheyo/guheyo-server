@@ -2,13 +2,14 @@ import { Controller, Get, HttpStatus, Req, Res, UseGuards } from '@nestjs/common
 import { Response } from 'express';
 import { v4 as uuid4 } from 'uuid';
 import { QueryBus, CommandBus } from '@nestjs/cqrs';
-import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 import { SignInUserCommand } from '@lib/domains/user/application/commands/sign-in-user/sign-in-user.command';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@lib/shared/jwt/jwt.service';
 import { UpdateSocialAccountCommand } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.command';
 import { ConfigService } from '@nestjs/config';
 import { SocialProfile } from '@lib/shared/jwt/jwt.interfaces';
+import { FindAuthorQuery } from '@lib/domains/user/application/queries/find-author/find-author.query';
+import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
 import { ThrottlerBehindProxyGuard } from '../throttler/throttler-behind-proxy.guard';
 
 @UseGuards(ThrottlerBehindProxyGuard)
@@ -31,12 +32,13 @@ export class AuthController {
   @UseGuards(AuthGuard('discord'))
   async discordLoginCallback(@Req() req: any, @Res() res: Response) {
     const socialProfile = req.user as SocialProfile;
-    const user = await this.queryBus.execute(
-      new FindUserQuery({
+    const user = (await this.queryBus.execute(
+      new FindAuthorQuery({
         provider: socialProfile.provider,
         socialId: socialProfile.id,
       }),
-    );
+    )) as AuthorResponse | null;
+
     let accessToken: string;
     let refreshToken: string;
     if (user) {
@@ -44,13 +46,13 @@ export class AuthController {
         socialProfile: this.jwtService.parseSocialProfile(socialProfile),
         id: user.id,
         username: user.username,
-        avatarURL: user.avatarURL,
+        avatarURL: user.avatarURL || undefined,
       });
       refreshToken = this.jwtService.signRefreshToken({
         socialProfile: this.jwtService.parseSocialProfile(socialProfile),
         id: user.id,
         username: user.username,
-        avatarURL: user.avatarURL,
+        avatarURL: user.avatarURL || undefined,
       });
       await this.commandBus.execute(
         new UpdateSocialAccountCommand({
