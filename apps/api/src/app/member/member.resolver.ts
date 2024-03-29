@@ -25,9 +25,7 @@ export class MemberResolver {
   ) {}
 
   @Query(() => MemberWithRolesResponse, { nullable: true })
-  async findMemberByUserAndGroup(
-    @Args() args: FindMemberArgs,
-  ): Promise<MemberWithRolesResponse | null> {
+  async findMember(@Args() args: FindMemberArgs): Promise<MemberWithRolesResponse | null> {
     const query = new FindMemberQuery(args);
     return this.queryBus.execute(query);
   }
