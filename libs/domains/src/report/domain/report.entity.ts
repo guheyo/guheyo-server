@@ -46,6 +46,7 @@ export class ReportEntity extends AggregateRoot {
         type: this.type,
         refId: this.refId,
         reportStatus: this.status,
+        reportedUserId: this.reportedUserId,
       }),
     );
   }
