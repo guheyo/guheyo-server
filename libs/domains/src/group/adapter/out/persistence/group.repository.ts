@@ -27,13 +27,15 @@ export class GroupRepository extends PrismaRepository<GroupEntity> {
 
   async create(group: GroupEntity): Promise<void> {
     await this.prismaService.group.create({
-      data: _.pick(group, ['id', 'name', 'description', 'icon', 'position']),
+      data: _.pick(group, ['id', 'name', 'slug', 'description', 'icon', 'position']),
     });
   }
 
   async createMany(groups: GroupEntity[]): Promise<void> {
     await this.prismaService.group.createMany({
-      data: groups.map((group) => _.pick(group, ['id', 'name', 'description', 'icon', 'position'])),
+      data: groups.map((group) =>
+        _.pick(group, ['id', 'name', 'slug', 'description', 'icon', 'position']),
+      ),
     });
   }
 
@@ -42,7 +44,7 @@ export class GroupRepository extends PrismaRepository<GroupEntity> {
       where: {
         id: group.id,
       },
-      data: _.pick(group, ['name', 'description', 'icon', 'position']),
+      data: _.pick(group, ['name', 'slug', 'description', 'icon', 'position']),
     });
   }
 

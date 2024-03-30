@@ -11,6 +11,10 @@ export class CreateGroupInput {
   @Field()
   name: string;
 
+  @IsString()
+  @Field()
+  slug: string;
+
   @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
