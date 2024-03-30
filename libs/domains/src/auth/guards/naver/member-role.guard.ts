@@ -20,7 +20,7 @@ export class MemberRoleGuard implements CanActivate {
     if (!jwtPayload) return false;
 
     if (
-      !!blocklistRoleNames &&
+      blocklistRoleNames.length > 0 &&
       jwtPayload.memberRoles.some(
         (member) =>
           member.groupSlug === groupSlug &&
@@ -32,7 +32,7 @@ export class MemberRoleGuard implements CanActivate {
       return false;
 
     if (
-      !!allowlistRoleNames &&
+      allowlistRoleNames.length > 0 &&
       !jwtPayload.memberRoles.some(
         (member) =>
           member.groupSlug === groupSlug &&
