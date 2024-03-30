@@ -6,11 +6,13 @@ import { ReportSummaryEntity } from '@lib/domains/report/domain/report-summary.e
 import { ROOT_GROUP_SLUG } from '@lib/domains/group/domain/group.constants';
 import { REPORTED_USER_ROLE } from '@lib/domains/role/domain/role.constants';
 import { Type } from 'class-transformer';
+import { NotFoundException } from '@nestjs/common';
 import { UpdateUserProps } from './user.types';
 import { SocialAccountLinkedEvent } from '../application/events/social-account-linked/social-account-linked.event';
 import { UserUpdatedEvent } from '../application/events/user-updated/user-updated.event';
 import { AvatarCreatedEvent } from '../application/events/avatar-created/avatar-created.event';
 import { UserCheckedReceivedReportsEvent } from '../application/events/user-checked-received-reports/user-checked-received-reports.event';
+import { UserErrorMessage } from './user.error.message';
 
 export class UserEntity extends AggregateRoot {
   id: string;
@@ -110,7 +112,7 @@ export class UserEntity extends AggregateRoot {
 
   checkReceivedReports() {
     const rootGroupMember = this.findRootGroupMember();
-    if (!rootGroupMember) return;
+    if (!rootGroupMember) throw new NotFoundException(UserErrorMessage.ROOT_GROUP_MEMBER_NOT_FOUND);
 
     this.apply(
       new UserCheckedReceivedReportsEvent({
