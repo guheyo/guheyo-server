@@ -26,6 +26,8 @@ export class ReportEntity extends AggregateRoot {
 
   authorId: string;
 
+  reportedUserId?: string;
+
   title: string;
 
   content: string | null;
