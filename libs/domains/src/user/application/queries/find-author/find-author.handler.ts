@@ -1,6 +1,5 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { Prisma } from '@prisma/client';
 import { FindAuthorQuery } from './find-author.query';
 import { AuthorResponse } from '../../dtos/author.response';
 
@@ -11,25 +10,11 @@ export class FindAuthorHandler extends PrismaQueryHandler<FindAuthorQuery, Autho
   }
 
   async execute(query: FindAuthorQuery): Promise<AuthorResponse | null> {
-    let where: Prisma.UserWhereInput;
-    if (query.provider && query.socialId) {
-      where = {
-        socialAccounts: {
-          some: {
-            provider: query.provider,
-            socialId: query.socialId,
-          },
-        },
-      };
-    } else {
-      where = {
+    const user = await this.prismaService.user.findFirst({
+      where: {
         id: query.id,
         username: query.username,
-      };
-    }
-
-    const user = await this.prismaService.user.findFirst({
-      where,
+      },
       include: {
         members: {
           include: {
