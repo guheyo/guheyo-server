@@ -1,3 +1,4 @@
+import { FindAuthUserHandler } from './find-auth-user/find-auth-user.handler';
 import { FindAuthorHandler } from './find-author/find-author.handler';
 import { FindMyUserHandler } from './find-my-user/find-my-user.handler';
 import { FindUserHandler } from './find-user/find-user.handler';
@@ -8,4 +9,5 @@ export const USER_QUERY_PROVIDERS = [
   FindUsersHandler,
   FindMyUserHandler,
   FindAuthorHandler,
+  FindAuthUserHandler,
 ];

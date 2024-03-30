@@ -392,6 +392,11 @@ input LinkSocialProfileInput {
   provider: String!
 }
 
+type MemberRoleResponse {
+  groupSlug: String!
+  roleNames: [String!]!
+}
+
 type MemberWithRolesResponse {
   createdAt: DateTime!
   group: GroupProfileResponse!
