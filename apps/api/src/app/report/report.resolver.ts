@@ -14,6 +14,12 @@ import { CommentReportCommand } from '@lib/domains/report/application/commands/c
 import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
 import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
+import { MemberRoleGuard } from '@lib/domains/auth/guards/naver/member-role.guard';
+import { GroupSlug } from '@lib/domains/auth/decorators/group-slug/group-slug.decorator';
+import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
+import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
+import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
+import { ROOT_GROUP_SLUG } from '@lib/domains/group/domain/group.constants';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -36,8 +42,11 @@ export class ReportResolver {
     return this.queryBus.execute(query);
   }
 
+  @GroupSlug(ROOT_GROUP_SLUG)
+  @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
+  @AllowlistRoleNames([])
   @AuthorIdPath('input.authorId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard, MemberRoleGuard)
   @Mutation(() => String)
   async createReport(@Args('input') input: CreateReportInput): Promise<string> {
     await this.commandBus.execute(new CreateReportCommand(input));
