@@ -12,14 +12,4 @@ export class FindAuthorArgs {
   @IsString()
   @Field(() => String, { nullable: true })
   username?: string;
-
-  @IsOptional()
-  @IsString()
-  @Field({ nullable: true })
-  provider?: string;
-
-  @IsOptional()
-  @IsString()
-  @Field({ nullable: true })
-  socialId?: string;
 }

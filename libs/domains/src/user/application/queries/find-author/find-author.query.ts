@@ -6,14 +6,8 @@ export class FindAuthorQuery implements IQuery {
 
   username?: string;
 
-  provider?: string;
-
-  socialId?: string;
-
   constructor(args: FindAuthorArgs) {
     this.id = args.id;
     this.username = args.username;
-    this.provider = args.provider;
-    this.socialId = args.socialId;
   }
 }

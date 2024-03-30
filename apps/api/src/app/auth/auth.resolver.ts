@@ -8,8 +8,9 @@ import { UpdateSocialAccountCommand } from '@lib/domains/social-account/applicat
 import { SocialUserResponse } from '@lib/domains/social-account/application/dtos/social-user.response';
 import { JwtRefreshAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-refresh-auth.guard';
 import { JwtResponse } from '@lib/domains/auth/guards/jwt/jwt.response';
-import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 import { UserErrorMessage } from '@lib/domains/user/domain/user.error.message';
+import { FindAuthUserQuery } from '@lib/domains/user/application/queries/find-auth-user/find-auth-user.query';
+import { AuthUserResponse } from '@lib/domains/user/application/dtos/auth-user.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -54,19 +55,20 @@ export class AuthResolver {
     @Context('res') res: Response,
   ): Promise<JwtResponse> {
     const jwtPayload = req.user as JwtPayload;
-    const user = await this.queryBus.execute(
-      new FindUserQuery({
+    const user = (await this.queryBus.execute(
+      new FindAuthUserQuery({
         provider: jwtPayload.socialProfile.provider,
         socialId: jwtPayload.socialProfile.id,
       }),
-    );
+    )) as AuthUserResponse | null;
     if (!user) throw new NotFoundException(UserErrorMessage.USER_IS_NOT_FOUND);
 
     const userPayload = {
       socialProfile: jwtPayload.socialProfile,
       id: user.id,
       username: user.username,
-      avatarURL: user.avatarURL,
+      avatarURL: user.avatarURL || undefined,
+      memberRoles: user.memberRoles,
     };
 
     const accessToken = this.jwtService.signAccessToken(userPayload);
