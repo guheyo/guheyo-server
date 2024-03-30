@@ -12,9 +12,6 @@ export class AuthUserResponse {
   @Field(() => String, { nullable: true })
   avatarURL: string | null;
 
-  @Field()
-  bot: boolean;
-
   @Field(() => [MemberRoleResponse])
   memberRoles: MemberRoleResponse[];
 
