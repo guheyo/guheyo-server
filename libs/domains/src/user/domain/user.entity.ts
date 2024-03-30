@@ -2,10 +2,15 @@ import { MemberEntity } from '@lib/domains/member/domain/member.entity';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { isUndefined, omitBy } from 'lodash';
+import { ReportSummaryEntity } from '@lib/domains/report/domain/report-summary.entity';
+import { ROOT_GROUP_SLUG } from '@lib/domains/group/domain/group.constants';
+import { REPORTED_USER_ROLE } from '@lib/domains/role/domain/role.constants';
+import { Type } from 'class-transformer';
 import { UpdateUserProps } from './user.types';
 import { SocialAccountLinkedEvent } from '../application/events/social-account-linked/social-account-linked.event';
 import { UserUpdatedEvent } from '../application/events/user-updated/user-updated.event';
 import { AvatarCreatedEvent } from '../application/events/avatar-created/avatar-created.event';
+import { UserCheckedReceivedReportsEvent } from '../application/events/user-checked-received-reports/user-checked-received-reports.event';
 
 export class UserEntity extends AggregateRoot {
   id: string;
@@ -31,6 +36,9 @@ export class UserEntity extends AggregateRoot {
   socialAccounts: SocialAccountEntity[];
 
   members: MemberEntity[];
+
+  @Type(() => ReportSummaryEntity)
+  receivedReports: ReportSummaryEntity[];
 
   constructor(partial: Partial<UserEntity>) {
     super();
@@ -88,6 +96,30 @@ export class UserEntity extends AggregateRoot {
         contentType,
         userId: this.id,
         source,
+      }),
+    );
+  }
+
+  hasUncommentedReceivedReports() {
+    return this.receivedReports.some((report) => report.isOpen());
+  }
+
+  findRootGroupMember() {
+    return this.members.find((member) => member.group.slug === ROOT_GROUP_SLUG);
+  }
+
+  checkReceivedReports() {
+    const rootGroupMember = this.findRootGroupMember();
+    if (!rootGroupMember) return;
+
+    this.apply(
+      new UserCheckedReceivedReportsEvent({
+        groupId: rootGroupMember.groupId,
+        memberId: rootGroupMember.id,
+        userId: this.id,
+        roleIds: [],
+        roleNames: [REPORTED_USER_ROLE],
+        hasUncommentedReceivedReports: this.hasUncommentedReceivedReports(),
       }),
     );
   }
