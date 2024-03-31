@@ -20,8 +20,8 @@ export class ReportPreviewResponse {
   @Field(() => ID)
   refVersionId: string;
 
-  @Field(() => ID)
-  reportedUserId: string;
+  @Field(() => ID, { nullable: true })
+  reportedUserId?: string;
 
   @Field()
   status: string;
