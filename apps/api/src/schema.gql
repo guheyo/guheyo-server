@@ -2,41 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-input AddBidInput {
-  auctionId: String!
-  bidderId: String!
-  id: ID!
-  price: Int!
-  priceCurrency: String!
-  source: String!
-}
-
-type AuctionResponse {
-  bids: [BidResponse!]!
-  brandId: String
-  businessFunction: String!
-  createdAt: DateTime!
-  description: String
-  endedAt: DateTime!
-  groupId: String!
-  id: ID!
-  images: [UserImageResponse!]!
-  name: String!
-  price: Int!
-  priceCurrency: String!
-  productCategoryId: String!
-  seller: AuthorResponse!
-  slug: String
-  source: String!
-  status: String!
-  updatedAt: DateTime!
-}
-
-type AuctionResponseEdge {
-  cursor: String!
-  node: AuctionResponse!
-}
-
 type AuthorResponse {
   about: String
   avatarURL: String
@@ -46,18 +11,6 @@ type AuthorResponse {
   members: [MemberWithRolesResponse!]!
   socialAccounts: [SocialAccountWithoutAuthResponse!]!
   username: String!
-}
-
-type BidResponse {
-  auctionId: ID!
-  bidder: AuthorResponse!
-  canceledAt: DateTime!
-  createdAt: DateTime!
-  id: ID!
-  price: Int!
-  priceCurrency: String!
-  source: String!
-  status: String!
 }
 
 input BumpDemandInput {
@@ -81,11 +34,6 @@ input BumpSwapInput {
   swapId: ID!
 }
 
-input CancelBidInput {
-  auctionId: String!
-  bidderId: String!
-}
-
 input CommentReportInput {
   authorId: ID!
   content: String!
@@ -104,28 +52,6 @@ type CommentResponse {
   reportId: ID
   type: String!
   updatedAt: DateTime!
-}
-
-input ConnectRolesInput {
-  groupId: ID!
-  roleIds: [ID!]!
-  roleNames: [String!]!
-  userId: ID!
-}
-
-input CreateAuctionInput {
-  brandId: String
-  businessFunction: String!
-  createdAt: DateTime!
-  description: String
-  endedAt: DateTime!
-  groupId: ID!
-  id: ID!
-  name: String!
-  productCategoryId: String!
-  sellerId: String!
-  source: String!
-  status: String! = "open"
 }
 
 input CreateCommentInput {
@@ -167,12 +93,6 @@ input CreateManyUserImageInput {
   data: [CreateUserImageInput!]!
 }
 
-input CreateMemberInput {
-  groupId: ID!
-  id: ID!
-  userId: ID!
-}
-
 input CreateOfferInput {
   brandId: String
   businessFunction: String!
@@ -212,20 +132,6 @@ input CreateRoleInput {
 input CreateSignedUrlInput {
   filename: String!
   type: String!
-  userId: String!
-}
-
-input CreateSocialAccountInput {
-  accessToken: String
-  expiresAt: Int
-  id: ID!
-  idToken: String
-  provider: String!
-  refreshToken: String
-  scope: String
-  sessionState: String
-  socialId: String!
-  tokenType: String
   userId: String!
 }
 
@@ -334,12 +240,6 @@ type DemandResponse {
   updatedAt: DateTime!
 }
 
-input DisconnectRolesInput {
-  id: ID!
-  roleIds: [ID!]!
-  roleNames: [String!]!
-}
-
 type GroupPreviewResponse {
   demands: [DemandPreviewResponse!]!
   description: String
@@ -394,11 +294,6 @@ input LinkSocialProfileInput {
   provider: String!
 }
 
-type MemberRoleResponse {
-  groupSlug: String!
-  roleNames: [String!]!
-}
-
 type MemberWithRolesResponse {
   createdAt: DateTime!
   group: GroupProfileResponse!
@@ -408,51 +303,37 @@ type MemberWithRolesResponse {
 }
 
 type Mutation {
-  addBid(input: AddBidInput!): String!
   bumpDemand(input: BumpDemandInput!): DemandPreviewResponse!
   bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
   bumpSwap(input: BumpSwapInput!): SwapPreviewResponse!
-  cancelBid(input: CancelBidInput!): String!
   commentReport(input: CommentReportInput!): String!
-  connectRoles(input: ConnectRolesInput!): String!
-  createAuction(input: CreateAuctionInput!): String!
   createComment(input: CreateCommentInput!): String!
   createDemand(input: CreateDemandInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
-  createMember(input: CreateMemberInput!): String!
   createOffer(input: CreateOfferInput!): String!
   createReport(input: CreateReportInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
-  createSocialAccount(input: CreateSocialAccountInput!): String!
   createSwap(input: CreateSwapInput!): String!
   createUser(input: CreateUserInput!): String!
   createUserImage(input: CreateUserImageInput!): String!
-  deleteAuction(id: ID!): String!
   deleteDemand(buyerId: ID!, id: ID!): String!
   deleteGroup(id: ID!): String!
-  deleteMember(id: ID!, userId: ID!): String!
   deleteOffer(id: ID!, sellerId: ID!): String!
   deleteRole(id: ID!): String!
-  deleteSocialAccount(id: ID!): String!
-  deleteSocialAccountByProvider(provider: String!, socialId: String!): String!
   deleteSwap(id: ID!, proposerId: ID!): String!
   deleteUser(id: ID!): String!
   deleteUserImage(id: ID!): String!
-  disconnectRoles(input: DisconnectRolesInput!): String!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
-  updateAuction(input: UpdateAuctionInput!): String!
   updateComment(input: UpdateCommentInput!): CommentResponse!
   updateDemand(input: UpdateDemandInput!): DemandPreviewResponse!
   updateGroup(input: UpdateGroupInput!): String!
-  updateMember(input: UpdateMemberInput!): String!
   updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
   updateRole(input: UpdateRoleInput!): String!
-  updateSocialAccount(input: UpdateSocialAccountInput!): String!
   updateSwap(input: UpdateSwapInput!): SwapPreviewResponse!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
@@ -535,11 +416,6 @@ type PageInfo {
   hasNextPage: Boolean!
 }
 
-type PaginatedAuctionsResponse {
-  edges: [AuctionResponseEdge!]!
-  pageInfo: PageInfo!
-}
-
 type PaginatedDemandPreviewsResponse {
   edges: [DemandPreviewResponseEdge!]!
   pageInfo: PageInfo!
@@ -592,8 +468,6 @@ type ProductCategoryResponse {
 }
 
 type Query {
-  findAuctionById(id: ID!): AuctionResponse
-  findAuctions(cursor: ID, productCategoryId: ID, skip: Int! = 1, take: Int!): PaginatedAuctionsResponse!
   findAuthor(id: ID, username: String): AuthorResponse
   findComment(id: ID, refId: ID, type: String): CommentResponse
   findDemand(id: ID, slug: String): DemandResponse
@@ -602,7 +476,6 @@ type Query {
   findGroupPreviews: [GroupPreviewResponse!]!
   findGroupProfiles(cursor: ID, distinct: Boolean, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
-  findMember(groupId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUser(id: ID, username: String): MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
@@ -618,7 +491,6 @@ type Query {
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   findVersion(id: ID!): VersionResponse
   findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
-  getSocialAccountsByUserId(id: ID!): String!
 }
 
 type ReportPreviewResponse {
@@ -765,15 +637,6 @@ type TermResponse {
   updatedAt: DateTime!
 }
 
-input UpdateAuctionInput {
-  brandId: ID
-  businessFunction: String
-  description: String
-  id: ID!
-  name: String
-  productCategoryId: ID
-}
-
 input UpdateCommentInput {
   authorId: ID!
   content: String!
@@ -807,11 +670,6 @@ input UpdateGroupInput {
   slug: String
 }
 
-input UpdateMemberInput {
-  id: ID!
-  userId: ID!
-}
-
 input UpdateOfferInput {
   brandId: ID
   businessFunction: String
@@ -834,20 +692,6 @@ input UpdateRoleInput {
   id: ID!
   name: String
   position: Int
-}
-
-input UpdateSocialAccountInput {
-  accessToken: String
-  expiresAt: Int
-  id: ID
-  idToken: String
-  provider: String
-  refreshToken: String
-  scope: String
-  sessionState: String
-  socialId: String
-  tokenType: String
-  userId: ID
 }
 
 input UpdateSwapInput {

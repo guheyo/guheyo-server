@@ -1,4 +1,3 @@
-import { MemberRoleResponse } from '@lib/domains/member/application/dtos/member-role.response';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
@@ -12,8 +11,8 @@ export class AuthUserResponse {
   @Field(() => String, { nullable: true })
   avatarURL: string | null;
 
-  @Field(() => [MemberRoleResponse])
-  memberRoles: MemberRoleResponse[];
+  @Field(() => [String])
+  rootRoleNames: string[];
 
   constructor(partial: Partial<AuthUserResponse>) {
     Object.assign(this, partial);

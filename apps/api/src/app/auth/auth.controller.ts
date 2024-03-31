@@ -47,14 +47,14 @@ export class AuthController {
         id: user.id,
         username: user.username,
         avatarURL: user.avatarURL || undefined,
-        memberRoles: user.memberRoles,
+        rootRoleNames: user.rootRoleNames,
       });
       refreshToken = this.jwtService.signRefreshToken({
         socialProfile: this.jwtService.parseSocialProfile(socialProfile),
         id: user.id,
         username: user.username,
         avatarURL: user.avatarURL || undefined,
-        memberRoles: user.memberRoles,
+        rootRoleNames: user.rootRoleNames,
       });
       await this.commandBus.execute(
         new UpdateSocialAccountCommand({
@@ -71,14 +71,14 @@ export class AuthController {
         id,
         username: socialProfile.username,
         avatarURL: socialProfile.avatarURL,
-        memberRoles: [],
+        rootRoleNames: [],
       });
       refreshToken = this.jwtService.signRefreshToken({
         socialProfile: this.jwtService.parseSocialProfile(socialProfile),
         id,
         username: socialProfile.username,
         avatarURL: socialProfile.avatarURL,
-        memberRoles: [],
+        rootRoleNames: [],
       });
       await this.commandBus.execute(
         new SignInUserCommand({
