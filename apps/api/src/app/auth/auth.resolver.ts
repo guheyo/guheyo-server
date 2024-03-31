@@ -68,7 +68,7 @@ export class AuthResolver {
       id: user.id,
       username: user.username,
       avatarURL: user.avatarURL || undefined,
-      memberRoles: user.memberRoles,
+      rootRoleNames: user.rootRoleNames,
     };
 
     const accessToken = this.jwtService.signAccessToken(userPayload);
