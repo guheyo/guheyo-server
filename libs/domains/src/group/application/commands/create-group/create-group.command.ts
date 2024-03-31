@@ -6,6 +6,8 @@ export class CreateGroupCommand implements ICommand {
 
   name: string;
 
+  slug: string;
+
   description?: string;
 
   icon?: string;
@@ -15,6 +17,7 @@ export class CreateGroupCommand implements ICommand {
   constructor(input: CreateGroupInput) {
     this.id = input.id;
     this.name = input.name;
+    this.slug = input.slug;
     this.description = input.description;
     this.icon = input.icon;
     this.position = input.position;

@@ -6,6 +6,8 @@ export class UpdateGroupCommand implements ICommand {
 
   name?: string;
 
+  slug?: string;
+
   description?: string;
 
   icon?: string;
@@ -15,6 +17,7 @@ export class UpdateGroupCommand implements ICommand {
   constructor(input: UpdateGroupInput) {
     this.id = input.id;
     this.name = input.name;
+    this.slug = input.slug;
     this.description = input.description;
     this.icon = input.icon;
     this.position = input.position;

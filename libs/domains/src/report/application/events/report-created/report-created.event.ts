@@ -8,9 +8,12 @@ export class ReportCreatedEvent implements IEvent {
 
   reportStatus: string;
 
+  reportedUserId?: string;
+
   constructor(input: ReportCreatedInput) {
     this.type = input.type;
     this.refId = input.refId;
     this.reportStatus = input.reportStatus;
+    this.reportedUserId = input.reportedUserId;
   }
 }

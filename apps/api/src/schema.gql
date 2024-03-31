@@ -160,6 +160,7 @@ input CreateGroupInput {
   id: ID!
   name: String!
   position: Int!
+  slug: String!
 }
 
 input CreateManyUserImageInput {
@@ -195,6 +196,7 @@ input CreateReportInput {
   id: ID!
   refId: ID!
   refVersionId: ID!
+  reportedUserId: ID
   title: String!
   type: String!
 }
@@ -802,6 +804,7 @@ input UpdateGroupInput {
   id: ID!
   name: String
   position: Int
+  slug: String
 }
 
 input UpdateMemberInput {

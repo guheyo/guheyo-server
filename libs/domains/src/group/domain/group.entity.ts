@@ -12,6 +12,8 @@ export class GroupEntity extends AggregateRoot {
 
   name: string;
 
+  slug?: string;
+
   description: string | null;
 
   icon: string | null;

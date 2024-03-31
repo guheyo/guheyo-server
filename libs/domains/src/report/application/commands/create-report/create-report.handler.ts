@@ -15,7 +15,16 @@ export class CreateReportHandler implements ICommandHandler<CreateReportCommand>
   async execute(command: CreateReportCommand): Promise<void> {
     const report = this.publisher.mergeObjectContext(
       new ReportEntity({
-        ...pick(command, ['id', 'type', 'refId', 'refVersionId', 'authorId', 'title', 'content']),
+        ...pick(command, [
+          'id',
+          'type',
+          'refId',
+          'refVersionId',
+          'authorId',
+          'reportedUserId',
+          'title',
+          'content',
+        ]),
       }),
     );
     report.create();

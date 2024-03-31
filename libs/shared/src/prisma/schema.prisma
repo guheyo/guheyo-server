@@ -41,7 +41,8 @@ model User {
   comments          Comment[]
   posts             Post[]
   discordMessages   DiscordMessage[]
-  reports           Report[]
+  submittedReports  Report[]    @relation("author")
+  receivedReports   Report[]    @relation("reportedUser")
 
   @@schema("public")
 }
@@ -329,7 +330,9 @@ model Report {
   refVersionId      String
   refVersion        Version           @relation(fields: [refVersionId], references: [id])
   authorId          String
-  author            User              @relation(fields: [authorId], references: [id])
+  author            User              @relation(fields: [authorId], references: [id], name: "author")
+  reportedUserId    String?
+  reportedUser      User?             @relation(fields: [reportedUserId], references: [id], name: "reportedUser")
   title             String
   content           String?
   status            String

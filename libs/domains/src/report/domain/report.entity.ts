@@ -26,6 +26,8 @@ export class ReportEntity extends AggregateRoot {
 
   authorId: string;
 
+  reportedUserId?: string;
+
   title: string;
 
   content: string | null;
@@ -44,6 +46,7 @@ export class ReportEntity extends AggregateRoot {
         type: this.type,
         refId: this.refId,
         reportStatus: this.status,
+        reportedUserId: this.reportedUserId,
       }),
     );
   }
@@ -86,6 +89,7 @@ export class ReportEntity extends AggregateRoot {
           type: this.type,
           refId: this.refId,
           reportStatus: this.status,
+          reportedUserId: this.reportedUserId,
         }),
       );
     }

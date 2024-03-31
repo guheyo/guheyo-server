@@ -12,6 +12,8 @@ export class CreateReportCommand implements ICommand {
 
   authorId: string;
 
+  reportedUserId?: string;
+
   title: string;
 
   content?: string;
@@ -22,6 +24,7 @@ export class CreateReportCommand implements ICommand {
     this.refId = input.refId;
     this.refVersionId = input.refVersionId;
     this.authorId = input.authorId;
+    this.reportedUserId = input.reportedUserId;
     this.title = input.title;
     this.content = input.content;
   }
