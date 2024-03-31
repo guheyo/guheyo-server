@@ -59,10 +59,17 @@ export class ReportSagas {
   reportStatusUpdated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
       ofType(ReportStatusUpdatedEvent),
-      map((event) => {
-        if (event.type === 'offer') return new CheckOfferReportsCommand(event);
-        if (event.type === 'demand') return new CheckDemandReportsCommand(event);
-        return new CheckSwapReportsCommand(event);
-      }),
+      concatMap((event) =>
+        of(
+          event.type === 'offer'
+            ? new CheckOfferReportsCommand(event)
+            : event.type === 'demand'
+            ? new CheckDemandReportsCommand(event)
+            : new CheckSwapReportsCommand(event),
+          new CheckReceivedReportsCommand({
+            userId: event.reportedUserId!,
+          }),
+        ),
+      ),
     );
 }
