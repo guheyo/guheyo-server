@@ -135,6 +135,20 @@ input CreateSignedUrlInput {
   userId: String!
 }
 
+input CreateSocialAccountInput {
+  accessToken: String
+  expiresAt: Int
+  id: ID!
+  idToken: String
+  provider: String!
+  refreshToken: String
+  scope: String
+  sessionState: String
+  socialId: String!
+  tokenType: String
+  userId: String!
+}
+
 input CreateSwapInput {
   brandId: String
   businessFunction: String!
@@ -315,6 +329,7 @@ type Mutation {
   createReport(input: CreateReportInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
+  createSocialAccount(input: CreateSocialAccountInput!): String!
   createSwap(input: CreateSwapInput!): String!
   createUser(input: CreateUserInput!): String!
   createUserImage(input: CreateUserImageInput!): String!
@@ -322,6 +337,8 @@ type Mutation {
   deleteGroup(id: ID!): String!
   deleteOffer(id: ID!, sellerId: ID!): String!
   deleteRole(id: ID!): String!
+  deleteSocialAccount(id: ID!): String!
+  deleteSocialAccountByProvider(provider: String!, socialId: String!): String!
   deleteSwap(id: ID!, proposerId: ID!): String!
   deleteUser(id: ID!): String!
   deleteUserImage(id: ID!): String!
@@ -334,6 +351,7 @@ type Mutation {
   updateGroup(input: UpdateGroupInput!): String!
   updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
   updateRole(input: UpdateRoleInput!): String!
+  updateSocialAccount(input: UpdateSocialAccountInput!): String!
   updateSwap(input: UpdateSwapInput!): SwapPreviewResponse!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
@@ -491,6 +509,7 @@ type Query {
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   findVersion(id: ID!): VersionResponse
   findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
+  getSocialAccountsByUserId(id: ID!): String!
 }
 
 type ReportPreviewResponse {
@@ -692,6 +711,20 @@ input UpdateRoleInput {
   id: ID!
   name: String
   position: Int
+}
+
+input UpdateSocialAccountInput {
+  accessToken: String
+  expiresAt: Int
+  id: ID
+  idToken: String
+  provider: String
+  refreshToken: String
+  scope: String
+  sessionState: String
+  socialId: String
+  tokenType: String
+  userId: ID
 }
 
 input UpdateSwapInput {

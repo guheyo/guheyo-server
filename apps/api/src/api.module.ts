@@ -19,6 +19,7 @@ import { CommonModule } from './app/common/common.module';
 import { ReportModule } from './app/report/report.module';
 import { CommentModule } from './app/comment/comment.module';
 import { VersionModule } from './app/version/version.module';
+import { SocialAccountModule } from './app/social-account/social-account.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { VersionModule } from './app/version/version.module';
       },
     ]),
     AuthModule,
+    SocialAccountModule,
     CommonModule,
     UserModule,
     RoleModule,
