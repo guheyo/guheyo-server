@@ -20,6 +20,9 @@ export class ReportPreviewResponse {
   @Field(() => ID)
   refVersionId: string;
 
+  @Field(() => ID)
+  reportedUserId: string;
+
   @Field()
   status: string;
 

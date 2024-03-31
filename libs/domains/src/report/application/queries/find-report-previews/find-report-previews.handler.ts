@@ -25,6 +25,7 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler<
       where: {
         type: query.where?.type && query.where.refId ? query.where.type : undefined,
         refId: query.where?.type && query.where.refId ? query.where.refId : undefined,
+        reportedUserId: query.where?.reportedUserId,
         title: parseFollowedBySearcher(query.keyword),
         createdAt: query.where?.createdAt
           ? {

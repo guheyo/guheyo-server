@@ -3,24 +3,24 @@ export class ReportCreatedInput {
 
   refId: string;
 
-  reportStatus: string;
-
   reportedUserId?: string;
+
+  reportStatus: string;
 
   constructor({
     type,
     refId,
-    reportStatus,
     reportedUserId,
+    reportStatus,
   }: {
     type: string;
     refId: string;
-    reportStatus: string;
     reportedUserId?: string;
+    reportStatus: string;
   }) {
     this.type = type;
     this.refId = refId;
-    this.reportStatus = reportStatus;
     this.reportedUserId = reportedUserId;
+    this.reportStatus = reportStatus;
   }
 }
