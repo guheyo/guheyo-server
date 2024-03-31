@@ -518,7 +518,7 @@ type ReportPreviewResponse {
   id: ID!
   refId: ID!
   refVersionId: ID!
-  reportedUserId: ID!
+  reportedUserId: ID
   status: String!
   title: String!
   type: String!
@@ -537,7 +537,7 @@ type ReportResponse {
   id: ID!
   refId: ID!
   refVersionId: ID!
-  reportedUserId: ID!
+  reportedUserId: ID
   status: String!
   title: String!
   type: String!

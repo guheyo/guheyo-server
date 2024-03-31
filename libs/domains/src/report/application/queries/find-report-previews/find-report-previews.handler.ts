@@ -26,6 +26,7 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler<
         type: query.where?.type && query.where.refId ? query.where.type : undefined,
         refId: query.where?.type && query.where.refId ? query.where.refId : undefined,
         reportedUserId: query.where?.reportedUserId,
+        authorId: query.where?.authorId,
         title: parseFollowedBySearcher(query.keyword),
         createdAt: query.where?.createdAt
           ? {
@@ -41,7 +42,6 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler<
           createdAt: query.orderBy?.createdAt,
         },
       ],
-      distinct: query.distinct ? ['title', 'authorId'] : undefined,
     });
 
     return paginate<ReportPreviewResponse>(this.parseResponses(reports), 'id', query.take);
