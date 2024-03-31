@@ -37,6 +37,7 @@ export class UserEntity extends AggregateRoot {
 
   socialAccounts: SocialAccountEntity[];
 
+  @Type(() => MemberEntity)
   members: MemberEntity[];
 
   @Type(() => ReportSummaryEntity)

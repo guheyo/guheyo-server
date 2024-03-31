@@ -1,7 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { omit } from 'lodash';
-import { MemberRole } from '@lib/domains/member/domain/member.interfaces';
+import { ROOT_GROUP_SLUG } from '@lib/domains/group/domain/group.constants';
 import { FindAuthUserQuery } from './find-auth-user.query';
 import { AuthUserResponse } from '../../dtos/auth-user.response';
 
@@ -34,15 +34,15 @@ export class FindAuthUserHandler extends PrismaQueryHandler<FindAuthUserQuery, A
         },
       },
     });
-    const memberRoles: MemberRole[] =
-      user?.members.map((member) => ({
-        groupSlug: member.group.slug!,
-        roleNames: member.roles.map((role) => role.name),
-      })) || [];
+
+    const rootRoleNames =
+      user?.members
+        .find((member) => member.group.slug === ROOT_GROUP_SLUG)
+        ?.roles.map((role) => role.name) || [];
 
     return this.parseResponse({
       ...omit(user, ['members']),
-      memberRoles,
+      rootRoleNames,
     });
   }
 }
