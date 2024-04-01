@@ -1,6 +1,7 @@
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { VersionEntity } from '@lib/domains/version/domain/version.entity';
+import { validateCooldown } from '@lib/shared/cooldown/validate-cooldown';
 import { ReportCreatedEvent } from '../application/events/report-created/report-created.event';
 import { ReportStatusUpdatedEvent } from '../application/events/report-status-updated/report-status-updated.event';
 import { REPORT_COMMENTED, REPORT_OPEN } from './report.constants';
@@ -93,5 +94,9 @@ export class ReportEntity extends AggregateRoot {
         }),
       );
     }
+  }
+
+  validateSubmitTerm() {
+    return validateCooldown(this.createdAt);
   }
 }
