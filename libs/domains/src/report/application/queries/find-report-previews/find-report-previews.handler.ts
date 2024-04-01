@@ -2,6 +2,8 @@ import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseFollowedBySearcher } from '@lib/shared/search/search';
+import { ForbiddenException } from '@nestjs/common';
+import { ReportErrorMessage } from '@lib/domains/report/domain/report.error.message';
 import { FindReportPreviewsQuery } from './find-report-previews.query';
 import { PaginatedReportPreviewsResponse } from './paginated-report-previews.response';
 import { ReportPreviewResponse } from '../../dtos/report-preview.response';
@@ -16,6 +18,9 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler<
   }
 
   async execute(query: FindReportPreviewsQuery): Promise<PaginatedReportPreviewsResponse> {
+    if (!!query.where?.authorId && query.where.authorId !== query.userId)
+      throw new ForbiddenException(ReportErrorMessage.FIND_REPORTS_REQUEST_FROM_UNAUTHORIZED_USER);
+
     const cursor = query.cursor
       ? {
           id: query.cursor,
@@ -25,6 +30,8 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler<
       where: {
         type: query.where?.type && query.where.refId ? query.where.type : undefined,
         refId: query.where?.type && query.where.refId ? query.where.refId : undefined,
+        reportedUserId: query.where?.reportedUserId,
+        authorId: query.where?.authorId,
         title: parseFollowedBySearcher(query.keyword),
         createdAt: query.where?.createdAt
           ? {
@@ -40,7 +47,6 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler<
           createdAt: query.orderBy?.createdAt,
         },
       ],
-      distinct: query.distinct ? ['title', 'authorId'] : undefined,
     });
 
     return paginate<ReportPreviewResponse>(this.parseResponses(reports), 'id', query.take);

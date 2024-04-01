@@ -13,6 +13,14 @@ export class FindReportPreviewsWhereArgs {
   refId?: string;
 
   @IsOptional()
+  @Field(() => ID, { nullable: true })
+  authorId?: string;
+
+  @IsOptional()
+  @Field(() => ID, { nullable: true })
+  reportedUserId?: string;
+
+  @IsOptional()
   @Field(() => String, { nullable: true })
   status?: string;
 

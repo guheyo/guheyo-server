@@ -22,11 +22,11 @@ export class ReportEntity extends AggregateRoot {
 
   refVersion: VersionEntity;
 
-  status: string;
-
   authorId: string;
 
   reportedUserId?: string;
+
+  status: string;
 
   title: string;
 
