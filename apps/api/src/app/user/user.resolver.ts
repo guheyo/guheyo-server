@@ -1,10 +1,7 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateUserInput } from '@lib/domains/user/application/commands/create-user/create-user.input';
-import { CreateUserCommand } from '@lib/domains/user/application/commands/create-user/create-user.command';
 import { UpdateUserInput } from '@lib/domains/user/application/commands/update-user/update-user.input';
 import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
-import { DeleteUserCommand } from '@lib/domains/user/application/commands/delete-user/delete-user.command';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { PaginationArgs } from '@lib/shared/cqrs/queries/pagination/pagination.args';
 import { FindUsersQuery } from '@lib/domains/user/application/queries/find-users/find-users.query';
@@ -64,22 +61,16 @@ export class UserResolver {
     return this.queryBus.execute(query);
   }
 
-  @Mutation(() => String)
-  async createUser(@Args('input') input: CreateUserInput): Promise<string> {
-    await this.commandBus.execute(new CreateUserCommand(input));
-    return input.id;
-  }
+  // NOTE
+  // createUser -> signInUser
+
+  // TODO
+  // deleteUser
 
   @Mutation(() => String)
   async updateUser(@Args('input') input: UpdateUserInput): Promise<string> {
     await this.commandBus.execute(new UpdateUserCommand(input));
     return input.id;
-  }
-
-  @Mutation(() => String)
-  async deleteUser(@Args('id', { type: () => ID }) id: string): Promise<string> {
-    await this.commandBus.execute(new DeleteUserCommand(id));
-    return id;
   }
 
   @UseGuards(JwtAccessAuthGuard)
