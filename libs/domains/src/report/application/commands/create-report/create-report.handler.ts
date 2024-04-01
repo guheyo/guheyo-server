@@ -16,8 +16,8 @@ export class CreateReportHandler implements ICommandHandler<CreateReportCommand>
   ) {}
 
   async execute(command: CreateReportCommand): Promise<void> {
-    const lastestSubmittedReport = await this.loadPort.findLatestSubmittedReport(command.authorId);
-    if (lastestSubmittedReport && !lastestSubmittedReport.validateSubmitTerm())
+    const lastSubmittedReport = await this.loadPort.findLastSubmittedReport(command.authorId);
+    if (lastSubmittedReport && !lastSubmittedReport.validateSubmitTerm())
       throw new ForbiddenException(ReportErrorMessage.REPORT_COOLDOWN_NOT_PASSED);
 
     const report = this.publisher.mergeObjectContext(

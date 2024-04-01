@@ -55,7 +55,7 @@ export class ReportRepository
     return this.toEntity(report);
   }
 
-  async findLatestSubmittedReport(authorId: string): Promise<ReportEntity | null> {
+  async findLastSubmittedReport(authorId: string): Promise<ReportEntity | null> {
     const report = await this.prismaService.report.findFirst({
       where: {
         authorId,
