@@ -22,6 +22,10 @@ import { SwapPreviewResponse } from '@lib/domains/swap/application/dtos/swap-pre
 import { JwtAccessAllGuard } from '@lib/domains/auth/guards/jwt/jwt-access-all.guard';
 import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
 import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
+import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
+import { REPORTED_USER_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
+import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
+import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -58,16 +62,20 @@ export class SwapResolver {
     return this.queryBus.execute(query);
   }
 
+  @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
+  @AllowlistRoleNames([])
   @AuthorIdPath('input.proposerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
   async createSwap(@Args('input') input: CreateSwapInput): Promise<string> {
     await this.commandBus.execute(new CreateSwapCommand(input));
     return input.id;
   }
 
+  @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
+  @AllowlistRoleNames([])
   @AuthorIdPath('input.proposerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => SwapPreviewResponse)
   async updateSwap(@Args('input') input: UpdateSwapInput): Promise<SwapPreviewResponse> {
     return this.commandBus.execute(new UpdateSwapCommand(input));

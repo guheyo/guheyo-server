@@ -22,6 +22,10 @@ import { DemandPreviewResponse } from '@lib/domains/demand/application/dtos/dema
 import { JwtAccessAllGuard } from '@lib/domains/auth/guards/jwt/jwt-access-all.guard';
 import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
 import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
+import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
+import { REPORTED_USER_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
+import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
+import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -58,8 +62,10 @@ export class DemandResolver {
     return this.queryBus.execute(query);
   }
 
+  @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
+  @AllowlistRoleNames([])
   @AuthorIdPath('input.buyerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
   async createDemand(@Args('input') input: CreateDemandInput): Promise<string> {
     await this.commandBus.execute(new CreateDemandCommand(input));
@@ -73,8 +79,10 @@ export class DemandResolver {
     return this.commandBus.execute(new UpdateDemandCommand(input));
   }
 
+  @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
+  @AllowlistRoleNames([])
   @AuthorIdPath('buyerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @UseGuards(JwtAccessAuthGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
   async deleteDemand(@Args() args: DeleteDemandArgs): Promise<string> {
     await this.commandBus.execute(new DeleteDemandCommand(args));
