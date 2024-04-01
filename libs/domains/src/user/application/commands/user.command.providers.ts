@@ -3,7 +3,6 @@ import { UpdateUserHandler } from '@lib/domains/user/application/commands/update
 import { DeleteUserHandler } from '@lib/domains/user/application/commands/delete-user/delete-user.handler';
 import { SignInUserHandler } from './sign-in-user/sign-in-user.handler';
 import { LinkSocialProfileHandler } from './link-social-profile/link-social-profile.handler';
-import { CheckReceivedReportsHandler } from './check-received-reports/check-received-reports.handler';
 
 export const USER_COMMAND_PROVIDERS = [
   CreateUserHandler,
@@ -11,5 +10,4 @@ export const USER_COMMAND_PROVIDERS = [
   DeleteUserHandler,
   SignInUserHandler,
   LinkSocialProfileHandler,
-  CheckReceivedReportsHandler,
 ];

@@ -1,7 +1,5 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { ReportErrorMessage } from '@lib/domains/report/domain/report.error.message';
-import { NotFoundException } from '@nestjs/common';
 import { FindReportQuery } from './find-report.query';
 import { ReportResponse } from '../../dtos/report.response';
 
@@ -12,21 +10,10 @@ export class FindReportHandler extends PrismaQueryHandler<FindReportQuery, Repor
   }
 
   async execute(query: FindReportQuery): Promise<ReportResponse | null> {
-    const where = query.id
-      ? {
-          id: query.id,
-        }
-      : query.authorId && query.type && query.refId
-      ? {
-          authorId: query.authorId,
-          type: query.type,
-          refId: query.refId,
-        }
-      : null;
-    if (!where) throw new NotFoundException(ReportErrorMessage.REPORT_IS_NOT_FOUND);
-
     const report = await this.prismaService.report.findFirst({
-      where,
+      where: {
+        id: query.id,
+      },
       include: {
         comments: {
           orderBy: {

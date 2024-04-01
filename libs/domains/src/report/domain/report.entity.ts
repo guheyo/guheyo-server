@@ -1,11 +1,17 @@
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { VersionEntity } from '@lib/domains/version/domain/version.entity';
+import { validateCooldown } from '@lib/shared/cooldown/validate-cooldown';
+import { Type } from 'class-transformer';
+import { NotFoundException } from '@nestjs/common';
 import { ReportCreatedEvent } from '../application/events/report-created/report-created.event';
 import { ReportStatusUpdatedEvent } from '../application/events/report-status-updated/report-status-updated.event';
 import { REPORT_COMMENTED, REPORT_OPEN } from './report.constants';
 import { CommentReportInput } from '../application/commands/comment-report/comment-report.input';
 import { ReportCommentedEvent } from '../application/events/report-commented/report-commented.event';
+import { ReportedUserEntity } from './reported-user.entity';
+import { ReportErrorMessage } from './report.error.message';
+import { CheckedReportedUserEvent } from '../application/events/checked-reported-user/checked-reported-user.event';
 
 export class ReportEntity extends AggregateRoot {
   id: string;
@@ -26,6 +32,9 @@ export class ReportEntity extends AggregateRoot {
 
   reportedUserId?: string;
 
+  @Type(() => ReportedUserEntity)
+  reportedUser?: ReportedUserEntity;
+
   status: string;
 
   title: string;
@@ -43,10 +52,10 @@ export class ReportEntity extends AggregateRoot {
   create() {
     this.apply(
       new ReportCreatedEvent({
+        reportId: this.id,
         type: this.type,
         refId: this.refId,
         reportStatus: this.status,
-        reportedUserId: this.reportedUserId,
       }),
     );
   }
@@ -86,12 +95,23 @@ export class ReportEntity extends AggregateRoot {
     if (this.status !== prevStatus) {
       this.apply(
         new ReportStatusUpdatedEvent({
+          reportId: this.id,
           type: this.type,
           refId: this.refId,
           reportStatus: this.status,
-          reportedUserId: this.reportedUserId,
         }),
       );
     }
+  }
+
+  validateSubmitTerm() {
+    return validateCooldown(this.createdAt);
+  }
+
+  checkReportedUser() {
+    if (!this.reportedUser) throw new NotFoundException(ReportErrorMessage.REPORTED_USER_NOT_FOUND);
+
+    const input = this.reportedUser.checkReceivedReports();
+    this.apply(new CheckedReportedUserEvent(input));
   }
 }

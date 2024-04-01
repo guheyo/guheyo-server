@@ -3,6 +3,8 @@ import { REPORT_OPEN } from './report.constants';
 export class ReportSummaryEntity {
   id: string;
 
+  createdAt: Date;
+
   status: string;
 
   constructor(partial: Partial<ReportSummaryEntity>) {

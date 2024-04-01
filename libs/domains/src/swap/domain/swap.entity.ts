@@ -1,11 +1,11 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { isUndefined, omitBy } from 'lodash';
-import { validateBump } from '@lib/shared/deal/validate-bump';
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
 import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price.extension';
 import { REPORT_COMMENTED, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
+import { validateCooldown } from '@lib/shared/cooldown/validate-cooldown';
 import { UpdateSwapProps } from './swap.types';
 import { SwapCreatedEvent } from '../application/events/swap-created/swap-created.event';
 import { SwapUpdatedEvent } from '../application/events/swap-updated/swap-updated.event';
@@ -88,7 +88,7 @@ export class SwapEntity extends AggregateRoot {
   }
 
   canBump() {
-    return validateBump(this.bumpedAt);
+    return validateCooldown(this.bumpedAt);
   }
 
   bump(input: BumpSwapInput) {
