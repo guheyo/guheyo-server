@@ -12,11 +12,14 @@ export class FindReportPreviewsQuery extends PaginationQuery {
 
   distinct?: boolean;
 
-  constructor(findReportsArgs: FindReportPreviewsArgs) {
-    super(findReportsArgs);
-    this.where = findReportsArgs.where;
-    this.orderBy = findReportsArgs.orderBy;
-    this.keyword = findReportsArgs.keyword;
-    this.distinct = findReportsArgs.distinct;
+  userId?: string;
+
+  constructor({ args, userId }: { args: FindReportPreviewsArgs; userId?: string }) {
+    super(args);
+    this.where = args.where;
+    this.orderBy = args.orderBy;
+    this.keyword = args.keyword;
+    this.distinct = args.distinct;
+    this.userId = userId;
   }
 }

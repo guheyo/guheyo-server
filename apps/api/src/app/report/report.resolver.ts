@@ -18,6 +18,9 @@ import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-
 import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
 import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
+import { JwtAccessAllGuard } from '@lib/domains/auth/guards/jwt/jwt-access-all.guard';
+import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
+import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -34,9 +37,16 @@ export class ReportResolver {
     return this.queryBus.execute(query);
   }
 
+  @UseGuards(JwtAccessAllGuard)
   @Query(() => PaginatedReportPreviewsResponse)
-  async findReportPreviews(@Args() args: FindReportPreviewsArgs) {
-    const query = new FindReportPreviewsQuery(args);
+  async findReportPreviews(
+    @Args() args: FindReportPreviewsArgs,
+    @ExtractedJwtPayload() jwtPayload: JwtPayload,
+  ) {
+    const query = new FindReportPreviewsQuery({
+      args,
+      userId: jwtPayload.id,
+    });
     return this.queryBus.execute(query);
   }
 
