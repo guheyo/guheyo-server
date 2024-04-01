@@ -2,7 +2,7 @@ import { MemberEntity } from '@lib/domains/member/domain/member.entity';
 import { ReportSummaryEntity } from '@lib/domains/report/domain/report-summary.entity';
 import { ROOT_GROUP_SLUG } from '@lib/domains/group/domain/group.constants';
 import { Type } from 'class-transformer';
-import { REPORTED_USER_ROLE } from '@lib/domains/role/domain/role.constants';
+import { REPORTED_USER_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
 import { NotFoundException } from '@nestjs/common';
 import { ReportErrorMessage } from './report.error.message';
 import { CheckedReportedUserEvent } from '../application/events/checked-reported-user/checked-reported-user.event';
@@ -50,7 +50,7 @@ export class ReportedUserEntity {
       memberId: rootGroupMember.id,
       userId: this.id,
       roleIds: [],
-      roleNames: [REPORTED_USER_ROLE],
+      roleNames: [REPORTED_USER_ROLE_NAME],
       hasUncommentedReceivedReports: this.hasUncommentedReceivedReports(),
     };
   }
