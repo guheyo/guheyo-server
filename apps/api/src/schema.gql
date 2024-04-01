@@ -54,13 +54,6 @@ type CommentResponse {
   updatedAt: DateTime!
 }
 
-input ConnectRolesInput {
-  groupId: ID!
-  roleIds: [ID!]!
-  roleNames: [String!]!
-  userId: ID!
-}
-
 input CreateCommentInput {
   authorId: ID!
   content: String!
@@ -98,12 +91,6 @@ input CreateGroupInput {
 
 input CreateManyUserImageInput {
   data: [CreateUserImageInput!]!
-}
-
-input CreateMemberInput {
-  groupId: ID!
-  id: ID!
-  userId: ID!
 }
 
 input CreateOfferInput {
@@ -148,20 +135,6 @@ input CreateSignedUrlInput {
   userId: String!
 }
 
-input CreateSocialAccountInput {
-  accessToken: String
-  expiresAt: Int
-  id: ID!
-  idToken: String
-  provider: String!
-  refreshToken: String
-  scope: String
-  sessionState: String
-  socialId: String!
-  tokenType: String
-  userId: String!
-}
-
 input CreateSwapInput {
   brandId: String
   businessFunction: String!
@@ -195,14 +168,6 @@ input CreateUserImageInput {
   url: String!
   userId: ID!
   width: Int
-}
-
-input CreateUserInput {
-  avatarURL: String
-  id: String!
-  name: String
-  phoneNumber: String
-  username: String!
 }
 
 """
@@ -265,12 +230,6 @@ type DemandResponse {
   status: String!
   totalPrice: Int!
   updatedAt: DateTime!
-}
-
-input DisconnectRolesInput {
-  id: ID!
-  roleIds: [ID!]!
-  roleNames: [String!]!
 }
 
 type GroupPreviewResponse {
@@ -340,31 +299,21 @@ type Mutation {
   bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
   bumpSwap(input: BumpSwapInput!): SwapPreviewResponse!
   commentReport(input: CommentReportInput!): String!
-  connectRoles(input: ConnectRolesInput!): String!
   createComment(input: CreateCommentInput!): String!
   createDemand(input: CreateDemandInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
-  createMember(input: CreateMemberInput!): String!
   createOffer(input: CreateOfferInput!): String!
   createReport(input: CreateReportInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
-  createSocialAccount(input: CreateSocialAccountInput!): String!
   createSwap(input: CreateSwapInput!): String!
-  createUser(input: CreateUserInput!): String!
   createUserImage(input: CreateUserImageInput!): String!
   deleteDemand(buyerId: ID!, id: ID!): String!
-  deleteGroup(id: ID!): String!
-  deleteMember(id: ID!, userId: ID!): String!
   deleteOffer(id: ID!, sellerId: ID!): String!
   deleteRole(id: ID!): String!
-  deleteSocialAccount(id: ID!): String!
-  deleteSocialAccountByProvider(provider: String!, socialId: String!): String!
   deleteSwap(id: ID!, proposerId: ID!): String!
-  deleteUser(id: ID!): String!
   deleteUserImage(id: ID!): String!
-  disconnectRoles(input: DisconnectRolesInput!): String!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
   reGenerateTokens: JwtResponse!
@@ -372,10 +321,8 @@ type Mutation {
   updateComment(input: UpdateCommentInput!): CommentResponse!
   updateDemand(input: UpdateDemandInput!): DemandPreviewResponse!
   updateGroup(input: UpdateGroupInput!): String!
-  updateMember(input: UpdateMemberInput!): String!
   updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
   updateRole(input: UpdateRoleInput!): String!
-  updateSocialAccount(input: UpdateSocialAccountInput!): String!
   updateSwap(input: UpdateSwapInput!): SwapPreviewResponse!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
@@ -518,7 +465,6 @@ type Query {
   findGroupPreviews: [GroupPreviewResponse!]!
   findGroupProfiles(cursor: ID, distinct: Boolean, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
-  findMember(groupId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUser(id: ID, username: String): MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
@@ -534,7 +480,6 @@ type Query {
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   findVersion(id: ID!): VersionResponse
   findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
-  getSocialAccountsByUserId(id: ID!): String!
 }
 
 type ReportPreviewResponse {
@@ -716,11 +661,6 @@ input UpdateGroupInput {
   slug: String
 }
 
-input UpdateMemberInput {
-  id: ID!
-  userId: ID!
-}
-
 input UpdateOfferInput {
   brandId: ID
   businessFunction: String
@@ -743,20 +683,6 @@ input UpdateRoleInput {
   id: ID!
   name: String
   position: Int
-}
-
-input UpdateSocialAccountInput {
-  accessToken: String
-  expiresAt: Int
-  id: ID
-  idToken: String
-  provider: String
-  refreshToken: String
-  scope: String
-  sessionState: String
-  socialId: String
-  tokenType: String
-  userId: ID
 }
 
 input UpdateSwapInput {
