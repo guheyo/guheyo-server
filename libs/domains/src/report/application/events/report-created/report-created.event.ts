@@ -2,18 +2,18 @@ import { IEvent } from '@nestjs/cqrs';
 import { ReportCreatedInput } from './report-created.input';
 
 export class ReportCreatedEvent implements IEvent {
+  reportId: string;
+
   type: string;
 
   refId: string;
 
-  reportedUserId?: string;
-
   reportStatus: string;
 
   constructor(input: ReportCreatedInput) {
+    this.reportId = input.reportId;
     this.type = input.type;
     this.refId = input.refId;
-    this.reportedUserId = input.reportedUserId;
     this.reportStatus = input.reportStatus;
   }
 }
