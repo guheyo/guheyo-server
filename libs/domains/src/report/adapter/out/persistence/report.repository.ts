@@ -26,6 +26,30 @@ export class ReportRepository
           },
         },
         refVersion: true,
+        reportedUser: {
+          include: {
+            members: {
+              include: {
+                group: true,
+                roles: {
+                  orderBy: {
+                    position: 'asc',
+                  },
+                },
+              },
+            },
+            receivedReports: {
+              select: {
+                id: true,
+                createdAt: true,
+                status: true,
+              },
+              orderBy: {
+                createdAt: 'desc',
+              },
+            },
+          },
+        },
       },
     });
     return this.toEntity(report);
@@ -43,6 +67,30 @@ export class ReportRepository
           },
         },
         refVersion: true,
+        reportedUser: {
+          include: {
+            members: {
+              include: {
+                group: true,
+                roles: {
+                  orderBy: {
+                    position: 'asc',
+                  },
+                },
+              },
+            },
+            receivedReports: {
+              select: {
+                id: true,
+                createdAt: true,
+                status: true,
+              },
+              orderBy: {
+                createdAt: 'desc',
+              },
+            },
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',
