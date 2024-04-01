@@ -28,7 +28,11 @@ export class UserRepository extends PrismaRepository<UserEntity> implements User
         receivedReports: {
           select: {
             id: true,
+            createdAt: true,
             status: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
           },
         },
       },
@@ -62,7 +66,11 @@ export class UserRepository extends PrismaRepository<UserEntity> implements User
         receivedReports: {
           select: {
             id: true,
+            createdAt: true,
             status: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
           },
         },
       },
