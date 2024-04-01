@@ -1,6 +1,6 @@
 import { IEvent } from '@nestjs/cqrs';
 
-export class UserCheckedReceivedReportsEvent implements IEvent {
+export class CheckedReportedUserEvent implements IEvent {
   groupId: string;
 
   memberId: string;
