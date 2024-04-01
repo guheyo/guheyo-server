@@ -54,6 +54,13 @@ type CommentResponse {
   updatedAt: DateTime!
 }
 
+input ConnectRolesInput {
+  groupId: ID!
+  roleIds: [ID!]!
+  roleNames: [String!]!
+  userId: ID!
+}
+
 input CreateCommentInput {
   authorId: ID!
   content: String!
@@ -91,6 +98,12 @@ input CreateGroupInput {
 
 input CreateManyUserImageInput {
   data: [CreateUserImageInput!]!
+}
+
+input CreateMemberInput {
+  groupId: ID!
+  id: ID!
+  userId: ID!
 }
 
 input CreateOfferInput {
@@ -254,6 +267,12 @@ type DemandResponse {
   updatedAt: DateTime!
 }
 
+input DisconnectRolesInput {
+  id: ID!
+  roleIds: [ID!]!
+  roleNames: [String!]!
+}
+
 type GroupPreviewResponse {
   demands: [DemandPreviewResponse!]!
   description: String
@@ -321,10 +340,12 @@ type Mutation {
   bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
   bumpSwap(input: BumpSwapInput!): SwapPreviewResponse!
   commentReport(input: CommentReportInput!): String!
+  connectRoles(input: ConnectRolesInput!): String!
   createComment(input: CreateCommentInput!): String!
   createDemand(input: CreateDemandInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
+  createMember(input: CreateMemberInput!): String!
   createOffer(input: CreateOfferInput!): String!
   createReport(input: CreateReportInput!): String!
   createRole(input: CreateRoleInput!): String!
@@ -335,6 +356,7 @@ type Mutation {
   createUserImage(input: CreateUserImageInput!): String!
   deleteDemand(buyerId: ID!, id: ID!): String!
   deleteGroup(id: ID!): String!
+  deleteMember(id: ID!, userId: ID!): String!
   deleteOffer(id: ID!, sellerId: ID!): String!
   deleteRole(id: ID!): String!
   deleteSocialAccount(id: ID!): String!
@@ -342,6 +364,7 @@ type Mutation {
   deleteSwap(id: ID!, proposerId: ID!): String!
   deleteUser(id: ID!): String!
   deleteUserImage(id: ID!): String!
+  disconnectRoles(input: DisconnectRolesInput!): String!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
   reGenerateTokens: JwtResponse!
@@ -349,6 +372,7 @@ type Mutation {
   updateComment(input: UpdateCommentInput!): CommentResponse!
   updateDemand(input: UpdateDemandInput!): DemandPreviewResponse!
   updateGroup(input: UpdateGroupInput!): String!
+  updateMember(input: UpdateMemberInput!): String!
   updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
   updateRole(input: UpdateRoleInput!): String!
   updateSocialAccount(input: UpdateSocialAccountInput!): String!
@@ -494,6 +518,7 @@ type Query {
   findGroupPreviews: [GroupPreviewResponse!]!
   findGroupProfiles(cursor: ID, distinct: Boolean, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
+  findMember(groupId: ID!, userId: ID!): MemberWithRolesResponse
   findMyUser(id: ID, username: String): MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
@@ -689,6 +714,11 @@ input UpdateGroupInput {
   name: String
   position: Int
   slug: String
+}
+
+input UpdateMemberInput {
+  id: ID!
+  userId: ID!
 }
 
 input UpdateOfferInput {
