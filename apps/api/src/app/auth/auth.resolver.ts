@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
 import { UpdateSocialAccountCommand } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.command';
 import { SocialUserResponse } from '@lib/domains/social-account/application/dtos/social-user.response';
-import { JwtRefreshAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-refresh-auth.guard';
+import { JwtRefreshGuard } from '@lib/domains/auth/guards/jwt/jwt-refresh.guard';
 import { JwtResponse } from '@lib/domains/auth/guards/jwt/jwt.response';
 import { UserErrorMessage } from '@lib/domains/user/domain/user.error.message';
 import { FindAuthUserQuery } from '@lib/domains/user/application/queries/find-auth-user/find-auth-user.query';
@@ -23,7 +23,7 @@ export class AuthResolver {
   ) {}
 
   @Mutation(() => JwtResponse)
-  @UseGuards(JwtRefreshAuthGuard)
+  @UseGuards(JwtRefreshGuard)
   async refreshTokens(
     @Context('req') req: Request,
     @Context('res') res: Response,
@@ -49,7 +49,7 @@ export class AuthResolver {
   }
 
   @Mutation(() => JwtResponse)
-  @UseGuards(JwtRefreshAuthGuard)
+  @UseGuards(JwtRefreshGuard)
   async reGenerateTokens(
     @Context('req') req: Request,
     @Context('res') res: Response,
@@ -90,7 +90,7 @@ export class AuthResolver {
   }
 
   @Mutation(() => SocialUserResponse)
-  @UseGuards(JwtRefreshAuthGuard)
+  @UseGuards(JwtRefreshGuard)
   async logout(
     @Context('req') req: Request,
     @Context('res') res: Response,
