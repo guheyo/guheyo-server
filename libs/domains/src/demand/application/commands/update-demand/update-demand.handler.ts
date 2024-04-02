@@ -24,7 +24,7 @@ export class UpdateDemandHandler extends PrismaCommandHandler<
   async execute(command: UpdateDemandCommand): Promise<DemandPreviewResponse> {
     let demand = await this.demandLoadPort.findById(command.id);
     if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_NOT_FOUND);
-    if (!demand.isAuthorized(command.buyerId))
+    if (!demand.isAuthorized(command.user.id))
       throw new ForbiddenException(DemandErrorMessage.DEMAND_CHANGES_FROM_UNAUTHORIZED_USER);
     if (demand.hasUncommentedReports())
       throw new ForbiddenException(DemandErrorMessage.UNCOMMENTED_REPORT_EXISTS);

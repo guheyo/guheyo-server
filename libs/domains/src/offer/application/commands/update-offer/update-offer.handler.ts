@@ -24,7 +24,7 @@ export class UpdateOfferHandler extends PrismaCommandHandler<
   async execute(command: UpdateOfferCommand): Promise<OfferPreviewResponse> {
     let offer = await this.offerLoadPort.findById(command.id);
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
-    if (!offer.isAuthorized(command.sellerId))
+    if (!offer.isAuthorized(command.user.id))
       throw new ForbiddenException(OfferErrorMessage.OFFER_CHANGES_FROM_UNAUTHORIZED_USER);
     if (offer.hasUncommentedReports())
       throw new ForbiddenException(OfferErrorMessage.UNCOMMENTED_REPORT_EXISTS);
