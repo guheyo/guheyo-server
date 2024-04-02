@@ -10,7 +10,7 @@ import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { FindUserArgs } from '@lib/domains/user/application/queries/find-user/find-user.args';
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 import { UseGuards } from '@nestjs/common';
-import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
+import { JwtAccessGuard } from '@lib/domains/auth/guards/jwt/jwt-access.guard';
 import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
 import { FindAuthorArgs } from '@lib/domains/user/application/queries/find-author/find-author.args';
 import { FindAuthorQuery } from '@lib/domains/user/application/queries/find-author/find-author.query';
@@ -19,6 +19,7 @@ import { LinkSocialProfileCommand } from '@lib/domains/user/application/commands
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
 import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
+import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -29,7 +30,7 @@ export class UserResolver {
     private readonly queryBus: QueryBus,
   ) {}
 
-  @UseGuards(JwtAccessAuthGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Query(() => MyUserResponse, { nullable: true })
   async findMyUser(@ExtractedUser() user: MyUserResponse | null): Promise<MyUserResponse | null> {
     return user;
@@ -65,7 +66,7 @@ export class UserResolver {
     return input.id;
   }
 
-  @UseGuards(JwtAccessAuthGuard)
+  @UseGuards(JwtAccessGuard)
   @Mutation(() => String)
   async linkSocialProfile(
     @Args('input') input: LinkSocialProfileInput,
