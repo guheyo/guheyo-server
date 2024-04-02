@@ -1,5 +1,6 @@
 import { ICommand } from '@nestjs/cqrs/dist';
 import { DemandStatus } from '@lib/domains/demand/domain/demand.types';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { UpdateDemandInput } from './update-demand.input';
 
 export class UpdateDemandCommand implements ICommand {
@@ -31,7 +32,9 @@ export class UpdateDemandCommand implements ICommand {
 
   source: string;
 
-  constructor(input: UpdateDemandInput) {
+  user: MyUserResponse;
+
+  constructor({ input, user }: { input: UpdateDemandInput; user: MyUserResponse }) {
     this.id = input.id;
     this.name = input.name;
     this.description = input.description;
@@ -46,5 +49,6 @@ export class UpdateDemandCommand implements ICommand {
     this.isHidden = input.isHidden;
     this.brandId = input.brandId;
     this.source = input.source;
+    this.user = user;
   }
 }

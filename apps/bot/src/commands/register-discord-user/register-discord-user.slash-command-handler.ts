@@ -15,7 +15,7 @@ export class RegisterDiscordUserSlashCommandHandler {
     @Context() [interaction]: SlashCommandContext,
     @Options() { discordMember }: RegisterDiscordUserRequest,
   ) {
-    const user = await this.userClient.fetchSimpleUser('discord', discordMember);
+    const user = await this.userClient.fetchMyUser('discord', discordMember);
     interaction.reply(`${user.username}<@${user.id}> registered`);
   }
 }

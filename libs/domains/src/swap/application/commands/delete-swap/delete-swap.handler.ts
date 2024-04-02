@@ -15,7 +15,7 @@ export class DeleteSwapHandler implements ICommandHandler<DeleteSwapCommand> {
   async execute(command: DeleteSwapCommand): Promise<void> {
     const swap = await this.swapLoadPort.findById(command.id);
     if (!swap) throw new NotFoundException(SwapErrorMessage.SWAP_NOT_FOUND);
-    if (!swap.isAuthorized(command.proposerId))
+    if (!swap.isAuthorized(command.user.id))
       throw new ForbiddenException(SwapErrorMessage.SWAP_DELETE_COMMAND_FROM_UNAUTHORIZED_USER);
     if (swap.hasUncommentedReports())
       throw new ForbiddenException(SwapErrorMessage.UNCOMMENTED_REPORT_EXISTS);

@@ -15,7 +15,7 @@ export class DeleteOfferHandler implements ICommandHandler<DeleteOfferCommand> {
   async execute(command: DeleteOfferCommand): Promise<void> {
     const offer = await this.offerLoadPort.findById(command.id);
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
-    if (!offer.isAuthorized(command.sellerId))
+    if (!offer.isAuthorized(command.user.id))
       throw new ForbiddenException(OfferErrorMessage.OFFER_DELETE_COMMAND_FROM_UNAUTHORIZED_USER);
     if (offer.hasUncommentedReports())
       throw new ForbiddenException(OfferErrorMessage.UNCOMMENTED_REPORT_EXISTS);

@@ -5,6 +5,7 @@ import { CreateDemandCommand } from '@lib/domains/demand/application/commands/cr
 import { UpdateDemandCommand } from '@lib/domains/demand/application/commands/update-demand/update-demand.command';
 import { DeleteDemandCommand } from '@lib/domains/demand/application/commands/delete-demand/delete-demand.command';
 import { DeleteDemandArgs } from '@lib/domains/demand/application/commands/delete-demand/delete-demand.args';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { DemandParser } from '../parsers/demand.parser';
 import { DealClient } from '../../deal/clients/deal.client';
 
@@ -14,15 +15,15 @@ export class DemandClient extends DealClient {
     super('demand', dealParser);
   }
 
-  async createDeal(input: CreateDemandInput) {
-    await this.commandBus.execute(new CreateDemandCommand(input));
+  async createDeal({ input, user }: { input: CreateDemandInput; user: MyUserResponse }) {
+    await this.commandBus.execute(new CreateDemandCommand({ input, user }));
   }
 
-  async updateDeal(input: UpdateDemandInput) {
-    await this.commandBus.execute(new UpdateDemandCommand(input));
+  async updateDeal({ input, user }: { input: UpdateDemandInput; user: MyUserResponse }) {
+    await this.commandBus.execute(new UpdateDemandCommand({ input, user }));
   }
 
-  async deleteDeal(args: DeleteDemandArgs) {
-    await this.commandBus.execute(new DeleteDemandCommand(args));
+  async deleteDeal({ args, user }: { args: DeleteDemandArgs; user: MyUserResponse }) {
+    await this.commandBus.execute(new DeleteDemandCommand({ args, user }));
   }
 }

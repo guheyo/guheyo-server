@@ -5,9 +5,9 @@ import { DealChannelGuard } from '@app/bot/apps/deal/guards/deal-channel.guard';
 import { Type } from '@app/bot/decorators/type.decorator';
 import { SwapClient } from '@app/bot/apps/swap/clients/swap.client';
 import { ParseUserFromMessagePipe } from '@app/bot/apps/user/pipes/parse-user-from-message.pipe';
-import { SimpleUser } from '@app/bot/apps/user/parsers/user.types';
 import { ParseGroupPipe } from '@app/bot/apps/group/pipes/parse-group.pipe';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 
 @UseGuards(GroupGuard, DealChannelGuard)
 @Type('wtt')
@@ -18,12 +18,12 @@ export class SwapMessageCreatedHandler {
   @On('messageCreate')
   public async onCreateSwapMessage(
     @Context(ParseUserFromMessagePipe)
-    user: SimpleUser,
+    user: MyUserResponse,
     @Context(ParseGroupPipe)
     group: GroupResponse,
     @Context()
     [message]: ContextOf<'messageCreate'>,
   ) {
-    await this.swapClient.createDealFromMessage(user.id, message, group);
+    await this.swapClient.createDealFromMessage(user, message, group);
   }
 }

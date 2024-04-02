@@ -13,8 +13,6 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { FindDemandArgs } from '@lib/domains/demand/application/queries/find-demand/find-demand.args';
 import { DeleteDemandArgs } from '@lib/domains/demand/application/commands/delete-demand/delete-demand.args';
-import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
-import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { BumpDemandInput } from '@lib/domains/demand/application/commands/bump-demand/bump-demand.input';
 import { BumpDemandCommand } from '@lib/domains/demand/application/commands/bump-demand/bump-demand.command';
 import { DemandPreviewResponse } from '@lib/domains/demand/application/dtos/demand-preview.response';
@@ -64,35 +62,43 @@ export class DemandResolver {
 
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
   @AllowlistRoleNames([])
-  @AuthorIdPath('input.buyerId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
-  async createDemand(@Args('input') input: CreateDemandInput): Promise<string> {
-    await this.commandBus.execute(new CreateDemandCommand(input));
+  async createDemand(
+    @Args('input') input: CreateDemandInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new CreateDemandCommand({ input, user }));
     return input.id;
   }
 
-  @AuthorIdPath('input.buyerId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => DemandPreviewResponse)
-  async updateDemand(@Args('input') input: UpdateDemandInput): Promise<DemandPreviewResponse> {
-    return this.commandBus.execute(new UpdateDemandCommand(input));
+  async updateDemand(
+    @Args('input') input: UpdateDemandInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<DemandPreviewResponse> {
+    return this.commandBus.execute(new UpdateDemandCommand({ input, user }));
   }
 
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
   @AllowlistRoleNames([])
-  @AuthorIdPath('buyerId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
-  async deleteDemand(@Args() args: DeleteDemandArgs): Promise<string> {
-    await this.commandBus.execute(new DeleteDemandCommand(args));
+  async deleteDemand(
+    @Args() args: DeleteDemandArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new DeleteDemandCommand({ args, user }));
     return args.id;
   }
 
-  @AuthorIdPath('input.buyerId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => DemandPreviewResponse)
-  async bumpDemand(@Args('input') input: BumpDemandInput): Promise<DemandPreviewResponse> {
-    return this.commandBus.execute(new BumpDemandCommand(input));
+  async bumpDemand(
+    @Args('input') input: BumpDemandInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<DemandPreviewResponse> {
+    return this.commandBus.execute(new BumpDemandCommand({ input, user }));
   }
 }

@@ -9,4 +9,5 @@ export enum OfferErrorMessage {
   COMMENT_OFFER_REPORT_REQUEST_FROM_NON_SELLER = 'Comment offer report request from non seller',
   UNCOMMENTED_REPORT_EXISTS = 'Uncommented report exists',
   FIND_REQUEST_FROM_UNAUTHORIZED_USER = 'Find request from unauthorized user',
+  CREATE_REQUEST_FROM_UNAUTHORIZED_USER = 'Create request from unauthorized user',
 }

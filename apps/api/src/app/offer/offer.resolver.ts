@@ -12,8 +12,6 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { FindOfferArgs } from '@lib/domains/offer/application/queries/find-offer/find-offer.args';
-import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
-import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
 import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
 import { BumpOfferInput } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.input';
 import { BumpOfferCommand } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.command';
@@ -64,35 +62,43 @@ export class OfferResolver {
 
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
   @AllowlistRoleNames([])
-  @AuthorIdPath('input.sellerId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
-  async createOffer(@Args('input') input: CreateOfferInput): Promise<string> {
-    await this.commandBus.execute(new CreateOfferCommand(input));
+  async createOffer(
+    @Args('input') input: CreateOfferInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new CreateOfferCommand({ input, user }));
     return input.id;
   }
 
-  @AuthorIdPath('input.sellerId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => OfferPreviewResponse)
-  async updateOffer(@Args('input') input: UpdateOfferInput): Promise<OfferPreviewResponse> {
-    return this.commandBus.execute(new UpdateOfferCommand(input));
+  async updateOffer(
+    @Args('input') input: UpdateOfferInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<OfferPreviewResponse> {
+    return this.commandBus.execute(new UpdateOfferCommand({ input, user }));
   }
 
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
   @AllowlistRoleNames([])
-  @AuthorIdPath('sellerId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
-  async deleteOffer(@Args() args: DeleteOfferArgs): Promise<string> {
-    await this.commandBus.execute(new DeleteOfferCommand(args));
+  async deleteOffer(
+    @Args() args: DeleteOfferArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new DeleteOfferCommand({ args, user }));
     return args.id;
   }
 
-  @AuthorIdPath('input.sellerId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => OfferPreviewResponse)
-  async bumpOffer(@Args('input') input: BumpOfferInput): Promise<OfferPreviewResponse> {
-    return this.commandBus.execute(new BumpOfferCommand(input));
+  async bumpOffer(
+    @Args('input') input: BumpOfferInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<OfferPreviewResponse> {
+    return this.commandBus.execute(new BumpOfferCommand({ input, user }));
   }
 }

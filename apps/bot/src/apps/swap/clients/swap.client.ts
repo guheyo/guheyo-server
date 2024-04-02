@@ -5,6 +5,7 @@ import { CreateSwapCommand } from '@lib/domains/swap/application/commands/create
 import { UpdateSwapCommand } from '@lib/domains/swap/application/commands/update-swap/update-swap.command';
 import { DeleteSwapCommand } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.command';
 import { DeleteSwapArgs } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.args';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { DealClient } from '../../deal/clients/deal.client';
 import { SwapParser } from '../parsers/swap.parser';
 
@@ -14,15 +15,15 @@ export class SwapClient extends DealClient {
     super('swap', dealParser);
   }
 
-  async createDeal(input: CreateSwapInput) {
-    await this.commandBus.execute(new CreateSwapCommand(input));
+  async createDeal({ input, user }: { input: CreateSwapInput; user: MyUserResponse }) {
+    await this.commandBus.execute(new CreateSwapCommand({ input, user }));
   }
 
-  async updateDeal(input: UpdateSwapInput) {
-    await this.commandBus.execute(new UpdateSwapCommand(input));
+  async updateDeal({ input, user }: { input: UpdateSwapInput; user: MyUserResponse }) {
+    await this.commandBus.execute(new UpdateSwapCommand({ input, user }));
   }
 
-  async deleteDeal(args: DeleteSwapArgs) {
-    await this.commandBus.execute(new DeleteSwapCommand(args));
+  async deleteDeal({ args, user }: { args: DeleteSwapArgs; user: MyUserResponse }) {
+    await this.commandBus.execute(new DeleteSwapCommand({ args, user }));
   }
 }

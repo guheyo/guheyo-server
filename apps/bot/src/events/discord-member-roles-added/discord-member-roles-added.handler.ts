@@ -12,7 +12,7 @@ export class DiscordMemberRolesAddedHandler {
 
   @On('guildMemberRoleAdd')
   public async onAddGuildMemberRoles(@Context() [member, role]: ContextOf<'guildMemberRoleAdd'>) {
-    const user = await this.userClient.fetchSimpleUser('discord', member);
+    const user = await this.userClient.fetchMyUser('discord', member);
     await this.userClient.connectRoles(user.id, [role.name]);
   }
 }

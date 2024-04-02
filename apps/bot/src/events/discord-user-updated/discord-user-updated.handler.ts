@@ -12,7 +12,7 @@ export class DiscordUserUpdatedHandler {
   public async onUpdateUser(@Context() [oldUser, newUser]: ContextOf<'userUpdate'>) {
     if (!this.userClient.isUpdatedAvatar(oldUser, newUser)) return;
 
-    const user = await this.userClient.fetchSimpleUser('discord', newUser);
+    const user = await this.userClient.fetchMyUser('discord', newUser);
     await this.userClient.updateUserAvatar(user.id, newUser);
     this.logger.log(`${newUser.username}<@${user.id}> avatar updated`);
   }

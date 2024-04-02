@@ -20,7 +20,7 @@ export class BumpOfferHandler extends PrismaCommandHandler<BumpOfferCommand, Off
   async execute(command: BumpOfferCommand): Promise<OfferPreviewResponse> {
     let offer = await this.offerLoadPort.findById(command.input.offerId);
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
-    if (!offer.isAuthorized(command.input.sellerId))
+    if (!offer.isAuthorized(command.user.id))
       throw new ForbiddenException(OfferErrorMessage.OFFER_CHANGES_FROM_UNAUTHORIZED_USER);
     if (!offer.canBump())
       throw new ForbiddenException(OfferErrorMessage.OFFER_BUMP_STUCK_ON_COOLDOWN);

@@ -13,8 +13,6 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { FindSwapArgs } from '@lib/domains/swap/application/queries/find-swap/find-swap.args';
 import { DeleteSwapArgs } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.args';
-import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
-import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { BumpSwapInput } from '@lib/domains/swap/application/commands/bump-swap/bump-swap.input';
 import { BumpSwapCommand } from '@lib/domains/swap/application/commands/bump-swap/bump-swap.command';
 import { SwapPreviewResponse } from '@lib/domains/swap/application/dtos/swap-preview.response';
@@ -64,35 +62,43 @@ export class SwapResolver {
 
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
   @AllowlistRoleNames([])
-  @AuthorIdPath('input.proposerId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
-  async createSwap(@Args('input') input: CreateSwapInput): Promise<string> {
-    await this.commandBus.execute(new CreateSwapCommand(input));
+  async createSwap(
+    @Args('input') input: CreateSwapInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new CreateSwapCommand({ input, user }));
     return input.id;
   }
 
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
   @AllowlistRoleNames([])
-  @AuthorIdPath('input.proposerId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => SwapPreviewResponse)
-  async updateSwap(@Args('input') input: UpdateSwapInput): Promise<SwapPreviewResponse> {
-    return this.commandBus.execute(new UpdateSwapCommand(input));
+  async updateSwap(
+    @Args('input') input: UpdateSwapInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<SwapPreviewResponse> {
+    return this.commandBus.execute(new UpdateSwapCommand({ input, user }));
   }
 
-  @AuthorIdPath('proposerId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => String)
-  async deleteSwap(@Args() args: DeleteSwapArgs): Promise<string> {
-    await this.commandBus.execute(new DeleteSwapCommand(args));
+  async deleteSwap(
+    @Args() args: DeleteSwapArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new DeleteSwapCommand({ args, user }));
     return args.id;
   }
 
-  @AuthorIdPath('input.proposerId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => SwapPreviewResponse)
-  async bumpSwap(@Args('input') input: BumpSwapInput): Promise<SwapPreviewResponse> {
-    return this.commandBus.execute(new BumpSwapCommand(input));
+  async bumpSwap(
+    @Args('input') input: BumpSwapInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<SwapPreviewResponse> {
+    return this.commandBus.execute(new BumpSwapCommand({ input, user }));
   }
 }
