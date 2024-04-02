@@ -11,16 +11,16 @@ import { FindReportPreviewsArgs } from '@lib/domains/report/application/queries/
 import { FindReportPreviewsQuery } from '@lib/domains/report/application/queries/find-report-previews/find-report-previews.query';
 import { CommentReportInput } from '@lib/domains/report/application/commands/comment-report/comment-report.input';
 import { CommentReportCommand } from '@lib/domains/report/application/commands/comment-report/comment-report.command';
-import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
 import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
 import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
 import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
 import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
-import { JwtAccessAllGuard } from '@lib/domains/auth/guards/jwt/jwt-access-all.guard';
-import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
-import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
+import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
+import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
+import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -37,15 +37,15 @@ export class ReportResolver {
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(JwtAccessAllGuard)
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => PaginatedReportPreviewsResponse)
   async findReportPreviews(
     @Args() args: FindReportPreviewsArgs,
-    @ExtractedJwtPayload() jwtPayload: JwtPayload,
+    @ExtractedUser() user: MyUserResponse,
   ) {
     const query = new FindReportPreviewsQuery({
       args,
-      userId: jwtPayload.id,
+      userId: user.id,
     });
     return this.queryBus.execute(query);
   }
@@ -53,7 +53,7 @@ export class ReportResolver {
   @AuthorIdPath('input.authorId')
   @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
   @AllowlistRoleNames([])
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
   async createReport(@Args('input') input: CreateReportInput): Promise<string> {
     await this.commandBus.execute(new CreateReportCommand(input));
@@ -61,7 +61,7 @@ export class ReportResolver {
   }
 
   @AuthorIdPath('input.authorId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
   @Mutation(() => String)
   async commentReport(@Args('input') input: CommentReportInput): Promise<string> {
     await this.commandBus.execute(new CommentReportCommand(input));

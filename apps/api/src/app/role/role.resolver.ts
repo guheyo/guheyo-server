@@ -10,9 +10,9 @@ import { DeleteRoleCommand } from '@lib/domains/role/application/commands/delete
 import { UseGuards } from '@nestjs/common';
 import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
 import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
-import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
 import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
 import { ADMIN_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
+import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -31,7 +31,7 @@ export class RoleResolver {
 
   @BlocklistRoleNames([])
   @AllowlistRoleNames([ADMIN_ROLE_NAME])
-  @UseGuards(JwtAccessAuthGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
   async createRole(@Args('input') input: CreateRoleInput): Promise<string> {
     await this.commandBus.execute(new CreateRoleCommand(input));
@@ -40,7 +40,7 @@ export class RoleResolver {
 
   @BlocklistRoleNames([])
   @AllowlistRoleNames([ADMIN_ROLE_NAME])
-  @UseGuards(JwtAccessAuthGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
   async updateRole(@Args('input') input: UpdateRoleInput): Promise<string> {
     await this.commandBus.execute(new UpdateRoleCommand(input));
@@ -49,7 +49,7 @@ export class RoleResolver {
 
   @BlocklistRoleNames([])
   @AllowlistRoleNames([ADMIN_ROLE_NAME])
-  @UseGuards(JwtAccessAuthGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
   async deleteRole(@Args('id', { type: () => ID }) id: string): Promise<string> {
     await this.commandBus.execute(new DeleteRoleCommand(id));

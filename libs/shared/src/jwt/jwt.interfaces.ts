@@ -10,7 +10,6 @@ export interface UserPayload {
   id: string;
   username: string;
   avatarURL?: string;
-  rootRoleNames: string[];
 }
 
 export interface JwtPayload extends UserPayload {

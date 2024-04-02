@@ -15,7 +15,7 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateSignedUrlInput } from '@lib/domains/user-image/application/commands/create-signed-url/create-signed-url.input';
 import { CreateSignedUrlCommand } from '@lib/domains/user-image/application/commands/create-signed-url/create-signed-url.command';
 import { SignedUrlResponse } from '@lib/shared/image/image.response';
-import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
+import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -40,34 +40,34 @@ export class UserImageResolver {
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(JwtAccessAuthGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => String)
   async createUserImage(@Args('input') input: CreateUserImageInput): Promise<string> {
     await this.commandBus.execute(new CreateUserImageCommand(input));
     return input.id;
   }
 
-  @UseGuards(JwtAccessAuthGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => String)
   async createManyUserImage(@Args('input') input: CreateManyUserImageInput): Promise<string> {
     await this.commandBus.execute(new CreateManyUserImageCommand(input));
     return '200';
   }
 
-  @UseGuards(JwtAccessAuthGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => SignedUrlResponse)
   async createSignedUrl(@Args('input') input: CreateSignedUrlInput): Promise<SignedUrlResponse> {
     return this.commandBus.execute(new CreateSignedUrlCommand(input));
   }
 
-  @UseGuards(JwtAccessAuthGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => String)
   async updateUserImage(@Args('input') input: UpdateUserImageInput): Promise<string> {
     await this.commandBus.execute(new UpdateUserImageCommand(input));
     return input.id;
   }
 
-  @UseGuards(JwtAccessAuthGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => String)
   async deleteUserImage(@Args('id', { type: () => ID }) id: string): Promise<string> {
     await this.commandBus.execute(new DeleteUserImageCommand(id));

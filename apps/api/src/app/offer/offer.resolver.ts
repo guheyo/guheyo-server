@@ -12,20 +12,20 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { FindOfferArgs } from '@lib/domains/offer/application/queries/find-offer/find-offer.args';
-import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
 import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
 import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
 import { BumpOfferInput } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.input';
 import { BumpOfferCommand } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.command';
 import { OfferPreviewResponse } from '@lib/domains/offer/application/dtos/offer-preview.response';
-import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
-import { JwtAccessAllGuard } from '@lib/domains/auth/guards/jwt/jwt-access-all.guard';
-import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
 import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
 import { REPORTED_USER_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
 import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
 import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
+import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
+import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -36,28 +36,28 @@ export class OfferResolver {
     private readonly commandBus: CommandBus,
   ) {}
 
-  @UseGuards(JwtAccessAllGuard)
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => OfferResponse, { nullable: true })
   async findOffer(
     @Args() findOfferArgs: FindOfferArgs,
-    @ExtractedJwtPayload() jwtPayload: JwtPayload,
+    @ExtractedUser() user: MyUserResponse,
   ): Promise<OfferResponse | null> {
     const query = new FindOfferQuery({
       args: findOfferArgs,
-      userId: jwtPayload.id,
+      userId: user.id,
     });
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(JwtAccessAllGuard)
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => PaginatedOfferPreviewsResponse)
   async findOfferPreviews(
     @Args() findOfferPreviewsArgs: FindOfferPreviewsArgs,
-    @ExtractedJwtPayload() jwtPayload: JwtPayload,
+    @ExtractedUser() user: MyUserResponse,
   ) {
     const query = new FindOfferPreviewsQuery({
       args: findOfferPreviewsArgs,
-      userId: jwtPayload.id,
+      userId: user.id,
     });
     return this.queryBus.execute(query);
   }
@@ -65,7 +65,7 @@ export class OfferResolver {
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
   @AllowlistRoleNames([])
   @AuthorIdPath('input.sellerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
   async createOffer(@Args('input') input: CreateOfferInput): Promise<string> {
     await this.commandBus.execute(new CreateOfferCommand(input));
@@ -73,7 +73,7 @@ export class OfferResolver {
   }
 
   @AuthorIdPath('input.sellerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
   @Mutation(() => OfferPreviewResponse)
   async updateOffer(@Args('input') input: UpdateOfferInput): Promise<OfferPreviewResponse> {
     return this.commandBus.execute(new UpdateOfferCommand(input));
@@ -82,7 +82,7 @@ export class OfferResolver {
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
   @AllowlistRoleNames([])
   @AuthorIdPath('sellerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
   async deleteOffer(@Args() args: DeleteOfferArgs): Promise<string> {
     await this.commandBus.execute(new DeleteOfferCommand(args));
@@ -90,7 +90,7 @@ export class OfferResolver {
   }
 
   @AuthorIdPath('input.sellerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
   @Mutation(() => OfferPreviewResponse)
   async bumpOffer(@Args('input') input: BumpOfferInput): Promise<OfferPreviewResponse> {
     return this.commandBus.execute(new BumpOfferCommand(input));

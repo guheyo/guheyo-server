@@ -14,18 +14,18 @@ import { UseGuards } from '@nestjs/common';
 import { FindDemandArgs } from '@lib/domains/demand/application/queries/find-demand/find-demand.args';
 import { DeleteDemandArgs } from '@lib/domains/demand/application/commands/delete-demand/delete-demand.args';
 import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
-import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
 import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { BumpDemandInput } from '@lib/domains/demand/application/commands/bump-demand/bump-demand.input';
 import { BumpDemandCommand } from '@lib/domains/demand/application/commands/bump-demand/bump-demand.command';
 import { DemandPreviewResponse } from '@lib/domains/demand/application/dtos/demand-preview.response';
-import { JwtAccessAllGuard } from '@lib/domains/auth/guards/jwt/jwt-access-all.guard';
-import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
-import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
 import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
 import { REPORTED_USER_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
 import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
 import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
+import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
+import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -36,28 +36,28 @@ export class DemandResolver {
     private readonly commandBus: CommandBus,
   ) {}
 
-  @UseGuards(JwtAccessAllGuard)
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => DemandResponse, { nullable: true })
   async findDemand(
     @Args() findDemandArgs: FindDemandArgs,
-    @ExtractedJwtPayload() jwtPayload: JwtPayload,
+    @ExtractedUser() user: MyUserResponse,
   ): Promise<DemandResponse | null> {
     const query = new FindDemandQuery({
       args: findDemandArgs,
-      userId: jwtPayload.id,
+      userId: user.id,
     });
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(JwtAccessAllGuard)
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => PaginatedDemandPreviewsResponse)
   async findDemandPreviews(
     @Args() findDemandPreviewsArgs: FindDemandPreviewsArgs,
-    @ExtractedJwtPayload() jwtPayload: JwtPayload,
+    @ExtractedUser() user: MyUserResponse,
   ) {
     const query = new FindDemandPreviewsQuery({
       args: findDemandPreviewsArgs,
-      userId: jwtPayload.id,
+      userId: user.id,
     });
     return this.queryBus.execute(query);
   }
@@ -65,7 +65,7 @@ export class DemandResolver {
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
   @AllowlistRoleNames([])
   @AuthorIdPath('input.buyerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
   async createDemand(@Args('input') input: CreateDemandInput): Promise<string> {
     await this.commandBus.execute(new CreateDemandCommand(input));
@@ -73,7 +73,7 @@ export class DemandResolver {
   }
 
   @AuthorIdPath('input.buyerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
   @Mutation(() => DemandPreviewResponse)
   async updateDemand(@Args('input') input: UpdateDemandInput): Promise<DemandPreviewResponse> {
     return this.commandBus.execute(new UpdateDemandCommand(input));
@@ -82,7 +82,7 @@ export class DemandResolver {
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
   @AllowlistRoleNames([])
   @AuthorIdPath('buyerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
   async deleteDemand(@Args() args: DeleteDemandArgs): Promise<string> {
     await this.commandBus.execute(new DeleteDemandCommand(args));
@@ -90,7 +90,7 @@ export class DemandResolver {
   }
 
   @AuthorIdPath('input.buyerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
   @Mutation(() => DemandPreviewResponse)
   async bumpDemand(@Args('input') input: BumpDemandInput): Promise<DemandPreviewResponse> {
     return this.commandBus.execute(new BumpDemandCommand(input));
