@@ -8,10 +8,11 @@ import { ReportCreatedEvent } from '../application/events/report-created/report-
 import { ReportStatusUpdatedEvent } from '../application/events/report-status-updated/report-status-updated.event';
 import { REPORT_COMMENTED, REPORT_OPEN } from './report.constants';
 import { CommentReportInput } from '../application/commands/comment-report/comment-report.input';
-import { ReportCommentedEvent } from '../application/events/report-commented/report-commented.event';
 import { ReportedUserEntity } from './reported-user.entity';
 import { ReportErrorMessage } from './report.error.message';
 import { CheckedReportedUserEvent } from '../application/events/checked-reported-user/checked-reported-user.event';
+import { CreateReportCommentInput } from '../application/commands/create-report-comment/create-report-comment.input';
+import { ReportCommentedEvent } from '../application/events/report-commented/report-commented.event';
 
 export class ReportEntity extends AggregateRoot {
   id: string;
@@ -76,14 +77,21 @@ export class ReportEntity extends AggregateRoot {
     }
   }
 
-  commentReport(input: CommentReportInput) {
+  parseCreateReportCommentInput(input: CommentReportInput): CreateReportCommentInput {
+    return {
+      id: input.id,
+      type: 'report',
+      reportId: this.id,
+      authorId: input.authorId,
+      content: input.content,
+      source: input.source,
+    };
+  }
+
+  commentReport() {
     this.apply(
       new ReportCommentedEvent({
-        id: input.id,
-        reportId: input.reportId,
-        authorId: input.authorId,
-        content: input.content,
-        source: input.source,
+        reportId: this.id,
       }),
     );
   }

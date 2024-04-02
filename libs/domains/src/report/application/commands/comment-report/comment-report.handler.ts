@@ -23,7 +23,9 @@ export class CommentReportHandler implements ICommandHandler<CommentReportComman
         ReportErrorMessage.COMMENT_REPORT_REQUEST_FROM_UNAUTHORIZED_USER,
       );
 
-    report.commentReport(command.input);
+    const input = report.parseCreateReportCommentInput(command.input);
+    await this.savePort.createComment(input);
+    report.commentReport();
     report.commit();
   }
 }
