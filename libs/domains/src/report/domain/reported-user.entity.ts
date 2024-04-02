@@ -3,8 +3,6 @@ import { ReportSummaryEntity } from '@lib/domains/report/domain/report-summary.e
 import { ROOT_GROUP_SLUG } from '@lib/domains/group/domain/group.constants';
 import { Type } from 'class-transformer';
 import { REPORTED_USER_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
-import { NotFoundException } from '@nestjs/common';
-import { ReportErrorMessage } from './report.error.message';
 import { CheckedReportedUserEvent } from '../application/events/checked-reported-user/checked-reported-user.event';
 
 export class ReportedUserEntity {
@@ -42,12 +40,10 @@ export class ReportedUserEntity {
 
   checkReceivedReports(): CheckedReportedUserEvent {
     const rootGroupMember = this.findRootGroupMember();
-    if (!rootGroupMember)
-      throw new NotFoundException(ReportErrorMessage.REPORTED_USER_ROOT_GROUP_MEMBER_NOT_FOUND);
 
     return {
-      groupId: rootGroupMember.groupId,
-      memberId: rootGroupMember.id,
+      groupSlug: ROOT_GROUP_SLUG,
+      memberId: rootGroupMember?.id,
       userId: this.id,
       roleIds: [],
       roleNames: [REPORTED_USER_ROLE_NAME],
