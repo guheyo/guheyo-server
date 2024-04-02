@@ -19,8 +19,8 @@ import { UseGuards } from '@nestjs/common';
 import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
 import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
 import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
-import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
 import { ADMIN_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
+import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -59,7 +59,7 @@ export class GroupResolver {
 
   @BlocklistRoleNames([])
   @AllowlistRoleNames([ADMIN_ROLE_NAME])
-  @UseGuards(JwtAccessAuthGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
   async createGroup(@Args('input') input: CreateGroupInput): Promise<string> {
     await this.commandBus.execute(new CreateGroupCommand(input));
@@ -68,7 +68,7 @@ export class GroupResolver {
 
   @BlocklistRoleNames([])
   @AllowlistRoleNames([ADMIN_ROLE_NAME])
-  @UseGuards(JwtAccessAuthGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
   async updateGroup(@Args('input') input: UpdateGroupInput): Promise<string> {
     await this.commandBus.execute(new UpdateGroupCommand(input));

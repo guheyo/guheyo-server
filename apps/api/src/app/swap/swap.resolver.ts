@@ -14,18 +14,18 @@ import { UseGuards } from '@nestjs/common';
 import { FindSwapArgs } from '@lib/domains/swap/application/queries/find-swap/find-swap.args';
 import { DeleteSwapArgs } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.args';
 import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
-import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth.guard';
 import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { BumpSwapInput } from '@lib/domains/swap/application/commands/bump-swap/bump-swap.input';
 import { BumpSwapCommand } from '@lib/domains/swap/application/commands/bump-swap/bump-swap.command';
 import { SwapPreviewResponse } from '@lib/domains/swap/application/dtos/swap-preview.response';
-import { JwtAccessAllGuard } from '@lib/domains/auth/guards/jwt/jwt-access-all.guard';
-import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
-import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
 import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
 import { REPORTED_USER_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
 import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
 import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
+import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
+import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -36,28 +36,28 @@ export class SwapResolver {
     private readonly commandBus: CommandBus,
   ) {}
 
-  @UseGuards(JwtAccessAllGuard)
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => SwapResponse, { nullable: true })
   async findSwap(
     @Args() findSwapArgs: FindSwapArgs,
-    @ExtractedJwtPayload() jwtPayload: JwtPayload,
+    @ExtractedUser() user: MyUserResponse,
   ): Promise<SwapResponse | null> {
     const query = new FindSwapQuery({
       args: findSwapArgs,
-      userId: jwtPayload.id,
+      userId: user.id,
     });
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(JwtAccessAllGuard)
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => PaginatedSwapPreviewsResponse)
   async findSwapPreviews(
     @Args() findSwapPreviewsArgs: FindSwapPreviewsArgs,
-    @ExtractedJwtPayload() jwtPayload: JwtPayload,
+    @ExtractedUser() user: MyUserResponse,
   ) {
     const query = new FindSwapPreviewsQuery({
       args: findSwapPreviewsArgs,
-      userId: jwtPayload.id,
+      userId: user.id,
     });
     return this.queryBus.execute(query);
   }
@@ -65,7 +65,7 @@ export class SwapResolver {
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
   @AllowlistRoleNames([])
   @AuthorIdPath('input.proposerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
   async createSwap(@Args('input') input: CreateSwapInput): Promise<string> {
     await this.commandBus.execute(new CreateSwapCommand(input));
@@ -75,14 +75,14 @@ export class SwapResolver {
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
   @AllowlistRoleNames([])
   @AuthorIdPath('input.proposerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => SwapPreviewResponse)
   async updateSwap(@Args('input') input: UpdateSwapInput): Promise<SwapPreviewResponse> {
     return this.commandBus.execute(new UpdateSwapCommand(input));
   }
 
   @AuthorIdPath('proposerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
   @Mutation(() => String)
   async deleteSwap(@Args() args: DeleteSwapArgs): Promise<string> {
     await this.commandBus.execute(new DeleteSwapCommand(args));
@@ -90,7 +90,7 @@ export class SwapResolver {
   }
 
   @AuthorIdPath('input.proposerId')
-  @UseGuards(JwtAccessAuthGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
   @Mutation(() => SwapPreviewResponse)
   async bumpSwap(@Args('input') input: BumpSwapInput): Promise<SwapPreviewResponse> {
     return this.commandBus.execute(new BumpSwapCommand(input));
