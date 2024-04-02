@@ -465,7 +465,7 @@ type Query {
   findGroupPreviews: [GroupPreviewResponse!]!
   findGroupProfiles(cursor: ID, distinct: Boolean, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
-  findMyUser(id: ID, username: String): MyUserResponse
+  findMyUser: MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
   findReport(id: ID!): ReportResponse!

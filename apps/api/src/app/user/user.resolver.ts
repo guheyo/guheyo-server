@@ -6,7 +6,6 @@ import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.respo
 import { PaginationArgs } from '@lib/shared/cqrs/queries/pagination/pagination.args';
 import { FindUsersQuery } from '@lib/domains/user/application/queries/find-users/find-users.query';
 import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/find-users/paginated-users.response';
-import { FindMyUserQuery } from '@lib/domains/user/application/queries/find-my-user/find-my-user.query';
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { FindUserArgs } from '@lib/domains/user/application/queries/find-user/find-user.args';
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
@@ -15,11 +14,11 @@ import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth
 import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
 import { FindAuthorArgs } from '@lib/domains/user/application/queries/find-author/find-author.args';
 import { FindAuthorQuery } from '@lib/domains/user/application/queries/find-author/find-author.query';
-import { FindMyUserArgs } from '@lib/domains/user/application/queries/find-my-user/find-my-user.args';
 import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
 import { LinkSocialProfileInput } from '@lib/domains/user/application/commands/link-social-profile/link-social-profile.input';
 import { LinkSocialProfileCommand } from '@lib/domains/user/application/commands/link-social-profile/link-social-profile.command';
 import { JwtPayload } from 'jsonwebtoken';
+import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -32,15 +31,8 @@ export class UserResolver {
 
   @UseGuards(JwtAccessAuthGuard)
   @Query(() => MyUserResponse, { nullable: true })
-  async findMyUser(
-    @Args() args: FindMyUserArgs,
-    @ExtractedJwtPayload() jwtPayload: JwtPayload,
-  ): Promise<MyUserResponse | null> {
-    const query = new FindMyUserQuery({
-      args,
-      userId: jwtPayload.id,
-    });
-    return this.queryBus.execute(query);
+  async findMyUser(@ExtractedUser() user: MyUserResponse | null): Promise<MyUserResponse | null> {
+    return user;
   }
 
   @Query(() => UserResponse, { nullable: true })
