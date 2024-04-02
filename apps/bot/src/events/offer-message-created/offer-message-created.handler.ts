@@ -24,6 +24,6 @@ export class OfferMessageCreatedHandler {
     @Context()
     [message]: ContextOf<'messageCreate'>,
   ) {
-    await this.offerClient.createDealFromMessage(user.id, message, group);
+    await this.offerClient.createDealFromMessage(user, message, group);
   }
 }

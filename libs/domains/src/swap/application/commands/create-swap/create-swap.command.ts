@@ -1,5 +1,6 @@
 import { ICommand } from '@nestjs/cqrs/dist';
 import { SwapStatus } from '@lib/domains/swap/domain/swap.types';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { CreateSwapInput } from './create-swap.input';
 
 export class CreateSwapCommand implements ICommand {
@@ -35,7 +36,9 @@ export class CreateSwapCommand implements ICommand {
 
   source: string;
 
-  constructor(input: CreateSwapInput) {
+  user: MyUserResponse;
+
+  constructor({ input, user }: { input: CreateSwapInput; user: MyUserResponse }) {
     this.id = input.id;
     this.name0 = input.name0;
     this.name1 = input.name1;
@@ -52,5 +55,6 @@ export class CreateSwapCommand implements ICommand {
     this.proposerId = input.proposerId;
     this.brandId = input.brandId;
     this.source = input.source;
+    this.user = user;
   }
 }

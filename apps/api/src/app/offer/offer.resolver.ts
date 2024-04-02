@@ -67,8 +67,11 @@ export class OfferResolver {
   @AuthorIdPath('input.sellerId')
   @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
-  async createOffer(@Args('input') input: CreateOfferInput): Promise<string> {
-    await this.commandBus.execute(new CreateOfferCommand(input));
+  async createOffer(
+    @Args('input') input: CreateOfferInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new CreateOfferCommand({ input, user }));
     return input.id;
   }
 

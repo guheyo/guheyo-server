@@ -10,6 +10,7 @@ import { UpdateSwapInput } from '@lib/domains/swap/application/commands/update-s
 import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
 import { DeleteSwapArgs } from '@lib/domains/swap/application/commands/delete-swap/delete-swap.args';
 import { DeleteDemandArgs } from '@lib/domains/demand/application/commands/delete-demand/delete-demand.args';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { DealParser } from '../parsers/abstracts/deal.parser';
 import { DealType } from '../parsers/deal.types';
@@ -25,21 +26,27 @@ export abstract class DealClient extends UserImageClient {
 
   public readonly logger = new Logger(DealClient.name);
 
-  abstract createDeal(input: CreateOfferInput | CreateDemandInput | CreateSwapInput): void;
+  abstract createDeal({
+    input,
+    user,
+  }: {
+    input: CreateOfferInput | CreateDemandInput | CreateSwapInput;
+    user: MyUserResponse;
+  }): void;
 
   abstract updateDeal(input: UpdateOfferInput | UpdateDemandInput | UpdateSwapInput): void;
 
   abstract deleteDeal(args: DeleteOfferArgs | DeleteDemandArgs | DeleteSwapArgs): void;
 
-  async createDealFromMessage(userId: string, message: Message, group: GroupResponse) {
+  async createDealFromMessage(user: MyUserResponse, message: Message, group: GroupResponse) {
     const uploadUserImageInputList = this.userImageParser.parseUploadUserImageInputList(
-      userId,
+      user.id,
       message,
       this.dealType,
     );
-    const createDealInput = this.dealParser.parseCreateDealInput(userId, message, group);
+    const createDealInput = this.dealParser.parseCreateDealInput(user.id, message, group);
     await this.uploadAndCreateAttachments(uploadUserImageInputList, this.dealType);
-    await this.createDeal(createDealInput);
+    await this.createDeal({ input: createDealInput, user });
     this.logger.log(`${this.dealType}<@${createDealInput.id}> created`);
   }
 

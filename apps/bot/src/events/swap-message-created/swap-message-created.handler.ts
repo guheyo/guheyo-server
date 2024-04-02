@@ -24,6 +24,6 @@ export class SwapMessageCreatedHandler {
     @Context()
     [message]: ContextOf<'messageCreate'>,
   ) {
-    await this.swapClient.createDealFromMessage(user.id, message, group);
+    await this.swapClient.createDealFromMessage(user, message, group);
   }
 }
