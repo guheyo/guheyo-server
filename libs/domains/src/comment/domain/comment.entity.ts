@@ -1,6 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { isUndefined, omitBy } from 'lodash';
-import { CommentCreatedEvent } from '../application/events/comment-created/comment-created.event';
 import { CommentTypeIdString, CommentType } from './comment.types';
 import { UpdateCommentProps } from './comment.interfaces';
 
@@ -44,15 +43,6 @@ export class CommentEntity extends AggregateRoot {
   parseTypeIdString(): CommentTypeIdString {
     if (this.type === 'comment') return 'parentId';
     return `${this.type}Id`;
-  }
-
-  create(refId: string) {
-    this.apply(
-      new CommentCreatedEvent({
-        type: this.type,
-        refId,
-      }),
-    );
   }
 
   isAuthorized(authorId: string) {
