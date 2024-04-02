@@ -17,6 +17,9 @@ export class CreateOfferHandler implements ICommandHandler<CreateOfferCommand> {
       throw new ForbiddenException(OfferErrorMessage.CREATE_REQUEST_FROM_UNAUTHORIZED_USER);
 
     const offer = this.publisher.mergeObjectContext(new OfferEntity(command));
+    if (!offer.seller.validateDailyOfferPostingLimit())
+      throw new ForbiddenException(OfferErrorMessage.DAILY_OFFER_POSTING_LIMIT_EXCEEDED);
+
     offer.create();
     await this.savePort.create(offer);
     offer.commit();

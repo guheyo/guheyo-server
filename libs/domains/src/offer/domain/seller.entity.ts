@@ -10,7 +10,7 @@ export class SellerEntity extends UserEntity {
     Object.assign(this, partial);
   }
 
-  validateCooldown() {
+  validateDailyOfferPostingLimit() {
     return this.countOffersIn24Hours < this.maxOffersIn24Hours;
   }
 }
