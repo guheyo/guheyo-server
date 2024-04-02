@@ -12,12 +12,10 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { SocialAccountModule } from '../social-account.module';
-import { SocialAccountResolver } from '../social-account.resolver';
 
 describe('SocialAccountModule', () => {
   let apiModule: ApiModule;
   let socialAccountModule: SocialAccountModule;
-  let resolver: SocialAccountResolver;
   let socialAccountLoadPort: SocialAccountLoadPort;
   let socialAccountSavePort: SocialAccountSavePort;
   let socialAccountCreateHandler: CreateSocialAccountHandler;
@@ -44,7 +42,6 @@ describe('SocialAccountModule', () => {
 
     apiModule = moduleRef;
     socialAccountModule = moduleRef.get<SocialAccountModule>(SocialAccountModule);
-    resolver = moduleRef.get<SocialAccountResolver>(SocialAccountResolver);
     socialAccountLoadPort = moduleRef.get<SocialAccountLoadPort>('SocialAccountLoadPort');
     socialAccountSavePort = moduleRef.get<SocialAccountSavePort>('SocialAccountSavePort');
     socialAccountCreateHandler = moduleRef.get<CreateSocialAccountHandler>(
@@ -67,12 +64,6 @@ describe('SocialAccountModule', () => {
   describe('SocialAccountModule', () => {
     it('should be instance of SocialAccountModule', async () => {
       expect(socialAccountModule).toBeInstanceOf(SocialAccountModule);
-    });
-  });
-
-  describe('SocialAccountResolver', () => {
-    it('should be instance of SocialAccountResolver', async () => {
-      expect(resolver).toBeInstanceOf(SocialAccountResolver);
     });
   });
 

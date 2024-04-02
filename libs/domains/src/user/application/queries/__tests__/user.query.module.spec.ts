@@ -2,32 +2,32 @@ import { Test } from '@nestjs/testing';
 import { CqrsModule } from '@nestjs/cqrs/dist';
 import { ConfigYamlModule } from '@app/api/config/config.module';
 import { PrismaModule } from '@lib/shared/prisma/prisma.module';
-import { FindMyUserByIdQuery } from '../find-my-user-by-id/find-my-user-by-id.query';
-import { FindMyUserByIdHandler } from '../find-my-user-by-id/find-my-user-by-id.handler';
 import { FindUsersQuery } from '../find-users/find-users.query';
 import { FindUsersHandler } from '../find-users/find-users.handler';
 import { FindUserHandler } from '../find-user/find-user.handler';
 import { FindUserQuery } from '../find-user/find-user.query';
+import { FindMyUserQuery } from '../find-my-user/find-my-user.query';
+import { FindMyUserHandler } from '../find-my-user/find-my-user.handler';
 
 describe('UserQueryModule', () => {
-  let findMyUserByIdHandler: FindMyUserByIdHandler;
+  let findMyUserHandler: FindMyUserHandler;
   let findUserHandler: FindUserHandler;
   let findUsersHandler: FindUsersHandler;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [CqrsModule, ConfigYamlModule, PrismaModule],
-      providers: [FindMyUserByIdHandler, FindUserHandler, FindUsersHandler],
+      providers: [FindMyUserHandler, FindUserHandler, FindUsersHandler],
     }).compile();
-    findMyUserByIdHandler = moduleRef.get<FindMyUserByIdHandler>(FindMyUserByIdHandler);
+    findMyUserHandler = moduleRef.get<FindMyUserHandler>(FindMyUserHandler);
     findUserHandler = moduleRef.get<FindUserHandler>(FindUserHandler);
     findUsersHandler = moduleRef.get<FindUsersHandler>(FindUsersHandler);
   });
 
   describe('execute', () => {
     it('should be null given an invalid id', async () => {
-      const query: FindMyUserByIdQuery = { id: 'test' };
-      const user = await findMyUserByIdHandler.execute(query);
+      const query: FindMyUserQuery = { userId: 'test' };
+      const user = await findMyUserHandler.execute(query);
       expect(user).toBeNull();
     });
   });

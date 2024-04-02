@@ -8,8 +8,8 @@ import { UserRepository } from '@lib/domains/user/adapter/out/persistence/user.r
 import { CreateUserHandler } from '@lib/domains/user/application/commands/create-user/create-user.handler';
 import { UpdateUserHandler } from '@lib/domains/user/application/commands/update-user/update-user.handler';
 import { DeleteUserHandler } from '@lib/domains/user/application/commands/delete-user/delete-user.handler';
-import { FindMyUserByIdHandler } from '@lib/domains/user/application/queries/find-my-user-by-id/find-my-user-by-id.handler';
 import { FindUserHandler } from '@lib/domains/user/application/queries/find-user/find-user.handler';
+import { FindMyUserHandler } from '@lib/domains/user/application/queries/find-my-user/find-my-user.handler';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { UserModule } from '../user.module';
@@ -24,7 +24,7 @@ describe('UserModule', () => {
   let userCreateHandler: CreateUserHandler;
   let userUpdateHandler: UpdateUserHandler;
   let userDeleteHandler: DeleteUserHandler;
-  let findMyUserByIdHandler: FindMyUserByIdHandler;
+  let findMyUserHandler: FindMyUserHandler;
   let findUserHandler: FindUserHandler;
 
   beforeAll(async () => {
@@ -52,7 +52,7 @@ describe('UserModule', () => {
     userCreateHandler = moduleRef.get<CreateUserHandler>(CreateUserHandler);
     userUpdateHandler = moduleRef.get<UpdateUserHandler>(UpdateUserHandler);
     userDeleteHandler = moduleRef.get<DeleteUserHandler>(DeleteUserHandler);
-    findMyUserByIdHandler = moduleRef.get<FindMyUserByIdHandler>(FindMyUserByIdHandler);
+    findMyUserHandler = moduleRef.get<FindMyUserHandler>(FindMyUserHandler);
     findUserHandler = moduleRef.get<FindUserHandler>(FindUserHandler);
   });
 
@@ -104,9 +104,9 @@ describe('UserModule', () => {
     });
   });
 
-  describe('FindMyUserByIdHandler', () => {
-    it('should be instance of FindMyUserByIdHandler', async () => {
-      expect(findMyUserByIdHandler).toBeInstanceOf(FindMyUserByIdHandler);
+  describe('FindMyUserHandler', () => {
+    it('should be instance of FindMyUserHandler', async () => {
+      expect(findMyUserHandler).toBeInstanceOf(FindMyUserHandler);
     });
   });
 

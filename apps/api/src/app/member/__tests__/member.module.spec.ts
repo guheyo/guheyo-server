@@ -13,12 +13,10 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
 import { MemberModule } from '../member.module';
-import { MemberResolver } from '../member.resolver';
 
 describe('MemberModule', () => {
   let apiModule: ApiModule;
   let memberModule: MemberModule;
-  let resolver: MemberResolver;
   let memberSavePort: MemberSavePort;
   let memberLoadPort: MemberLoadPort;
   let memberCreateHandler: CreateMemberHandler;
@@ -46,7 +44,6 @@ describe('MemberModule', () => {
 
     apiModule = moduleRef;
     memberModule = moduleRef.get<MemberModule>(MemberModule);
-    resolver = moduleRef.get<MemberResolver>(MemberResolver);
     memberSavePort = moduleRef.get<MemberSavePort>('MemberSavePort');
     memberLoadPort = moduleRef.get<MemberLoadPort>('MemberLoadPort');
     memberCreateHandler = moduleRef.get<CreateMemberHandler>(CreateMemberHandler);
@@ -64,12 +61,6 @@ describe('MemberModule', () => {
   describe('MemberModule', () => {
     it('should be instance of MemberModule', async () => {
       expect(memberModule).toBeInstanceOf(MemberModule);
-    });
-  });
-
-  describe('MemberResolver', () => {
-    it('should be instance of MemberResolver', async () => {
-      expect(resolver).toBeInstanceOf(MemberResolver);
     });
   });
 
