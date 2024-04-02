@@ -9,8 +9,8 @@ import { SocialUserResponse } from '@lib/domains/social-account/application/dtos
 import { JwtRefreshGuard } from '@lib/domains/auth/guards/jwt/jwt-refresh.guard';
 import { JwtResponse } from '@lib/domains/auth/guards/jwt/jwt.response';
 import { UserErrorMessage } from '@lib/domains/user/domain/user.error.message';
-import { FindAuthUserQuery } from '@lib/domains/user/application/queries/find-auth-user/find-auth-user.query';
-import { AuthUserResponse } from '@lib/domains/user/application/dtos/auth-user.response';
+import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
+import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -56,11 +56,11 @@ export class AuthResolver {
   ): Promise<JwtResponse> {
     const jwtPayload = req.user as JwtPayload;
     const user = (await this.queryBus.execute(
-      new FindAuthUserQuery({
+      new FindUserQuery({
         provider: jwtPayload.socialProfile.provider,
         socialId: jwtPayload.socialProfile.id,
       }),
-    )) as AuthUserResponse | null;
+    )) as UserResponse | null;
     if (!user) throw new NotFoundException(UserErrorMessage.USER_IS_NOT_FOUND);
 
     const userPayload = {
@@ -68,7 +68,6 @@ export class AuthResolver {
       id: user.id,
       username: user.username,
       avatarURL: user.avatarURL || undefined,
-      rootRoleNames: user.rootRoleNames,
     };
 
     const accessToken = this.jwtService.signAccessToken(userPayload);

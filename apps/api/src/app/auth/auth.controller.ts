@@ -8,8 +8,8 @@ import { JwtService } from '@lib/shared/jwt/jwt.service';
 import { UpdateSocialAccountCommand } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.command';
 import { ConfigService } from '@nestjs/config';
 import { SocialProfile } from '@lib/shared/jwt/jwt.interfaces';
-import { FindAuthUserQuery } from '@lib/domains/user/application/queries/find-auth-user/find-auth-user.query';
-import { AuthUserResponse } from '@lib/domains/user/application/dtos/auth-user.response';
+import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
+import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { ThrottlerBehindProxyGuard } from '../throttler/throttler-behind-proxy.guard';
 
 @UseGuards(ThrottlerBehindProxyGuard)
@@ -33,11 +33,11 @@ export class AuthController {
   async discordLoginCallback(@Req() req: any, @Res() res: Response) {
     const socialProfile = req.user as SocialProfile;
     const user = (await this.queryBus.execute(
-      new FindAuthUserQuery({
+      new FindUserQuery({
         provider: socialProfile.provider,
         socialId: socialProfile.id,
       }),
-    )) as AuthUserResponse | null;
+    )) as UserResponse | null;
 
     let accessToken: string;
     let refreshToken: string;
@@ -47,14 +47,12 @@ export class AuthController {
         id: user.id,
         username: user.username,
         avatarURL: user.avatarURL || undefined,
-        rootRoleNames: user.rootRoleNames,
       });
       refreshToken = this.jwtService.signRefreshToken({
         socialProfile: this.jwtService.parseSocialProfile(socialProfile),
         id: user.id,
         username: user.username,
         avatarURL: user.avatarURL || undefined,
-        rootRoleNames: user.rootRoleNames,
       });
       await this.commandBus.execute(
         new UpdateSocialAccountCommand({
@@ -71,14 +69,12 @@ export class AuthController {
         id,
         username: socialProfile.username,
         avatarURL: socialProfile.avatarURL,
-        rootRoleNames: [],
       });
       refreshToken = this.jwtService.signRefreshToken({
         socialProfile: this.jwtService.parseSocialProfile(socialProfile),
         id,
         username: socialProfile.username,
         avatarURL: socialProfile.avatarURL,
-        rootRoleNames: [],
       });
       await this.commandBus.execute(
         new SignInUserCommand({
