@@ -11,8 +11,6 @@ import { FindReportPreviewsArgs } from '@lib/domains/report/application/queries/
 import { FindReportPreviewsQuery } from '@lib/domains/report/application/queries/find-report-previews/find-report-previews.query';
 import { CommentReportInput } from '@lib/domains/report/application/commands/comment-report/comment-report.input';
 import { CommentReportCommand } from '@lib/domains/report/application/commands/comment-report/comment-report.command';
-import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
-import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
 import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
 import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
@@ -50,21 +48,25 @@ export class ReportResolver {
     return this.queryBus.execute(query);
   }
 
-  @AuthorIdPath('input.authorId')
   @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
   @AllowlistRoleNames([])
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
-  async createReport(@Args('input') input: CreateReportInput): Promise<string> {
-    await this.commandBus.execute(new CreateReportCommand(input));
+  async createReport(
+    @Args('input') input: CreateReportInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new CreateReportCommand({ input, user }));
     return input.id;
   }
 
-  @AuthorIdPath('input.authorId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => String)
-  async commentReport(@Args('input') input: CommentReportInput): Promise<string> {
-    await this.commandBus.execute(new CommentReportCommand(input));
+  async commentReport(
+    @Args('input') input: CommentReportInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new CommentReportCommand({ input, user }));
     return input.id;
   }
 }

@@ -16,6 +16,9 @@ export class CreateReportHandler implements ICommandHandler<CreateReportCommand>
   ) {}
 
   async execute(command: CreateReportCommand): Promise<void> {
+    if (command.authorId !== command.user.id)
+      throw new ForbiddenException(ReportErrorMessage.CREATE_REPORT_REQUEST_FROM_UNAUTHORIZED_USER);
+
     const lastSubmittedReport = await this.loadPort.findLastSubmittedReport(command.authorId);
     if (lastSubmittedReport && !lastSubmittedReport.validateSubmitTerm())
       throw new ForbiddenException(ReportErrorMessage.REPORT_COOLDOWN_NOT_PASSED);

@@ -24,7 +24,7 @@ export class UpdateCommentHandler extends PrismaCommandHandler<
   async execute(command: UpdateCommentCommand): Promise<CommentResponse> {
     const comment = await this.loadPort.findById(command.id);
     if (!comment) throw new NotFoundException(CommentErrorMessage.COMMENT_NOT_FOUND);
-    if (!comment.isAuthorized(command.authorId))
+    if (!comment.isAuthorized(command.user.id))
       throw new ForbiddenException(CommentErrorMessage.COMMENT_CHANGES_FROM_UNAUTHORIZED_USER);
 
     comment.update(pick(command, ['id', 'content']));

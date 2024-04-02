@@ -14,9 +14,7 @@ export class CheckReportCommentsHandler implements ICommandHandler<CheckReportCo
   ) {}
 
   async execute(command: CheckReportCommentsCommand) {
-    if (command.type !== 'report') return;
-
-    let report = await this.loadPort.findById(command.refId);
+    let report = await this.loadPort.findById(command.reportId);
     if (!report) throw new NotFoundException(ReportErrorMessage.REPORT_IS_NOT_FOUND);
 
     report = this.publisher.mergeObjectContext(report);

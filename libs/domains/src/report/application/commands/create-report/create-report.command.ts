@@ -1,4 +1,5 @@
 import { ICommand } from '@nestjs/cqrs/dist';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { CreateReportInput } from './create-report.input';
 
 export class CreateReportCommand implements ICommand {
@@ -18,7 +19,9 @@ export class CreateReportCommand implements ICommand {
 
   content?: string;
 
-  constructor(input: CreateReportInput) {
+  user: MyUserResponse;
+
+  constructor({ input, user }: { input: CreateReportInput; user: MyUserResponse }) {
     this.id = input.id;
     this.type = input.type;
     this.refId = input.refId;
@@ -27,5 +30,6 @@ export class CreateReportCommand implements ICommand {
     this.reportedUserId = input.reportedUserId;
     this.title = input.title;
     this.content = input.content;
+    this.user = user;
   }
 }

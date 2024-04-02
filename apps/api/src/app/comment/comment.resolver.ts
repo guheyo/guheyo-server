@@ -8,9 +8,9 @@ import { FindCommentArgs } from '@lib/domains/comment/application/queries/find-c
 import { FindCommentQuery } from '@lib/domains/comment/application/queries/find-comment/find-comment.query';
 import { UpdateCommentCommand } from '@lib/domains/comment/application/commands/update-comment/update-comment.command';
 import { UpdateCommentInput } from '@lib/domains/comment/application/commands/update-comment/update-comment.input';
-import { AuthorIdPath } from '@lib/domains/auth/decorators/author-id-path/author-id-path.decorator';
-import { AuthorGuard } from '@lib/domains/auth/guards/author/author.guard';
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
+import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -27,18 +27,22 @@ export class CommentResolver {
     return this.queryBus.execute(query);
   }
 
-  @AuthorIdPath('input.authorId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => String)
-  async createComment(@Args('input') input: CreateCommentInput): Promise<string> {
-    await this.commandBus.execute(new CreateCommentCommand(input));
+  async createComment(
+    @Args('input') input: CreateCommentInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new CreateCommentCommand({ input, user }));
     return input.id;
   }
 
-  @AuthorIdPath('input.authorId')
-  @UseGuards(RequiredJwtUserGuard, AuthorGuard)
+  @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => CommentResponse)
-  async updateComment(@Args('input') input: UpdateCommentInput) {
-    return this.commandBus.execute(new UpdateCommentCommand(input));
+  async updateComment(
+    @Args('input') input: UpdateCommentInput,
+    @ExtractedUser() user: MyUserResponse,
+  ) {
+    return this.commandBus.execute(new UpdateCommentCommand({ input, user }));
   }
 }
