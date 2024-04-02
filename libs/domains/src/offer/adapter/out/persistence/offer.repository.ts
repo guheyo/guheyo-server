@@ -3,9 +3,15 @@ import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { OfferEntity } from '@lib/domains/offer/domain/offer.entity';
 import dayjs from 'dayjs';
+import { OfferSavePort } from '@lib/domains/offer/application/ports/out/offer.save.port';
+import { OfferLoadPort } from '@lib/domains/offer/application/ports/out/offer.load.port';
+import { FindOfferCountArgs } from '@lib/domains/offer/application/queries/find-offer-count/find-offer-count.args';
 
 @Injectable()
-export class OfferRepository extends PrismaRepository<OfferEntity> {
+export class OfferRepository
+  extends PrismaRepository<OfferEntity>
+  implements OfferLoadPort, OfferSavePort
+{
   constructor() {
     super(OfferEntity);
   }
@@ -34,33 +40,28 @@ export class OfferRepository extends PrismaRepository<OfferEntity> {
         bumps: true,
       },
     });
-    if (!offer) return null;
+    return this.toEntity(offer);
+  }
 
+  async findOfferCount(args: FindOfferCountArgs) {
     const count = await this.prismaService.offer.count({
       where: {
         AND: [
           {
-            sellerId: offer.sellerId,
+            sellerId: args.sellerId,
           },
           {
             bumpedAt: {
-              gt: dayjs().subtract(24, 'hours').toDate(),
+              gt: dayjs().subtract(args.fromHours, 'hours').toDate(),
             },
           },
           {
-            productCategoryId: offer.productCategoryId,
+            productCategoryId: args.productCategoryId,
           },
         ],
       },
     });
-
-    return this.toEntity({
-      ...offer,
-      seller: {
-        ...offer.seller,
-        countOffersIn24Hours: count,
-      },
-    });
+    return count;
   }
 
   async create(offer: OfferEntity): Promise<void> {
