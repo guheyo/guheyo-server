@@ -1,16 +1,12 @@
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { Message } from 'discord.js';
 
-export interface SimpleUser {
-  id: string;
-  username: string;
-}
-
 export interface UserWithMessage {
-  user: SimpleUser;
+  user: MyUserResponse;
   message: Message;
 }
 
 export interface UserWithDeletedModelId {
-  user: SimpleUser;
+  user: MyUserResponse;
   deletedModelId: string;
 }

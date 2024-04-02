@@ -1,7 +1,5 @@
 import { GuildMember, PartialUser, RoleManager, User } from 'discord.js';
-import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
-import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuid4 } from 'uuid';
 import { UpsertRolesCommand } from '@lib/domains/role/application/commands/upsert-roles/upsert-roles.command';
 import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
@@ -11,9 +9,11 @@ import { UpdateUserCommand } from '@lib/domains/user/application/commands/update
 import { MemberResponse } from '@lib/domains/member/application/dtos/member.response';
 import { FindMemberQuery } from '@lib/domains/member/application/queries/find-member/find-member.query';
 import { CreateUserImageCommand } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.command';
+import { FindMyUserQuery } from '@lib/domains/user/application/queries/find-my-user/find-my-user.query';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
-import { SimpleUser } from '../parsers/user.types';
 import { UserParser } from '../parsers/user.parser';
+import { UserErrorMessage } from '../parsers/user.error-message';
 
 @Injectable()
 export class UserClient extends UserImageClient {
@@ -21,8 +21,8 @@ export class UserClient extends UserImageClient {
     super();
   }
 
-  async fetchSimpleUser(provider: string, memberOrUser: GuildMember | User): Promise<SimpleUser> {
-    const user = await this.findUserBySocialAccount(provider, memberOrUser.id);
+  async fetchMyUser(provider: string, memberOrUser: GuildMember | User): Promise<MyUserResponse> {
+    const user = await this.findMyUser(provider, memberOrUser.id);
     if (user) return user;
 
     const discordUser = memberOrUser instanceof GuildMember ? memberOrUser.user : memberOrUser;
@@ -33,26 +33,19 @@ export class UserClient extends UserImageClient {
         id: uuid4(),
       }),
     );
-    const newUser = await this.queryBus.execute(
-      new FindUserQuery({
-        provider,
-        socialId: memberOrUser.id,
-      }),
-    );
+    const newUser = await this.findMyUser(provider, memberOrUser.id);
+    if (!newUser) throw new NotFoundException(UserErrorMessage.USER_NOT_FOUND);
 
     if (memberOrUser instanceof GuildMember) {
       const roleNames = this.userParser.parseRoleNames(memberOrUser);
       await this.connectRoles(newUser.id, roleNames);
     }
-    return {
-      id: newUser.id,
-      username: newUser.username,
-    };
+    return newUser;
   }
 
-  async findUserBySocialAccount(provider: string, socialId: string): Promise<UserResponse | null> {
+  async findMyUser(provider: string, socialId: string): Promise<MyUserResponse | null> {
     return this.queryBus.execute(
-      new FindUserQuery({
+      new FindMyUserQuery({
         provider,
         socialId,
       }),

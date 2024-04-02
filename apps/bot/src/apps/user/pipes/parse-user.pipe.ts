@@ -1,7 +1,7 @@
 import { UserClient } from '@app/bot/apps/user/clients/user.client';
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { ContextOf } from 'necord';
-import { SimpleUser } from '@app/bot/apps/user/parsers/user.types';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 
 @Injectable()
 export class ParseUserPipe implements PipeTransform {
@@ -10,8 +10,8 @@ export class ParseUserPipe implements PipeTransform {
   async transform(
     [member]: ContextOf<'guildMemberAdd' | 'guildMemberUpdate'>,
     metadata: ArgumentMetadata,
-  ): Promise<SimpleUser> {
+  ): Promise<MyUserResponse> {
     const fetchedMember = await member.fetch();
-    return this.userClient.fetchSimpleUser('discord', fetchedMember);
+    return this.userClient.fetchMyUser('discord', fetchedMember);
   }
 }
