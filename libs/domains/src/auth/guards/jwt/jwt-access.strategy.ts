@@ -3,8 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { QueryBus } from '@nestjs/cqrs';
-import { FindMyUserQuery } from '@lib/domains/user/application/queries/find-my-user/find-my-user.query';
 import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
+import { FindMyUserQuery } from '@lib/domains/user/application/queries/find-my-user/find-my-user.query';
 
 @Injectable()
 export class JwtAccessStrategy extends PassportStrategy(Strategy, 'jwt-access') {

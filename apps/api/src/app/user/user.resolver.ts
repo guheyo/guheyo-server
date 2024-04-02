@@ -14,11 +14,11 @@ import { JwtAccessAuthGuard } from '@lib/domains/auth/guards/jwt/jwt-access-auth
 import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
 import { FindAuthorArgs } from '@lib/domains/user/application/queries/find-author/find-author.args';
 import { FindAuthorQuery } from '@lib/domains/user/application/queries/find-author/find-author.query';
-import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
 import { LinkSocialProfileInput } from '@lib/domains/user/application/commands/link-social-profile/link-social-profile.input';
 import { LinkSocialProfileCommand } from '@lib/domains/user/application/commands/link-social-profile/link-social-profile.command';
-import { JwtPayload } from 'jsonwebtoken';
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
+import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
+import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
