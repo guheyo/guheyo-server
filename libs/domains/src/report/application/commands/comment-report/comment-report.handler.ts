@@ -18,7 +18,7 @@ export class CommentReportHandler implements ICommandHandler<CommentReportComman
     if (!report) throw new NotFoundException(ReportErrorMessage.REPORT_IS_NOT_FOUND);
 
     report = this.publisher.mergeObjectContext(report);
-    if (!report.isAuthorized(command.input.authorId))
+    if (!report.validateCommenter(command.user.id))
       throw new ForbiddenException(
         ReportErrorMessage.COMMENT_REPORT_REQUEST_FROM_UNAUTHORIZED_USER,
       );

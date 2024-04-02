@@ -60,7 +60,7 @@ export class ReportEntity extends AggregateRoot {
     );
   }
 
-  isAuthorized(authorId: string) {
+  validateCommenter(authorId: string) {
     switch (this.refVersion.tableName) {
       case 'Offer': {
         return this.refVersion.values.sellerId === authorId;
