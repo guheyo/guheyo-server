@@ -90,8 +90,11 @@ export class SwapResolver {
   @AuthorIdPath('proposerId')
   @UseGuards(RequiredJwtUserGuard, AuthorGuard)
   @Mutation(() => String)
-  async deleteSwap(@Args() args: DeleteSwapArgs): Promise<string> {
-    await this.commandBus.execute(new DeleteSwapCommand(args));
+  async deleteSwap(
+    @Args() args: DeleteSwapArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new DeleteSwapCommand({ args, user }));
     return args.id;
   }
 

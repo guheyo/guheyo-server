@@ -20,6 +20,6 @@ export class OfferMessageDeletedHandler {
     @Context()
     [message]: ContextOf<'messageDelete'>,
   ) {
-    await this.offerClient.deleteDealFromMessage(user.id, message);
+    await this.offerClient.deleteDealFromMessage(user, message);
   }
 }

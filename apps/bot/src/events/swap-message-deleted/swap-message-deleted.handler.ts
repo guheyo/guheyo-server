@@ -20,6 +20,6 @@ export class SwapMessageDeletedHandler {
     @Context()
     [message]: ContextOf<'messageDelete'>,
   ) {
-    await this.swapClient.deleteDealFromMessage(user.id, message);
+    await this.swapClient.deleteDealFromMessage(user, message);
   }
 }

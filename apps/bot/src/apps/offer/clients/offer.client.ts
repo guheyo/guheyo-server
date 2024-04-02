@@ -23,7 +23,7 @@ export class OfferClient extends DealClient {
     await this.commandBus.execute(new UpdateOfferCommand({ input, user }));
   }
 
-  async deleteDeal(args: DeleteOfferArgs) {
-    await this.commandBus.execute(new DeleteOfferCommand(args));
+  async deleteDeal({ args, user }: { args: DeleteOfferArgs; user: MyUserResponse }) {
+    await this.commandBus.execute(new DeleteOfferCommand({ args, user }));
   }
 }

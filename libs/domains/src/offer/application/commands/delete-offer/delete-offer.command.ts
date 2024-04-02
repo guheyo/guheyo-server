@@ -1,4 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { DeleteOfferArgs } from './delete-offer.args';
 
 export class DeleteOfferCommand implements ICommand {
@@ -6,8 +7,11 @@ export class DeleteOfferCommand implements ICommand {
 
   sellerId: string;
 
-  constructor(args: DeleteOfferArgs) {
+  user: MyUserResponse;
+
+  constructor({ args, user }: { args: DeleteOfferArgs; user: MyUserResponse }) {
     this.id = args.id;
     this.sellerId = args.sellerId;
+    this.user = user;
   }
 }

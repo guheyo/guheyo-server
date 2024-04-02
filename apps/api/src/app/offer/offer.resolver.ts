@@ -90,8 +90,11 @@ export class OfferResolver {
   @AuthorIdPath('sellerId')
   @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
-  async deleteOffer(@Args() args: DeleteOfferArgs): Promise<string> {
-    await this.commandBus.execute(new DeleteOfferCommand(args));
+  async deleteOffer(
+    @Args() args: DeleteOfferArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new DeleteOfferCommand({ args, user }));
     return args.id;
   }
 

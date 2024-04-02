@@ -90,8 +90,11 @@ export class DemandResolver {
   @AuthorIdPath('buyerId')
   @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
-  async deleteDemand(@Args() args: DeleteDemandArgs): Promise<string> {
-    await this.commandBus.execute(new DeleteDemandCommand(args));
+  async deleteDemand(
+    @Args() args: DeleteDemandArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new DeleteDemandCommand({ args, user }));
     return args.id;
   }
 
