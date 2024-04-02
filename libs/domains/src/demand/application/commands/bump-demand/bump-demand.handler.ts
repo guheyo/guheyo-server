@@ -23,7 +23,7 @@ export class BumpDemandHandler extends PrismaCommandHandler<
   async execute(command: BumpDemandCommand): Promise<DemandPreviewResponse> {
     let demand = await this.demandLoadPort.findById(command.input.demandId);
     if (!demand) throw new NotFoundException(DemandErrorMessage.DEMAND_NOT_FOUND);
-    if (!demand.isAuthorized(command.input.buyerId))
+    if (!demand.isAuthorized(command.user.id))
       throw new ForbiddenException(DemandErrorMessage.DEMAND_CHANGES_FROM_UNAUTHORIZED_USER);
     if (!demand.canBump())
       throw new ForbiddenException(DemandErrorMessage.DEMAND_BUMP_STUCK_ON_COOLDOWN);

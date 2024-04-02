@@ -95,7 +95,10 @@ export class DemandResolver {
 
   @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => DemandPreviewResponse)
-  async bumpDemand(@Args('input') input: BumpDemandInput): Promise<DemandPreviewResponse> {
-    return this.commandBus.execute(new BumpDemandCommand(input));
+  async bumpDemand(
+    @Args('input') input: BumpDemandInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<DemandPreviewResponse> {
+    return this.commandBus.execute(new BumpDemandCommand({ input, user }));
   }
 }

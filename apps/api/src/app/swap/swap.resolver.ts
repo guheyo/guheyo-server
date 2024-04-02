@@ -95,7 +95,10 @@ export class SwapResolver {
 
   @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => SwapPreviewResponse)
-  async bumpSwap(@Args('input') input: BumpSwapInput): Promise<SwapPreviewResponse> {
-    return this.commandBus.execute(new BumpSwapCommand(input));
+  async bumpSwap(
+    @Args('input') input: BumpSwapInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<SwapPreviewResponse> {
+    return this.commandBus.execute(new BumpSwapCommand({ input, user }));
   }
 }

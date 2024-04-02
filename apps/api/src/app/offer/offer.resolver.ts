@@ -95,7 +95,10 @@ export class OfferResolver {
 
   @UseGuards(RequiredJwtUserGuard)
   @Mutation(() => OfferPreviewResponse)
-  async bumpOffer(@Args('input') input: BumpOfferInput): Promise<OfferPreviewResponse> {
-    return this.commandBus.execute(new BumpOfferCommand(input));
+  async bumpOffer(
+    @Args('input') input: BumpOfferInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<OfferPreviewResponse> {
+    return this.commandBus.execute(new BumpOfferCommand({ input, user }));
   }
 }
