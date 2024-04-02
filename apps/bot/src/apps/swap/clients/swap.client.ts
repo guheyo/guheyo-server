@@ -19,8 +19,8 @@ export class SwapClient extends DealClient {
     await this.commandBus.execute(new CreateSwapCommand({ input, user }));
   }
 
-  async updateDeal(input: UpdateSwapInput) {
-    await this.commandBus.execute(new UpdateSwapCommand(input));
+  async updateDeal({ input, user }: { input: UpdateSwapInput; user: MyUserResponse }) {
+    await this.commandBus.execute(new UpdateSwapCommand({ input, user }));
   }
 
   async deleteDeal(args: DeleteSwapArgs) {

@@ -19,8 +19,8 @@ export class OfferClient extends DealClient {
     await this.commandBus.execute(new CreateOfferCommand({ input, user }));
   }
 
-  async updateDeal(input: UpdateOfferInput) {
-    await this.commandBus.execute(new UpdateOfferCommand(input));
+  async updateDeal({ input, user }: { input: UpdateOfferInput; user: MyUserResponse }) {
+    await this.commandBus.execute(new UpdateOfferCommand({ input, user }));
   }
 
   async deleteDeal(args: DeleteOfferArgs) {

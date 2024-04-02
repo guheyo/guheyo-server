@@ -80,8 +80,11 @@ export class SwapResolver {
   @AuthorIdPath('input.proposerId')
   @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => SwapPreviewResponse)
-  async updateSwap(@Args('input') input: UpdateSwapInput): Promise<SwapPreviewResponse> {
-    return this.commandBus.execute(new UpdateSwapCommand(input));
+  async updateSwap(
+    @Args('input') input: UpdateSwapInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<SwapPreviewResponse> {
+    return this.commandBus.execute(new UpdateSwapCommand({ input, user }));
   }
 
   @AuthorIdPath('proposerId')

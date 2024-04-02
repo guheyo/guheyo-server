@@ -21,6 +21,6 @@ export class OfferMessageUpdatedHandler {
     [oldMessage, newMessage]: ContextOf<'messageUpdate'>,
   ) {
     const message = await newMessage.fetch();
-    await this.offerClient.updateDealFromMessage(user.id, message);
+    await this.offerClient.updateDealFromMessage(user, message);
   }
 }

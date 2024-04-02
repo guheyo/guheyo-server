@@ -19,8 +19,8 @@ export class DemandClient extends DealClient {
     await this.commandBus.execute(new CreateDemandCommand({ input, user }));
   }
 
-  async updateDeal(input: UpdateDemandInput) {
-    await this.commandBus.execute(new UpdateDemandCommand(input));
+  async updateDeal({ input, user }: { input: UpdateDemandInput; user: MyUserResponse }) {
+    await this.commandBus.execute(new UpdateDemandCommand({ input, user }));
   }
 
   async deleteDeal(args: DeleteDemandArgs) {

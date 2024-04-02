@@ -78,8 +78,11 @@ export class OfferResolver {
   @AuthorIdPath('input.sellerId')
   @UseGuards(RequiredJwtUserGuard, AuthorGuard)
   @Mutation(() => OfferPreviewResponse)
-  async updateOffer(@Args('input') input: UpdateOfferInput): Promise<OfferPreviewResponse> {
-    return this.commandBus.execute(new UpdateOfferCommand(input));
+  async updateOffer(
+    @Args('input') input: UpdateOfferInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<OfferPreviewResponse> {
+    return this.commandBus.execute(new UpdateOfferCommand({ input, user }));
   }
 
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])

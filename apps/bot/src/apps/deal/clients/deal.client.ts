@@ -34,7 +34,13 @@ export abstract class DealClient extends UserImageClient {
     user: MyUserResponse;
   }): void;
 
-  abstract updateDeal(input: UpdateOfferInput | UpdateDemandInput | UpdateSwapInput): void;
+  abstract updateDeal({
+    input,
+    user,
+  }: {
+    input: UpdateOfferInput | UpdateDemandInput | UpdateSwapInput;
+    user: MyUserResponse;
+  }): void;
 
   abstract deleteDeal(args: DeleteOfferArgs | DeleteDemandArgs | DeleteSwapArgs): void;
 
@@ -50,9 +56,9 @@ export abstract class DealClient extends UserImageClient {
     this.logger.log(`${this.dealType}<@${createDealInput.id}> created`);
   }
 
-  async updateDealFromMessage(userId: string, message: Message) {
-    const updateDealInput = this.dealParser.parseUpdateDealInput(userId, message);
-    await this.updateDeal(updateDealInput);
+  async updateDealFromMessage(user: MyUserResponse, message: Message) {
+    const updateDealInput = this.dealParser.parseUpdateDealInput(user.id, message);
+    await this.updateDeal({ input: updateDealInput, user });
     this.logger.log(`${this.dealType}<@${updateDealInput.id}> updated`);
   }
 

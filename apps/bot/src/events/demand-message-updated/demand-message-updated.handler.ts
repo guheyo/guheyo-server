@@ -21,6 +21,6 @@ export class DemandMessageUpdatedHandler {
     [oldMessage, newMessage]: ContextOf<'messageUpdate'>,
   ) {
     const message = await newMessage.fetch();
-    await this.demandClient.updateDealFromMessage(user.id, message);
+    await this.demandClient.updateDealFromMessage(user, message);
   }
 }

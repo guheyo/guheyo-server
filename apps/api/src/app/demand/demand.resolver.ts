@@ -78,8 +78,11 @@ export class DemandResolver {
   @AuthorIdPath('input.buyerId')
   @UseGuards(RequiredJwtUserGuard, AuthorGuard)
   @Mutation(() => DemandPreviewResponse)
-  async updateDemand(@Args('input') input: UpdateDemandInput): Promise<DemandPreviewResponse> {
-    return this.commandBus.execute(new UpdateDemandCommand(input));
+  async updateDemand(
+    @Args('input') input: UpdateDemandInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<DemandPreviewResponse> {
+    return this.commandBus.execute(new UpdateDemandCommand({ input, user }));
   }
 
   @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])

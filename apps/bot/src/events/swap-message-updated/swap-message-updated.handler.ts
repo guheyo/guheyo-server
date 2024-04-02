@@ -21,6 +21,6 @@ export class SwapMessageUpdatedHandler {
     [oldMessage, newMessage]: ContextOf<'messageUpdate'>,
   ) {
     const message = await newMessage.fetch();
-    await this.swapClient.updateDealFromMessage(user.id, message);
+    await this.swapClient.updateDealFromMessage(user, message);
   }
 }
