@@ -29,6 +29,7 @@ describe('CreateGroupHandler', () => {
       const command: CreateGroupCommand = {
         id: '94587c54-4d7d-11ee-be56-0242ac120002',
         name: 'guild-name',
+        slug: 'group-slug',
         position: 0,
       };
       await handler.execute(command);

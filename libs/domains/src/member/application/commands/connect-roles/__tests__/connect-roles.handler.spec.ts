@@ -1,6 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { mock, verify, instance } from 'ts-mockito';
 import { MemberRepository } from '@lib/domains/member/adapter/out/persistence/member.repository';
+import { PrismaModule } from '@lib/shared/prisma/prisma.module';
+import { ConfigYamlModule } from '@app/api/config/config.module';
 import { MemberRolesSavePort } from '../../../ports/out/member-roles.save.port';
 import { ConnectRolesCommand } from '../connect-roles.command';
 import { ConnectRolesHandler } from '../connect-roles.handler';
@@ -15,6 +17,7 @@ describe('ConnectRolesHandler', () => {
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
+      imports: [ConfigYamlModule, PrismaModule],
       providers: [
         ConnectRolesHandler,
         {
@@ -44,7 +47,7 @@ describe('ConnectRolesHandler', () => {
         roleNames: [],
       };
       await handler.execute(command);
-      verify(memberLoadPort.find(command.groupId, command.userId)).once();
+      verify(memberLoadPort.find(command.groupId!, command.userId)).once();
     });
   });
 });
