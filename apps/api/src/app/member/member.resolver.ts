@@ -48,10 +48,10 @@ export class MemberResolver {
     return args.id;
   }
 
-  @Mutation(() => String)
-  async connectRoles(@Args('input') input: ConnectRolesInput): Promise<string> {
+  @Mutation(() => [String])
+  async connectRoles(@Args('input') input: ConnectRolesInput): Promise<string[]> {
     await this.commandBus.execute(new ConnectRolesCommand(input));
-    return input.groupId;
+    return input.roleIds;
   }
 
   @Mutation(() => String)

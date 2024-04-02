@@ -85,9 +85,11 @@ export class ReportSagas {
       ofType(CheckedReportedUserEvent),
       map((event) =>
         event.hasUncommentedReceivedReports
-          ? new ConnectRolesCommand(pick(event, ['groupId', 'userId', 'roleIds', 'roleNames']))
+          ? new ConnectRolesCommand(
+              pick(event, ['groupId', 'groupSlug', 'userId', 'roleIds', 'roleNames']),
+            )
           : new DisconnectRolesCommand({
-              id: event.memberId,
+              id: event.memberId!,
               roleIds: [],
               roleNames: event.roleNames,
             }),
