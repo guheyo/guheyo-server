@@ -67,8 +67,11 @@ export class SwapResolver {
   @AuthorIdPath('input.proposerId')
   @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
-  async createSwap(@Args('input') input: CreateSwapInput): Promise<string> {
-    await this.commandBus.execute(new CreateSwapCommand(input));
+  async createSwap(
+    @Args('input') input: CreateSwapInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new CreateSwapCommand({ input, user }));
     return input.id;
   }
 

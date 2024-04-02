@@ -67,8 +67,11 @@ export class DemandResolver {
   @AuthorIdPath('input.buyerId')
   @UseGuards(RequiredJwtUserGuard, AuthorGuard, RootRoleGuard)
   @Mutation(() => String)
-  async createDemand(@Args('input') input: CreateDemandInput): Promise<string> {
-    await this.commandBus.execute(new CreateDemandCommand(input));
+  async createDemand(
+    @Args('input') input: CreateDemandInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new CreateDemandCommand({ input, user }));
     return input.id;
   }
 
