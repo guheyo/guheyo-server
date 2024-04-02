@@ -1,9 +1,10 @@
-import _ from 'lodash';
+import _, { omit } from 'lodash';
 import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { ReportEntity } from '@lib/domains/report/domain/report.entity';
 import { ReportLoadPort } from '@lib/domains/report/application/ports/out/report.load.port';
 import { ReportSavePort } from '@lib/domains/report/application/ports/out/report.save.port';
+import { CreateReportCommentInput } from '@lib/domains/report/application/commands/create-report-comment/create-report-comment.input';
 
 @Injectable()
 export class ReportRepository
@@ -146,6 +147,19 @@ export class ReportRepository
     await this.prismaService.report.delete({
       where: {
         id: report.id,
+      },
+    });
+  }
+
+  async createComment(input: CreateReportCommentInput): Promise<void> {
+    await this.prismaService.report.update({
+      where: {
+        id: input.reportId,
+      },
+      data: {
+        comments: {
+          create: omit(input, ['reportId']),
+        },
       },
     });
   }
