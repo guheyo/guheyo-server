@@ -14,8 +14,7 @@ export class FindMyUserHandler extends PrismaQueryHandler<FindMyUserQuery, MyUse
   async execute(query: FindMyUserQuery): Promise<MyUserResponse | null> {
     const user = await this.prismaService.user.findUnique({
       where: {
-        id: query.id,
-        username: query.username,
+        id: query.userId,
       },
       include: {
         socialAccounts: true,
