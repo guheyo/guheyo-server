@@ -1,9 +1,20 @@
 import { ArgsType, Field, ID } from '@nestjs/graphql';
-import { IsUUID } from 'class-validator';
+import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 @ArgsType()
 export class FindMyUserArgs {
+  @IsOptional()
   @IsUUID()
   @Field(() => ID)
-  id: string;
+  userId?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String)
+  provider?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String)
+  socialId?: string;
 }
