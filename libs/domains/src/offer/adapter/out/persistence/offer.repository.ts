@@ -2,10 +2,8 @@ import _ from 'lodash';
 import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { OfferEntity } from '@lib/domains/offer/domain/offer.entity';
-import dayjs from 'dayjs';
 import { OfferSavePort } from '@lib/domains/offer/application/ports/out/offer.save.port';
 import { OfferLoadPort } from '@lib/domains/offer/application/ports/out/offer.load.port';
-import { FindOfferCountArgs } from '@lib/domains/offer/application/queries/find-offer-count/find-offer-count.args';
 
 @Injectable()
 export class OfferRepository
@@ -41,27 +39,6 @@ export class OfferRepository
       },
     });
     return this.toEntity(offer);
-  }
-
-  async findOfferCount(args: FindOfferCountArgs) {
-    const count = await this.prismaService.offer.count({
-      where: {
-        AND: [
-          {
-            sellerId: args.sellerId,
-          },
-          {
-            bumpedAt: {
-              gt: dayjs().subtract(args.fromHours, 'hours').toDate(),
-            },
-          },
-          {
-            productCategoryId: args.productCategoryId,
-          },
-        ],
-      },
-    });
-    return count;
   }
 
   async create(offer: OfferEntity): Promise<void> {
