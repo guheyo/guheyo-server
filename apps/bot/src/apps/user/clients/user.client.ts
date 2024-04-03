@@ -124,4 +124,10 @@ export class UserClient extends UserImageClient {
       }),
     );
   }
+
+  async connectUserRoles(userId: string, discordMember: GuildMember): Promise<string[]> {
+    const roleNames = this.userParser.parseRoleNames(discordMember);
+    await this.connectRoles(userId, roleNames);
+    return roleNames;
+  }
 }
