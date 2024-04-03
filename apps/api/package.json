@@ -20,7 +20,7 @@
     "@nestjs/swagger": "^7.1.6",
     "@nestjs/throttler": "^5.1.2",
     "@types/cookie-parser": "^1.4.6",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "cache-manager": "^5.2.3",
     "cache-manager-redis-store": "^3.0.1",
     "class-transformer": "^0.5.1",

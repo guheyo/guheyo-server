@@ -13,7 +13,7 @@
     "@nestjs/cqrs": "^10.2.5",
     "@nestjs/microservices": "^10.2.6",
     "@nestjs/swagger": "^7.1.6",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "cache-manager": "^5.2.3",
     "cache-manager-redis-store": "^3.0.1",
     "class-transformer": "^0.5.1",
