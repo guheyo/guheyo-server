@@ -6,14 +6,12 @@ import { DAILY_OFFER_POSTING_LIMIT, DAY_HOURS } from '@lib/domains/offer/domain/
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { CreateOfferCommand } from './create-offer.command';
 import { OfferSavePort } from '../../ports/out/offer.save.port';
-import { OfferLoadPort } from '../../ports/out/offer.load.port';
 import { OfferResponse } from '../../dtos/offer.response';
 
 @CommandHandler(CreateOfferCommand)
 export class CreateOfferHandler extends PrismaCommandHandler<CreateOfferCommand, OfferResponse> {
   constructor(
     @Inject('OfferSavePort') private savePort: OfferSavePort,
-    @Inject('OfferLoadPort') private loadPort: OfferLoadPort,
     private readonly publisher: EventPublisher,
   ) {
     super(OfferResponse);
