@@ -1,3 +1,5 @@
+const { join } = require('path');
+
 const OFF = 0;
 const WARNING = 1;
 const ERROR = 2;
@@ -19,6 +21,8 @@ module.exports = {
   rules: {
     'prettier/prettier': ERROR,
     'import/prefer-default-export': OFF,
+    'import/extensions': OFF,
+    "import/no-extraneous-dependencies": OFF,
     'no-nested-ternary': OFF,
     'no-ternary': OFF,
     'no-unneeded-ternary': WARNING,
@@ -26,6 +30,8 @@ module.exports = {
     'no-use-before-define': OFF,
     'no-unused-vars': OFF,
     'no-console': OFF,
+    'no-plusplus': OFF,
+    'class-methods-use-this': OFF,
     '@typescript-eslint/no-use-before-define': ERROR,
     '@typescript-eslint/no-unused-vars': [ERROR, { args: 'none' }],
     '@typescript-eslint/naming-convention': [
@@ -40,7 +46,15 @@ module.exports = {
       },
       {
         selector: 'variable',
-        format: ['camelCase', 'UPPER_CASE'],
+        format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+      },
+      {
+        selector: 'parameterProperty',
+        format: ['camelCase', 'PascalCase'],
+      },
+      {
+        selector: 'enumMember',
+        format: ['UPPER_CASE'],
       },
       {
         selector: 'objectLiteralProperty',
@@ -60,8 +74,9 @@ module.exports = {
     'check-file/folder-naming-convention': [
       ERROR,
       {
-        '*/**/': 'KEBAB_CASE',
+        '*/!(__tests__)/': 'KEBAB_CASE',
       },
     ],
   },
-};
+  ignorePatterns: ['.eslintrc.js', 'jest.config.js', 'deploy.config.js'],
+}

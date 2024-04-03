@@ -1,0 +1,53 @@
+{
+  "name": "@guheyo/shared",
+  "version": "1.0.0",
+  "author": "keypport",
+  "license": "BUSL-1.1",
+  "prisma": {
+    "schema": "./src/prisma/schema.prisma"
+  },
+  "scripts": {
+    "migrate:dev": "dotenv -e ./src/prisma/config/.env.dev prisma migrate dev",
+    "migrate:test": "dotenv -e ./src/prisma/config/.env.test prisma migrate dev",
+    "migrate:production": "dotenv -e ./src/prisma/config/.env.production prisma migrate dev",
+    "migrate:deploy": "dotenv -e ./src/prisma/config/.env.production prisma migrate deploy",
+    "seed:dev": "dotenv -e ./src/prisma/config/.env.dev ts-node ./src/prisma/seeds/seed.ts",
+    "seed:test": "dotenv -e ./src/prisma/config/.env.test ts-node ./src/prisma/seeds/seed.ts",
+    "seed:production": "dotenv -e ./src/prisma/config/.env.production ts-node ./src/prisma/seeds/seed.ts",
+    "prisma:generate": "prisma generate"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.417.0",
+    "@aws-sdk/s3-request-presigner": "^3.417.0",
+    "@nestjs/common": "^10.2.4",
+    "@nestjs/config": "^3.0.1",
+    "@nestjs/core": "^10.2.4",
+    "@nestjs/cqrs": "^10.2.6",
+    "@nestjs/graphql": "^12.0.8",
+    "@prisma/client": "^5.8.1",
+    "@types/bcrypt": "^5.0.2",
+    "axios": "^1.5.0",
+    "bcrypt": "^5.1.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "dayjs": "^1.11.10",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "graphql": "^16.8.0",
+    "graphql-type-json": "^0.3.2",
+    "js-yaml": "^4.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mime-types": "^2.1.35",
+    "nanoid": "^3.0.0",
+    "prisma": "^5.8.1",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.1",
+    "uuid": "^9.0.1"
+  },
+  "packageManager": "yarn@3.6.1",
+  "devDependencies": {
+    "@nestjs/testing": "^10.2.4",
+    "@types/mime-types": "^2.1.1",
+    "prisma-class-generator": "^0.2.7"
+  }
+}

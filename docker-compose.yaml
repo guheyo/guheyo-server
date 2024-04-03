@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  api:
+    build:
+      dockerfile: ./apps/api/Dockerfile
+      context: .
+    environment:
+      - NODE_ENV
+# docker-compose run -e NODE_ENV=dev -p 8080:8080 api
+  bot:
+    build:
+      dockerfile: ./apps/bot/Dockerfile
+      context: .
+    environment:
+      - NODE_ENV

@@ -1,0 +1,62 @@
+server:
+  version:
+  port:
+postgresql:
+  url:
+s3:
+  region:
+  accessKeyId:
+  secretAccessKey:
+  bucket:
+  domain:
+discord:
+  bot:
+    name:
+    clientId:
+    token:
+    ownerId:
+  servers:
+    - name:
+      slug:
+      id:
+      market:
+        wts:
+          channels:
+            - id:
+              name:
+        wtb:
+          channels:
+            - id:
+              name:
+        wtt:
+          channels:
+            - id:
+              name:
+        allowedRoleIds:
+        disallowedRoleIds:
+      auction:
+        channels:
+          - id:
+            name:
+        allowedRoleIds:
+        disallowedRoleIds:
+      community:
+        channels:
+          - id:
+            name:
+        allowedRoleIds:
+        disallowedRoleIds:
+namespace:
+  discord:
+  group:
+document:
+  title:
+  description:
+  version:
+  path:
+logger:
+  path:
+  filename:
+  pretty:
+  level:
+  stdout:

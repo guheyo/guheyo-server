@@ -1,0 +1,772 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthorResponse {
+  about: String
+  avatarURL: String
+  bot: Boolean!
+  createdAt: DateTime!
+  id: ID!
+  members: [MemberWithRolesResponse!]!
+  socialAccounts: [SocialAccountWithoutAuthResponse!]!
+  username: String!
+}
+
+input BumpDemandInput {
+  buyerId: ID!
+  demandId: ID!
+  id: ID!
+  newPrice: Int!
+}
+
+input BumpOfferInput {
+  id: ID!
+  newPrice: Int!
+  offerId: ID!
+  sellerId: ID!
+}
+
+input BumpSwapInput {
+  id: ID!
+  newPrice: Int!
+  proposerId: ID!
+  swapId: ID!
+}
+
+input CommentReportInput {
+  authorId: ID!
+  content: String!
+  id: ID!
+  reportId: ID!
+  source: String!
+}
+
+type CommentResponse {
+  auctionId: ID
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  parentId: ID
+  postId: ID
+  reportId: ID
+  type: String!
+  updatedAt: DateTime!
+}
+
+input CreateCommentInput {
+  authorId: ID!
+  content: String!
+  id: ID!
+  refId: ID!
+  source: String!
+  type: String!
+}
+
+input CreateDemandInput {
+  brandId: String
+  businessFunction: String!
+  buyerId: ID!
+  description: String
+  groupId: ID!
+  id: ID!
+  name: String!
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  shippingCost: Int!
+  shippingType: String!
+  source: String!
+  status: String! = "open"
+}
+
+input CreateGroupInput {
+  description: String
+  icon: String
+  id: ID!
+  name: String!
+  position: Int!
+  slug: String!
+}
+
+input CreateManyUserImageInput {
+  data: [CreateUserImageInput!]!
+}
+
+input CreateOfferInput {
+  brandId: String
+  businessFunction: String!
+  description: String
+  groupId: ID!
+  id: ID!
+  name: String!
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  sellerId: ID!
+  shippingCost: Int!
+  shippingType: String!
+  source: String!
+  status: String! = "open"
+}
+
+input CreateReportInput {
+  authorId: ID!
+  content: String
+  id: ID!
+  refId: ID!
+  refVersionId: ID!
+  reportedUserId: ID
+  title: String!
+  type: String!
+}
+
+input CreateRoleInput {
+  groupId: ID!
+  hexColor: String! = "#000000"
+  id: ID!
+  name: String!
+  position: Int
+}
+
+input CreateSignedUrlInput {
+  filename: String!
+  type: String!
+  userId: String!
+}
+
+input CreateSwapInput {
+  brandId: String
+  businessFunction: String!
+  description0: String
+  description1: String
+  groupId: ID!
+  id: ID!
+  name0: String!
+  name1: String!
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  proposerId: ID!
+  shippingCost: Int!
+  shippingType: String!
+  source: String!
+  status: String! = "open"
+}
+
+input CreateUserImageInput {
+  contentType: String
+  description: String
+  height: Int
+  id: ID!
+  name: String!
+  position: Int!
+  refId: ID!
+  size: Int
+  source: String!
+  type: String!
+  url: String!
+  userId: ID!
+  width: Int
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type DemandPreviewResponse {
+  brandId: String
+  bumpedAt: DateTime!
+  businessFunction: String!
+  buyer: UserResponse!
+  createdAt: DateTime!
+  groupId: String!
+  id: ID!
+  isHidden: Boolean!
+  name: String!
+  pending: String
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  reportCommentCount: Int!
+  reportCount: Int!
+  shippingCost: Int!
+  shippingType: String!
+  slug: String
+  source: String!
+  status: String!
+  totalPrice: Int!
+  updatedAt: DateTime!
+}
+
+type DemandPreviewResponseEdge {
+  cursor: String!
+  node: DemandPreviewResponse!
+}
+
+type DemandResponse {
+  brandId: String
+  bumpedAt: DateTime!
+  businessFunction: String!
+  buyer: AuthorResponse!
+  createdAt: DateTime!
+  description: String
+  group: GroupProfileResponse!
+  id: ID!
+  images: [UserImageResponse!]!
+  isHidden: Boolean!
+  name: String!
+  pending: String
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  reportCommentCount: Int!
+  reportCount: Int!
+  shippingCost: Int!
+  shippingType: String!
+  slug: String
+  source: String!
+  status: String!
+  totalPrice: Int!
+  updatedAt: DateTime!
+}
+
+type GroupPreviewResponse {
+  demands: [DemandPreviewResponse!]!
+  description: String
+  icon: String
+  id: ID!
+  name: String!
+  offers: [OfferPreviewResponse!]!
+  position: Int!
+  slug: String
+}
+
+type GroupProfileResponse {
+  icon: String
+  id: ID!
+  name: String!
+  slug: String
+}
+
+type GroupProfileResponseEdge {
+  cursor: String!
+  node: GroupProfileResponse!
+}
+
+type GroupResponse {
+  description: String
+  icon: String
+  id: ID!
+  name: String!
+  position: Int
+  postCategories: [PostCategoryResponse!]!
+  productCategories: [ProductCategoryResponse!]!
+  roles: [RoleResponse!]!
+  slug: String
+}
+
+type GroupResponseEdge {
+  cursor: String!
+  node: GroupResponse!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type JwtResponse {
+  accessToken: String!
+  refreshToken: String!
+}
+
+input LinkSocialProfileInput {
+  provider: String!
+}
+
+type MemberWithRolesResponse {
+  createdAt: DateTime!
+  group: GroupProfileResponse!
+  id: ID!
+  roles: [RoleResponse!]!
+  userId: String!
+}
+
+type Mutation {
+  bumpDemand(input: BumpDemandInput!): DemandPreviewResponse!
+  bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
+  bumpSwap(input: BumpSwapInput!): SwapPreviewResponse!
+  commentReport(input: CommentReportInput!): String!
+  createComment(input: CreateCommentInput!): String!
+  createDemand(input: CreateDemandInput!): String!
+  createGroup(input: CreateGroupInput!): String!
+  createManyUserImage(input: CreateManyUserImageInput!): String!
+  createOffer(input: CreateOfferInput!): String!
+  createReport(input: CreateReportInput!): String!
+  createRole(input: CreateRoleInput!): String!
+  createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
+  createSwap(input: CreateSwapInput!): String!
+  createUserImage(input: CreateUserImageInput!): String!
+  deleteDemand(buyerId: ID!, id: ID!): String!
+  deleteOffer(id: ID!, sellerId: ID!): String!
+  deleteRole(id: ID!): String!
+  deleteSwap(id: ID!, proposerId: ID!): String!
+  deleteUserImage(id: ID!): String!
+  linkSocialProfile(input: LinkSocialProfileInput!): String!
+  logout: SocialUserResponse!
+  reGenerateTokens: JwtResponse!
+  refreshTokens: JwtResponse!
+  updateComment(input: UpdateCommentInput!): CommentResponse!
+  updateDemand(input: UpdateDemandInput!): DemandPreviewResponse!
+  updateGroup(input: UpdateGroupInput!): String!
+  updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
+  updateRole(input: UpdateRoleInput!): String!
+  updateSwap(input: UpdateSwapInput!): SwapPreviewResponse!
+  updateUser(input: UpdateUserInput!): String!
+  updateUserImage(input: UpdateUserImageInput!): String!
+}
+
+type MyUserResponse {
+  about: String
+  avatarURL: String
+  bot: Boolean!
+  createdAt: DateTime!
+  id: ID!
+  members: [MemberWithRolesResponse!]!
+  name: String
+  phoneNumber: String
+  socialAccounts: [SocialAccountResponse!]!
+  username: String!
+}
+
+type OfferPreviewResponse {
+  brandId: String
+  bumpedAt: DateTime!
+  businessFunction: String!
+  createdAt: DateTime!
+  groupId: String!
+  id: ID!
+  isHidden: Boolean!
+  name: String!
+  pending: String
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  reportCommentCount: Int!
+  reportCount: Int!
+  seller: UserResponse!
+  shippingCost: Int!
+  shippingType: String!
+  slug: String
+  source: String!
+  status: String!
+  thumbnail: UserImageResponse
+  totalPrice: Int!
+  updatedAt: DateTime!
+}
+
+type OfferPreviewResponseEdge {
+  cursor: String!
+  node: OfferPreviewResponse!
+}
+
+type OfferResponse {
+  brandId: String
+  bumpedAt: DateTime!
+  businessFunction: String!
+  createdAt: DateTime!
+  description: String
+  group: GroupProfileResponse!
+  id: ID!
+  images: [UserImageResponse!]!
+  isHidden: Boolean!
+  name: String!
+  pending: String
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  reportCommentCount: Int!
+  reportCount: Int!
+  seller: AuthorResponse!
+  shippingCost: Int!
+  shippingType: String!
+  slug: String
+  source: String!
+  status: String!
+  thumbnail: UserImageResponse
+  totalPrice: Int!
+  updatedAt: DateTime!
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+}
+
+type PaginatedDemandPreviewsResponse {
+  edges: [DemandPreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PaginatedGroupProfilesResponse {
+  edges: [GroupProfileResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PaginatedGroupsResponse {
+  edges: [GroupResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PaginatedOfferPreviewsResponse {
+  edges: [OfferPreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PaginatedReportPreviewsResponse {
+  edges: [ReportPreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PaginatedSwapPreviewsResponse {
+  edges: [SwapPreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PaginatedUsersResponse {
+  edges: [UserResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PostCategoryResponse {
+  description: String
+  id: ID!
+  name: String!
+  position: Int
+  slug: String
+}
+
+type ProductCategoryResponse {
+  description: String
+  id: ID!
+  name: String!
+  position: Int
+  slug: String
+}
+
+type Query {
+  findAuthor(id: ID, username: String): AuthorResponse
+  findComment(id: ID, refId: ID, type: String): CommentResponse
+  findDemand(id: ID, slug: String): DemandResponse
+  findDemandPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
+  findGroup(id: ID, slug: String): GroupResponse
+  findGroupPreviews: [GroupPreviewResponse!]!
+  findGroupProfiles(cursor: ID, distinct: Boolean, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
+  findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
+  findMyUser: MyUserResponse
+  findOffer(id: ID, slug: String): OfferResponse
+  findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
+  findReport(id: ID!): ReportResponse!
+  findReportPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportPreviewsResponse!
+  findRoleById(id: ID!): RoleResponse
+  findSwap(id: ID, slug: String): SwapResponse
+  findSwapPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedSwapPreviewsResponse!
+  findTerm(name: String!): TermResponse
+  findUser(provider: String, sessionToken: String, socialId: String, username: String): UserResponse
+  findUserImageById(id: ID!): UserImageResponse
+  findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
+  findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
+  findVersion(id: ID!): VersionResponse
+  findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
+}
+
+type ReportPreviewResponse {
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  refId: ID!
+  refVersionId: ID!
+  reportedUserId: ID
+  status: String!
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+}
+
+type ReportPreviewResponseEdge {
+  cursor: String!
+  node: ReportPreviewResponse!
+}
+
+type ReportResponse {
+  comments: [CommentResponse!]!
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  refId: ID!
+  refVersionId: ID!
+  reportedUserId: ID
+  status: String!
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+}
+
+type RoleResponse {
+  groupId: ID!
+  hexColor: String!
+  id: ID!
+  name: String!
+  position: Int
+}
+
+type SignedUrlResponse {
+  signedUrl: String!
+  url: String!
+}
+
+type SocialAccountResponse {
+  accessToken: String
+  createdAt: DateTime!
+  expiresAt: Int
+  id: ID!
+  idToken: String
+  provider: String!
+  refreshToken: String
+  scope: String
+  sessionState: String
+  socialId: String!
+  tokenType: String
+  userId: String!
+}
+
+type SocialAccountWithoutAuthResponse {
+  createdAt: DateTime!
+  id: ID!
+  provider: String!
+  socialId: String!
+  userId: String!
+}
+
+type SocialUserResponse {
+  provider: String!
+  socialId: String!
+}
+
+type SwapPreviewResponse {
+  brandId: String
+  bumpedAt: DateTime!
+  businessFunction: String!
+  createdAt: DateTime!
+  groupId: String!
+  id: ID!
+  isHidden: Boolean!
+  name0: String!
+  name1: String!
+  pending: String
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  proposer: UserResponse!
+  reportCommentCount: Int!
+  reportCount: Int!
+  shippingCost: Int!
+  shippingType: String!
+  slug: String
+  source: String!
+  status: String!
+  thumbnail: UserImageResponse
+  totalPrice: Int!
+  updatedAt: DateTime!
+}
+
+type SwapPreviewResponseEdge {
+  cursor: String!
+  node: SwapPreviewResponse!
+}
+
+type SwapResponse {
+  brandId: String
+  bumpedAt: DateTime!
+  businessFunction: String!
+  createdAt: DateTime!
+  description0: String
+  description1: String
+  group: GroupProfileResponse!
+  id: ID!
+  images: [UserImageResponse!]!
+  isHidden: Boolean!
+  name0: String!
+  name1: String!
+  pending: String
+  price: Int!
+  priceCurrency: String!
+  productCategoryId: String!
+  proposer: AuthorResponse!
+  reportCommentCount: Int!
+  reportCount: Int!
+  shippingCost: Int!
+  shippingType: String!
+  slug: String
+  source: String!
+  status: String!
+  thumbnail: UserImageResponse
+  totalPrice: Int!
+  updatedAt: DateTime!
+}
+
+type TermResponse {
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  metaDescription: String!
+  metaTitle: String!
+  name: String!
+  title: String!
+  updatedAt: DateTime!
+}
+
+input UpdateCommentInput {
+  authorId: ID!
+  content: String!
+  id: ID!
+  source: String!
+}
+
+input UpdateDemandInput {
+  brandId: ID
+  businessFunction: String
+  buyerId: ID!
+  description: String
+  id: ID!
+  isHidden: Boolean
+  name: String
+  price: Int
+  priceCurrency: String
+  productCategoryId: ID
+  shippingCost: Int
+  shippingType: String
+  source: String!
+  status: String
+}
+
+input UpdateGroupInput {
+  description: String
+  icon: String
+  id: ID!
+  name: String
+  position: Int
+  slug: String
+}
+
+input UpdateOfferInput {
+  brandId: ID
+  businessFunction: String
+  description: String
+  id: ID!
+  isHidden: Boolean
+  name: String
+  price: Int
+  priceCurrency: String
+  productCategoryId: ID
+  sellerId: ID!
+  shippingCost: Int
+  shippingType: String
+  source: String!
+  status: String
+}
+
+input UpdateRoleInput {
+  hexColor: String
+  id: ID!
+  name: String
+  position: Int
+}
+
+input UpdateSwapInput {
+  brandId: String
+  businessFunction: String
+  description0: String
+  description1: String
+  id: ID!
+  isHidden: Boolean
+  name0: String
+  name1: String
+  price: Int
+  priceCurrency: String
+  productCategoryId: ID
+  proposerId: ID!
+  shippingCost: Int
+  shippingType: String
+  source: String!
+  status: String
+}
+
+input UpdateUserImageInput {
+  id: ID!
+  position: Int!
+}
+
+input UpdateUserInput {
+  about: String
+  avatarURL: String
+  id: String!
+  name: String
+  phoneNumber: String
+  username: String
+}
+
+type UserImageResponse {
+  contentType: String
+  createdAt: DateTime!
+  description: String
+  height: Int
+  id: String!
+  name: String!
+  position: Int!
+  refId: ID!
+  size: Int
+  source: String!
+  type: String!
+  updatedAt: DateTime!
+  url: String!
+  userId: ID!
+  width: Int
+}
+
+type UserResponse {
+  about: String
+  avatarURL: String
+  bot: Boolean!
+  createdAt: DateTime!
+  id: ID!
+  username: String!
+}
+
+type UserResponseEdge {
+  cursor: String!
+  node: UserResponse!
+}
+
+type VersionPreviewResponse {
+  createdAt: DateTime!
+  id: ID!
+  op: String!
+  refId: ID!
+  schemaName: String!
+  tableName: String!
+  values: JSON!
+}
+
+type VersionResponse {
+  createdAt: DateTime!
+  id: ID!
+  images: [UserImageResponse!]!
+  op: String!
+  refId: ID!
+  schemaName: String!
+  tableName: String!
+  values: JSON!
+}

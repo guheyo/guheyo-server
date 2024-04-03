@@ -1,0 +1,48 @@
+server:
+  version:
+  port:
+  cors:
+    origins:
+frontend:
+  host:
+  port:
+oauth2:
+  discord:
+    clientId:
+    clientSecret:
+    callbackURL:
+  naver:
+    clientId:
+    clientSecret:
+    callbackURL:
+jwt:
+  access:
+    domain:
+    secret:
+    expiresIn:
+  refresh:
+    domain:
+    secret:
+    expiresIn:
+postgresql:
+  url:
+redis:
+  host:
+  port:
+s3:
+  region:
+  accessKeyId:
+  secretAccessKey:
+  bucket:
+  domain:
+document:
+  title:
+  description:
+  version:
+  path:
+logger:
+  path:
+  filename:
+  pretty:
+  level:
+  stdout:
