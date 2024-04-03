@@ -10,4 +10,5 @@ export enum OfferErrorMessage {
   UNCOMMENTED_REPORT_EXISTS = 'Uncommented report exists',
   FIND_REQUEST_FROM_UNAUTHORIZED_USER = 'Find request from unauthorized user',
   CREATE_REQUEST_FROM_UNAUTHORIZED_USER = 'Create request from unauthorized user',
+  DAILY_OFFER_POSTING_LIMIT_EXCEEDED = 'Daily offer posting limit exceeded',
 }

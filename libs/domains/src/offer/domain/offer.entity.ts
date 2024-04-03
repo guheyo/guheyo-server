@@ -1,11 +1,12 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { isUndefined, omitBy } from 'lodash';
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
 import { REPORT_COMMENTED, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
 import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price.extension';
 import { validateCooldown } from '@lib/shared/cooldown/validate-cooldown';
+import { Type } from 'class-transformer';
+import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { OfferStatus, UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
@@ -52,6 +53,7 @@ export class OfferEntity extends AggregateRoot {
 
   sellerId: string;
 
+  @Type(() => UserEntity)
   seller: UserEntity;
 
   bumps: BumpEntity[];
