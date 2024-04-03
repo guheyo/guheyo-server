@@ -2,6 +2,8 @@ import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { ForbiddenException, Inject, NotFoundException } from '@nestjs/common';
 import { DemandErrorMessage } from '@lib/domains/demand/domain/demand.error.message';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
+import { DAY_HOURS } from '@lib/domains/offer/domain/offer.constants';
+import { DAILY_DEMAND_POSTING_LIMIT } from '@lib/domains/demand/domain/demand.constants';
 import { BumpDemandCommand } from './bump-demand.command';
 import { DemandSavePort } from '../../ports/out/demand.save.port';
 import { DemandLoadPort } from '../../ports/out/demand.load.port';
@@ -27,6 +29,14 @@ export class BumpDemandHandler extends PrismaCommandHandler<
       throw new ForbiddenException(DemandErrorMessage.DEMAND_CHANGES_FROM_UNAUTHORIZED_USER);
     if (!demand.canBump())
       throw new ForbiddenException(DemandErrorMessage.DEMAND_BUMP_STUCK_ON_COOLDOWN);
+
+    const countDailyDemandPostingInSameCategory = await this.prismaService.demand.countDemand({
+      buyerId: demand.buyerId,
+      productCategoryId: demand.productCategoryId,
+      fromHours: DAY_HOURS,
+    });
+    if (countDailyDemandPostingInSameCategory > DAILY_DEMAND_POSTING_LIMIT)
+      throw new ForbiddenException(DemandErrorMessage.DAILY_DEMAND_POSTING_LIMIT_EXCEEDED);
 
     demand = this.publisher.mergeObjectContext(demand);
     demand.bump(command.input);
