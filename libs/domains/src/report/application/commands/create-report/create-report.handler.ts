@@ -32,6 +32,7 @@ export class CreateReportHandler implements ICommandHandler<CreateReportCommand>
           'refVersionId',
           'authorId',
           'reportedUserId',
+          'groupId',
           'title',
           'content',
         ]),

@@ -36,6 +36,8 @@ export class ReportEntity extends AggregateRoot {
   @Type(() => ReportedUserEntity)
   reportedUser?: ReportedUserEntity;
 
+  groupId: string;
+
   status: string;
 
   title: string;

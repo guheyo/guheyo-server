@@ -23,6 +23,9 @@ export class ReportPreviewResponse {
   @Field(() => ID, { nullable: true })
   reportedUserId?: string;
 
+  @Field(() => ID)
+  groupId: string;
+
   @Field()
   status: string;
 
