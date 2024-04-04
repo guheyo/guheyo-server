@@ -1,5 +1,5 @@
 import { ArgsType, Field, ID, Int } from '@nestjs/graphql';
-import { IsNumber, IsUUID } from 'class-validator';
+import { IsNumber, IsUUID, Max } from 'class-validator';
 
 @ArgsType()
 export class FindSwapCountArgs {
@@ -11,6 +11,7 @@ export class FindSwapCountArgs {
   @Field(() => ID)
   productCategoryId: string;
 
+  @Max(365 * 24)
   @IsNumber()
   @Field(() => Int)
   fromHours: number;
