@@ -24,6 +24,8 @@ import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extra
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
+import { FindSwapCountArgs } from '@lib/domains/swap/application/queries/find-swap-count/find-swap-count.args';
+import { FindSwapCountQuery } from '@lib/domains/swap/application/queries/find-swap-count/find-swap-count.query';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -57,6 +59,12 @@ export class SwapResolver {
       args: findSwapPreviewsArgs,
       userId: user.id,
     });
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => Number)
+  async findSwapCount(@Args() args: FindSwapCountArgs) {
+    const query = new FindSwapCountQuery({ args });
     return this.queryBus.execute(query);
   }
 

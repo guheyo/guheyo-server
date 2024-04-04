@@ -24,6 +24,8 @@ import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.respo
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
+import { FindDemandCountArgs } from '@lib/domains/demand/application/queries/find-demand-count/find-demand-count.args';
+import { FindDemandCountQuery } from '@lib/domains/demand/application/queries/find-demand-count/find-demand-count.query';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -57,6 +59,12 @@ export class DemandResolver {
       args: findDemandPreviewsArgs,
       userId: user.id,
     });
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => Number)
+  async findDemandCount(@Args() args: FindDemandCountArgs) {
+    const query = new FindDemandCountQuery({ args });
     return this.queryBus.execute(query);
   }
 
