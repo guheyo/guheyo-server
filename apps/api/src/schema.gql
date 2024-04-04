@@ -221,7 +221,7 @@ type DemandResponse {
   pending: String
   price: Int!
   priceCurrency: String!
-  productCategoryId: String!
+  productCategory: ProductCategoryResponse!
   reportCommentCount: Int!
   reportCount: Int!
   shippingCost: Int!
@@ -387,7 +387,7 @@ type OfferResponse {
   pending: String
   price: Int!
   priceCurrency: String!
-  productCategoryId: String!
+  productCategory: ProductCategoryResponse!
   reportCommentCount: Int!
   reportCount: Int!
   seller: AuthorResponse!
@@ -609,7 +609,7 @@ type SwapResponse {
   pending: String
   price: Int!
   priceCurrency: String!
-  productCategoryId: String!
+  productCategory: ProductCategoryResponse!
   proposer: AuthorResponse!
   reportCommentCount: Int!
   reportCount: Int!

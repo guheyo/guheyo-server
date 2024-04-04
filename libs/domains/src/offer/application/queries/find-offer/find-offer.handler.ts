@@ -21,6 +21,7 @@ export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferRe
       },
       include: {
         group: true,
+        productCategory: true,
         seller: {
           include: {
             members: {
