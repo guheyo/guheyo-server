@@ -4,6 +4,7 @@ import { Observable, filter, map } from 'rxjs';
 import { OfferCreatedEvent } from '@lib/domains/offer/application/events/offer-created/offer-created.event';
 import { ConfigService } from '@nestjs/config';
 import { DemandCreatedEvent } from '@lib/domains/demand/application/events/demand-created/demand-created.event';
+import { SwapCreatedEvent } from '@lib/domains/swap/application/events/swap-created/swap-created.event';
 import { SendDiscordWebhookCommand } from '../commands/send-discord-webhook/send-discord-webhook.command';
 
 @Injectable()
@@ -41,6 +42,24 @@ export class DiscordWebhookSagas {
             username: event.username,
             avatarURL: event.avatarURL,
             title: `[삽니다] ${event.name} - ${event.price}`,
+            url: this.parseUrl({ username: event.username, type: 'offer', slug: event.slug! }),
+          }),
+      ),
+    );
+
+  @Saga()
+  swapCreated = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(SwapCreatedEvent),
+      filter((event) => event.source === 'mobile' || event.source === 'browser'),
+      filter((event) => !!event.slug),
+      map(
+        (event) =>
+          new SendDiscordWebhookCommand({
+            color: 0x51329a,
+            username: event.username,
+            avatarURL: event.avatarURL,
+            title: `[교환합니다] ${event.name} ${event.price ? `+${event.price}` : ''}`,
             url: this.parseUrl({ username: event.username, type: 'offer', slug: event.slug! }),
           }),
       ),

@@ -1,6 +1,7 @@
 export enum SwapErrorMessage {
   SWAP_NOT_FOUND = 'Swap not found',
   SWAP_CHANGES_FROM_INCOMPATIBLE_PLATFORMS = 'Swap changes from incompatible platforms',
+  SWAP_CREATION_FAILED = 'Swap creation failed',
   SWAP_CHANGES_FROM_UNAUTHORIZED_USER = 'Swap changes from unauthorized user',
   SWAP_DELETE_COMMAND_FROM_UNAUTHORIZED_USER = 'Swap delete command from unauthorized user',
   SWAP_BUMP_STUCK_ON_COOLDOWN = 'Swap bump stuck on cooldown',
