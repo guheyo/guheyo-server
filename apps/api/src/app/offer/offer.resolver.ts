@@ -24,6 +24,8 @@ import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extra
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
+import { FindOfferCountArgs } from '@lib/domains/offer/application/queries/find-offer-count/find-offer-count.args';
+import { FindOfferCountQuery } from '@lib/domains/offer/application/queries/find-offer-count/find-offer-count.query';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -57,6 +59,12 @@ export class OfferResolver {
       args: findOfferPreviewsArgs,
       userId: user.id,
     });
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => Number)
+  async findOfferCount(@Args() args: FindOfferCountArgs) {
+    const query = new FindOfferCountQuery({ args });
     return this.queryBus.execute(query);
   }
 
