@@ -15,6 +15,8 @@ export class CreateReportCommand implements ICommand {
 
   reportedUserId?: string;
 
+  groupId: string;
+
   title: string;
 
   content?: string;
@@ -28,6 +30,7 @@ export class CreateReportCommand implements ICommand {
     this.refVersionId = input.refVersionId;
     this.authorId = input.authorId;
     this.reportedUserId = input.reportedUserId;
+    this.groupId = input.groupId;
     this.title = input.title;
     this.content = input.content;
     this.user = user;

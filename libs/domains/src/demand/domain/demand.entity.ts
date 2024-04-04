@@ -22,6 +22,8 @@ export class DemandEntity extends AggregateRoot {
 
   name: string;
 
+  slug: string | null;
+
   description: string | null;
 
   price: number;
@@ -66,7 +68,17 @@ export class DemandEntity extends AggregateRoot {
   }
 
   create() {
-    this.apply(new DemandCreatedEvent(this.id));
+    this.apply(
+      new DemandCreatedEvent({
+        id: this.id,
+        username: this.buyer.username,
+        avatarURL: this.buyer.avatarURL || undefined,
+        name: this.name,
+        slug: this.slug || undefined,
+        price: this.price,
+        source: this.source,
+      }),
+    );
   }
 
   isCompatibleSource(source: string) {

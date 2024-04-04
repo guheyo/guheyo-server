@@ -28,6 +28,10 @@ export class CreateReportInput {
   @Field(() => ID, { nullable: true })
   reportedUserId?: string;
 
+  @IsUUID()
+  @Field(() => ID)
+  groupId: string;
+
   @IsString()
   @Field()
   title: string;

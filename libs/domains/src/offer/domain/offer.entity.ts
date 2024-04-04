@@ -23,6 +23,8 @@ export class OfferEntity extends AggregateRoot {
 
   name: string;
 
+  slug: string | null;
+
   description: string | null;
 
   price: number;
@@ -68,7 +70,17 @@ export class OfferEntity extends AggregateRoot {
   }
 
   create() {
-    this.apply(new OfferCreatedEvent(this.id));
+    this.apply(
+      new OfferCreatedEvent({
+        id: this.id,
+        username: this.seller.username,
+        avatarURL: this.seller.avatarURL || undefined,
+        name: this.name,
+        slug: this.slug || undefined,
+        price: this.price,
+        source: this.source,
+      }),
+    );
   }
 
   isCompatibleSource(source: string) {
