@@ -22,6 +22,7 @@ import { VersionModule } from './app/version/version.module';
 import { SocialAccountModule } from './app/social-account/social-account.module';
 import { MemberModule } from './app/member/member.module';
 import { BumpModule } from './app/bump/bump.module';
+import { DiscordWebhookModule } from './app/discord-webhook/discord-webhook.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { BumpModule } from './app/bump/bump.module';
     ReportModule,
     CommentModule,
     VersionModule,
+    DiscordWebhookModule,
   ],
 })
 export class ApiModule {}

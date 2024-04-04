@@ -46,3 +46,6 @@ logger:
   pretty:
   level:
   stdout:
+discord:
+  webhook:
+    url:
