@@ -19,6 +19,7 @@ import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extra
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { FindLastReportQuery } from '@lib/domains/report/application/queries/find-last-report/find-last-report.query';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -44,6 +45,15 @@ export class ReportResolver {
     const query = new FindReportPreviewsQuery({
       args,
       userId: user.id,
+    });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(RequiredJwtUserGuard)
+  @Query(() => ReportResponse)
+  async findLastReport(@ExtractedUser() user: MyUserResponse) {
+    const query = new FindLastReportQuery({
+      user,
     });
     return this.queryBus.execute(query);
   }
