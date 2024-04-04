@@ -113,6 +113,7 @@ input CreateOfferInput {
 input CreateReportInput {
   authorId: ID!
   content: String
+  groupId: ID!
   id: ID!
   refId: ID!
   refVersionId: ID!
@@ -485,6 +486,7 @@ type Query {
 type ReportPreviewResponse {
   content: String
   createdAt: DateTime!
+  groupId: ID!
   id: ID!
   refId: ID!
   refVersionId: ID!
@@ -504,6 +506,7 @@ type ReportResponse {
   comments: [CommentResponse!]!
   content: String
   createdAt: DateTime!
+  groupId: ID!
   id: ID!
   refId: ID!
   refVersionId: ID!
