@@ -34,6 +34,8 @@ export class SwapEntity extends AggregateRoot {
 
   name1: string;
 
+  slug: string | null;
+
   description0: string | null;
 
   description1: string | null;
@@ -70,7 +72,17 @@ export class SwapEntity extends AggregateRoot {
   }
 
   create() {
-    this.apply(new SwapCreatedEvent(this.id));
+    this.apply(
+      new SwapCreatedEvent({
+        id: this.id,
+        username: this.proposer.username,
+        avatarURL: this.proposer.avatarURL || undefined,
+        name: `${this.name0} <-> ${this.name1}`,
+        slug: this.slug || undefined,
+        price: this.price,
+        source: this.source,
+      }),
+    );
   }
 
   isCompatibleSource(source: string) {

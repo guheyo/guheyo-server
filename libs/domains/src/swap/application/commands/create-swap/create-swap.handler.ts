@@ -1,5 +1,5 @@
 import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { ForbiddenException, Inject } from '@nestjs/common';
+import { ForbiddenException, Inject, InternalServerErrorException } from '@nestjs/common';
 import { SwapEntity } from '@lib/domains/swap/domain/swap.entity';
 import { SwapErrorMessage } from '@lib/domains/swap/domain/swap.error.message';
 import { DAILY_SWAP_POSTING_LIMIT } from '@lib/domains/swap/domain/swap.constants';
@@ -8,11 +8,13 @@ import { DAY_HOURS } from '@lib/domains/offer/domain/offer.constants';
 import { CreateSwapCommand } from './create-swap.command';
 import { SwapSavePort } from '../../ports/out/swap.save.port';
 import { SwapResponse } from '../../dtos/swap.response';
+import { SwapLoadPort } from '../../ports/out/swap.load.port';
 
 @CommandHandler(CreateSwapCommand)
 export class CreateSwapHandler extends PrismaCommandHandler<CreateSwapCommand, SwapResponse> {
   constructor(
     @Inject('SwapSavePort') private savePort: SwapSavePort,
+    @Inject('SwapLoadPort') private loadPort: SwapLoadPort,
     private readonly publisher: EventPublisher,
   ) {
     super(SwapResponse);
@@ -30,9 +32,12 @@ export class CreateSwapHandler extends PrismaCommandHandler<CreateSwapCommand, S
     if (countDailySwapPostingInSameCategory > DAILY_SWAP_POSTING_LIMIT)
       throw new ForbiddenException(SwapErrorMessage.DAILY_SWAP_POSTING_LIMIT_EXCEEDED);
 
-    const swap = this.publisher.mergeObjectContext(new SwapEntity(command));
+    await this.savePort.create(new SwapEntity(command));
+    let swap = await this.loadPort.findById(command.id);
+    if (!swap) throw new InternalServerErrorException(SwapErrorMessage.SWAP_CREATION_FAILED);
+
+    swap = this.publisher.mergeObjectContext(swap);
     swap.create();
-    await this.savePort.create(swap);
     swap.commit();
   }
 }
