@@ -38,6 +38,8 @@ export class OfferParser extends DealParser {
 
     return {
       ...dealSummary,
+      createdAt: message.createdAt,
+      updatedAt: message.editedAt || message.createdAt,
       priceCurrency: 'krw',
       businessFunction: 'sell',
       status: OFFER_OPEN,

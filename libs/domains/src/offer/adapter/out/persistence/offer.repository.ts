@@ -43,22 +43,27 @@ export class OfferRepository
 
   async create(offer: OfferEntity): Promise<void> {
     await this.prismaService.offer.create({
-      data: _.pick(offer, [
-        'id',
-        'name',
-        'description',
-        'price',
-        'priceCurrency',
-        'shippingCost',
-        'shippingType',
-        'businessFunction',
-        'groupId',
-        'brandId',
-        'productCategoryId',
-        'sellerId',
-        'status',
-        'source',
-      ]),
+      data: {
+        ..._.pick(offer, [
+          'id',
+          'createdAt',
+          'updatedAt',
+          'name',
+          'description',
+          'price',
+          'priceCurrency',
+          'shippingCost',
+          'shippingType',
+          'businessFunction',
+          'groupId',
+          'brandId',
+          'productCategoryId',
+          'sellerId',
+          'status',
+          'source',
+        ]),
+        bumpedAt: offer.createdAt,
+      },
     });
   }
 
