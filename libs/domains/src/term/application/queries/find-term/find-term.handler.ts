@@ -11,7 +11,7 @@ export class FindTermHandler extends PrismaQueryHandler<FindTermQuery, TermRespo
     super(TermResponse);
   }
 
-  async execute(query: FindTermQuery): Promise<any> {
+  async execute(query: FindTermQuery): Promise<TermResponse | null> {
     const term = await this.prismaService.term.findFirst({
       where: {
         name: query.name,

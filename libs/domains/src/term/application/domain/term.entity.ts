@@ -15,9 +15,7 @@ export class TermEntity extends AggregateRoot {
 
   content: string;
 
-  metaTitle: string;
-
-  metaDescription: string;
+  meta?: any;
 
   constructor(partial: Partial<TermEntity>) {
     super();
