@@ -21,6 +21,7 @@ export class FindSwapHandler extends PrismaQueryHandler<FindSwapQuery, SwapRespo
       },
       include: {
         group: true,
+        productCategory: true,
         proposer: {
           include: {
             members: {

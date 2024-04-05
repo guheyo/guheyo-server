@@ -20,7 +20,7 @@ export class DiscordWebhookSagas {
       map(
         (event) =>
           new SendDiscordWebhookCommand({
-            color: 0xc43176,
+            color: 0xef4444,
             username: event.username,
             avatarURL: event.avatarURL,
             title: `[팝니다] ${event.name} - ${event.price}`,
@@ -38,7 +38,7 @@ export class DiscordWebhookSagas {
       map(
         (event) =>
           new SendDiscordWebhookCommand({
-            color: 0x16a34a,
+            color: 0x22c55e,
             username: event.username,
             avatarURL: event.avatarURL,
             title: `[삽니다] ${event.name} - ${event.price}`,
@@ -56,7 +56,7 @@ export class DiscordWebhookSagas {
       map(
         (event) =>
           new SendDiscordWebhookCommand({
-            color: 0x51329a,
+            color: 0xf97316,
             username: event.username,
             avatarURL: event.avatarURL,
             title: `[교환합니다] ${event.name} ${event.price ? `+${event.price}` : ''}`,
