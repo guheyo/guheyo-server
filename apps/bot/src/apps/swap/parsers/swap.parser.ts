@@ -39,6 +39,8 @@ export class SwapParser extends DealParser {
 
     return {
       ...dealSummary,
+      createdAt: message.createdAt,
+      updatedAt: message.editedAt || message.createdAt,
       priceCurrency: 'krw',
       businessFunction: 'trade',
       status: SWAP_OPEN,

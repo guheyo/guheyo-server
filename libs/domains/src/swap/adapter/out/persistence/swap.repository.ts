@@ -38,24 +38,29 @@ export class SwapRepository extends PrismaRepository<SwapEntity> {
 
   async create(swap: SwapEntity): Promise<void> {
     await this.prismaService.swap.create({
-      data: _.pick(swap, [
-        'id',
-        'name0',
-        'name1',
-        'description0',
-        'description1',
-        'price',
-        'priceCurrency',
-        'shippingCost',
-        'shippingType',
-        'businessFunction',
-        'groupId',
-        'brandId',
-        'productCategoryId',
-        'proposerId',
-        'status',
-        'source',
-      ]),
+      data: {
+        ..._.pick(swap, [
+          'id',
+          'createdAt',
+          'updatedAt',
+          'name0',
+          'name1',
+          'description0',
+          'description1',
+          'price',
+          'priceCurrency',
+          'shippingCost',
+          'shippingType',
+          'businessFunction',
+          'groupId',
+          'brandId',
+          'productCategoryId',
+          'proposerId',
+          'status',
+          'source',
+        ]),
+        bumpedAt: swap.createdAt,
+      },
     });
   }
 

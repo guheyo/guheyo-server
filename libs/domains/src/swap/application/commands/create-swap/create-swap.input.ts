@@ -1,12 +1,22 @@
 import { SWAP_OPEN } from '@lib/domains/swap/domain/swap.constants';
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsDate, IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreateSwapInput {
   @IsUUID()
   @Field(() => ID)
   id: string;
+
+  @IsOptional()
+  @IsDate()
+  @Field(() => Date, { nullable: true })
+  createdAt?: Date;
+
+  @IsOptional()
+  @IsDate()
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
 
   @IsString()
   @Field()

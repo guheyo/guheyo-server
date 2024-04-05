@@ -38,22 +38,27 @@ export class DemandRepository extends PrismaRepository<DemandEntity> {
 
   async create(demand: DemandEntity): Promise<void> {
     await this.prismaService.demand.create({
-      data: _.pick(demand, [
-        'id',
-        'name',
-        'description',
-        'price',
-        'priceCurrency',
-        'shippingCost',
-        'shippingType',
-        'businessFunction',
-        'groupId',
-        'brandId',
-        'productCategoryId',
-        'buyerId',
-        'status',
-        'source',
-      ]),
+      data: {
+        ..._.pick(demand, [
+          'id',
+          'createdAt',
+          'updatedAt',
+          'name',
+          'description',
+          'price',
+          'priceCurrency',
+          'shippingCost',
+          'shippingType',
+          'businessFunction',
+          'groupId',
+          'brandId',
+          'productCategoryId',
+          'buyerId',
+          'status',
+          'source',
+        ]),
+        bumpedAt: demand.createdAt,
+      },
     });
   }
 

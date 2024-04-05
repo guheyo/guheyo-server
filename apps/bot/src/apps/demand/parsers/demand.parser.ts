@@ -38,6 +38,8 @@ export class DemandParser extends DealParser {
 
     return {
       ...dealSummary,
+      createdAt: message.createdAt,
+      updatedAt: message.editedAt || message.createdAt,
       priceCurrency: 'krw',
       businessFunction: 'buy',
       status: DEMAND_OPEN,
