@@ -13,13 +13,10 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(ApiModule, expressAdapter);
 
   const configService = app.get(ConfigService);
-  const corsOptions: CorsOptions =
-    process.env.NODE_ENV === 'dev'
-      ? {
-          origin: configService.get('server.cors.origins'),
-          credentials: true,
-        }
-      : {};
+  const corsOptions: CorsOptions = {
+    origin: configService.get('server.cors.origins'),
+    credentials: true,
+  };
   app.enableCors(corsOptions);
   app.enableShutdownHooks();
   app.useGlobalFilters(new HttpExceptionFilter());
