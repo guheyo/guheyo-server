@@ -6,6 +6,10 @@ import { CreateDemandInput } from './create-demand.input';
 export class CreateDemandCommand implements ICommand {
   id: string;
 
+  createdAt?: Date;
+
+  updatedAt?: Date;
+
   name: string;
 
   description?: string;
@@ -36,6 +40,8 @@ export class CreateDemandCommand implements ICommand {
 
   constructor({ input, user }: { input: CreateDemandInput; user: MyUserResponse }) {
     this.id = input.id;
+    this.createdAt = input.createdAt;
+    this.updatedAt = input.updatedAt;
     this.name = input.name;
     this.description = input.description;
     this.price = input.price;

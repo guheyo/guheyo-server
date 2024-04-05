@@ -6,6 +6,10 @@ import { CreateSwapInput } from './create-swap.input';
 export class CreateSwapCommand implements ICommand {
   id: string;
 
+  createdAt?: Date;
+
+  updatedAt?: Date;
+
   name0: string;
 
   name1: string;
@@ -40,6 +44,8 @@ export class CreateSwapCommand implements ICommand {
 
   constructor({ input, user }: { input: CreateSwapInput; user: MyUserResponse }) {
     this.id = input.id;
+    this.createdAt = input.createdAt;
+    this.updatedAt = input.updatedAt;
     this.name0 = input.name0;
     this.name1 = input.name1;
     this.description0 = input.description0;
