@@ -1,3 +1,4 @@
+import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
@@ -20,8 +21,8 @@ export class ReportPreviewResponse {
   @Field(() => ID)
   refVersionId: string;
 
-  @Field(() => ID, { nullable: true })
-  reportedUserId?: string;
+  @Field(() => AuthorResponse, { nullable: true })
+  reportedUser?: AuthorResponse;
 
   @Field(() => ID)
   groupId: string;

@@ -39,6 +39,23 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler<
             }
           : undefined,
       },
+      include: {
+        reportedUser: {
+          include: {
+            members: {
+              include: {
+                group: true,
+                roles: {
+                  orderBy: {
+                    position: 'asc',
+                  },
+                },
+              },
+            },
+            socialAccounts: true,
+          },
+        },
+      },
       cursor,
       take: query.take + 1,
       skip: query.skip,

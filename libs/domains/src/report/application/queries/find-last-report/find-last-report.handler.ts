@@ -20,6 +20,21 @@ export class FindLastReportHandler extends PrismaQueryHandler<FindLastReportQuer
             createdAt: 'desc',
           },
         },
+        reportedUser: {
+          include: {
+            members: {
+              include: {
+                group: true,
+                roles: {
+                  orderBy: {
+                    position: 'asc',
+                  },
+                },
+              },
+            },
+            socialAccounts: true,
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',
