@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-type-json';
 
 @ObjectType()
 export class TermResponse {
@@ -20,11 +21,8 @@ export class TermResponse {
   @Field(() => String)
   content: string | null;
 
-  @Field()
-  metaTitle: string;
-
-  @Field()
-  metaDescription: string;
+  @Field(() => GraphQLJSON, { nullable: true })
+  meta?: any;
 
   constructor(partial: Partial<TermResponse>) {
     Object.assign(this, partial);
