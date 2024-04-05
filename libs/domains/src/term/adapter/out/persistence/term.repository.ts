@@ -20,15 +20,13 @@ export class TermRepository extends PrismaRepository<TermEntity> {
 
   async create(term: TermEntity): Promise<void> {
     await this.prismaService.term.create({
-      data: _.pick(term, ['id', 'name', 'title', 'content', 'metaTitle', 'metaDescription']),
+      data: _.pick(term, ['id', 'name', 'title', 'content', 'meta']),
     });
   }
 
   async createMany(terms: TermEntity[]): Promise<void> {
     await this.prismaService.term.createMany({
-      data: terms.map((term) =>
-        _.pick(term, ['id', 'name', 'title', 'content', 'metaTitle', 'metaDescription']),
-      ),
+      data: terms.map((term) => _.pick(term, ['id', 'name', 'title', 'content', 'meta'])),
     });
   }
 
@@ -37,7 +35,7 @@ export class TermRepository extends PrismaRepository<TermEntity> {
       where: {
         id: term.id,
       },
-      data: _.pick(term, ['name', 'title', 'content', 'metaTitle', 'metaDescription']),
+      data: _.pick(term, ['name', 'title', 'content', 'meta']),
     });
   }
 
