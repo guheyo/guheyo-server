@@ -20,6 +20,21 @@ export class FindReportHandler extends PrismaQueryHandler<FindReportQuery, Repor
             createdAt: 'desc',
           },
         },
+        reportedUser: {
+          include: {
+            members: {
+              include: {
+                group: true,
+                roles: {
+                  orderBy: {
+                    position: 'asc',
+                  },
+                },
+              },
+            },
+            socialAccounts: true,
+          },
+        },
       },
     });
     return this.parseResponse(report);

@@ -500,7 +500,7 @@ type ReportPreviewResponse {
   id: ID!
   refId: ID!
   refVersionId: ID!
-  reportedUserId: ID
+  reportedUser: AuthorResponse
   status: String!
   title: String!
   type: String!
@@ -520,7 +520,7 @@ type ReportResponse {
   id: ID!
   refId: ID!
   refVersionId: ID!
-  reportedUserId: ID
+  reportedUser: AuthorResponse
   status: String!
   title: String!
   type: String!

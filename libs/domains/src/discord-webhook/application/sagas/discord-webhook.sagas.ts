@@ -42,7 +42,7 @@ export class DiscordWebhookSagas {
             username: event.username,
             avatarURL: event.avatarURL,
             title: `[삽니다] ${event.name} - ${event.price}`,
-            url: this.parseUrl({ username: event.username, type: 'offer', slug: event.slug! }),
+            url: this.parseUrl({ username: event.username, type: 'demand', slug: event.slug! }),
           }),
       ),
     );
@@ -60,7 +60,7 @@ export class DiscordWebhookSagas {
             username: event.username,
             avatarURL: event.avatarURL,
             title: `[교환합니다] ${event.name} ${event.price ? `+${event.price}` : ''}`,
-            url: this.parseUrl({ username: event.username, type: 'offer', slug: event.slug! }),
+            url: this.parseUrl({ username: event.username, type: 'swap', slug: event.slug! }),
           }),
       ),
     );
