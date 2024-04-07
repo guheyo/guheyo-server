@@ -24,7 +24,7 @@ export class DiscordWebhookSagas {
             username: event.username,
             avatarURL: event.avatarURL,
             title: `[팝니다] ${event.name} - ${event.price}`,
-            url: this.parseUrl({ username: event.username, type: 'offer', slug: event.slug! }),
+            url: this.parseUrl({ type: 'offer', slug: event.slug! }),
           }),
       ),
     );
@@ -42,7 +42,7 @@ export class DiscordWebhookSagas {
             username: event.username,
             avatarURL: event.avatarURL,
             title: `[삽니다] ${event.name} - ${event.price}`,
-            url: this.parseUrl({ username: event.username, type: 'demand', slug: event.slug! }),
+            url: this.parseUrl({ type: 'demand', slug: event.slug! }),
           }),
       ),
     );
@@ -59,13 +59,13 @@ export class DiscordWebhookSagas {
             color: 0xf97316,
             username: event.username,
             avatarURL: event.avatarURL,
-            title: `[교환합니다] ${event.name} ${event.price ? `+${event.price}` : ''}`,
-            url: this.parseUrl({ username: event.username, type: 'swap', slug: event.slug! }),
+            title: `[교환합니다] ${event.name} ${event.price ? `- 내 추가금 +${event.price}` : ''}`,
+            url: this.parseUrl({ type: 'swap', slug: event.slug! }),
           }),
       ),
     );
 
-  parseUrl({ username, type, slug }: { username: string; type: string; slug: string }) {
-    return `${this.configService.get('frontend.host')}/user/${username}/${type}/${slug}`;
+  parseUrl({ type, slug }: { type: string; slug: string }) {
+    return `${this.configService.get('frontend.host')}/${type}/${slug}`;
   }
 }
