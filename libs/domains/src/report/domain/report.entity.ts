@@ -31,10 +31,10 @@ export class ReportEntity extends AggregateRoot {
 
   authorId: string;
 
-  reportedUserId?: string;
+  reportedUserId: string;
 
   @Type(() => ReportedUserEntity)
-  reportedUser?: ReportedUserEntity;
+  reportedUser: ReportedUserEntity;
 
   groupId: string;
 

@@ -121,7 +121,7 @@ input CreateReportInput {
   id: ID!
   refId: ID!
   refVersionId: ID!
-  reportedUserId: ID
+  reportedUserId: ID!
   title: String!
   type: String!
 }
