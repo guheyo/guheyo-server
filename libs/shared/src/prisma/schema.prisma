@@ -332,8 +332,8 @@ model Report {
   refVersion        Version           @relation(fields: [refVersionId], references: [id])
   authorId          String
   author            User              @relation(fields: [authorId], references: [id], name: "author")
-  reportedUserId    String?
-  reportedUser      User?             @relation(fields: [reportedUserId], references: [id], name: "reportedUser")
+  reportedUserId    String
+  reportedUser      User              @relation(fields: [reportedUserId], references: [id], name: "reportedUser")
   groupId           String
   group             Group             @relation(fields: [groupId], references: [id])
   title             String
