@@ -13,7 +13,7 @@ export class CreateReportCommand implements ICommand {
 
   authorId: string;
 
-  reportedUserId?: string;
+  reportedUserId: string;
 
   groupId: string;
 
