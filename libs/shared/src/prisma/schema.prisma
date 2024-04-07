@@ -382,6 +382,7 @@ model MannerTag {
   name              String
   description       String?
   isPositive        Boolean
+  position          Int
   dealReviews       DealReview[]
 
   @@schema("public")
