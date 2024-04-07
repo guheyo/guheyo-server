@@ -7,7 +7,7 @@ export class BumpDemandCommand implements ICommand {
 
   user: MyUserResponse;
 
-  constructor({ input, user }: { input: BumpDemandInput, user: MyUserResponse }) {
+  constructor({ input, user }: { input: BumpDemandInput; user: MyUserResponse }) {
     this.input = input;
     this.user = user;
   }

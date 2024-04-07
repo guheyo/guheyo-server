@@ -3,6 +3,7 @@ import { seedKeyboard } from './groups/seed-keyboard';
 import { seedMouse } from './groups/seed-mouse';
 import { seedAudio } from './groups/seed-audio';
 import { seedRoot } from './groups/seed-root';
+import { seedManerTags } from './manner-tags/seed-manner-tags';
 
 const prisma = new PrismaClient();
 
@@ -11,6 +12,7 @@ async function main() {
   await seedKeyboard(prisma);
   await seedMouse(prisma);
   await seedAudio(prisma);
+  await seedManerTags(prisma);
 }
 
 main()

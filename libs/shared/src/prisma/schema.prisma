@@ -41,8 +41,11 @@ model User {
   comments          Comment[]
   posts             Post[]
   discordMessages   DiscordMessage[]
-  submittedReports  Report[]    @relation("author")
+  submittedReports  Report[]    @relation("reportAuthor")
   receivedReports   Report[]    @relation("reportedUser")
+  submittedDealReviews  DealReview[]  @relation("dealReviewAuthor")
+  receivedDealReviews   DealReview[]  @relation("dealReviewReviewee")
+
 
   @@schema("public")
 }
@@ -169,6 +172,7 @@ model Group {
   postCategories    PostCategory[]
   posts             Post[]
   reports           Report[]
+  dealReviews       DealReview[]
 
   @@schema("public")
 }
@@ -266,6 +270,8 @@ model Comment {
   report            Report?       @relation(fields: [reportId], references: [id])
   auctionId         String?
   auction           Auction?      @relation(fields: [auctionId], references: [id])
+  dealReviewId      String?
+  dealReview        DealReview?   @relation(fields: [dealReviewId], references: [id])
 
   @@schema("public")
 }
@@ -331,7 +337,7 @@ model Report {
   refVersionId      String
   refVersion        Version           @relation(fields: [refVersionId], references: [id])
   authorId          String
-  author            User              @relation(fields: [authorId], references: [id], name: "author")
+  author            User              @relation(fields: [authorId], references: [id], name: "reportAuthor")
   reportedUserId    String
   reportedUser      User              @relation(fields: [reportedUserId], references: [id], name: "reportedUser")
   groupId           String
@@ -340,6 +346,44 @@ model Report {
   content           String?
   status            String
   comments          Comment[]
+
+  @@schema("public")
+}
+
+model DealReview {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  type              String
+  refId             String
+  refVersionId      String
+  refVersion        Version           @relation(fields: [refVersionId], references: [id])
+  authorId          String
+  author            User              @relation(fields: [authorId], references: [id], name: "dealReviewAuthor")
+  revieweeId        String
+  reviewee          User              @relation(fields: [revieweeId], references: [id], name: "dealReviewReviewee")
+  groupId           String
+  group             Group             @relation(fields: [groupId], references: [id])
+  title             String
+  content           String?
+  status            String
+  comments          Comment[]
+  mannerTags        MannerTag[]
+
+  @@schema("public")
+}
+
+model MannerTag {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  name              String
+  description       String?
+  isPositive        Boolean
+  position          Int
+  dealReviews       DealReview[]
 
   @@schema("public")
 }
@@ -497,6 +541,7 @@ model Version {
   refId             String
   values            Json
   reports           Report[]
+  dealReviews       DealReview[]
 
   @@schema("audit")
 }
