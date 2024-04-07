@@ -23,10 +23,9 @@ export class CreateReportInput {
   @Field(() => ID)
   authorId: string;
 
-  @IsOptional()
   @IsUUID()
-  @Field(() => ID, { nullable: true })
-  reportedUserId?: string;
+  @Field(() => ID)
+  reportedUserId: string;
 
   @IsUUID()
   @Field(() => ID)
