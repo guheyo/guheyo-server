@@ -63,6 +63,19 @@ input CreateCommentInput {
   type: String!
 }
 
+input CreateDealReviewInput {
+  authorId: ID!
+  content: String
+  groupId: ID!
+  id: ID!
+  mannerTagIds: [String!]!
+  refId: ID!
+  refVersionId: ID!
+  revieweeId: ID!
+  title: String!
+  type: String!
+}
+
 input CreateDemandInput {
   brandId: String
   businessFunction: String!
@@ -307,6 +320,7 @@ type Mutation {
   bumpSwap(input: BumpSwapInput!): SwapPreviewResponse!
   commentReport(input: CommentReportInput!): String!
   createComment(input: CreateCommentInput!): String!
+  createDealReview(input: CreateDealReviewInput!): String!
   createDemand(input: CreateDemandInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
