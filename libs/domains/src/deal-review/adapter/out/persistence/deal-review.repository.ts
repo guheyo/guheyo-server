@@ -31,11 +31,20 @@ export class DealReviewRepository
     return this.toEntity(dealReview);
   }
 
-  async findLastDealReview(refId: string, authorId: string): Promise<DealReviewEntity | null> {
+  async findLastDealReview({
+    refId,
+    authorId,
+    revieweeId,
+  }: {
+    refId: string;
+    authorId: string;
+    revieweeId: string;
+  }): Promise<DealReviewEntity | null> {
     const dealReview = await this.prismaService.dealReview.findFirst({
       where: {
         refId,
         authorId,
+        revieweeId,
       },
       include: {
         comments: {
