@@ -21,7 +21,11 @@ export class CreateDealReviewHandler implements ICommandHandler<CreateDealReview
         DealReviewErrorMessage.CREATE_DEAL_REVIEW_REQUEST_FROM_UNAUTHORIZED_USER,
       );
 
-    const lastReview = await this.loadPort.findLastDealReview(command.refId, command.authorId);
+    const lastReview = await this.loadPort.findLastDealReview({
+      refId: command.refId,
+      authorId: command.authorId,
+      revieweeId: command.revieweeId,
+    });
     if (lastReview) throw new ForbiddenException(DealReviewErrorMessage.DEAL_REVIEW_ALREADY_EXIST);
 
     const review = this.publisher.mergeObjectContext(

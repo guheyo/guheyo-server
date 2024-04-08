@@ -6,6 +6,8 @@ export class DealReviewCreatedEvent implements IEvent {
 
   refId: string;
 
+  authorId: string;
+
   revieweeId: string;
 
   reviewStatus: string;
@@ -13,6 +15,7 @@ export class DealReviewCreatedEvent implements IEvent {
   constructor(input: DealReviewCreatedInput) {
     this.reviewId = input.reviewId;
     this.refId = input.refId;
+    this.authorId = input.authorId;
     this.revieweeId = input.revieweeId;
     this.reviewStatus = input.reviewStatus;
   }

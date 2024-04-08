@@ -46,14 +46,11 @@ export class DealReviewEntity extends AggregateRoot {
       new DealReviewCreatedEvent({
         reviewId: this.id,
         refId: this.refId,
+        authorId: this.authorId,
         revieweeId: this.revieweeId,
         reviewStatus: this.status,
       }),
     );
-  }
-
-  validateMatching(otherReviewAuthorId: string) {
-    return this.revieweeId === otherReviewAuthorId;
   }
 
   matching() {

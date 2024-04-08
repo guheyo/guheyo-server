@@ -3,6 +3,8 @@ export class DealReviewCreatedInput {
 
   refId: string;
 
+  authorId: string;
+
   revieweeId: string;
 
   reviewStatus: string;
@@ -10,16 +12,19 @@ export class DealReviewCreatedInput {
   constructor({
     reviewId,
     refId,
+    authorId,
     revieweeId,
     reviewStatus,
   }: {
     reviewId: string;
     refId: string;
+    authorId: string;
     revieweeId: string;
     reviewStatus: string;
   }) {
     this.reviewId = reviewId;
     this.refId = refId;
+    this.authorId = authorId;
     this.revieweeId = revieweeId;
     this.reviewStatus = reviewStatus;
   }
