@@ -24,6 +24,7 @@ import { MemberModule } from './app/member/member.module';
 import { BumpModule } from './app/bump/bump.module';
 import { DiscordWebhookModule } from './app/discord-webhook/discord-webhook.module';
 import { DealReviewModule } from './app/deal-review/deal-review.module';
+import { MannerTagModule } from './app/manner-tag/manner-tag.module';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { DealReviewModule } from './app/deal-review/deal-review.module';
     VersionModule,
     DiscordWebhookModule,
     DealReviewModule,
+    MannerTagModule,
   ],
 })
 export class ApiModule {}

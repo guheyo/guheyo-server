@@ -306,6 +306,14 @@ input LinkSocialProfileInput {
   provider: String!
 }
 
+type MannerTagResponse {
+  description: String
+  id: ID!
+  isPositive: Boolean!
+  name: String!
+  position: Int
+}
+
 type MemberWithRolesResponse {
   createdAt: DateTime!
   group: GroupProfileResponse!
@@ -488,6 +496,7 @@ type Query {
   findGroupProfiles(cursor: ID, distinct: Boolean, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
   findLastReport: ReportResponse!
+  findMannerTags: [MannerTagResponse!]!
   findMyUser: MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferCount(fromHours: Int!, productCategoryId: ID!, sellerId: ID!): Float!
