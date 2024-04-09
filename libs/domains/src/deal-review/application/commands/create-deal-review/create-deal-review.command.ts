@@ -17,6 +17,8 @@ export class CreateDealReviewCommand implements ICommand {
 
   groupId: string;
 
+  rating: number;
+
   title: string;
 
   content?: string;
@@ -33,6 +35,7 @@ export class CreateDealReviewCommand implements ICommand {
     this.authorId = input.authorId;
     this.revieweeId = input.revieweeId;
     this.groupId = input.groupId;
+    this.rating = input.rating;
     this.title = input.title;
     this.content = input.content;
     this.mannerTagIds = input.mannerTagIds;

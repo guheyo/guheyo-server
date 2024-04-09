@@ -69,6 +69,7 @@ input CreateDealReviewInput {
   groupId: ID!
   id: ID!
   mannerTagIds: [String!]!
+  rating: Float!
   refId: ID!
   refVersionId: ID!
   revieweeId: ID!

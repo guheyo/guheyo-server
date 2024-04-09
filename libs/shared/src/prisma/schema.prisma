@@ -365,10 +365,10 @@ model DealReview {
   reviewee          User              @relation(fields: [revieweeId], references: [id], name: "dealReviewReviewee")
   groupId           String
   group             Group             @relation(fields: [groupId], references: [id])
+  rating            Int
   title             String
   content           String?
   status            String
-  rating            Int
   comments          Comment[]
   mannerTags        MannerTag[]
 

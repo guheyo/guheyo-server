@@ -27,11 +27,13 @@ export class DealReviewEntity extends AggregateRoot {
 
   groupId: string;
 
-  status: string;
+  rating: number;
 
   title: string;
 
   content: string | null;
+
+  status: string;
 
   comments: CommentEntity[];
 

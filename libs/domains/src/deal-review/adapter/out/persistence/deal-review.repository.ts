@@ -68,6 +68,7 @@ export class DealReviewRepository
         'authorId',
         'revieweeId',
         'groupId',
+        'rating',
         'title',
         'content',
         'status',
@@ -86,6 +87,7 @@ export class DealReviewRepository
           'authorId',
           'revieweeId',
           'groupId',
+          'rating',
           'title',
           'content',
           'status',
@@ -99,7 +101,7 @@ export class DealReviewRepository
       where: {
         id: dealReview.id,
       },
-      data: _.pick(dealReview, ['title', 'content', 'status']),
+      data: _.pick(dealReview, ['rating', 'title', 'content', 'status']),
     });
   }
 

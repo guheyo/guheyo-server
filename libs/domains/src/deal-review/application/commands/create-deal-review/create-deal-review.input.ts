@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreateDealReviewInput {
@@ -30,6 +30,10 @@ export class CreateDealReviewInput {
   @IsUUID()
   @Field(() => ID)
   groupId: string;
+
+  @IsNumber()
+  @Field()
+  rating: number;
 
   @IsString()
   @Field()
