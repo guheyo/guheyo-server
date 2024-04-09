@@ -63,6 +63,20 @@ input CreateCommentInput {
   type: String!
 }
 
+input CreateDealReviewInput {
+  authorId: ID!
+  content: String
+  groupId: ID!
+  id: ID!
+  mannerTagIds: [String!]!
+  rating: Float!
+  refId: ID!
+  refVersionId: ID!
+  revieweeId: ID!
+  title: String!
+  type: String!
+}
+
 input CreateDemandInput {
   brandId: String
   businessFunction: String!
@@ -293,6 +307,14 @@ input LinkSocialProfileInput {
   provider: String!
 }
 
+type MannerTagResponse {
+  description: String
+  id: ID!
+  isPositive: Boolean!
+  name: String!
+  position: Int!
+}
+
 type MemberWithRolesResponse {
   createdAt: DateTime!
   group: GroupProfileResponse!
@@ -307,6 +329,7 @@ type Mutation {
   bumpSwap(input: BumpSwapInput!): SwapPreviewResponse!
   commentReport(input: CommentReportInput!): String!
   createComment(input: CreateCommentInput!): String!
+  createDealReview(input: CreateDealReviewInput!): String!
   createDemand(input: CreateDemandInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
@@ -474,6 +497,7 @@ type Query {
   findGroupProfiles(cursor: ID, distinct: Boolean, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
   findLastReport: ReportResponse!
+  findMannerTags: [MannerTagResponse!]!
   findMyUser: MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferCount(fromHours: Int!, productCategoryId: ID!, sellerId: ID!): Float!

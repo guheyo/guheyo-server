@@ -23,6 +23,8 @@ import { SocialAccountModule } from './app/social-account/social-account.module'
 import { MemberModule } from './app/member/member.module';
 import { BumpModule } from './app/bump/bump.module';
 import { DiscordWebhookModule } from './app/discord-webhook/discord-webhook.module';
+import { DealReviewModule } from './app/deal-review/deal-review.module';
+import { MannerTagModule } from './app/manner-tag/manner-tag.module';
 
 @Module({
   imports: [
@@ -62,6 +64,8 @@ import { DiscordWebhookModule } from './app/discord-webhook/discord-webhook.modu
     CommentModule,
     VersionModule,
     DiscordWebhookModule,
+    DealReviewModule,
+    MannerTagModule,
   ],
 })
 export class ApiModule {}
