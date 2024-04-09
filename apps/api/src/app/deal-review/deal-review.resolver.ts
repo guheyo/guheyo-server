@@ -27,7 +27,7 @@ export class DealReviewResolver {
   async createDealReview(
     @Args('input') input: CreateDealReviewInput,
     @ExtractedUser() user: MyUserResponse,
-  ) {
+  ): Promise<string> {
     await this.commandBus.execute(new CreateDealReviewCommand({ input, user }));
     return input.id;
   }
