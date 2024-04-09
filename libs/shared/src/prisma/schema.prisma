@@ -368,6 +368,7 @@ model DealReview {
   title             String
   content           String?
   status            String
+  rating            Int
   comments          Comment[]
   mannerTags        MannerTag[]
 
