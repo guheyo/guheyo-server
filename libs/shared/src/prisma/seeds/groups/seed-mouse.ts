@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { v5 as uuid5 } from 'uuid';
+import { PRODUCT_CATEGORY_TYPE } from './seed-audio';
 
 const GROUP_NAME = '마우스';
 const CATEGORY_MOUSE_NAME = '마우스';
@@ -24,9 +25,10 @@ export async function seedMouse(prisma: PrismaClient) {
       name: GROUP_NAME,
       slug: GROUP_SLUG,
       position: 2,
-      productCategories: {
+      categories: {
         create: [
           {
+            type: PRODUCT_CATEGORY_TYPE,
             name: CATEGORY_MOUSE_NAME,
             slug: CATEGORY_MOUSE_SLUG,
             position: 0,
