@@ -32,10 +32,14 @@ model User {
   bot               Boolean       @default(false)
   members           Member[]
   userImages        UserImage[]
-  bids              Bid[]
-  comments          Comment[]
   posts             Post[]
+  comments          Comment[]
+  offers            Offer[]
+  auctions          Auction[]
+  bids              Bid[]
+  submittedReports  Report[]      @relation("submittedReports")
   receivedReports   Report[]      @relation("receivedReports")
+  submittedReviews  UserReview[]  @relation("submittedUserReviews")
   receivedReviews   UserReview[]  @relation("receivedUserReviews")
 
   @@schema("public")
@@ -57,7 +61,6 @@ model UserImage {
   type              String
   refId             String
   tracked           Boolean
-  source            String
   userId            String
   user              User          @relation(fields: [userId], references: [id])
 
@@ -175,8 +178,10 @@ model Post {
   type                String
   title               String
   slug                String?
-  content             String
-  source              String
+  content             String?
+  thumbnail           String?
+  userAgent           String?
+  ipAddress           String?
   reportCount         Int           @default(0)
   reportCommentCount  Int           @default(0)
   groupId             String
@@ -186,17 +191,13 @@ model Post {
   userId              String
   user                User          @relation(fields: [userId], references: [id])
   offer               Offer?
-  demand              Demand?
-  swap                Swap?
   auction             Auction?
-  userReview          UserReview?
   report              Report?
+  userReview          UserReview?
   comments            Comment[]
   tags                Tag[]
   brands              Brand[]
-  bumps               Bump[]
   reports             Report[]      @relation(name: "postReports")
-  userReviews         UserReview[]  @relation(name: "postReviews")
 
   @@schema("public")
 }
@@ -206,7 +207,8 @@ model Comment {
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
   deletedAt         DateTime?
-  source            String
+  userAgent         String?
+  ipAddress         String?
   userId            String
   user              User          @relation(fields: [userId], references: [id])
   postId            String
@@ -225,50 +227,22 @@ model Offer {
   createdAt           DateTime        @default(now())
   updatedAt           DateTime        @updatedAt
   deletedAt           DateTime?
+  bumpedAt            DateTime?
   postId              String          @unique()
   post                Post            @relation(fields: [postId], references: [id])
+  userId              String
+  user                User            @relation(fields: [userId], references: [id])
+  businessFunction    String
+  type                String
+  name0               String?
+  name1               String?
   price               Int
   priceCurrency       String
   shippingCost        Int             @default(0)
   shippingType        String          @default("free")
-  businessFunction    String
   status              String
-
-  @@schema("public")
-}
-
-model Demand {
-  id                  String          @id @default(uuid())
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
-  deletedAt           DateTime?
-  postId              String          @unique()
-  post                Post            @relation(fields: [postId], references: [id])
-  price               Int
-  priceCurrency       String
-  shippingCost        Int             @default(0)
-  shippingType        String          @default("free")
-  businessFunction    String
-  status              String
-
-  @@schema("public")
-}
-
-model Swap {
-  id                  String          @id @default(uuid())
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
-  deletedAt           DateTime?
-  postId              String          @unique()
-  post                Post            @relation(fields: [postId], references: [id])
-  name0               String
-  name1               String
-  price               Int
-  priceCurrency       String
-  shippingCost        Int             @default(0)
-  shippingType        String          @default("free")
-  businessFunction    String
-  status              String
+  bumps               Bump[]
+  userReviews         UserReview[]
 
   @@schema("public")
 }
@@ -278,8 +252,8 @@ model Bump {
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
   deletedAt         DateTime?
-  post              Post              @relation(fields: [postId], references: [id])
-  postId            String
+  offerId           String
+  offer             Offer             @relation(fields: [offerId], references: [id])
   oldPrice          Int?
   newPrice          Int?
 
@@ -297,6 +271,8 @@ model Report {
   reportedPost      Post?             @relation(fields: [reportedPostId], references: [id], name: "postReports")
   reportedCommentId String?
   reportedComment   Comment?          @relation(fields: [reportedCommentId], references: [id])
+  userId            String
+  user              User              @relation(fields: [userId], references: [id], name: "submittedReports")
   reportedUserId    String
   reportedUser      User              @relation(fields: [reportedUserId], references: [id], name: "receivedReports")
   status            String
@@ -311,10 +287,15 @@ model UserReview {
   deletedAt         DateTime?
   postId            String            @unique()
   post              Post              @relation(fields: [postId], references: [id])
+  userId            String
+  user              User              @relation(fields: [userId], references: [id], name: "submittedUserReviews")
+  type              String
   reviewedUserId    String
   reviewedUser      User              @relation(fields: [reviewedUserId], references: [id], name: "receivedUserReviews")
-  reviewedPostId    String
-  reviewedPost      Post              @relation(fields: [reviewedPostId], references: [id], name: "postReviews")
+  offerId           String?
+  offer             Offer?            @relation(fields: [offerId], references: [id])
+  auctionId         String?
+  auction           Auction?          @relation(fields: [auctionId], references: [id])
   rating            Int
   status            String
 
@@ -340,14 +321,19 @@ model Auction {
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
   deletedAt         DateTime?
-  endedAt           DateTime
+  originalEndDate   DateTime
+  extendedEndDate   DateTime
+  extensionCount    Int               @default(0)
   postId            String?           @unique()
   post              Post?             @relation(fields: [postId], references: [id])
+  userId            String
+  user              User              @relation(fields: [userId], references: [id])
+  hammerPrice       Int               @default(0)
   shippingCost      Int               @default(0)
   shippingType      String            @default("free")
-  businessFunction  String
   status            String
   bids              Bid[]
+  userReviews       UserReview[]
 
   @@schema("public")
 }
@@ -358,14 +344,15 @@ model Bid {
   updatedAt         DateTime          @updatedAt
   deletedAt         DateTime?
   canceledAt        DateTime?
-  price             Int
-  priceCurrency     String
   auctionId         String
   auction           Auction           @relation(fields: [auctionId], references: [id])
-  bidderId          String
-  bidder            User              @relation(fields: [bidderId], references: [id])
+  userId            String
+  user              User              @relation(fields: [userId], references: [id])
+  price             Int
+  priceCurrency     String
   status            String
-  source            String
+  userAgent         String?
+  ipAddress         String?
 
   @@schema("public")
 }
