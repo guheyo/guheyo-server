@@ -12,7 +12,7 @@ export class PostEntity extends AggregateRoot {
 
   updatedAt: Date;
 
-  archivedAt: Date;
+  archivedAt: Date | null;
 
   pending: string | null;
 
