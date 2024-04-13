@@ -1,0 +1,15 @@
+export enum PostErrorMessage {
+  POST_NOT_FOUND = 'Post not found',
+  POST_FROM_REPORTED_NOT_FOUND = 'Post from reported not found',
+  POST_CREATION_FAILED = 'Post creation failed',
+  POST_CHANGES_FROM_INCOMPATIBLE_PLATFORMS = 'Post changes from incompatible platforms',
+  POST_CHANGES_FROM_UNAUTHORIZED_USER = 'Post changes from unauthorized user',
+  POST_DELETE_COMMAND_FROM_UNAUTHORIZED_USER = 'Post delete command from unauthorized user',
+  POST_BUMP_STUCK_ON_COOLDOWN = 'Post bump stuck on cooldown',
+  POST_REPORT_NOT_FOUND = 'Post report not found',
+  COMMENT_POST_REPORT_REQUEST_FROM_NON_SELLER = 'Comment post report request from non seller',
+  UNCOMMENTED_REPORT_EXISTS = 'Uncommented report exists',
+  FIND_REQUEST_FROM_UNAUTHORIZED_USER = 'Find request from unauthorized user',
+  CREATE_REQUEST_FROM_UNAUTHORIZED_USER = 'Create request from unauthorized user',
+  DAILY_POSTING_LIMIT_EXCEEDED = 'Daily posting limit exceeded',
+}
