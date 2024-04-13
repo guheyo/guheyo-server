@@ -7,13 +7,7 @@ export class BumpEntity extends AggregateRoot {
 
   updatedAt: Date;
 
-  type: string;
-
-  offerId: string | null;
-
-  demandId: string | null;
-
-  swapId: string | null;
+  postId: string;
 
   oldPrice: number;
 

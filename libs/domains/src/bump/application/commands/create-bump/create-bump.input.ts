@@ -1,5 +1,5 @@
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { IsNumber, IsString, IsUUID } from 'class-validator';
+import { IsNumber, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreateBumpInput {
@@ -7,13 +7,9 @@ export class CreateBumpInput {
   @Field(() => ID)
   id: string;
 
-  @IsString()
-  @Field()
-  type: string;
-
   @IsUUID()
   @Field(() => ID)
-  refId: string;
+  offerId: string;
 
   @IsNumber()
   @Field(() => Int)
