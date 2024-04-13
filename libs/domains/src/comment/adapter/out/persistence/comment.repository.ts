@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _, { pick } from 'lodash';
 import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
@@ -15,7 +15,7 @@ export class CommentRepository extends PrismaRepository<CommentEntity> {
         id,
       },
       include: {
-        comments: {
+        replies: {
           orderBy: {
             createdAt: 'desc',
           },
@@ -27,16 +27,14 @@ export class CommentRepository extends PrismaRepository<CommentEntity> {
 
   async create(comment: CommentEntity): Promise<void> {
     await this.prismaService.comment.create({
-      data: _.pick(comment, [
+      data: pick(comment, [
         'id',
-        'type',
-        'authorId',
-        'content',
-        'source',
-        'parentId',
+        'userId',
         'postId',
-        'reportId',
-        'auctionId',
+        'content',
+        'parentId',
+        'userAgent',
+        'ipAddress',
       ]),
     });
   }
@@ -46,14 +44,12 @@ export class CommentRepository extends PrismaRepository<CommentEntity> {
       data: comments.map((comment) =>
         _.pick(comment, [
           'id',
-          'type',
-          'authorId',
-          'content',
-          'source',
-          'parentId',
+          'userId',
           'postId',
-          'reportId',
-          'auctionId',
+          'content',
+          'parentId',
+          'userAgent',
+          'ipAddress',
         ]),
       ),
     });
