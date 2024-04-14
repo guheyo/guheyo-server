@@ -50,7 +50,10 @@ export class OfferEntity extends AggregateRoot {
 
   constructor(command: CreateOfferCommand) {
     super();
-    const partialPost = new PostEntity(command.post);
+    const partialPost = new PostEntity({
+      ...command.post,
+      userId: command.user.id,
+    });
     Object.assign(this, {
       ...command,
       post: partialPost,

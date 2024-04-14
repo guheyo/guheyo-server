@@ -12,7 +12,16 @@ export const countOffer = (prisma: PrismaClient) =>
             where: {
               AND: [
                 {
-                  userId: args.userId,
+                  post: {
+                    AND: [
+                      {
+                        userId: args.userId,
+                      },
+                      {
+                        categoryId: args.categoryId,
+                      },
+                    ],
+                  },
                 },
                 {
                   bumpedAt: {
@@ -21,11 +30,6 @@ export const countOffer = (prisma: PrismaClient) =>
                 },
                 {
                   businessFunction: args.businessFunction,
-                },
-                {
-                  post: {
-                    categoryId: args.categoryId,
-                  },
                 },
               ],
             },
