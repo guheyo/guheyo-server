@@ -6,6 +6,9 @@ export class CategoryResponse {
   id: string;
 
   @Field()
+  type: string;
+
+  @Field()
   name: string;
 
   @Field(() => String, { nullable: true })
