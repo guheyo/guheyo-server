@@ -30,6 +30,9 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
         where: {
           post: {
             groupId: group.id,
+            archivedAt: {
+              not: null,
+            },
           },
           businessFunction: 'sell',
           status: OFFER_OPEN,
@@ -55,6 +58,9 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
         where: {
           post: {
             groupId: group.id,
+            archivedAt: {
+              not: null,
+            },
           },
           businessFunction: 'buy',
           status: OFFER_OPEN,
