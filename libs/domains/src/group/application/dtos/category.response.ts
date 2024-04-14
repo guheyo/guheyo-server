@@ -1,7 +1,7 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class PostCategoryResponse {
+export class CategoryResponse {
   @Field(() => ID)
   id: string;
 
@@ -17,7 +17,7 @@ export class PostCategoryResponse {
   @Field(() => Int, { nullable: true })
   position: number;
 
-  constructor(partial: Partial<PostCategoryResponse>) {
+  constructor(partial: Partial<CategoryResponse>) {
     Object.assign(this, partial);
   }
 }
