@@ -1,5 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { REPORT_COMMENTED, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
+import { UserEntity } from '@lib/domains/user/domain/user.entity';
+import { Type } from 'class-transformer';
 
 export class PostEntity extends AggregateRoot {
   id: string;
@@ -35,6 +37,9 @@ export class PostEntity extends AggregateRoot {
   categoryId: string;
 
   userId: string;
+
+  @Type()
+  user: UserEntity;
 
   constructor(partial: Partial<PostEntity>) {
     super();

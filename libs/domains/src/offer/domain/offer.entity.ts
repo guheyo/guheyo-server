@@ -2,15 +2,15 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { isUndefined, omitBy } from 'lodash';
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
-import { REPORT_COMMENTED, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
 import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price.extension';
 import { validateCooldown } from '@lib/shared/cooldown/validate-cooldown';
 import { Type } from 'class-transformer';
-import { UserEntity } from '@lib/domains/user/domain/user.entity';
+import { PostEntity } from '@lib/domains/post/domain/post.entity';
 import { OfferStatus, UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
 import { BumpOfferInput } from '../application/commands/bump-offer/bump-offer.input';
+import { CreateOfferCommand } from '../application/commands/create-offer/create-offer.command';
 
 export class OfferEntity extends AggregateRoot {
   id: string;
@@ -21,11 +21,18 @@ export class OfferEntity extends AggregateRoot {
 
   bumpedAt: Date;
 
-  name: string;
+  postId: string;
 
-  slug: string | null;
+  @Type()
+  post: PostEntity;
 
-  description: string | null;
+  businessFunction: string;
+
+  type: string;
+
+  name0: string | null;
+
+  name1: string | null;
 
   price: number;
 
@@ -37,64 +44,47 @@ export class OfferEntity extends AggregateRoot {
 
   totalPrice: number;
 
-  businessFunction: string;
-
   status: OfferStatus;
-
-  isHidden: boolean = false;
-
-  pending?: string;
-
-  source: string;
-
-  groupId: string;
-
-  brandId: string | null;
-
-  productCategoryId: string;
-
-  sellerId: string;
-
-  @Type(() => UserEntity)
-  seller: UserEntity;
 
   bumps: BumpEntity[];
 
-  reportCount: number;
-
-  reportCommentCount: number;
-
-  constructor(partial: Partial<OfferEntity>) {
+  constructor(command: CreateOfferCommand) {
     super();
-    Object.assign(this, partial);
+    const partialPost = new PostEntity(command.post);
+    Object.assign(this, {
+      ...command,
+      post: partialPost,
+    });
   }
 
   create() {
     this.apply(
       new OfferCreatedEvent({
         id: this.id,
-        username: this.seller.username,
-        avatarURL: this.seller.avatarURL || undefined,
-        name: this.name,
-        slug: this.slug || undefined,
+        username: this.post.user.username,
+        avatarURL: this.post.user.avatarURL || undefined,
+        businessFunction: this.businessFunction,
+        title: this.post.title,
+        slug: this.post.slug || undefined,
         price: this.price,
-        source: this.source,
+        userAgent: this.post.userAgent || undefined,
       }),
     );
   }
 
-  isCompatibleSource(source: string) {
-    return this.source === source;
-  }
-
-  isAuthorized(sellerId: string) {
-    return this.sellerId === sellerId;
+  isAuthorized(userId: string) {
+    return this.post.userId === userId;
   }
 
   update(props: UpdateOfferProps) {
     Object.assign(this, omitBy(props, isUndefined));
     this.totalPrice = totalPrice.compute(this);
-    this.apply(new OfferUpdatedEvent(this.id));
+    this.apply(
+      new OfferUpdatedEvent({
+        id: this.id,
+        businessFunction: this.businessFunction,
+      }),
+    );
   }
 
   canBump() {
@@ -105,25 +95,12 @@ export class OfferEntity extends AggregateRoot {
     this.apply(
       new BumpedEvent({
         id: input.id,
-        type: 'offer',
-        refId: this.id,
+        offerId: this.id,
         oldPrice: this.price,
         newPrice: input.newPrice,
       }),
     );
     this.bumpedAt = new Date();
     this.price = input.newPrice;
-  }
-
-  checkReports(reportStatus: string) {
-    if (reportStatus === REPORT_OPEN) {
-      this.reportCount += 1;
-    } else if (reportStatus === REPORT_COMMENTED) {
-      this.reportCommentCount += 1;
-    }
-  }
-
-  hasUncommentedReports() {
-    return this.reportCount - this.reportCommentCount > 0;
   }
 }

@@ -1,9 +1,9 @@
 export interface UpdateOfferProps {
   id: string;
 
-  name?: string;
+  name0?: string;
 
-  description?: string;
+  name1?: string;
 
   price?: number;
 
@@ -13,15 +13,9 @@ export interface UpdateOfferProps {
 
   shippingType?: string;
 
-  businessFunction?: string;
-
-  productCategoryId?: string;
+  categoryId?: string;
 
   status?: OfferStatus;
-
-  isHidden?: boolean;
-
-  brandId?: string;
 }
 
 export type OfferStatus = 'open' | 'closed';
