@@ -1,9 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { isUndefined, omitBy } from 'lodash';
 import { REPORT_COMMENTED, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
-import { PostCreatedEvent } from '../application/events/post-created/post-created.event';
-import { UpdatePostProps } from './post.types';
-import { PostUpdatedEvent } from '../application/events/post-updated/post-updated.event';
 
 export class PostEntity extends AggregateRoot {
   id: string;
@@ -24,6 +20,8 @@ export class PostEntity extends AggregateRoot {
 
   content: string | null;
 
+  thumbnail: string | null;
+
   userAgent: string | null;
 
   ipAddress: string | null;
@@ -43,27 +41,8 @@ export class PostEntity extends AggregateRoot {
     Object.assign(this, partial);
   }
 
-  create() {
-    this.apply(
-      new PostCreatedEvent({
-        postId: this.id,
-        type: this.type,
-      }),
-    );
-  }
-
   isAuthorized(userId: string) {
     return this.userId === userId;
-  }
-
-  update(props: UpdatePostProps) {
-    Object.assign(this, omitBy(props, isUndefined));
-    this.apply(
-      new PostUpdatedEvent({
-        postId: this.id,
-        type: this.type,
-      }),
-    );
   }
 
   checkReports(reportStatus: string) {
