@@ -23,3 +23,7 @@ export interface UpdateOfferProps {
 }
 
 export type OfferStatus = 'open' | 'closed';
+
+export const OFFER_BUSINESS_FUNCTIONS = ['sell', 'buy', 'swap'] as const;
+
+export type OfferBusinessFunction = (typeof OFFER_BUSINESS_FUNCTIONS)[number];
