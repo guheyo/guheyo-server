@@ -14,7 +14,7 @@ export class OfferSagas {
       map(
         (event) =>
           new TrackUserImagesCommand({
-            type: event.businessFunction,
+            type: 'offer',
             refId: event.id,
           }),
       ),
@@ -27,7 +27,7 @@ export class OfferSagas {
       map(
         (event) =>
           new TrackUserImagesCommand({
-            type: event.businessFunction,
+            type: 'offer',
             refId: event.id,
           }),
       ),
