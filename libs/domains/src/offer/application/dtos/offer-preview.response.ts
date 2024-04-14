@@ -1,9 +1,11 @@
+import { PostPreviewResponse } from '@lib/domains/post/application/dtos/post-preview.response';
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
-import { UserImageResponse } from '@lib/domains/user-image/application/dtos/user-image.response';
-import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 
 @ObjectType()
 export class OfferPreviewResponse {
+  @Field(() => PostPreviewResponse)
+  post: PostPreviewResponse;
+
   @Field(() => ID)
   id: string;
 
@@ -17,10 +19,13 @@ export class OfferPreviewResponse {
   bumpedAt: Date;
 
   @Field()
-  name: string;
+  businessFunction: string;
 
   @Field(() => String, { nullable: true })
-  slug: string | null;
+  name0: string | null;
+
+  @Field(() => String, { nullable: true })
+  name1: string | null;
 
   @Field(() => Int)
   price: Number;
@@ -38,40 +43,7 @@ export class OfferPreviewResponse {
   totalPrice: number;
 
   @Field()
-  businessFunction: string;
-
-  @Field()
   status: string;
-
-  @Field(() => Boolean)
-  isHidden: boolean;
-
-  @Field(() => String, { nullable: true })
-  pending: string | null;
-
-  @Field(() => UserImageResponse, { nullable: true })
-  thumbnail: UserImageResponse | null;
-
-  @Field()
-  groupId: string;
-
-  @Field()
-  productCategoryId: string;
-
-  @Field(() => UserResponse)
-  seller: UserResponse;
-
-  @Field(() => String, { nullable: true })
-  brandId: string | null;
-
-  @Field()
-  source: string;
-
-  @Field(() => Int)
-  reportCount: number;
-
-  @Field(() => Int)
-  reportCommentCount: number;
 
   constructor(partial: Partial<OfferPreviewResponse>) {
     Object.assign(this, partial);
