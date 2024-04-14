@@ -1,4 +1,10 @@
+import { UpdatePostProps } from '@lib/domains/post/domain/post.types';
+
 export interface UpdateOfferProps {
+  // post
+  post: UpdatePostProps;
+
+  // offer
   id: string;
 
   name0?: string;
@@ -12,8 +18,6 @@ export interface UpdateOfferProps {
   shippingCost?: number;
 
   shippingType?: string;
-
-  categoryId?: string;
 
   status?: OfferStatus;
 }

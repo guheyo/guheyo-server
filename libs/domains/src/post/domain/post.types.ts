@@ -1,6 +1,4 @@
 export interface UpdatePostProps {
-  id: string;
-
   archivedAt?: Date;
 
   pending?: string;
