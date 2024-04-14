@@ -48,19 +48,6 @@ export class OfferRepository
   async create(offer: OfferEntity): Promise<void> {
     await this.prismaService.offer.create({
       data: {
-        ..._.pick(offer, [
-          'id',
-          'createdAt',
-          'updatedAt',
-          'businessFunction',
-          'name0',
-          'name1',
-          'price',
-          'priceCurrency',
-          'shippingCost',
-          'shippingType',
-          'status',
-        ]),
         post: {
           create: {
             ..._.pick(offer.post, [
@@ -75,13 +62,6 @@ export class OfferRepository
             ]),
           },
         },
-      },
-    });
-  }
-
-  async createMany(offers: OfferEntity[]): Promise<void> {
-    await this.prismaService.offer.createMany({
-      data: offers.map((offer) => ({
         ..._.pick(offer, [
           'id',
           'createdAt',
@@ -95,6 +75,14 @@ export class OfferRepository
           'shippingType',
           'status',
         ]),
+        bumpedAt: offer.createdAt,
+      },
+    });
+  }
+
+  async createMany(offers: OfferEntity[]): Promise<void> {
+    await this.prismaService.offer.createMany({
+      data: offers.map((offer) => ({
         postId: offer.post.id,
         post: {
           create: {
@@ -110,6 +98,20 @@ export class OfferRepository
             ]),
           },
         },
+        ..._.pick(offer, [
+          'id',
+          'createdAt',
+          'updatedAt',
+          'businessFunction',
+          'name0',
+          'name1',
+          'price',
+          'priceCurrency',
+          'shippingCost',
+          'shippingType',
+          'status',
+        ]),
+        bumpedAt: offer.createdAt,
       })),
     });
   }
@@ -120,6 +122,11 @@ export class OfferRepository
         id: offer.id,
       },
       data: {
+        post: {
+          update: {
+            ..._.pick(offer.post, ['archivedAt', 'pending', 'title', 'content', 'categoryId']),
+          },
+        },
         ..._.pick(offer, [
           'bumpedAt',
           'name0',
@@ -130,11 +137,6 @@ export class OfferRepository
           'shippingType',
           'status',
         ]),
-        post: {
-          update: {
-            ..._.pick(offer.post, ['archivedAt', 'pending', 'title', 'content', 'categoryId']),
-          },
-        },
       },
     });
   }
