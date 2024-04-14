@@ -6,8 +6,4 @@ export class DeleteOfferArgs {
   @IsUUID()
   @Field(() => ID)
   id: string;
-
-  @IsUUID()
-  @Field(() => ID)
-  sellerId: string;
 }
