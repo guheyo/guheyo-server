@@ -7,13 +7,13 @@ export class FindOfferCountArgs {
   @Field(() => ID)
   userId: string;
 
-  @IsString()
-  @Field(() => String)
-  businessFunction: string;
-
   @IsUUID()
   @Field(() => ID)
   categoryId: string;
+
+  @IsString()
+  @Field(() => String)
+  businessFunction: string;
 
   @Max(365 * 24)
   @IsNumber()

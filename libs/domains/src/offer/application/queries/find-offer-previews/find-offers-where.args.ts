@@ -10,7 +10,7 @@ export class FindOffersWhereArgs {
 
   @IsOptional()
   @Field(() => ID, { nullable: true })
-  productCategoryId?: string;
+  categoryId?: string;
 
   @IsOptional()
   @Field(() => ID, { nullable: true })

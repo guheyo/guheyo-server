@@ -28,8 +28,6 @@ export class OfferEntity extends AggregateRoot {
 
   businessFunction: string;
 
-  type: string;
-
   name0: string | null;
 
   name1: string | null;
