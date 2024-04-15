@@ -5,13 +5,13 @@ import { PrismaModule } from '@lib/shared/prisma/prisma.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ApiModule } from '../../../api.module';
 import { ConfigYamlModule } from '../../../config/config.module';
-import { MannerTagModule } from '../manner-tag.module';
-import { MannerTagResolver } from '../manner-tag.resolver';
+import { TagModule } from '../tag.module';
+import { TagResolver } from '../tag.resolver';
 
-describe('MannerTagModule', () => {
+describe('TagModule', () => {
   let apiModule: ApiModule;
-  let mannerTagModule: MannerTagModule;
-  let resolver: MannerTagResolver;
+  let tagModule: TagModule;
+  let resolver: TagResolver;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -27,30 +27,30 @@ describe('MannerTagModule', () => {
             limit: 100,
           },
         ]),
-        MannerTagModule,
+        TagModule,
       ],
     }).compile();
 
     apiModule = moduleRef;
-    mannerTagModule = moduleRef.get<MannerTagModule>(MannerTagModule);
-    resolver = moduleRef.get<MannerTagResolver>(MannerTagResolver);
+    tagModule = moduleRef.get<TagModule>(TagModule);
+    resolver = moduleRef.get<TagResolver>(TagResolver);
   });
 
-  describe('MannerTagApiModule', () => {
+  describe('TagApiModule', () => {
     it('should be defined', async () => {
       expect(apiModule).toBeDefined();
     });
   });
 
-  describe('MannerTagModule', () => {
-    it('should be instance of MannerTagModule', async () => {
-      expect(mannerTagModule).toBeInstanceOf(MannerTagModule);
+  describe('TagModule', () => {
+    it('should be instance of TagModule', async () => {
+      expect(tagModule).toBeInstanceOf(TagModule);
     });
   });
 
-  describe('MannerTagResolver', () => {
-    it('should be instance of MannerTagResolver', async () => {
-      expect(resolver).toBeInstanceOf(MannerTagResolver);
+  describe('TagResolver', () => {
+    it('should be instance of TagResolver', async () => {
+      expect(resolver).toBeInstanceOf(TagResolver);
     });
   });
 });

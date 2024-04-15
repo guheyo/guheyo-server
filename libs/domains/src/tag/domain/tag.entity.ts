@@ -1,6 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
-export class MannerTagEntity extends AggregateRoot {
+export class TagEntity extends AggregateRoot {
   id: string;
 
   createdAt: Date;
@@ -9,15 +9,15 @@ export class MannerTagEntity extends AggregateRoot {
 
   deletedAt: Date | null;
 
+  type: string;
+
   name: string;
 
   description: string | null;
 
-  isPositive: boolean;
-
   position: number;
 
-  constructor(partial: Partial<MannerTagEntity>) {
+  constructor(partial: Partial<TagEntity>) {
     super();
     Object.assign(this, partial);
   }

@@ -1,9 +1,12 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class MannerTagResponse {
+export class TagResponse {
   @Field(() => ID)
   id: string;
+
+  @Field()
+  type: string;
 
   @Field()
   name: string;
@@ -11,13 +14,10 @@ export class MannerTagResponse {
   @Field(() => String, { nullable: true })
   description?: string;
 
-  @Field(() => Boolean)
-  isPositive: boolean;
-
   @Field(() => Int)
   position: number;
 
-  constructor(partial: Partial<MannerTagResponse>) {
+  constructor(partial: Partial<TagResponse>) {
     Object.assign(this, partial);
   }
 }
