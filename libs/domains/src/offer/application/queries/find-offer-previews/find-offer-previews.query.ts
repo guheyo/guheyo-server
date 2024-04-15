@@ -10,8 +10,6 @@ export class FindOfferPreviewsQuery extends PaginationQuery {
 
   keyword?: string;
 
-  distinct?: boolean;
-
   userId?: string;
 
   constructor({ args, userId }: { args: FindOfferPreviewsArgs; userId?: string }) {
@@ -19,7 +17,6 @@ export class FindOfferPreviewsQuery extends PaginationQuery {
     this.where = args.where;
     this.orderBy = args.orderBy;
     this.keyword = args.keyword;
-    this.distinct = args.distinct;
     this.userId = userId;
   }
 }
