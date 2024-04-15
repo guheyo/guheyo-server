@@ -1,4 +1,5 @@
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
+import { Type } from 'class-transformer';
 
 export class BidEntity {
   id: string;
@@ -13,13 +14,12 @@ export class BidEntity {
 
   auctionId: string;
 
-  bidderId: string;
+  userId: string;
 
-  bidder: UserEntity;
+  @Type(() => UserEntity)
+  user: UserEntity;
 
   status: string;
-
-  source: string;
 
   constructor(partial: Partial<BidEntity>) {
     Object.assign(this, partial);
