@@ -11,10 +11,6 @@ export class BumpOfferInput {
   @Field(() => ID)
   offerId: string;
 
-  @IsUUID()
-  @Field(() => ID)
-  sellerId: string;
-
   @IsNumber()
   @Field(() => Int)
   newPrice: number;

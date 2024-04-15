@@ -7,37 +7,42 @@ export class OfferCreatedEvent implements IEvent {
 
   avatarURL?: string;
 
-  name: string;
+  businessFunction: string;
+
+  title: string;
 
   slug?: string;
 
   price: number;
 
-  source: string;
+  userAgent?: string;
 
   constructor({
     id,
     username,
     avatarURL,
-    name,
+    businessFunction,
+    title,
     slug,
     price,
-    source,
+    userAgent,
   }: {
     id: string;
     username: string;
     avatarURL?: string;
-    name: string;
+    businessFunction: string;
+    title: string;
     slug?: string;
     price: number;
-    source: string;
+    userAgent?: string;
   }) {
     this.id = id;
     this.username = username;
     this.avatarURL = avatarURL;
-    this.name = name;
+    this.businessFunction = businessFunction;
+    this.title = title;
     this.slug = slug;
     this.price = price;
-    this.source = source;
+    this.userAgent = userAgent;
   }
 }

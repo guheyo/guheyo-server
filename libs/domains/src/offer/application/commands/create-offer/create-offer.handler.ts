@@ -20,12 +20,10 @@ export class CreateOfferHandler extends PrismaCommandHandler<CreateOfferCommand,
   }
 
   async execute(command: CreateOfferCommand): Promise<void> {
-    if (command.sellerId !== command.user.id)
-      throw new ForbiddenException(OfferErrorMessage.CREATE_REQUEST_FROM_UNAUTHORIZED_USER);
-
     const countDailyOfferPostingInSameCategory = await this.prismaService.offer.countOffer({
-      sellerId: command.sellerId,
-      productCategoryId: command.productCategoryId,
+      userId: command.user.id,
+      categoryId: command.post.categoryId,
+      businessFunction: command.businessFunction,
       fromHours: DAY_HOURS,
     });
     if (countDailyOfferPostingInSameCategory > DAILY_OFFER_POSTING_LIMIT)

@@ -1,14 +1,17 @@
 import { ICommand } from '@nestjs/cqrs/dist';
+import { UpdatePostInput } from '@lib/domains/post/application/commands/update-post/update-post.input';
 import { OfferStatus } from '@lib/domains/offer/domain/offer.types';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { UpdateOfferInput } from './update-offer.input';
 
 export class UpdateOfferCommand implements ICommand {
+  post: UpdatePostInput;
+
   id: string;
 
-  name?: string;
+  name0?: string;
 
-  description?: string;
+  name1?: string;
 
   price?: number;
 
@@ -18,37 +21,20 @@ export class UpdateOfferCommand implements ICommand {
 
   shippingType?: string;
 
-  businessFunction?: string;
-
-  productCategoryId?: string;
-
-  sellerId: string;
-
   status?: OfferStatus;
-
-  isHidden?: boolean;
-
-  brandId?: string;
-
-  source: string;
 
   user: MyUserResponse;
 
   constructor({ input, user }: { input: UpdateOfferInput; user: MyUserResponse }) {
+    this.post = input.post;
     this.id = input.id;
-    this.name = input.name;
-    this.description = input.description;
+    this.name0 = input.name0;
+    this.name1 = input.name1;
     this.price = input.price;
     this.priceCurrency = input.priceCurrency;
     this.shippingCost = input.shippingCost;
     this.shippingType = input.shippingType;
-    this.businessFunction = input.businessFunction;
-    this.productCategoryId = input.productCategoryId;
-    this.sellerId = input.sellerId;
     this.status = input.status as OfferStatus;
-    this.isHidden = input.isHidden;
-    this.brandId = input.brandId;
-    this.source = input.source;
     this.user = user;
   }
 }

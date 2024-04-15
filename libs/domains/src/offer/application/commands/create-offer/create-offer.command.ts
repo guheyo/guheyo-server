@@ -1,18 +1,23 @@
-import { ICommand } from '@nestjs/cqrs/dist';
+import { ICommand } from '@nestjs/cqrs';
 import { OfferStatus } from '@lib/domains/offer/domain/offer.types';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { CreatePostInput } from '@lib/domains/post/application/commands/create-post/create-post.input';
 import { CreateOfferInput } from './create-offer.input';
 
 export class CreateOfferCommand implements ICommand {
+  post: CreatePostInput;
+
   id: string;
 
   createdAt?: Date;
 
   updatedAt?: Date;
 
-  name: string;
+  businessFunction: string;
 
-  description?: string;
+  name0?: string;
+
+  name1?: string;
 
   price: number;
 
@@ -22,39 +27,23 @@ export class CreateOfferCommand implements ICommand {
 
   shippingType: string;
 
-  businessFunction: string;
-
   status: OfferStatus;
-
-  source: string;
-
-  groupId: string;
-
-  productCategoryId: string;
-
-  sellerId: string;
-
-  brandId?: string;
 
   user: MyUserResponse;
 
   constructor({ input, user }: { input: CreateOfferInput; user: MyUserResponse }) {
+    this.post = input.post;
     this.id = input.id;
     this.createdAt = input.createdAt;
     this.updatedAt = input.updatedAt;
-    this.name = input.name;
-    this.description = input.description;
+    this.businessFunction = input.businessFunction;
+    this.name0 = input.name0;
+    this.name1 = input.name1;
     this.price = input.price;
     this.priceCurrency = input.priceCurrency;
     this.shippingCost = input.shippingCost;
     this.shippingType = input.shippingType;
-    this.businessFunction = input.businessFunction;
     this.status = input.status as OfferStatus;
-    this.source = input.source;
-    this.groupId = input.groupId;
-    this.productCategoryId = input.productCategoryId;
-    this.sellerId = input.sellerId;
-    this.brandId = input.brandId;
     this.user = user;
   }
 }

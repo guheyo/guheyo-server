@@ -9,13 +9,9 @@ export class UpdateCommentInput {
 
   @IsUUID()
   @Field(() => ID)
-  authorId: string;
+  userId: string;
 
   @IsString()
   @Field(() => String)
   content: string;
-
-  @IsString()
-  @Field(() => String)
-  source: string;
 }

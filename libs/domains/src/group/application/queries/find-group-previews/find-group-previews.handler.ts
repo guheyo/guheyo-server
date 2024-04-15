@@ -1,7 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
-import { DEMAND_OPEN } from '@lib/domains/demand/domain/demand.constants';
 import { FindGroupPreviewsQuery } from './find-group-previews.query';
 import { GroupPreviewResponse } from '../../dtos/group-preview.response';
 
@@ -24,70 +23,69 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
       orderBy: {
         position: 'asc',
       },
-      include: {
-        offers: {
-          where: {
-            status: OFFER_OPEN,
-            isHidden: false,
-            deletedAt: null,
-          },
-          include: {
-            seller: {
-              select: {
-                id: true,
-                createdAt: true,
-                username: true,
-                avatarURL: true,
-                bot: true,
-              },
-            },
-          },
-          orderBy: {
-            bumpedAt: 'desc',
-          },
-          take: 3,
-        },
-        demands: {
-          where: {
-            status: DEMAND_OPEN,
-            isHidden: false,
-            deletedAt: null,
-          },
-          include: {
-            buyer: {
-              select: {
-                id: true,
-                createdAt: true,
-                username: true,
-                avatarURL: true,
-                bot: true,
-              },
-            },
-          },
-          orderBy: {
-            bumpedAt: 'desc',
-          },
-          take: 3,
-        },
-      },
     });
+
     const groupPreviews = groups.map(async (group) => {
-      const offerWithImagePromises = group.offers.map(async (offer) => ({
-        ...offer,
-        thumbnail: await this.prismaService.userImage.findFirst({
-          where: {
-            type: 'offer',
-            refId: offer.id,
-            tracked: true,
+      const sells = await this.prismaService.offer.findMany({
+        where: {
+          post: {
+            groupId: group.id,
+            archivedAt: {
+              not: null,
+            },
           },
-          orderBy: {
-            createdAt: 'desc',
+          businessFunction: 'sell',
+          status: OFFER_OPEN,
+        },
+        include: {
+          post: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  createdAt: true,
+                  username: true,
+                  avatarURL: true,
+                  bot: true,
+                },
+              },
+            },
           },
-        }),
-      }));
+        },
+        take: 3,
+      });
+      const buys = await this.prismaService.offer.findMany({
+        where: {
+          post: {
+            groupId: group.id,
+            archivedAt: {
+              not: null,
+            },
+          },
+          businessFunction: 'buy',
+          status: OFFER_OPEN,
+        },
+        include: {
+          post: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  createdAt: true,
+                  username: true,
+                  avatarURL: true,
+                  bot: true,
+                },
+              },
+            },
+          },
+        },
+        take: 3,
+      });
       return {
         ...group,
-        offers: await Promise.all(offerWithImagePromises),
+        sells,
+        buys,
       };
     });
     return this.parseResponses(groupPreviews);
