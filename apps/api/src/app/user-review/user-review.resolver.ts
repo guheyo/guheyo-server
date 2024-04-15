@@ -3,18 +3,18 @@ import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
-import { CreateDealReviewCommand } from '@lib/domains/deal-review/application/commands/create-deal-review/create-deal-review.command';
-import { CreateDealReviewInput } from '@lib/domains/deal-review/application/commands/create-deal-review/create-deal-review.input';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { CreateUserReviewInput } from '@lib/domains/user-review/application/commands/create-user-review/create-user-review.input';
+import { CreateUserReviewCommand } from '@lib/domains/user-review/application/commands/create-user-review/create-user-review.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
-export class DealReviewResolver {
+export class UserReviewResolver {
   constructor(
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus,
@@ -24,11 +24,11 @@ export class DealReviewResolver {
   @AllowlistRoleNames([])
   @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
-  async createDealReview(
-    @Args('input') input: CreateDealReviewInput,
+  async createUserReview(
+    @Args('input') input: CreateUserReviewInput,
     @ExtractedUser() user: MyUserResponse,
   ): Promise<string> {
-    await this.commandBus.execute(new CreateDealReviewCommand({ input, user }));
+    await this.commandBus.execute(new CreateUserReviewCommand({ input, user }));
     return input.id;
   }
 }
