@@ -16,19 +16,10 @@ export class UpdateAuctionHandler implements ICommandHandler<UpdateAuctionComman
 
   async execute(command: UpdateAuctionCommand): Promise<void> {
     let auction = await this.auctionLoadPort.findById(command.id);
-    if (!auction) throw new NotFoundException(AuctionErrorMessage.AUCTION_IS_NOT_FOUND);
+    if (!auction) throw new NotFoundException(AuctionErrorMessage.AUCTION_NOT_FOUND);
 
     auction = this.publisher.mergeObjectContext(auction);
-    auction.update(
-      _.pick(command, [
-        'id',
-        'name',
-        'description',
-        'businessFunction',
-        'productCategoryId',
-        'brandId',
-      ]),
-    );
+    auction.update(command);
     await this.auctionSavePort.save(auction);
     auction.commit();
   }
