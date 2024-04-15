@@ -63,11 +63,6 @@ export class OfferRepository
           'categoryId',
           'userId',
         ]),
-        tags: {
-          connect: offer.post.tags.map((tag) => ({
-            id: tag.id,
-          })),
-        },
       },
     });
     await this.prismaService.offer.create({

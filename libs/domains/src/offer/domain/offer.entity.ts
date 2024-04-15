@@ -52,7 +52,7 @@ export class OfferEntity extends AggregateRoot {
     Object.assign(this, partial);
   }
 
-  create() {
+  create(tagIds: string[]) {
     this.apply(
       new OfferCreatedEvent({
         id: this.id,
@@ -63,6 +63,8 @@ export class OfferEntity extends AggregateRoot {
         slug: this.post.slug || undefined,
         price: this.price,
         userAgent: this.post.userAgent || undefined,
+        postId: this.post.id,
+        tagIds,
       }),
     );
   }
