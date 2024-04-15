@@ -14,13 +14,6 @@ export class CommentRepository extends PrismaRepository<CommentEntity> {
       where: {
         id,
       },
-      include: {
-        replies: {
-          orderBy: {
-            createdAt: 'desc',
-          },
-        },
-      },
     });
     return this.toEntity(comment);
   }
@@ -31,8 +24,8 @@ export class CommentRepository extends PrismaRepository<CommentEntity> {
         'id',
         'userId',
         'postId',
-        'content',
         'parentId',
+        'content',
         'userAgent',
         'ipAddress',
       ]),
@@ -46,8 +39,8 @@ export class CommentRepository extends PrismaRepository<CommentEntity> {
           'id',
           'userId',
           'postId',
-          'content',
           'parentId',
+          'content',
           'userAgent',
           'ipAddress',
         ]),

@@ -6,14 +6,11 @@ export class FindUserQuery implements IQuery {
 
   socialId?: string;
 
-  sessionToken?: string;
-
   username?: string;
 
   constructor(args: FindUserArgs) {
     this.provider = args.provider;
     this.socialId = args.socialId;
-    this.sessionToken = args.sessionToken;
     this.username = args.username;
   }
 }

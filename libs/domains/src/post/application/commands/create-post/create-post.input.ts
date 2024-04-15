@@ -21,4 +21,7 @@ export class CreatePostInput {
   @IsUUID()
   @Field(() => ID)
   categoryId: string;
+
+  @Field(() => [String])
+  tagIds: string[];
 }

@@ -37,6 +37,11 @@ export class OfferRepository
                 },
               },
             },
+            tags: {
+              orderBy: {
+                position: 'asc',
+              },
+            },
           },
         },
         bumps: true,
@@ -46,22 +51,27 @@ export class OfferRepository
   }
 
   async create(offer: OfferEntity): Promise<void> {
+    const post = await this.prismaService.post.create({
+      data: {
+        ..._.pick(offer.post, [
+          'type',
+          'title',
+          'content',
+          'userAgent',
+          'ipAddress',
+          'groupId',
+          'categoryId',
+          'userId',
+        ]),
+        tags: {
+          connect: offer.post.tags.map((tag) => ({
+            id: tag.id,
+          })),
+        },
+      },
+    });
     await this.prismaService.offer.create({
       data: {
-        post: {
-          create: {
-            ..._.pick(offer.post, [
-              'type',
-              'title',
-              'content',
-              'userAgent',
-              'ipAddress',
-              'groupId',
-              'categoryId',
-              'userId',
-            ]),
-          },
-        },
         ..._.pick(offer, [
           'id',
           'createdAt',
@@ -75,45 +85,14 @@ export class OfferRepository
           'shippingType',
           'status',
         ]),
+        postId: post.id,
         bumpedAt: offer.createdAt,
       },
     });
   }
 
   async createMany(offers: OfferEntity[]): Promise<void> {
-    await this.prismaService.offer.createMany({
-      data: offers.map((offer) => ({
-        postId: offer.post.id,
-        post: {
-          create: {
-            ..._.pick(offer.post, [
-              'type',
-              'title',
-              'content',
-              'userAgent',
-              'ipAddress',
-              'groupId',
-              'categoryId',
-              'userId',
-            ]),
-          },
-        },
-        ..._.pick(offer, [
-          'id',
-          'createdAt',
-          'updatedAt',
-          'businessFunction',
-          'name0',
-          'name1',
-          'price',
-          'priceCurrency',
-          'shippingCost',
-          'shippingType',
-          'status',
-        ]),
-        bumpedAt: offer.createdAt,
-      })),
-    });
+    await offers.map(async (offer) => this.create(offer));
   }
 
   async save(offer: OfferEntity): Promise<void> {

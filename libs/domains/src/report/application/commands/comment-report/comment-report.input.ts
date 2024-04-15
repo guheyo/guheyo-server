@@ -11,15 +11,7 @@ export class CommentReportInput {
   @Field(() => ID)
   reportId: string;
 
-  @IsUUID()
-  @Field(() => ID)
-  authorId: string;
-
   @IsString()
   @Field()
   content: string;
-
-  @IsString()
-  @Field()
-  source: string;
 }

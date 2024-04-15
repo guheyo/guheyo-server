@@ -1,9 +1,9 @@
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
-import { VersionEntity } from '@lib/domains/version/domain/version.entity';
 import { validateCooldown } from '@lib/shared/cooldown/validate-cooldown';
 import { Type } from 'class-transformer';
 import { NotFoundException } from '@nestjs/common';
+import { PostEntity } from '@lib/domains/post/domain/post.entity';
 import { ReportCreatedEvent } from '../application/events/report-created/report-created.event';
 import { ReportStatusUpdatedEvent } from '../application/events/report-status-updated/report-status-updated.event';
 import { REPORT_COMMENTED, REPORT_OPEN } from './report.constants';
@@ -21,28 +21,32 @@ export class ReportEntity extends AggregateRoot {
 
   updatedAt: Date;
 
-  type: string;
-
-  refId: string;
-
-  refVersionId: string;
-
-  refVersion: VersionEntity;
-
-  authorId: string;
-
-  reportedUserId: string;
+  userId: string;
 
   @Type(() => ReportedUserEntity)
   reportedUser: ReportedUserEntity;
+
+  reportedUserId: string;
+
+  type: string;
+
+  reportedPostId: string | null;
+
+  @Type(() => PostEntity)
+  reportedPost: PostEntity | null;
+
+  reportedCommentId: string | null;
+
+  @Type(() => CommentEntity)
+  reportedComment: CommentEntity | null;
 
   groupId: string;
 
   status: string;
 
-  title: string;
+  reason: string;
 
-  content: string | null;
+  description: string | null;
 
   comments: CommentEntity[];
 
@@ -57,36 +61,29 @@ export class ReportEntity extends AggregateRoot {
       new ReportCreatedEvent({
         reportId: this.id,
         type: this.type,
-        refId: this.refId,
+        reportedPostId: this.reportedPostId || undefined,
+        reportedCommentId: this.reportedCommentId || undefined,
         reportStatus: this.status,
       }),
     );
   }
 
-  validateCommenter(authorId: string) {
-    switch (this.refVersion.tableName) {
-      case 'Offer': {
-        return this.refVersion.values.sellerId === authorId;
-      }
-      case 'Demand': {
-        return this.refVersion.values.buyerId === authorId;
-      }
-      case 'Swap': {
-        return this.refVersion.values.proposerId === authorId;
-      }
-      default:
-        return this.refVersion.values.authorId === authorId;
-    }
+  validateCommenter(userId: string) {
+    return this.reportedUserId === userId;
   }
 
-  parseCreateReportCommentInput(input: CommentReportInput): CreateReportCommentInput {
+  parseCreateReportCommentInput({
+    input,
+    userId,
+  }: {
+    input: CommentReportInput;
+    userId: string;
+  }): CreateReportCommentInput {
     return {
       id: input.id,
-      type: 'report',
       reportId: this.id,
-      authorId: input.authorId,
+      userId,
       content: input.content,
-      source: input.source,
     };
   }
 
@@ -107,7 +104,8 @@ export class ReportEntity extends AggregateRoot {
         new ReportStatusUpdatedEvent({
           reportId: this.id,
           type: this.type,
-          refId: this.refId,
+          reportedPostId: this.reportedPostId || undefined,
+          reportedCommentId: this.reportedCommentId || undefined,
           reportStatus: this.status,
         }),
       );
