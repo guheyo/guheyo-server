@@ -11,6 +11,7 @@ import { OfferCreatedEvent } from '../application/events/offer-created/offer-cre
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
 import { BumpOfferInput } from '../application/commands/bump-offer/bump-offer.input';
 import { CreateOfferCommand } from '../application/commands/create-offer/create-offer.command';
+import { OFFER_OPEN } from './offer.constants';
 
 export class OfferEntity extends AggregateRoot {
   id: string;
@@ -48,13 +49,14 @@ export class OfferEntity extends AggregateRoot {
 
   constructor(command: CreateOfferCommand) {
     super();
-    const partialPost = new PostEntity({
+    const post = new PostEntity({
       ...command.post,
       userId: command.user.id,
     });
     Object.assign(this, {
       ...command,
-      post: partialPost,
+      post,
+      status: OFFER_OPEN,
     });
   }
 

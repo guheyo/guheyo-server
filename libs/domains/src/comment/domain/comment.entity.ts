@@ -11,15 +11,11 @@ export class CommentEntity extends AggregateRoot {
 
   userId: string;
 
-  content: string;
+  postId: string;
 
   parentId: string | null;
 
-  postId: string;
-
-  parent?: CommentEntity;
-
-  replies: CommentEntity[];
+  content: string;
 
   userAgent: string | null;
 

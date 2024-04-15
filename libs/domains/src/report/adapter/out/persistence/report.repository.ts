@@ -1,4 +1,4 @@
-import _, { omit } from 'lodash';
+import _ from 'lodash';
 import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { ReportEntity } from '@lib/domains/report/domain/report.entity';
@@ -26,7 +26,6 @@ export class ReportRepository
             createdAt: 'desc',
           },
         },
-        refVersion: true,
         reportedUser: {
           include: {
             members: {
@@ -56,10 +55,10 @@ export class ReportRepository
     return this.toEntity(report);
   }
 
-  async findLastSubmittedReport(authorId: string): Promise<ReportEntity | null> {
+  async findLastSubmittedReport(userId: string): Promise<ReportEntity | null> {
     const report = await this.prismaService.report.findFirst({
       where: {
-        authorId,
+        userId,
       },
       include: {
         comments: {
@@ -67,7 +66,6 @@ export class ReportRepository
             createdAt: 'desc',
           },
         },
-        refVersion: true,
         reportedUser: {
           include: {
             members: {
@@ -105,13 +103,13 @@ export class ReportRepository
       data: _.pick(report, [
         'id',
         'type',
-        'refId',
-        'refVersionId',
-        'authorId',
+        'reportedPostId',
+        'reportedCommentId',
+        'userId',
         'reportedUserId',
         'groupId',
-        'title',
-        'content',
+        'reason',
+        'description',
         'status',
       ]),
     });
@@ -123,13 +121,13 @@ export class ReportRepository
         _.pick(report, [
           'id',
           'type',
-          'refId',
-          'refVersionId',
-          'authorId',
+          'reportedPostId',
+          'reportedCommentId',
+          'userId',
           'reportedUserId',
           'groupId',
-          'title',
-          'content',
+          'reason',
+          'description',
           'status',
         ]),
       ),
@@ -141,7 +139,7 @@ export class ReportRepository
       where: {
         id: report.id,
       },
-      data: _.pick(report, ['title', 'content', 'status']),
+      data: _.pick(report, ['reason', 'description', 'status']),
     });
   }
 
@@ -160,7 +158,7 @@ export class ReportRepository
       },
       data: {
         comments: {
-          create: omit(input, ['reportId']),
+          create: input,
         },
       },
     });

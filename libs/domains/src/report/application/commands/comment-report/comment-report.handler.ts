@@ -15,15 +15,17 @@ export class CommentReportHandler implements ICommandHandler<CommentReportComman
 
   async execute(command: CommentReportCommand): Promise<void> {
     let report = await this.loadPort.findById(command.input.reportId);
-    if (!report) throw new NotFoundException(ReportErrorMessage.REPORT_IS_NOT_FOUND);
-
-    report = this.publisher.mergeObjectContext(report);
+    if (!report) throw new NotFoundException(ReportErrorMessage.REPORT_NOT_FOUND);
     if (!report.validateCommenter(command.user.id))
       throw new ForbiddenException(
         ReportErrorMessage.COMMENT_REPORT_REQUEST_FROM_UNAUTHORIZED_USER,
       );
 
-    const input = report.parseCreateReportCommentInput(command.input);
+    report = this.publisher.mergeObjectContext(report);
+    const input = report.parseCreateReportCommentInput({
+      input: command.input,
+      userId: command.user.id,
+    });
     await this.savePort.createComment(input);
     report.commentReport();
     report.commit();
