@@ -24,7 +24,7 @@ export class OfferEntity extends AggregateRoot {
 
   postId: string;
 
-  @Type()
+  @Type(() => PostEntity)
   post: PostEntity;
 
   businessFunction: string;
@@ -47,17 +47,9 @@ export class OfferEntity extends AggregateRoot {
 
   bumps: BumpEntity[];
 
-  constructor(command: CreateOfferCommand) {
+  constructor(partial: Partial<OfferEntity>) {
     super();
-    const post = new PostEntity({
-      ...command.post,
-      userId: command.user.id,
-    });
-    Object.assign(this, {
-      ...command,
-      post,
-      status: OFFER_OPEN,
-    });
+    Object.assign(this, partial);
   }
 
   create() {
