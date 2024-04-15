@@ -15,11 +15,11 @@ export class ReportPreviewResponse {
   @Field()
   type: string;
 
-  @Field(() => ID)
-  refId: string;
+  @Field(() => ID, { nullable: true })
+  reportedPostId: string | null;
 
-  @Field(() => ID)
-  refVersionId: string;
+  @Field(() => ID, { nullable: true })
+  reportedCommentId: string | null;
 
   @Field(() => AuthorResponse, { nullable: true })
   reportedUser?: AuthorResponse;
@@ -27,14 +27,14 @@ export class ReportPreviewResponse {
   @Field(() => ID)
   groupId: string;
 
-  @Field()
-  status: string;
-
   @Field(() => String)
-  title: string;
+  reason: string;
 
   @Field(() => String, { nullable: true })
-  content: string | null;
+  description: string | null;
+
+  @Field()
+  status: string;
 
   constructor(partial: Partial<ReportPreviewResponse>) {
     Object.assign(this, partial);

@@ -12,7 +12,7 @@ export class FindLastReportHandler extends PrismaQueryHandler<FindLastReportQuer
   async execute(query: FindLastReportQuery): Promise<ReportResponse | null> {
     const report = await this.prismaService.report.findFirst({
       where: {
-        authorId: query.user.id,
+        userId: query.user.id,
       },
       include: {
         comments: {
