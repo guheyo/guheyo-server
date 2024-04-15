@@ -6,8 +6,4 @@ export class CancelBidInput {
   @IsUUID()
   @Field()
   auctionId: string;
-
-  @IsUUID()
-  @Field()
-  bidderId: string;
 }
