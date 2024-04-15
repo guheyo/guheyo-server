@@ -31,7 +31,7 @@ export class ReportSagas {
       concatMap((event) =>
         of(
           new CheckPostReportsCommand({
-            postId: event.refId,
+            postId: event.reportedPostId!,
             reportStatus: event.reportStatus,
           }),
           new CheckReportedUserCommand({
@@ -50,7 +50,7 @@ export class ReportSagas {
       concatMap((event) =>
         of(
           new CheckPostReportsCommand({
-            postId: event.refId,
+            postId: event.reportedPostId!,
             reportStatus: event.reportStatus,
           }),
           new CheckReportedUserCommand({

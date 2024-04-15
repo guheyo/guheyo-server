@@ -6,14 +6,17 @@ export class ReportStatusUpdatedEvent implements IEvent {
 
   type: string;
 
-  refId: string;
+  reportedPostId?: string;
+
+  reportedCommentId?: string;
 
   reportStatus: string;
 
   constructor(input: ReportStatusUpdatedInput) {
     this.reportId = input.reportId;
     this.type = input.type;
-    this.refId = input.refId;
+    this.reportedPostId = input.reportedPostId;
+    this.reportedCommentId = input.reportedCommentId;
     this.reportStatus = input.reportStatus;
   }
 }
