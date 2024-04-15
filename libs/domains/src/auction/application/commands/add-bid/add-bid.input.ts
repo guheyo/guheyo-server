@@ -18,12 +18,4 @@ export class AddBidInput {
   @IsUUID()
   @Field()
   auctionId: string;
-
-  @IsUUID()
-  @Field()
-  bidderId: string;
-
-  @IsString()
-  @Field()
-  source: string;
 }

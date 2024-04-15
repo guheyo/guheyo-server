@@ -20,16 +20,23 @@ export class FindAuctionByIdHandler extends PrismaQueryHandler<
         id: query.id,
       },
       include: {
-        seller: {
+        post: {
           include: {
-            members: {
+            group: true,
+            category: true,
+            user: {
               include: {
-                group: true,
-                roles: {
-                  orderBy: {
-                    position: 'asc',
+                members: {
+                  include: {
+                    group: true,
+                    roles: {
+                      orderBy: {
+                        position: 'asc',
+                      },
+                    },
                   },
                 },
+                socialAccounts: true,
               },
             },
           },
@@ -39,12 +46,26 @@ export class FindAuctionByIdHandler extends PrismaQueryHandler<
             createdAt: 'desc',
           },
           include: {
-            bidder: true,
+            user: {
+              include: {
+                members: {
+                  include: {
+                    group: true,
+                    roles: {
+                      orderBy: {
+                        position: 'asc',
+                      },
+                    },
+                  },
+                },
+                socialAccounts: true,
+              },
+            },
           },
         },
       },
     });
-    if (!auction) throw new NotFoundException(AuctionErrorMessage.AUCTION_IS_NOT_FOUND);
+    if (!auction) throw new NotFoundException(AuctionErrorMessage.AUCTION_NOT_FOUND);
 
     const images = await this.prismaService.userImage.findMany({
       where: {
