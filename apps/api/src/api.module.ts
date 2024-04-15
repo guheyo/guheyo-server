@@ -11,8 +11,6 @@ import { RoleModule } from './app/role/role.module';
 import { GroupModule } from './app/group/group.module';
 import { UserImageModule } from './app/user-image/user-image.module';
 import { OfferModule } from './app/offer/offer.module';
-import { DemandModule } from './app/demand/demand.module';
-import { SwapModule } from './app/swap/swap.module';
 import { TermModule } from './app/term/term.module';
 import { AuthModule } from './app/auth/auth.module';
 import { CommonModule } from './app/common/common.module';
@@ -56,8 +54,6 @@ import { MannerTagModule } from './app/manner-tag/manner-tag.module';
     GroupModule,
     UserImageModule,
     OfferModule,
-    DemandModule,
-    SwapModule,
     BumpModule,
     TermModule,
     ReportModule,

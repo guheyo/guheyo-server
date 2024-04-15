@@ -1,9 +1,13 @@
 import { OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
+import { CreatePostInput } from '@lib/domains/post/application/commands/create-post/create-post.input';
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import { IsDate, IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreateOfferInput {
+  @Field(() => CreatePostInput)
+  post: CreatePostInput;
+
   @IsUUID()
   @Field(() => ID)
   id: string;
@@ -20,12 +24,17 @@ export class CreateOfferInput {
 
   @IsString()
   @Field()
-  name: string;
+  businessFunction: string;
 
   @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
-  description?: string;
+  name0?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  name1?: string;
 
   @IsInt()
   @Field(() => Int)
@@ -44,31 +53,6 @@ export class CreateOfferInput {
   shippingType: string;
 
   @IsString()
-  @Field()
-  businessFunction: string;
-
-  @IsString()
   @Field(() => String, { defaultValue: OFFER_OPEN })
   status: string;
-
-  @IsString()
-  @Field()
-  source: string;
-
-  @IsUUID()
-  @Field(() => ID)
-  groupId: string;
-
-  @IsUUID()
-  @Field()
-  productCategoryId: string;
-
-  @IsUUID()
-  @Field(() => ID)
-  sellerId: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => String, { nullable: true })
-  brandId?: string;
 }

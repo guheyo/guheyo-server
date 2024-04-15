@@ -5,13 +5,10 @@ import { DeleteOfferArgs } from './delete-offer.args';
 export class DeleteOfferCommand implements ICommand {
   id: string;
 
-  sellerId: string;
-
   user: MyUserResponse;
 
   constructor({ args, user }: { args: DeleteOfferArgs; user: MyUserResponse }) {
     this.id = args.id;
-    this.sellerId = args.sellerId;
     this.user = user;
   }
 }

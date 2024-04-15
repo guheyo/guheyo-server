@@ -20,15 +20,19 @@ export class OfferRepository
         id,
       },
       include: {
-        seller: {
+        post: {
           include: {
-            socialAccounts: true,
-            members: {
+            user: {
               include: {
-                group: true,
-                roles: {
-                  orderBy: {
-                    position: 'asc',
+                socialAccounts: true,
+                members: {
+                  include: {
+                    group: true,
+                    roles: {
+                      orderBy: {
+                        position: 'asc',
+                      },
+                    },
                   },
                 },
               },
@@ -44,23 +48,32 @@ export class OfferRepository
   async create(offer: OfferEntity): Promise<void> {
     await this.prismaService.offer.create({
       data: {
+        post: {
+          create: {
+            ..._.pick(offer.post, [
+              'type',
+              'title',
+              'content',
+              'userAgent',
+              'ipAddress',
+              'groupId',
+              'categoryId',
+              'userId',
+            ]),
+          },
+        },
         ..._.pick(offer, [
           'id',
           'createdAt',
           'updatedAt',
-          'name',
-          'description',
+          'businessFunction',
+          'name0',
+          'name1',
           'price',
           'priceCurrency',
           'shippingCost',
           'shippingType',
-          'businessFunction',
-          'groupId',
-          'brandId',
-          'productCategoryId',
-          'sellerId',
           'status',
-          'source',
         ]),
         bumpedAt: offer.createdAt,
       },
@@ -69,24 +82,37 @@ export class OfferRepository
 
   async createMany(offers: OfferEntity[]): Promise<void> {
     await this.prismaService.offer.createMany({
-      data: offers.map((offer) =>
-        _.pick(offer, [
+      data: offers.map((offer) => ({
+        postId: offer.post.id,
+        post: {
+          create: {
+            ..._.pick(offer.post, [
+              'type',
+              'title',
+              'content',
+              'userAgent',
+              'ipAddress',
+              'groupId',
+              'categoryId',
+              'userId',
+            ]),
+          },
+        },
+        ..._.pick(offer, [
           'id',
-          'name',
-          'description',
+          'createdAt',
+          'updatedAt',
+          'businessFunction',
+          'name0',
+          'name1',
           'price',
           'priceCurrency',
           'shippingCost',
           'shippingType',
-          'businessFunction',
-          'groupId',
-          'brandId',
-          'productCategoryId',
-          'sellerId',
           'status',
-          'source',
         ]),
-      ),
+        bumpedAt: offer.createdAt,
+      })),
     });
   }
 
@@ -95,25 +121,23 @@ export class OfferRepository
       where: {
         id: offer.id,
       },
-      data: _.pick(offer, [
-        'bumpedAt',
-        'name',
-        'description',
-        'price',
-        'priceCurrency',
-        'shippingCost',
-        'shippingType',
-        'businessFunction',
-        'groupId',
-        'brandId',
-        'productCategoryId',
-        'sellerId',
-        'status',
-        'isHidden',
-        'pending',
-        'reportCount',
-        'reportCommentCount',
-      ]),
+      data: {
+        post: {
+          update: {
+            ..._.pick(offer.post, ['archivedAt', 'pending', 'title', 'content', 'categoryId']),
+          },
+        },
+        ..._.pick(offer, [
+          'bumpedAt',
+          'name0',
+          'name1',
+          'price',
+          'priceCurrency',
+          'shippingCost',
+          'shippingType',
+          'status',
+        ]),
+      },
     });
   }
 

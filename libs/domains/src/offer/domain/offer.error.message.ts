@@ -1,5 +1,5 @@
 export enum OfferErrorMessage {
-  OFFER_IS_NOT_FOUND = 'Offer is not found',
+  OFFER_NOT_FOUND = 'Offer not found',
   OFFER_FROM_REPORTED_NOT_FOUND = 'Offer from reported not found',
   OFFER_CREATION_FAILED = 'Offer creation failed',
   OFFER_CHANGES_FROM_INCOMPATIBLE_PLATFORMS = 'Offer changes from incompatible platforms',

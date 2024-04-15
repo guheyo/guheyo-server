@@ -3,9 +3,7 @@ import { IEvent } from '@nestjs/cqrs';
 export class BumpedEvent implements IEvent {
   id: string;
 
-  type: string;
-
-  refId: string;
+  offerId: string;
 
   oldPrice: number;
 
@@ -13,20 +11,17 @@ export class BumpedEvent implements IEvent {
 
   constructor({
     id,
-    type,
-    refId,
+    offerId,
     oldPrice,
     newPrice,
   }: {
     id: string;
-    type: string;
-    refId: string;
+    offerId: string;
     oldPrice: number;
     newPrice: number;
   }) {
     this.id = id;
-    this.type = type;
-    this.refId = refId;
+    this.offerId = offerId;
     this.oldPrice = oldPrice;
     this.newPrice = newPrice;
   }

@@ -3,8 +3,8 @@ import { ICommand, Saga, ofType } from '@nestjs/cqrs';
 import { Observable, filter, map } from 'rxjs';
 import { OfferCreatedEvent } from '@lib/domains/offer/application/events/offer-created/offer-created.event';
 import { ConfigService } from '@nestjs/config';
-import { DemandCreatedEvent } from '@lib/domains/demand/application/events/demand-created/demand-created.event';
-import { SwapCreatedEvent } from '@lib/domains/swap/application/events/swap-created/swap-created.event';
+import { OFFER_BUSINESS_FUNCTIONS } from '@lib/domains/offer/domain/offer.types';
+import { includes } from 'lodash';
 import { SendDiscordWebhookCommand } from '../commands/send-discord-webhook/send-discord-webhook.command';
 
 @Injectable()
@@ -15,57 +15,48 @@ export class DiscordWebhookSagas {
   offerCreated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
       ofType(OfferCreatedEvent),
-      filter((event) => event.source === 'mobile' || event.source === 'browser'),
+      filter((event) => event.userAgent !== 'discord'),
       filter((event) => !!event.slug),
+      filter((event) => includes(OFFER_BUSINESS_FUNCTIONS, event.businessFunction)),
       map(
         (event) =>
           new SendDiscordWebhookCommand({
-            color: 0xef4444,
+            color: this.parseColor(event.businessFunction),
             username: event.username,
             avatarURL: event.avatarURL,
-            title: `[팝니다] ${event.name} - ${event.price}`,
-            url: this.parseUrl({ type: 'offer', slug: event.slug! }),
+            title: this.parseTitle({
+              businessFunction: event.businessFunction,
+              title: event.title,
+              price: event.price,
+            }),
+            url: this.parseUrl({ businessFunction: event.businessFunction, slug: event.slug! }),
           }),
       ),
     );
 
-  @Saga()
-  demandCreated = (events$: Observable<any>): Observable<ICommand> =>
-    events$.pipe(
-      ofType(DemandCreatedEvent),
-      filter((event) => event.source === 'mobile' || event.source === 'browser'),
-      filter((event) => !!event.slug),
-      map(
-        (event) =>
-          new SendDiscordWebhookCommand({
-            color: 0x22c55e,
-            username: event.username,
-            avatarURL: event.avatarURL,
-            title: `[삽니다] ${event.name} - ${event.price}`,
-            url: this.parseUrl({ type: 'demand', slug: event.slug! }),
-          }),
-      ),
-    );
+  parseColor(businessFunction: string) {
+    if (businessFunction === 'sell') return 0xef4444;
+    if (businessFunction === 'buy') return 0x22c55e;
+    // SWAP
+    return 0xf97316;
+  }
 
-  @Saga()
-  swapCreated = (events$: Observable<any>): Observable<ICommand> =>
-    events$.pipe(
-      ofType(SwapCreatedEvent),
-      filter((event) => event.source === 'mobile' || event.source === 'browser'),
-      filter((event) => !!event.slug),
-      map(
-        (event) =>
-          new SendDiscordWebhookCommand({
-            color: 0xf97316,
-            username: event.username,
-            avatarURL: event.avatarURL,
-            title: `[교환합니다] ${event.name} ${event.price ? `- 내 추가금 +${event.price}` : ''}`,
-            url: this.parseUrl({ type: 'swap', slug: event.slug! }),
-          }),
-      ),
-    );
+  parseTitle({
+    businessFunction,
+    title,
+    price,
+  }: {
+    businessFunction: string;
+    title: string;
+    price: number;
+  }) {
+    if (businessFunction === 'sell') return `[삽니다] ${title} - ${price}`;
+    if (businessFunction === 'buy') return `[삽니다] ${title} - ${price}`;
+    // swap
+    return `[교환합니다] ${title} ${price ? `- 내 추가금 +${price}` : ''}`;
+  }
 
-  parseUrl({ type, slug }: { type: string; slug: string }) {
-    return `${this.configService.get('frontend.host')}/${type}/${slug}`;
+  parseUrl({ businessFunction, slug }: { businessFunction: string; slug: string }) {
+    return `${this.configService.get('frontend.host')}/${businessFunction}/${slug}`;
   }
 }

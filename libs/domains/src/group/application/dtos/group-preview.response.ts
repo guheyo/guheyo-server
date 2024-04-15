@@ -1,6 +1,5 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { OfferPreviewResponse } from '@lib/domains/offer/application/dtos/offer-preview.response';
-import { DemandPreviewResponse } from '@lib/domains/demand/application/dtos/demand-preview.response';
 
 @ObjectType()
 export class GroupPreviewResponse {
@@ -23,10 +22,10 @@ export class GroupPreviewResponse {
   position: number;
 
   @Field(() => [OfferPreviewResponse])
-  offers: OfferPreviewResponse[];
+  sells: OfferPreviewResponse[];
 
-  @Field(() => [DemandPreviewResponse])
-  demands: DemandPreviewResponse[];
+  @Field(() => [OfferPreviewResponse])
+  buys: OfferPreviewResponse[];
 
   constructor(partial: Partial<GroupPreviewResponse>) {
     Object.assign(this, partial);

@@ -17,13 +17,9 @@ export class FindGroupsHandler extends PrismaQueryHandler<FindGroupsQuery, Group
         position: 'asc',
       },
       include: {
-        productCategories: {
+        categories: {
           orderBy: {
-            position: 'asc',
-          },
-        },
-        postCategories: {
-          orderBy: {
+            type: 'asc',
             position: 'asc',
           },
         },

@@ -1737,7 +1737,7 @@ __metadata:
     "@nestjs/passport": ^10.0.3
     "@nestjs/swagger": ^7.1.8
     "@nestjs/testing": ^10.2.1
-    "@prisma/client": ^5.8.1
+    "@prisma/client": ^5.12.1
     "@types/passport": ^1.0.16
     "@types/passport-discord": ^0.1.13
     "@types/passport-jwt": ^4.0.1
@@ -1773,7 +1773,7 @@ __metadata:
     "@nestjs/cqrs": ^10.2.6
     "@nestjs/graphql": ^12.0.8
     "@nestjs/testing": ^10.2.4
-    "@prisma/client": ^5.8.1
+    "@prisma/client": ^5.12.1
     "@types/bcrypt": ^5.0.2
     "@types/mime-types": ^2.1.1
     axios: ^1.5.0
@@ -2774,15 +2774,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:^5.8.1":
-  version: 5.8.1
-  resolution: "@prisma/client@npm:5.8.1"
+"@prisma/client@npm:^5.12.1":
+  version: 5.12.1
+  resolution: "@prisma/client@npm:5.12.1"
   peerDependencies:
     prisma: "*"
   peerDependenciesMeta:
     prisma:
       optional: true
-  checksum: 3ba6e8b2d22a67599299b7bf551526d35551291ecc147a52b1d4c107374e1754fe6815c7cd0b6af875dfd903475e03a9db3f3c9eb4855e9003327c35e8ee398e
+  checksum: fcea460faf6256fdb6e948bad87a6fe881dffdc6e1f83f6a34297d17b289b88982bc19c999acf56a6e9de6edda6c46aefe452a069f0aef2ef083329a30ab5508
   languageName: node
   linkType: hard
 
