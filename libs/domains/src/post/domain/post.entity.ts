@@ -2,6 +2,8 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { REPORT_COMMENTED, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { Type } from 'class-transformer';
+import { TagEntity } from '@lib/domains/tag/domain/tag.entity';
+import { CreatePostProps } from './post.types';
 
 export class PostEntity extends AggregateRoot {
   id: string;
@@ -41,9 +43,20 @@ export class PostEntity extends AggregateRoot {
   @Type()
   user: UserEntity;
 
-  constructor(partial: Partial<PostEntity>) {
+  @Type(() => TagEntity)
+  tags: TagEntity[];
+
+  constructor(props: CreatePostProps) {
     super();
-    Object.assign(this, partial);
+    Object.assign(this, {
+      ...props,
+      tags: props.tagIds.map(
+        (tagId) =>
+          new TagEntity({
+            id: tagId,
+          }),
+      ),
+    });
   }
 
   isAuthorized(userId: string) {
