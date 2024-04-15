@@ -21,7 +21,7 @@ import { SocialAccountModule } from './app/social-account/social-account.module'
 import { MemberModule } from './app/member/member.module';
 import { BumpModule } from './app/bump/bump.module';
 import { DiscordWebhookModule } from './app/discord-webhook/discord-webhook.module';
-import { UserReviewModule } from './app/deal-review/deal-review.module';
+import { UserReviewModule } from './app/user-review/user-review.module';
 import { TagModule } from './app/tag/tag.module';
 
 @Module({
