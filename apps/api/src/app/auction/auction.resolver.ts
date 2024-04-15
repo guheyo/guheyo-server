@@ -11,10 +11,19 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AddBidCommand } from '@lib/domains/auction/application/commands/add-bid/add-bid.command';
 import { CancelBidInput } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.input';
 import { CancelBidCommand } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.command';
-import { PaginatedAuctionsResponse } from '@lib/domains/auction/application/queries/find-auctions/paginated-auctions.response';
-import { FindAuctionsArgs } from '@lib/domains/auction/application/queries/find-auctions/find-auctions.args';
-import { FindAuctionsQuery } from '@lib/domains/auction/application/queries/find-auctions/find-auctions.query';
 import { UseGuards } from '@nestjs/common';
+import { FindAuctionPreviewsArgs } from '@lib/domains/auction/application/queries/find-auction-previews/find-auction-previews.args';
+import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
+import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
+import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
+import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
+import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
+import { ADMIN_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
+import { PaginatedAuctionPreviewsResponse } from '@lib/domains/auction/application/queries/find-auction-previews/paginated-auction-previews.response';
+import { FindAuctionPreviewsQuery } from '@lib/domains/auction/application/queries/find-auction-previews/find-auction-previews.query';
+import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -33,41 +42,70 @@ export class AuctionResolver {
     return this.queryBus.execute(query);
   }
 
-  @Query(() => PaginatedAuctionsResponse)
-  async findAuctions(
-    @Args() findAuctionsArgs: FindAuctionsArgs,
-  ): Promise<PaginatedAuctionsResponse> {
-    const query = new FindAuctionsQuery(findAuctionsArgs);
+  @UseGuards(OptionalJwtUserGuard)
+  @Query(() => PaginatedAuctionPreviewsResponse)
+  async findAuctionPreviews(
+    @Args() args: FindAuctionPreviewsArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<PaginatedAuctionPreviewsResponse> {
+    const query = new FindAuctionPreviewsQuery({ args, userId: user.id });
     return this.queryBus.execute(query);
   }
 
+  @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
+  @AllowlistRoleNames([])
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
-  async createAuction(@Args('input') input: CreateAuctionInput): Promise<string> {
-    await this.commandBus.execute(new CreateAuctionCommand(input));
+  async createAuction(
+    @Args('input') input: CreateAuctionInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new CreateAuctionCommand({ input, user }));
     return input.id;
   }
 
+  @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
+  @AllowlistRoleNames([])
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
-  async updateAuction(@Args('input') input: UpdateAuctionInput): Promise<string> {
-    await this.commandBus.execute(new UpdateAuctionCommand(input));
+  async updateAuction(
+    @Args('input') input: UpdateAuctionInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new UpdateAuctionCommand({ input, user }));
     return input.id;
   }
 
+  @BlocklistRoleNames([])
+  @AllowlistRoleNames([ADMIN_ROLE_NAME])
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
   async deleteAuction(@Args('id', { type: () => ID }) id: string): Promise<string> {
     await this.commandBus.execute(new DeleteAuctionCommand(id));
     return id;
   }
 
+  @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
+  @AllowlistRoleNames([])
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
-  async addBid(@Args('input') input: AddBidInput): Promise<string> {
-    await this.commandBus.execute(new AddBidCommand(input));
+  async addBid(
+    @Args('input') input: AddBidInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new AddBidCommand({ input, user }));
     return input.auctionId;
   }
 
+  @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
+  @AllowlistRoleNames([])
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
-  async cancelBid(@Args('input') input: CancelBidInput): Promise<string> {
-    await this.commandBus.execute(new CancelBidCommand(input));
+  async cancelBid(
+    @Args('input') input: CancelBidInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new CancelBidCommand({ input, user }));
     return input.auctionId;
   }
 }

@@ -14,7 +14,7 @@ export class DeleteAuctionHandler implements ICommandHandler<DeleteAuctionComman
 
   async execute(command: DeleteAuctionCommand): Promise<void> {
     const auction = await this.auctionLoadPort.findById(command.id);
-    if (!auction) throw new NotFoundException(AuctionErrorMessage.AUCTION_IS_NOT_FOUND);
+    if (!auction) throw new NotFoundException(AuctionErrorMessage.AUCTION_NOT_FOUND);
 
     await this.auctionSavePort.delete(auction);
   }

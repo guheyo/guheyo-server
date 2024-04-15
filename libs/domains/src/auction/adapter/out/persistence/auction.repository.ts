@@ -4,9 +4,14 @@ import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repositor
 import { AuctionEntity } from '@lib/domains/auction/domain/auction.entity';
 import { BidSavePort } from '@lib/domains/auction/application/ports/out/bid.save.port';
 import { BidEntity } from '@lib/domains/auction/domain/bid.entity';
+import { AuctionSavePort } from '@lib/domains/auction/application/ports/out/auction.save.port';
+import { AuctionLoadPort } from '@lib/domains/auction/application/ports/out/auction.load.port';
 
 @Injectable()
-export class AuctionRepository extends PrismaRepository<AuctionEntity> implements BidSavePort {
+export class AuctionRepository
+  extends PrismaRepository<AuctionEntity>
+  implements AuctionSavePort, AuctionLoadPort, BidSavePort
+{
   constructor() {
     super(AuctionEntity);
   }
@@ -17,22 +22,48 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> implement
         id,
       },
       include: {
-        seller: {
+        post: {
           include: {
-            socialAccounts: true,
-            members: {
+            user: {
               include: {
-                group: true,
-                roles: {
-                  orderBy: {
-                    position: 'asc',
+                socialAccounts: true,
+                members: {
+                  include: {
+                    group: true,
+                    roles: {
+                      orderBy: {
+                        position: 'asc',
+                      },
+                    },
                   },
                 },
+              },
+            },
+            tags: {
+              orderBy: {
+                position: 'asc',
               },
             },
           },
         },
         bids: {
+          include: {
+            user: {
+              include: {
+                socialAccounts: true,
+                members: {
+                  include: {
+                    group: true,
+                    roles: {
+                      orderBy: {
+                        position: 'asc',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
           orderBy: {
             createdAt: 'desc',
           },
@@ -43,43 +74,37 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> implement
   }
 
   async create(auction: AuctionEntity): Promise<void> {
+    const post = await this.prismaService.post.create({
+      data: {
+        ..._.pick(auction.post, [
+          'type',
+          'title',
+          'content',
+          'userAgent',
+          'ipAddress',
+          'groupId',
+          'categoryId',
+          'userId',
+        ]),
+      },
+    });
     await this.prismaService.auction.create({
-      data: _.pick(auction, [
-        'id',
-        'createdAt',
-        'endedAt',
-        'name',
-        'description',
-        'businessFunction',
-        'groupId',
-        'brandId',
-        'productCategoryId',
-        'sellerId',
-        'status',
-        'source',
-      ]),
+      data: {
+        ..._.pick(auction, [
+          'id',
+          'originalEndDate',
+          'extendedEndDate',
+          'shippingCost',
+          'shippingType',
+          'status',
+        ]),
+        postId: post.id,
+      },
     });
   }
 
   async createMany(auctions: AuctionEntity[]): Promise<void> {
-    await this.prismaService.auction.createMany({
-      data: auctions.map((auction) =>
-        _.pick(auction, [
-          'id',
-          'createdAt',
-          'endedAt',
-          'name',
-          'description',
-          'businessFunction',
-          'groupId',
-          'brandId',
-          'productCategoryId',
-          'sellerId',
-          'status',
-          'source',
-        ]),
-      ),
-    });
+    await auctions.map(async (auction) => this.create(auction));
   }
 
   async save(auction: AuctionEntity): Promise<void> {
@@ -87,17 +112,21 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> implement
       where: {
         id: auction.id,
       },
-      data: _.pick(auction, [
-        'name',
-        'description',
-        'businessFunction',
-        'groupId',
-        'brandId',
-        'productCategoryId',
-        'sellerId',
-        'status',
-        'pending',
-      ]),
+      data: {
+        post: {
+          update: {
+            ..._.pick(auction.post, ['pending', 'content']),
+          },
+        },
+        ..._.pick(auction, [
+          'id',
+          'extendedEndDate',
+          'extensionCount',
+          'currentBidPrice',
+          'hammerPrice',
+          'status',
+        ]),
+      },
     });
   }
 
@@ -116,7 +145,7 @@ export class AuctionRepository extends PrismaRepository<AuctionEntity> implement
       },
       data: {
         bids: {
-          create: _.pick(bid, ['id', 'price', 'priceCurrency', 'bidderId', 'status', 'source']),
+          create: _.pick(bid, ['id', 'price', 'priceCurrency', 'userId', 'status']),
         },
       },
     });

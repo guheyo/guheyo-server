@@ -1,4 +1,5 @@
 import { ICommand } from '@nestjs/cqrs/dist';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { AddBidInput } from './add-bid.input';
 
 export class AddBidCommand implements ICommand {
@@ -10,16 +11,13 @@ export class AddBidCommand implements ICommand {
 
   auctionId: string;
 
-  bidderId: string;
+  user: MyUserResponse;
 
-  source: string;
-
-  constructor(input: AddBidInput) {
+  constructor({ input, user }: { input: AddBidInput; user: MyUserResponse }) {
     this.id = input.id;
     this.price = input.price;
     this.priceCurrency = input.priceCurrency;
     this.auctionId = input.auctionId;
-    this.bidderId = input.bidderId;
-    this.source = input.source;
+    this.user = user;
   }
 }

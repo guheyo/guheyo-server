@@ -9,13 +9,13 @@ export class OfferPreviewResponse {
   @Field(() => ID)
   id: string;
 
-  @Field()
+  @Field(() => Date)
   createdAt: Date;
 
-  @Field()
+  @Field(() => Date)
   updatedAt: Date;
 
-  @Field()
+  @Field(() => Date)
   bumpedAt: Date;
 
   @Field()
