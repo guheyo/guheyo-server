@@ -32,7 +32,6 @@ input CommentReportInput {
   content: String!
   id: ID!
   reportId: ID!
-  userId: ID!
 }
 
 type CommentResponse {
@@ -49,20 +48,6 @@ input CreateCommentInput {
   id: ID!
   postId: ID!
   userId: ID!
-}
-
-input CreateUserReviewInput {
-  authorId: ID!
-  content: String
-  groupId: ID!
-  id: ID!
-  mannerTagIds: [String!]!
-  rating: Float!
-  refId: ID!
-  refVersionId: ID!
-  revieweeId: ID!
-  title: String!
-  type: String!
 }
 
 input CreateGroupInput {
@@ -97,6 +82,7 @@ input CreatePostInput {
   categoryId: ID!
   content: String!
   groupId: ID!
+  tagIds: [String!]!
   title: String!
   type: String!
 }
@@ -141,6 +127,16 @@ input CreateUserImageInput {
   url: String!
   userId: ID!
   width: Int
+}
+
+input CreateUserReviewInput {
+  auctionId: ID
+  id: ID!
+  offerId: ID
+  post: CreatePostInput!
+  rating: Float!
+  reviewedUserId: ID!
+  type: String!
 }
 
 """
@@ -213,7 +209,6 @@ type Mutation {
   bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
   commentReport(input: CommentReportInput!): String!
   createComment(input: CreateCommentInput!): String!
-  createUserReview(input: CreateUserReviewInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
   createOffer(input: CreateOfferInput!): String!
@@ -221,6 +216,7 @@ type Mutation {
   createRole(input: CreateRoleInput!): String!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
   createUserImage(input: CreateUserImageInput!): String!
+  createUserReview(input: CreateUserReviewInput!): String!
   deleteOffer(id: ID!): String!
   deleteRole(id: ID!): String!
   deleteUserImage(id: ID!): String!
@@ -374,7 +370,7 @@ type Query {
   findRoleById(id: ID!): RoleResponse
   findTags: [TagResponse!]!
   findTerm(name: String!): TermResponse
-  findUser(provider: String, sessionToken: String, socialId: String, username: String): UserResponse
+  findUser(provider: String, socialId: String, username: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
@@ -383,15 +379,15 @@ type Query {
 }
 
 type ReportPreviewResponse {
-  content: String
   createdAt: DateTime!
+  description: String
   groupId: ID!
   id: ID!
-  refId: ID!
-  refVersionId: ID!
+  reason: String!
+  reportedCommentId: ID
+  reportedPostId: ID
   reportedUser: AuthorResponse
   status: String!
-  title: String!
   type: String!
   updatedAt: DateTime!
 }
@@ -403,15 +399,15 @@ type ReportPreviewResponseEdge {
 
 type ReportResponse {
   comments: [CommentResponse!]!
-  content: String
   createdAt: DateTime!
+  description: String
   groupId: ID!
   id: ID!
-  refId: ID!
-  refVersionId: ID!
+  reason: String!
+  reportedCommentId: ID
+  reportedPostId: ID
   reportedUser: AuthorResponse
   status: String!
-  title: String!
   type: String!
   updatedAt: DateTime!
 }
