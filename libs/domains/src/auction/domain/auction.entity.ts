@@ -49,8 +49,13 @@ export class AuctionEntity extends AggregateRoot {
     Object.assign(this, partial);
   }
 
-  create() {
-    this.apply(new AuctionCreatedEvent(this.id));
+  create(tagIds: string[]) {
+    this.apply(
+      new AuctionCreatedEvent({
+        id: this.id,
+        tagIds,
+      }),
+    );
   }
 
   update(props: UpdateAuctionProps) {
