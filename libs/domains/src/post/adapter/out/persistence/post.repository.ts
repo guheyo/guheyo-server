@@ -89,4 +89,19 @@ export class PostRepository
       },
     });
   }
+
+  async connectTags(postId: string, tagIds: string[]): Promise<void> {
+    await this.prismaService.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        tags: {
+          connect: tagIds.map((tagId) => ({
+            id: tagId,
+          })),
+        },
+      },
+    });
+  }
 }
