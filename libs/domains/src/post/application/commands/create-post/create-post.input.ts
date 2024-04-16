@@ -3,7 +3,8 @@ import { IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreatePostInput {
-  @Field(() => String)
+  @IsString()
+  @Field()
   type: string;
 
   @IsString()
@@ -22,6 +23,7 @@ export class CreatePostInput {
   @Field(() => ID)
   categoryId: string;
 
+  @IsString({ each: true })
   @Field(() => [String])
   tagIds: string[];
 }

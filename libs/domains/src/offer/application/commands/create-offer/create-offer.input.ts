@@ -1,10 +1,13 @@
 import { OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
 import { CreatePostInput } from '@lib/domains/post/application/commands/create-post/create-post.input';
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { IsDate, IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDate, IsNumber, IsOptional, IsString, IsUUID, ValidateNested } from 'class-validator';
 
 @InputType()
 export class CreateOfferInput {
+  @ValidateNested()
+  @Type(() => CreatePostInput)
   @Field(() => CreatePostInput)
   post: CreatePostInput;
 
@@ -36,7 +39,7 @@ export class CreateOfferInput {
   @Field(() => String, { nullable: true })
   name1?: string;
 
-  @IsInt()
+  @IsNumber()
   @Field(() => Int)
   price: number;
 
@@ -44,7 +47,7 @@ export class CreateOfferInput {
   @Field()
   priceCurrency: string;
 
-  @IsInt()
+  @IsNumber()
   @Field(() => Int)
   shippingCost: number;
 
