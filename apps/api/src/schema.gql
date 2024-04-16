@@ -121,7 +121,6 @@ input CreateUserImageInput {
   position: Int!
   refId: ID!
   size: Int
-  source: String!
   type: String!
   url: String!
   userId: ID!
@@ -315,11 +314,13 @@ type PaginatedUsersResponse {
 
 type PostPreviewResponse {
   archivedAt: DateTime
+  auctionId: String
   categoryId: String!
   content: String
   createdAt: DateTime!
   groupId: String!
   id: ID!
+  offerId: String
   pending: String
   reportCommentCount: Int!
   reportCount: Int!
@@ -329,10 +330,12 @@ type PostPreviewResponse {
   type: String!
   updatedAt: DateTime!
   user: UserResponse!
+  userReviewId: String
 }
 
 type PostResponse {
   archivedAt: DateTime
+  auctionId: String
   category: CategoryResponse!
   categoryId: String!
   content: String
@@ -341,6 +344,7 @@ type PostResponse {
   groupId: String!
   id: ID!
   images: [UserImageResponse!]!
+  offerId: String
   pending: String
   reportCommentCount: Int!
   reportCount: Int!
@@ -350,6 +354,7 @@ type PostResponse {
   type: String!
   updatedAt: DateTime!
   user: AuthorResponse!
+  userReviewId: String
 }
 
 type Query {
@@ -364,6 +369,7 @@ type Query {
   findOffer(id: ID, slug: String): OfferResponse
   findOfferCount(businessFunction: String!, categoryId: ID!, fromHours: Int!, userId: ID!): Float!
   findOfferPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
+  findPostPreview(id: ID!): PostPreviewResponse!
   findReport(id: ID!): ReportResponse!
   findReportPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
@@ -536,7 +542,6 @@ type UserImageResponse {
   position: Int!
   refId: ID!
   size: Int
-  source: String!
   type: String!
   updatedAt: DateTime!
   url: String!
