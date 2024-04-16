@@ -6,7 +6,7 @@ import { AuctionPreviewResponse } from './auction-preview.response';
 @ObjectType()
 export class AuctionResponse extends AuctionPreviewResponse {
   @Field(() => PostResponse)
-  post: PostResponse;
+  declare post: PostResponse;
 
   @Field(() => [BidResponse])
   bids: BidResponse[];
@@ -14,6 +14,5 @@ export class AuctionResponse extends AuctionPreviewResponse {
   constructor(partial: Partial<AuctionResponse>) {
     super(partial);
     Object.assign(this, partial);
-    this.post = new PostResponse(partial.post!);
   }
 }

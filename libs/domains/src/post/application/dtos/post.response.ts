@@ -17,11 +17,10 @@ export class PostResponse extends PostPreviewResponse {
   category: CategoryResponse;
 
   @Field(() => AuthorResponse)
-  user: AuthorResponse;
+  declare user: AuthorResponse;
 
   constructor(partial: Partial<PostResponse>) {
     super(partial);
     Object.assign(this, partial);
-    this.user = new AuthorResponse(partial.user!);
   }
 }
