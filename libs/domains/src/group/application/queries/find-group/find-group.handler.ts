@@ -21,6 +21,11 @@ export class FindGroupHandler extends PrismaQueryHandler<FindGroupQuery, GroupRe
             position: 'asc',
           },
         },
+        roles: {
+          orderBy: {
+            position: 'asc',
+          },
+        },
       },
     });
     return this.parseResponse(group);
