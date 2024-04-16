@@ -88,14 +88,13 @@ input CreatePostInput {
 }
 
 input CreateReportInput {
-  authorId: ID!
-  content: String
+  description: String
   groupId: ID!
   id: ID!
-  refId: ID!
-  refVersionId: ID!
+  reason: String!
+  reportedCommentId: ID
+  reportedPostId: ID
   reportedUserId: ID!
-  title: String!
   type: String!
 }
 
@@ -350,7 +349,7 @@ type PostResponse {
   title: String!
   type: String!
   updatedAt: DateTime!
-  user: UserResponse!
+  user: AuthorResponse!
 }
 
 type Query {
