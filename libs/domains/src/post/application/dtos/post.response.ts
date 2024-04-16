@@ -22,6 +22,6 @@ export class PostResponse extends PostPreviewResponse {
   constructor(partial: Partial<PostResponse>) {
     super(partial);
     Object.assign(this, partial);
-    this.user = partial.user!;
+    this.user = new AuthorResponse(partial.user!);
   }
 }

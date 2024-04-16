@@ -10,6 +10,6 @@ export class OfferResponse extends OfferPreviewResponse {
   constructor(partial: Partial<OfferResponse>) {
     super(partial);
     Object.assign(this, partial);
-    this.post = partial.post!;
+    this.post = new PostResponse(partial.post!);
   }
 }

@@ -14,6 +14,6 @@ export class AuctionResponse extends AuctionPreviewResponse {
   constructor(partial: Partial<AuctionResponse>) {
     super(partial);
     Object.assign(this, partial);
-    this.post = partial.post!;
+    this.post = new PostResponse(partial.post!);
   }
 }
