@@ -1,9 +1,12 @@
 import { UpdatePostInput } from '@lib/domains/post/application/commands/update-post/update-post.input';
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsInt, IsOptional, IsString, IsUUID, ValidateNested } from 'class-validator';
 
 @InputType()
 export class UpdateOfferInput {
+  @ValidateNested()
+  @Type(() => UpdatePostInput)
   @Field(() => UpdatePostInput)
   post: UpdatePostInput;
 

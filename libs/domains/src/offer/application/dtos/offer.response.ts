@@ -5,11 +5,10 @@ import { OfferPreviewResponse } from './offer-preview.response';
 @ObjectType()
 export class OfferResponse extends OfferPreviewResponse {
   @Field(() => PostResponse)
-  post: PostResponse;
+  declare post: PostResponse;
 
   constructor(partial: Partial<OfferResponse>) {
     super(partial);
     Object.assign(this, partial);
-    this.post = partial.post!;
   }
 }

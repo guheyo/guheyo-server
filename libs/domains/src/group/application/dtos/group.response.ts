@@ -25,11 +25,11 @@ export class GroupResponse {
   @Field(() => Int, { nullable: true })
   position: number;
 
-  @Field(() => [RoleResponse])
-  roles: RoleResponse[];
-
   @Field(() => [CategoryResponse])
   categories: CategoryResponse[];
+
+  @Field(() => [RoleResponse])
+  roles: RoleResponse[];
 
   constructor(partial: Partial<GroupResponse>) {
     Object.assign(this, partial);
