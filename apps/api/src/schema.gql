@@ -365,6 +365,7 @@ type Query {
   findOfferPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
   findPostPreview(id: ID!): PostPreviewResponse!
   findReport(id: ID!): ReportResponse!
+  findReportComment(reportId: ID!): ReportCommentResponse!
   findReportPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
   findTags: [TagResponse!]!
@@ -375,6 +376,15 @@ type Query {
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   findVersion(id: ID!): VersionResponse
   findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
+}
+
+type ReportCommentResponse {
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  reportId: ID!
+  updatedAt: DateTime!
+  user: AuthorResponse!
 }
 
 type ReportPreviewResponse {
@@ -397,7 +407,7 @@ type ReportPreviewResponseEdge {
 }
 
 type ReportResponse {
-  comments: [CommentResponse!]!
+  comments: [ReportCommentResponse!]!
   createdAt: DateTime!
   description: String
   groupId: ID!
@@ -473,7 +483,6 @@ type TermResponse {
 input UpdateCommentInput {
   content: String!
   id: ID!
-  userId: ID!
 }
 
 input UpdateGroupInput {

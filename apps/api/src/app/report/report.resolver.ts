@@ -21,6 +21,9 @@ import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { FindLastReportQuery } from '@lib/domains/report/application/queries/find-last-report/find-last-report.query';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
+import { ReportCommentResponse } from '@lib/domains/report/application/dtos/report-comment.response';
+import { FindReportCommentArgs } from '@lib/domains/report/application/queries/find-report-comment/find-report-comment.args';
+import { FindReportCommentQuery } from '@lib/domains/report/application/queries/find-report-comment/find-report-comment.query';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
@@ -55,6 +58,12 @@ export class ReportResolver {
     const query = new FindLastReportQuery({
       user,
     });
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => ReportCommentResponse)
+  async findReportComment(@Args() args: FindReportCommentArgs) {
+    const query = new FindReportCommentQuery({ args });
     return this.queryBus.execute(query);
   }
 

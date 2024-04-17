@@ -1,11 +1,11 @@
-import { CommentResponse } from '@lib/domains/comment/application/dtos/comment.response';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { ReportPreviewResponse } from './report-preview.response';
+import { ReportCommentResponse } from './report-comment.response';
 
 @ObjectType()
 export class ReportResponse extends ReportPreviewResponse {
-  @Field(() => [CommentResponse])
-  comments: CommentResponse[];
+  @Field(() => [ReportCommentResponse])
+  comments: ReportCommentResponse[];
 
   constructor(partial: Partial<ReportResponse>) {
     super(partial);
