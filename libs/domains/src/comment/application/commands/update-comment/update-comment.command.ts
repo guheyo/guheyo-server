@@ -5,15 +5,12 @@ import { UpdateCommentInput } from './update-comment.input';
 export class UpdateCommentCommand implements ICommand {
   id: string;
 
-  userId: string;
-
   content: string;
 
   user: MyUserResponse;
 
   constructor({ input, user }: { input: UpdateCommentInput; user: MyUserResponse }) {
     this.id = input.id;
-    this.userId = input.userId;
     this.content = input.content;
     this.user = user;
   }

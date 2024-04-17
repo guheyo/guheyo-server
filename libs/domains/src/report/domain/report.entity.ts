@@ -13,6 +13,7 @@ import { ReportErrorMessage } from './report.error.message';
 import { CheckedReportedUserEvent } from '../application/events/checked-reported-user/checked-reported-user.event';
 import { CreateReportCommentInput } from '../application/commands/create-report-comment/create-report-comment.input';
 import { ReportCommentedEvent } from '../application/events/report-commented/report-commented.event';
+import { ReportCommentEntity } from './report-comment.entity';
 
 export class ReportEntity extends AggregateRoot {
   id: string;
@@ -48,7 +49,8 @@ export class ReportEntity extends AggregateRoot {
 
   description: string | null;
 
-  comments: CommentEntity[];
+  @Type(() => ReportCommentEntity)
+  comments: ReportCommentEntity[];
 
   constructor(partial: Partial<ReportEntity>) {
     super();
@@ -110,6 +112,10 @@ export class ReportEntity extends AggregateRoot {
         }),
       );
     }
+  }
+
+  findComment(commentId: string) {
+    return this.comments.find((comment) => comment.id === commentId);
   }
 
   validateSubmitTerm() {

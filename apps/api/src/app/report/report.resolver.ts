@@ -20,6 +20,11 @@ import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { FindLastReportQuery } from '@lib/domains/report/application/queries/find-last-report/find-last-report.query';
+import { ReportCommentResponse } from '@lib/domains/report/application/dtos/report-comment.response';
+import { FindReportCommentArgs } from '@lib/domains/report/application/queries/find-report-comment/find-report-comment.args';
+import { FindReportCommentQuery } from '@lib/domains/report/application/queries/find-report-comment/find-report-comment.query';
+import { UpdateReportCommentInput } from '@lib/domains/report/application/commands/update-report-comment/update-report-comment.input';
+import { UpdateReportCommentCommand } from '@lib/domains/report/application/commands/update-report-comment/update-report-comment.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -58,6 +63,12 @@ export class ReportResolver {
     return this.queryBus.execute(query);
   }
 
+  @Query(() => ReportCommentResponse)
+  async findReportComment(@Args() args: FindReportCommentArgs) {
+    const query = new FindReportCommentQuery({ args });
+    return this.queryBus.execute(query);
+  }
+
   @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
   @AllowlistRoleNames([])
   @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
@@ -71,12 +82,20 @@ export class ReportResolver {
   }
 
   @UseGuards(RequiredJwtUserGuard)
-  @Mutation(() => String)
+  @Mutation(() => ReportCommentResponse)
   async commentReport(
     @Args('input') input: CommentReportInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
-    await this.commandBus.execute(new CommentReportCommand({ input, user }));
-    return input.id;
+  ): Promise<ReportCommentResponse> {
+    return this.commandBus.execute(new CommentReportCommand({ input, user }));
+  }
+
+  @UseGuards(RequiredJwtUserGuard)
+  @Mutation(() => ReportCommentResponse)
+  async updateReportComment(
+    @Args('input') input: UpdateReportCommentInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<ReportCommentResponse> {
+    return this.commandBus.execute(new UpdateReportCommentCommand({ input, user }));
   }
 }
