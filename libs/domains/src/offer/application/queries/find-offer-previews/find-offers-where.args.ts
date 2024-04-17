@@ -1,5 +1,5 @@
 import { ArgsType, Field, ID } from '@nestjs/graphql';
-import { IsOptional } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { GraphQLJSON } from 'graphql-type-json';
 
 @ArgsType()
@@ -26,6 +26,10 @@ export class FindOffersWhereArgs {
   isArchived?: boolean;
 
   // Offer
+  @IsString()
+  @Field(() => String)
+  businessFunction: string;
+
   @IsOptional()
   @Field(() => String, { nullable: true })
   status?: string;

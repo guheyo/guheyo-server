@@ -19,7 +19,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
   }
 
   async execute(query: FindOfferPreviewsQuery): Promise<PaginatedOfferPreviewsResponse> {
-    if (!!query.where?.userId && query.where.userId !== query.userId && query.where?.isArchived)
+    if (!!query.where?.userId && query.where.userId !== query.userId && query.where.isArchived)
       throw new ForbiddenException(OfferErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
 
     const where: Prisma.OfferWhereInput = query.where
@@ -38,6 +38,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
                 },
             title: parseFollowedBySearcher(query.keyword),
           },
+          businessFunction: query.where.businessFunction,
           status: query.where.status,
           bumpedAt: query.where?.bumpedAt
             ? {
