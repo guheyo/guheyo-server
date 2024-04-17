@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
 import { Observable, concatMap, filter, map, of } from 'rxjs';
-import { includes, pick } from 'lodash';
-import { DEAL_TYPES } from '@lib/domains/deal/domain/deal.types';
+import { pick } from 'lodash';
 import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
 import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
 import { CheckPostReportsCommand } from '@lib/domains/post/application/commands/check-post-reports/check-post-reports.command';
@@ -27,7 +26,6 @@ export class ReportSagas {
     events$.pipe(
       ofType(ReportCreatedEvent),
       filter((event) => event.type === 'post'),
-      filter((event) => includes(DEAL_TYPES, event.type)),
       concatMap((event) =>
         of(
           new CheckPostReportsCommand({
@@ -46,7 +44,6 @@ export class ReportSagas {
     events$.pipe(
       ofType(ReportStatusUpdatedEvent),
       filter((event) => event.type === 'post'),
-      filter((event) => includes(DEAL_TYPES, event.type)),
       concatMap((event) =>
         of(
           new CheckPostReportsCommand({

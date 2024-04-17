@@ -205,7 +205,7 @@ type MemberWithRolesResponse {
 
 type Mutation {
   bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
-  commentReport(input: CommentReportInput!): String!
+  commentReport(input: CommentReportInput!): ReportCommentResponse!
   createComment(input: CreateCommentInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
@@ -225,6 +225,7 @@ type Mutation {
   updateComment(input: UpdateCommentInput!): CommentResponse!
   updateGroup(input: UpdateGroupInput!): String!
   updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
+  updateReportComment(input: UpdateReportCommentInput!): ReportCommentResponse!
   updateRole(input: UpdateRoleInput!): String!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
@@ -365,6 +366,7 @@ type Query {
   findOfferPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
   findPostPreview(id: ID!): PostPreviewResponse!
   findReport(id: ID!): ReportResponse!
+  findReportComment(reportId: ID!): ReportCommentResponse!
   findReportPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
   findTags: [TagResponse!]!
@@ -375,6 +377,15 @@ type Query {
   findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
   findVersion(id: ID!): VersionResponse
   findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
+}
+
+type ReportCommentResponse {
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  reportId: ID!
+  updatedAt: DateTime!
+  userId: String!
 }
 
 type ReportPreviewResponse {
@@ -397,7 +408,7 @@ type ReportPreviewResponseEdge {
 }
 
 type ReportResponse {
-  comments: [CommentResponse!]!
+  comments: [ReportCommentResponse!]!
   createdAt: DateTime!
   description: String
   groupId: ID!
@@ -473,7 +484,6 @@ type TermResponse {
 input UpdateCommentInput {
   content: String!
   id: ID!
-  userId: ID!
 }
 
 input UpdateGroupInput {
@@ -503,6 +513,12 @@ input UpdatePostInput {
   content: String
   pending: String
   title: String
+}
+
+input UpdateReportCommentInput {
+  content: String!
+  id: ID!
+  reportId: ID!
 }
 
 input UpdateRoleInput {
