@@ -7,32 +7,29 @@ export class CreateReportCommand implements ICommand {
 
   type: string;
 
-  refId: string;
+  reportedPostId?: string;
 
-  refVersionId: string;
-
-  authorId: string;
+  reportedCommentId?: string;
 
   reportedUserId: string;
 
   groupId: string;
 
-  title: string;
+  reason: string;
 
-  content?: string;
+  description?: string;
 
   user: MyUserResponse;
 
   constructor({ input, user }: { input: CreateReportInput; user: MyUserResponse }) {
     this.id = input.id;
     this.type = input.type;
-    this.refId = input.refId;
-    this.refVersionId = input.refVersionId;
-    this.authorId = input.authorId;
+    this.reportedPostId = input.reportedPostId;
+    this.reportedCommentId = input.reportedCommentId;
     this.reportedUserId = input.reportedUserId;
     this.groupId = input.groupId;
-    this.title = input.title;
-    this.content = input.content;
+    this.reason = input.reason;
+    this.description = input.description;
     this.user = user;
   }
 }

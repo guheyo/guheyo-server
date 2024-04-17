@@ -23,6 +23,7 @@ import { BumpModule } from './app/bump/bump.module';
 import { DiscordWebhookModule } from './app/discord-webhook/discord-webhook.module';
 import { UserReviewModule } from './app/user-review/user-review.module';
 import { TagModule } from './app/tag/tag.module';
+import { PostModule } from './app/post/post.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { TagModule } from './app/tag/tag.module';
     BumpModule,
     TermModule,
     ReportModule,
+    PostModule,
     CommentModule,
     VersionModule,
     DiscordWebhookModule,

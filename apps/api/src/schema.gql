@@ -88,14 +88,13 @@ input CreatePostInput {
 }
 
 input CreateReportInput {
-  authorId: ID!
-  content: String
+  description: String
   groupId: ID!
   id: ID!
-  refId: ID!
-  refVersionId: ID!
+  reason: String!
+  reportedCommentId: ID
+  reportedPostId: ID
   reportedUserId: ID!
-  title: String!
   type: String!
 }
 
@@ -122,7 +121,6 @@ input CreateUserImageInput {
   position: Int!
   refId: ID!
   size: Int
-  source: String!
   type: String!
   url: String!
   userId: ID!
@@ -350,7 +348,7 @@ type PostResponse {
   title: String!
   type: String!
   updatedAt: DateTime!
-  user: UserResponse!
+  user: AuthorResponse!
 }
 
 type Query {
@@ -365,6 +363,7 @@ type Query {
   findOffer(id: ID, slug: String): OfferResponse
   findOfferCount(businessFunction: String!, categoryId: ID!, fromHours: Int!, userId: ID!): Float!
   findOfferPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
+  findPostPreview(id: ID!): PostPreviewResponse!
   findReport(id: ID!): ReportResponse!
   findReportPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
@@ -537,7 +536,6 @@ type UserImageResponse {
   position: Int!
   refId: ID!
   size: Int
-  source: String!
   type: String!
   updatedAt: DateTime!
   url: String!
