@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { ChannelGuard } from '../../../shared/guards/channel.guard';
 
 @Injectable()
-export class DealChannelGuard extends ChannelGuard implements CanActivate {
+export class OfferChannelGuard extends ChannelGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {
     super();
   }
