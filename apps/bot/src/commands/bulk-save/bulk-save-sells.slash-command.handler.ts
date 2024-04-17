@@ -13,7 +13,7 @@ export class BulkSaveSellsSlashCommandHandler extends BulkSaveSlashCommandHandle
     super(offerClient);
   }
 
-  @SlashCommand({ name: 'bulk-save-offers', description: 'Bulk Save Offers' })
+  @SlashCommand({ name: 'bulk-save-sells', description: 'Bulk Save Sells' })
   public async onBuckSaveOffers(
     @Context() [interaction]: SlashCommandContext,
     @Options() { guildName, categoryName, limit }: BulkSaveRequest,
