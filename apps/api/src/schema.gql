@@ -314,13 +314,11 @@ type PaginatedUsersResponse {
 
 type PostPreviewResponse {
   archivedAt: DateTime
-  auctionId: String
   categoryId: String!
   content: String
   createdAt: DateTime!
   groupId: String!
   id: ID!
-  offerId: String
   pending: String
   reportCommentCount: Int!
   reportCount: Int!
@@ -330,12 +328,10 @@ type PostPreviewResponse {
   type: String!
   updatedAt: DateTime!
   user: UserResponse!
-  userReviewId: String
 }
 
 type PostResponse {
   archivedAt: DateTime
-  auctionId: String
   category: CategoryResponse!
   categoryId: String!
   content: String
@@ -344,7 +340,6 @@ type PostResponse {
   groupId: String!
   id: ID!
   images: [UserImageResponse!]!
-  offerId: String
   pending: String
   reportCommentCount: Int!
   reportCount: Int!
@@ -354,7 +349,6 @@ type PostResponse {
   type: String!
   updatedAt: DateTime!
   user: AuthorResponse!
-  userReviewId: String
 }
 
 type Query {
