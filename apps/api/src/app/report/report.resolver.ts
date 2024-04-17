@@ -82,22 +82,20 @@ export class ReportResolver {
   }
 
   @UseGuards(RequiredJwtUserGuard)
-  @Mutation(() => String)
+  @Mutation(() => ReportCommentResponse)
   async commentReport(
     @Args('input') input: CommentReportInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
-    await this.commandBus.execute(new CommentReportCommand({ input, user }));
-    return input.id;
+  ): Promise<ReportCommentResponse> {
+    return this.commandBus.execute(new CommentReportCommand({ input, user }));
   }
 
   @UseGuards(RequiredJwtUserGuard)
-  @Mutation(() => String)
+  @Mutation(() => ReportCommentResponse)
   async updateReportComment(
     @Args('input') input: UpdateReportCommentInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
-    await this.commandBus.execute(new UpdateReportCommentCommand({ input, user }));
-    return input.id;
+  ): Promise<ReportCommentResponse> {
+    return this.commandBus.execute(new UpdateReportCommentCommand({ input, user }));
   }
 }

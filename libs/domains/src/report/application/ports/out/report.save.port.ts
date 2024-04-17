@@ -4,6 +4,6 @@ import { ReportCommentEntity } from '@lib/domains/report/domain/report-comment.e
 import { CreateReportCommentInput } from '../../commands/create-report-comment/create-report-comment.input';
 
 export interface ReportSavePort extends SavePort<ReportEntity> {
-  createComment(input: CreateReportCommentInput): Promise<void>;
-  updateComment(reportComment: ReportCommentEntity): Promise<void>;
+  createComment(input: CreateReportCommentInput): Promise<ReportCommentEntity>;
+  updateComment(reportComment: ReportCommentEntity): Promise<ReportCommentEntity>;
 }

@@ -1,4 +1,3 @@
-import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
@@ -18,8 +17,8 @@ export class ReportCommentResponse {
   @Field(() => String)
   content: string;
 
-  @Field(() => AuthorResponse)
-  user: AuthorResponse;
+  @Field(() => String)
+  userId: string;
 
   constructor(partial: Partial<ReportCommentResponse>) {
     Object.assign(this, partial);

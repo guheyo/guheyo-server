@@ -205,7 +205,7 @@ type MemberWithRolesResponse {
 
 type Mutation {
   bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
-  commentReport(input: CommentReportInput!): String!
+  commentReport(input: CommentReportInput!): ReportCommentResponse!
   createComment(input: CreateCommentInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
@@ -225,7 +225,7 @@ type Mutation {
   updateComment(input: UpdateCommentInput!): CommentResponse!
   updateGroup(input: UpdateGroupInput!): String!
   updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
-  updateReportComment(input: UpdateReportCommentInput!): String!
+  updateReportComment(input: UpdateReportCommentInput!): ReportCommentResponse!
   updateRole(input: UpdateRoleInput!): String!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
@@ -385,7 +385,7 @@ type ReportCommentResponse {
   id: ID!
   reportId: ID!
   updatedAt: DateTime!
-  user: AuthorResponse!
+  userId: String!
 }
 
 type ReportPreviewResponse {

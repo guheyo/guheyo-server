@@ -152,25 +152,20 @@ export class ReportRepository
     });
   }
 
-  async createComment(input: CreateReportCommentInput): Promise<void> {
-    await this.prismaService.report.update({
-      where: {
-        id: input.reportId,
-      },
+  async createComment(input: CreateReportCommentInput): Promise<ReportCommentEntity> {
+    const comment = await this.prismaService.reportComment.create({
       data: {
-        comments: {
-          create: {
-            id: input.id,
-            userId: input.userId,
-            content: input.content,
-          },
-        },
+        id: input.id,
+        reportId: input.reportId,
+        userId: input.userId,
+        content: input.content,
       },
     });
+    return new ReportCommentEntity(comment);
   }
 
-  async updateComment(reportComment: ReportCommentEntity): Promise<void> {
-    await this.prismaService.reportComment.update({
+  async updateComment(reportComment: ReportCommentEntity): Promise<ReportCommentEntity> {
+    const comment = await this.prismaService.reportComment.update({
       where: {
         id: reportComment.id,
       },
@@ -178,5 +173,6 @@ export class ReportRepository
         content: reportComment.content,
       },
     });
+    return new ReportCommentEntity(comment);
   }
 }
