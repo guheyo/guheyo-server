@@ -20,10 +20,12 @@ import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { FindLastReportQuery } from '@lib/domains/report/application/queries/find-last-report/find-last-report.query';
-import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 import { ReportCommentResponse } from '@lib/domains/report/application/dtos/report-comment.response';
 import { FindReportCommentArgs } from '@lib/domains/report/application/queries/find-report-comment/find-report-comment.args';
 import { FindReportCommentQuery } from '@lib/domains/report/application/queries/find-report-comment/find-report-comment.query';
+import { UpdateReportCommentInput } from '@lib/domains/report/application/commands/update-report-comment/update-report-comment.input';
+import { UpdateReportCommentCommand } from '@lib/domains/report/application/commands/update-report-comment/update-report-comment.command';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
@@ -86,6 +88,16 @@ export class ReportResolver {
     @ExtractedUser() user: MyUserResponse,
   ): Promise<string> {
     await this.commandBus.execute(new CommentReportCommand({ input, user }));
+    return input.id;
+  }
+
+  @UseGuards(RequiredJwtUserGuard)
+  @Mutation(() => String)
+  async updateReportComment(
+    @Args('input') input: UpdateReportCommentInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new UpdateReportCommentCommand({ input, user }));
     return input.id;
   }
 }

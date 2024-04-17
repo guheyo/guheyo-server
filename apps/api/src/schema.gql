@@ -225,6 +225,7 @@ type Mutation {
   updateComment(input: UpdateCommentInput!): CommentResponse!
   updateGroup(input: UpdateGroupInput!): String!
   updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
+  updateReportComment(input: UpdateReportCommentInput!): String!
   updateRole(input: UpdateRoleInput!): String!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
@@ -512,6 +513,12 @@ input UpdatePostInput {
   content: String
   pending: String
   title: String
+}
+
+input UpdateReportCommentInput {
+  content: String!
+  id: ID!
+  reportId: ID!
 }
 
 input UpdateRoleInput {

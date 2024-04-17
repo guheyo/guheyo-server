@@ -5,6 +5,7 @@ import { ReportEntity } from '@lib/domains/report/domain/report.entity';
 import { ReportLoadPort } from '@lib/domains/report/application/ports/out/report.load.port';
 import { ReportSavePort } from '@lib/domains/report/application/ports/out/report.save.port';
 import { CreateReportCommentInput } from '@lib/domains/report/application/commands/create-report-comment/create-report-comment.input';
+import { ReportCommentEntity } from '@lib/domains/report/domain/report-comment.entity';
 
 @Injectable()
 export class ReportRepository
@@ -158,8 +159,23 @@ export class ReportRepository
       },
       data: {
         comments: {
-          create: input,
+          create: {
+            id: input.id,
+            userId: input.userId,
+            content: input.content,
+          },
         },
+      },
+    });
+  }
+
+  async updateComment(reportComment: ReportCommentEntity): Promise<void> {
+    await this.prismaService.reportComment.update({
+      where: {
+        id: reportComment.id,
+      },
+      data: {
+        content: reportComment.content,
       },
     });
   }
