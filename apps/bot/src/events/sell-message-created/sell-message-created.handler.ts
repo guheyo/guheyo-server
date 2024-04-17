@@ -7,16 +7,16 @@ import { ParseGroupPipe } from '@app/bot/apps/group/pipes/parse-group.pipe';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { OfferChannelGuard } from '@app/bot/apps/offer/guards/offer-channel.guard';
-import { SwapClient } from '@app/bot/apps/offer/swap/clients/swap.client';
+import { SellClient } from '@app/bot/apps/offer/sell/clients/sell.client';
 
 @UseGuards(GroupGuard, OfferChannelGuard)
-@Type('wtt')
+@Type('wts')
 @Injectable()
-export class SwapMessageCreatedHandler {
-  constructor(private readonly swapClient: SwapClient) {}
+export class SellMessageCreatedHandler {
+  constructor(private readonly sellClient: SellClient) {}
 
   @On('messageCreate')
-  public async onCreateSwapMessage(
+  public async onCreateOfferMessage(
     @Context(ParseUserFromMessagePipe)
     user: MyUserResponse,
     @Context(ParseGroupPipe)
@@ -24,6 +24,6 @@ export class SwapMessageCreatedHandler {
     @Context()
     [message]: ContextOf<'messageCreate'>,
   ) {
-    await this.swapClient.createOfferFromMessage(user, message, group);
+    await this.sellClient.createOfferFromMessage(user, message, group);
   }
 }

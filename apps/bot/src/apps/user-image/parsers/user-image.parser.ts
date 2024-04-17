@@ -1,9 +1,7 @@
 import { Parser } from '@app/bot/shared/parsers/parser';
 import { CreateUserImageInput } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.input';
 import { Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
 import { Message } from 'discord.js';
-import { UserImageErrorMessage } from './user-image.error.message';
 
 @Injectable()
 export class UserImageParser extends Parser {
@@ -33,7 +31,6 @@ export class UserImageParser extends Parser {
       type: 'avatar',
       refId: userId,
       userId,
-      source: 'discord',
     };
   }
 
@@ -43,8 +40,7 @@ export class UserImageParser extends Parser {
     type: string,
   ): CreateUserImageInput[] {
     if (!this.hasAttachments(message)) {
-      if (type === 'demand') return [];
-      throw new RpcException(UserImageErrorMessage.NOT_FOUND_ATTACHMENTS);
+      return [];
     }
     let position = 0;
     const refId = this.parseIdFromMessage(message);
@@ -62,7 +58,6 @@ export class UserImageParser extends Parser {
         type,
         refId,
         userId,
-        source: 'discord',
       };
       position += 1;
       return input;

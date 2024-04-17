@@ -4,14 +4,14 @@ import { GroupGuard } from '@app/bot/apps/group/guards/group.guard';
 import { Type } from '@app/bot/decorators/type.decorator';
 import { ParseUserFromDeletedMessagePipe } from '@app/bot/apps/user/pipes/parse-user-from-deleted-message.pipe';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { BuyClient } from '@app/bot/apps/offer/buy/clients/buy.client';
 import { OfferChannelGuard } from '@app/bot/apps/offer/guards/offer-channel.guard';
-import { SwapClient } from '@app/bot/apps/offer/swap/clients/swap.client';
 
 @UseGuards(GroupGuard, OfferChannelGuard)
-@Type('wtt')
+@Type('wtb')
 @Injectable()
-export class SwapMessageDeletedHandler {
-  constructor(private readonly swapClient: SwapClient) {}
+export class BuyMessageDeletedHandler {
+  constructor(private readonly buyClient: BuyClient) {}
 
   @On('messageDelete')
   public async onDeleteOfferMessage(
@@ -20,6 +20,6 @@ export class SwapMessageDeletedHandler {
     @Context()
     [message]: ContextOf<'messageDelete'>,
   ) {
-    await this.swapClient.deleteOfferFromMessage(user, message);
+    await this.buyClient.deleteOfferFromMessage(user, message);
   }
 }

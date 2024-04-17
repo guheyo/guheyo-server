@@ -3,9 +3,9 @@ import { UserClient } from '@app/bot/apps/user/clients/user.client';
 import { GroupParser } from '@app/bot/apps/group/parsers/group.parser';
 import { DiscordManager } from '@app/bot/shared/discord/discord.manager';
 import { GroupClient } from '@app/bot/apps/group/clients/group.client';
-import { DealClient } from '@app/bot/apps/deal/clients/deal.client';
 import { Guild, Message } from 'discord.js';
 import { MarketChannelType } from '@app/bot/shared/types/market-channel.type';
+import { OfferClient } from '@app/bot/apps/offer/clients/offer.client';
 
 @Injectable()
 export abstract class BulkSaveSlashCommandHandler {
@@ -20,7 +20,7 @@ export abstract class BulkSaveSlashCommandHandler {
 
   protected discordManager: DiscordManager;
 
-  constructor(protected readonly dealClient: DealClient) {}
+  constructor(protected readonly offerClient: OfferClient) {}
 
   async bulkSave(
     discordGuild: Guild,
@@ -57,7 +57,7 @@ export abstract class BulkSaveSlashCommandHandler {
       const member = await this.discordManager.fetchMember(discordGuild, message.author);
       const user = await this.userClient.fetchMyUser('discord', member);
       const group = await this.groupClient.fetchGroupFromMessage(message);
-      await this.dealClient.createDealFromMessage(user, message, group);
+      await this.offerClient.createOfferFromMessage(user, message, group);
     } catch (e) {
       // NOTE: do nothing
       // console.log(e);
