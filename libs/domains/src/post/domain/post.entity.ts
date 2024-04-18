@@ -3,8 +3,8 @@ import { REPORT_COMMENTED, REPORT_OPEN } from '@lib/domains/report/domain/report
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { Type } from 'class-transformer';
 import { TagEntity } from '@lib/domains/tag/domain/tag.entity';
-import { UpdatePostProps } from './post.types';
 import { isUndefined, omitBy } from 'lodash';
+import { UpdatePostProps } from './post.types';
 
 export class PostEntity extends AggregateRoot {
   id: string;
