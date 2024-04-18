@@ -100,6 +100,8 @@ export class PostRepository
         'content',
         'thumbnail',
         'categoryId',
+        'reportCount',
+        'reportCommentCount',
       ]),
     });
   }
