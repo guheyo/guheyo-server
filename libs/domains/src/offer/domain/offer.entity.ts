@@ -77,9 +77,8 @@ export class OfferEntity extends AggregateRoot {
     this.totalPrice = totalPrice.compute(this);
     this.apply(
       new OfferUpdatedEvent({
-        id: this.id,
+        offerId: this.id,
         postId: this.post.id,
-        businessFunction: this.businessFunction,
       }),
     );
   }
