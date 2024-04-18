@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { isUndefined, omitBy } from 'lodash';
+import { isUndefined, omit, omitBy } from 'lodash';
 import { BumpEntity } from '@lib/domains/bump/domain/bump.entity';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
 import { totalPrice } from '@lib/shared/prisma/extensions/calculate-total-price.extension';
@@ -10,8 +10,6 @@ import { OfferStatus, UpdateOfferProps } from './offer.types';
 import { OfferCreatedEvent } from '../application/events/offer-created/offer-created.event';
 import { OfferUpdatedEvent } from '../application/events/offer-updated/offer-updated.event';
 import { BumpOfferInput } from '../application/commands/bump-offer/bump-offer.input';
-import { CreateOfferCommand } from '../application/commands/create-offer/create-offer.command';
-import { OFFER_OPEN } from './offer.constants';
 
 export class OfferEntity extends AggregateRoot {
   id: string;
@@ -74,12 +72,13 @@ export class OfferEntity extends AggregateRoot {
   }
 
   update(props: UpdateOfferProps) {
-    Object.assign(this, omitBy(props, isUndefined));
+    Object.assign(this, omitBy(omit(props, ['post']), isUndefined));
+    this.post.update(props.post);
     this.totalPrice = totalPrice.compute(this);
     this.apply(
       new OfferUpdatedEvent({
-        id: this.id,
-        businessFunction: this.businessFunction,
+        offerId: this.id,
+        postId: this.post.id,
       }),
     );
   }
