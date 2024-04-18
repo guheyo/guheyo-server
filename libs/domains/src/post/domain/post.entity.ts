@@ -3,6 +3,8 @@ import { REPORT_COMMENTED, REPORT_OPEN } from '@lib/domains/report/domain/report
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { Type } from 'class-transformer';
 import { TagEntity } from '@lib/domains/tag/domain/tag.entity';
+import { UpdatePostProps } from './post.types';
+import { isUndefined, omitBy } from 'lodash';
 
 export class PostEntity extends AggregateRoot {
   id: string;
@@ -48,6 +50,10 @@ export class PostEntity extends AggregateRoot {
   constructor(partial: Partial<PostEntity>) {
     super();
     Object.assign(this, partial);
+  }
+
+  update(props: UpdatePostProps) {
+    Object.assign(this, omitBy(props, isUndefined));
   }
 
   isAuthorized(userId: string) {
