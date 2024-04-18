@@ -65,4 +65,12 @@ export class PostEntity extends AggregateRoot {
   hasUncommentedReports() {
     return this.reportCount - this.reportCommentCount > 0;
   }
+
+  isUpdatedThumbnail(url: string) {
+    return url !== this.thumbnail;
+  }
+
+  updateThumbnail(url: string) {
+    this.thumbnail = url;
+  }
 }

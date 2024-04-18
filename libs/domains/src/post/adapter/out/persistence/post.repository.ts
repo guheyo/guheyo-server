@@ -19,6 +19,28 @@ export class PostRepository
       where: {
         id,
       },
+      include: {
+        user: {
+          include: {
+            socialAccounts: true,
+            members: {
+              include: {
+                group: true,
+                roles: {
+                  orderBy: {
+                    position: 'asc',
+                  },
+                },
+              },
+            },
+          },
+        },
+        tags: {
+          orderBy: {
+            position: 'asc',
+          },
+        },
+      },
     });
     return this.toEntity(post);
   }
