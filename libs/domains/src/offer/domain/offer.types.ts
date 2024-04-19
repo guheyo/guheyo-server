@@ -11,6 +11,8 @@ export interface UpdateOfferProps {
 
   name1?: string;
 
+  content?: string;
+
   price?: number;
 
   priceCurrency?: string;

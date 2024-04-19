@@ -56,7 +56,6 @@ export class OfferRepository
         ..._.pick(offer.post, [
           'type',
           'title',
-          'content',
           'userAgent',
           'ipAddress',
           'groupId',
@@ -74,6 +73,7 @@ export class OfferRepository
           'businessFunction',
           'name0',
           'name1',
+          'content',
           'price',
           'priceCurrency',
           'shippingCost',
@@ -98,13 +98,14 @@ export class OfferRepository
       data: {
         post: {
           update: {
-            ..._.pick(offer.post, ['archivedAt', 'pending', 'title', 'content', 'categoryId']),
+            ..._.pick(offer.post, ['archivedAt', 'pending', 'title', 'categoryId']),
           },
         },
         ..._.pick(offer, [
           'bumpedAt',
           'name0',
           'name1',
+          'content',
           'price',
           'priceCurrency',
           'shippingCost',
