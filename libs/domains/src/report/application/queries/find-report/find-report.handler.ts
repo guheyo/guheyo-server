@@ -3,7 +3,6 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { NotFoundException } from '@nestjs/common';
 import { ReportErrorMessage } from '@lib/domains/report/domain/report.error.message';
 import { toPascalCase } from '@lib/shared/pascal-case/to-pascal-case';
-import { JsonObject } from '@prisma/client/runtime/library';
 import { ReportResponse } from '../../dtos/report.response';
 import { FindReportQuery } from './find-report.query';
 
@@ -50,24 +49,8 @@ export class FindReportHandler extends PrismaQueryHandler<FindReportQuery, Repor
       },
     });
     if (!report) throw new NotFoundException(ReportErrorMessage.REPORT_NOT_FOUND);
-
     if (report.type === 'post' && report.reportedPostId && report.reportedPost) {
-      const postVersion = await this.prismaService.version.findFirst({
-        where: {
-          tableName: toPascalCase(report.type),
-          refId: report.reportedPostId,
-          createdAt: {
-            lt: report.createdAt,
-          },
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-      });
-      if (!postVersion)
-        throw new NotFoundException(ReportErrorMessage.REPORT_REF_VERSION_NOT_FOUND);
-
-      const postType = (postVersion.values as JsonObject).type as string;
+      const postType = report.reportedPost.type;
       let refId;
       if (postType === 'offer') refId = report.reportedPost.offer?.id;
       if (postType === 'auction') refId = report.reportedPost.auction?.id;
@@ -114,10 +97,6 @@ export class FindReportHandler extends PrismaQueryHandler<FindReportQuery, Repor
         ...report,
         version: {
           ...version,
-          values: {
-            ...(version.values as JsonObject),
-            post: postVersion.values,
-          },
           images,
         },
       });
