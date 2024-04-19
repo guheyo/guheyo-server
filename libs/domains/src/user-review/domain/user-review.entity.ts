@@ -31,6 +31,8 @@ export class UserReviewEntity extends AggregateRoot {
 
   auctionId: string | null;
 
+  content: string | null;
+
   rating: number;
 
   status: string;
