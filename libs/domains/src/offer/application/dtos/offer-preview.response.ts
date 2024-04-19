@@ -27,6 +27,9 @@ export class OfferPreviewResponse {
   @Field(() => String, { nullable: true })
   name1: string | null;
 
+  @Field(() => String, { nullable: true })
+  content: string | null;
+
   @Field(() => Int)
   price: Number;
 

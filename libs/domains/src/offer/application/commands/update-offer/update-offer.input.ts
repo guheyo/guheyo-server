@@ -25,6 +25,11 @@ export class UpdateOfferInput {
   name1?: string;
 
   @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  content?: string;
+
+  @IsOptional()
   @IsInt()
   @Field(() => Int, { nullable: true })
   price?: number;

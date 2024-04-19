@@ -19,6 +19,8 @@ export class CreateOfferCommand implements ICommand {
 
   name1?: string;
 
+  content?: string;
+
   price: number;
 
   priceCurrency: string;
@@ -39,6 +41,7 @@ export class CreateOfferCommand implements ICommand {
     this.businessFunction = input.businessFunction;
     this.name0 = input.name0;
     this.name1 = input.name1;
+    this.content = input.content;
     this.price = input.price;
     this.priceCurrency = input.priceCurrency;
     this.shippingCost = input.shippingCost;

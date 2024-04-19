@@ -108,7 +108,6 @@ export class UserReviewRepository
         ..._.pick(userReview.post, [
           'type',
           'title',
-          'content',
           'userAgent',
           'ipAddress',
           'groupId',
@@ -130,6 +129,7 @@ export class UserReviewRepository
           'reviewedUserId',
           'offerId',
           'auctionId',
+          'content',
           'rating',
           'status',
         ]),
@@ -150,9 +150,9 @@ export class UserReviewRepository
       data: {
         post: {
           update: {
-            ..._.pick(userReview.post, ['pending', 'title', 'content', 'categoryId']),
+            ..._.pick(userReview.post, ['pending', 'title', 'categoryId']),
           },
-          ..._.pick(userReview, ['rating', 'status']),
+          ..._.pick(userReview, ['content', 'rating', 'status']),
         },
       },
     });

@@ -4,6 +4,8 @@ export interface UpdateAuctionProps {
   // post
   post: UpdatePostProps;
 
-  // offer
+  // auction
   id: string;
+
+  content?: string;
 }

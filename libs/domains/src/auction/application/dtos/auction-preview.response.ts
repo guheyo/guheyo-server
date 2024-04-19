@@ -18,11 +18,11 @@ export class AuctionPreviewResponse {
   @Field(() => Date)
   extendedEndDate: Date;
 
-  @Field(() => Date)
-  endedAt: Date;
-
   @Field(() => Int)
   extensionCount: number;
+
+  @Field(() => String, { nullable: true })
+  content: string | null;
 
   @Field(() => Int)
   currentBidPrice: Number;

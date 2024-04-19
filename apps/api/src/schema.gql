@@ -65,6 +65,7 @@ input CreateManyUserImageInput {
 
 input CreateOfferInput {
   businessFunction: String!
+  content: String
   createdAt: DateTime
   id: ID!
   name0: String
@@ -80,7 +81,6 @@ input CreateOfferInput {
 
 input CreatePostInput {
   categoryId: ID!
-  content: String!
   groupId: ID!
   tagIds: [String!]!
   title: String!
@@ -129,10 +129,11 @@ input CreateUserImageInput {
 
 input CreateUserReviewInput {
   auctionId: ID
+  content: String
   id: ID!
   offerId: ID
   post: CreatePostInput!
-  rating: Float!
+  rating: Int!
   reviewedUserId: ID!
   type: String!
 }
@@ -252,6 +253,7 @@ type MyUserResponse {
 type OfferPreviewResponse {
   bumpedAt: DateTime!
   businessFunction: String!
+  content: String
   createdAt: DateTime!
   id: ID!
   name0: String
@@ -274,6 +276,7 @@ type OfferPreviewResponseEdge {
 type OfferResponse {
   bumpedAt: DateTime!
   businessFunction: String!
+  content: String
   createdAt: DateTime!
   id: ID!
   name0: String
@@ -321,7 +324,6 @@ type PaginatedUsersResponse {
 type PostPreviewResponse {
   archivedAt: DateTime
   categoryId: String!
-  content: String
   createdAt: DateTime!
   groupId: String!
   id: ID!
@@ -340,7 +342,6 @@ type PostResponse {
   archivedAt: DateTime
   category: CategoryResponse!
   categoryId: String!
-  content: String
   createdAt: DateTime!
   group: GroupProfileResponse!
   groupId: String!
@@ -502,6 +503,7 @@ input UpdateGroupInput {
 }
 
 input UpdateOfferInput {
+  content: String
   id: ID!
   name0: String
   name1: String
@@ -516,7 +518,6 @@ input UpdateOfferInput {
 input UpdatePostInput {
   archivedAt: DateTime
   categoryId: ID
-  content: String
   pending: String
   title: String
 }

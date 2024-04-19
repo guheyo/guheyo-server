@@ -23,7 +23,6 @@ export class SwapParser extends OfferParser {
     const post = {
       type: OFFER,
       title: `${match[1].trim()} - ${match[2].trim()}`,
-      content: match[3].trim(),
       groupId: group.id,
       categoryId: this.parseCategoryId(message, group),
       tagIds: [],
@@ -35,6 +34,7 @@ export class SwapParser extends OfferParser {
       businessFunction: 'swap',
       name0: match[1].trim(),
       name1: match[2].trim(),
+      content: match[3].trim(),
       price: 0,
       priceCurrency: 'krw',
       shippingCost: 0,
@@ -47,13 +47,13 @@ export class SwapParser extends OfferParser {
     const match = this.matchFormat(message.content);
     const post = {
       title: `${match[1].trim()} - ${match[2].trim()}`,
-      content: match[3].trim(),
     };
     return {
       post,
       id: this.parseIdFromMessage(message),
       name0: match[1].trim(),
       name1: match[2].trim(),
+      content: match[3].trim(),
       price: this.parsePrice(match[2]),
     };
   }

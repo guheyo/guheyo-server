@@ -23,8 +23,6 @@ export class PostEntity extends AggregateRoot {
 
   slug: string | null;
 
-  content: string | null;
-
   thumbnail: string | null;
 
   userAgent: string | null;
