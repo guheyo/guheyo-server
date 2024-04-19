@@ -11,10 +11,6 @@ export class CreatePostInput {
   @Field()
   title: string;
 
-  @IsString()
-  @Field()
-  content: string;
-
   @IsUUID()
   @Field(() => ID)
   groupId: string;

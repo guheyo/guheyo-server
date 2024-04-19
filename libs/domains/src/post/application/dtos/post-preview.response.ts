@@ -28,9 +28,6 @@ export class PostPreviewResponse {
   slug: string | null;
 
   @Field(() => String, { nullable: true })
-  content: String | null;
-
-  @Field(() => String, { nullable: true })
   thumbnail: string | null;
 
   @Field()
