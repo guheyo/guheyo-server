@@ -16,6 +16,8 @@ export class CreateUserReviewCommand implements ICommand {
 
   reviewedUserId: string;
 
+  content?: string;
+
   rating: number;
 
   user: MyUserResponse;

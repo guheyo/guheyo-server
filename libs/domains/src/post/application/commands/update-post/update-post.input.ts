@@ -19,11 +19,6 @@ export class UpdatePostInput {
   title?: string;
 
   @IsOptional()
-  @IsString()
-  @Field(() => String, { nullable: true })
-  content?: string;
-
-  @IsOptional()
   @IsUUID()
   @Field(() => ID, { nullable: true })
   categoryId?: string;

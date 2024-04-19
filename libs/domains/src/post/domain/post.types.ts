@@ -5,8 +5,6 @@ export interface CreatePostProps {
 
   slug?: string;
 
-  content?: string;
-
   thumbnail?: string;
 
   groupId?: string;
@@ -24,8 +22,6 @@ export interface UpdatePostProps {
   pending?: string;
 
   title?: string;
-
-  content?: string;
 
   thumbnail?: string;
 

@@ -39,6 +39,11 @@ export class CreateOfferInput {
   @Field(() => String, { nullable: true })
   name1?: string;
 
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  content?: string;
+
   @IsNumber()
   @Field(() => Int)
   price: number;

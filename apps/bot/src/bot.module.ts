@@ -13,6 +13,7 @@ import { MEMBER_PROVIDERS } from '@lib/domains/member/member.providers';
 import { ROLE_PROVIDERS } from '@lib/domains/role/role.providers';
 import { OFFER_PROVIDERS } from '@lib/domains/offer/offer.providers';
 import { APP_FILTER } from '@nestjs/core';
+import { POST_PROVIDERS } from '@lib/domains/post/post.providers';
 import { NecordConfigService } from './necord/necord.config.service';
 import { COMMAND_HANDLERS } from './commands/command-handlers';
 import { EVENT_HANDLERS } from './events/event-handlers';
@@ -50,6 +51,7 @@ import { DiscordConfigService } from './shared/discord/discord.config.service';
     ...MEMBER_PROVIDERS,
     ...ROLE_PROVIDERS,
     ...OFFER_PROVIDERS,
+    ...POST_PROVIDERS,
     ...COMMAND_HANDLERS,
     ...EVENT_HANDLERS,
     DiscordConfigService,

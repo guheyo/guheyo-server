@@ -31,6 +31,8 @@ export class AuctionEntity extends AggregateRoot {
   @Type(() => PostEntity)
   post: PostEntity;
 
+  content: string | null;
+
   currentBidPrice: number;
 
   hammerPrice: number;

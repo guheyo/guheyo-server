@@ -1,5 +1,5 @@
 import { CreatePostInput } from '@lib/domains/post/application/commands/create-post/create-post.input';
-import { Field, ID, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import { IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
@@ -29,7 +29,12 @@ export class CreateUserReviewInput {
   @Field(() => ID)
   reviewedUserId: string;
 
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  content?: string;
+
   @IsNumber()
-  @Field()
+  @Field(() => Int)
   rating: number;
 }

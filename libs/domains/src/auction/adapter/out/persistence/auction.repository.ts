@@ -79,7 +79,6 @@ export class AuctionRepository
         ..._.pick(auction.post, [
           'type',
           'title',
-          'content',
           'userAgent',
           'ipAddress',
           'groupId',
@@ -94,6 +93,7 @@ export class AuctionRepository
           'id',
           'originalEndDate',
           'extendedEndDate',
+          'content',
           'shippingCost',
           'shippingType',
           'status',
@@ -115,13 +115,14 @@ export class AuctionRepository
       data: {
         post: {
           update: {
-            ..._.pick(auction.post, ['pending', 'content']),
+            ..._.pick(auction.post, ['pending']),
           },
         },
         ..._.pick(auction, [
           'id',
           'extendedEndDate',
           'extensionCount',
+          'content',
           'currentBidPrice',
           'hammerPrice',
           'status',

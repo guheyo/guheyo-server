@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
-import { Observable, concatMap, map, of } from 'rxjs';
+import { Observable, concatMap, of } from 'rxjs';
 import { TrackUserImagesCommand } from '@lib/domains/user-image/application/commands/track-user-images/track-user-images.command';
 import { ConnectTagsCommand } from '@lib/domains/post/application/commands/connect-tags/connect-tags.command';
 import { UpdateThumbnailCommand } from '@lib/domains/post/application/commands/update-thumbnail/update-thumbnail.command';
