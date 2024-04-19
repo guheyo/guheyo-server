@@ -338,6 +338,22 @@ type PostPreviewResponse {
   user: UserResponse!
 }
 
+type PostPreviewWithoutUserResponse {
+  archivedAt: DateTime
+  categoryId: String!
+  createdAt: DateTime!
+  groupId: String!
+  id: ID!
+  pending: String
+  reportCommentCount: Int!
+  reportCount: Int!
+  slug: String
+  thumbnail: String
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+}
+
 type PostResponse {
   archivedAt: DateTime
   category: CategoryResponse!
@@ -421,6 +437,7 @@ type ReportResponse {
   id: ID!
   reason: String!
   reportedCommentId: ID
+  reportedPost: PostPreviewWithoutUserResponse
   reportedPostId: ID
   reportedUser: AuthorResponse!
   status: String!
