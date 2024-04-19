@@ -1,40 +1,21 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { FindLastReportQuery } from './find-last-report.query';
-import { ReportResponse } from '../../dtos/report.response';
+import { LastReportResponse } from '../../dtos/last-report.response';
 
 @QueryHandler(FindLastReportQuery)
-export class FindLastReportHandler extends PrismaQueryHandler<FindLastReportQuery, ReportResponse> {
+export class FindLastReportHandler extends PrismaQueryHandler<
+  FindLastReportQuery,
+  LastReportResponse
+> {
   constructor() {
-    super(ReportResponse);
+    super(LastReportResponse);
   }
 
-  async execute(query: FindLastReportQuery): Promise<ReportResponse | null> {
+  async execute(query: FindLastReportQuery): Promise<LastReportResponse | null> {
     const report = await this.prismaService.report.findFirst({
       where: {
         userId: query.user.id,
-      },
-      include: {
-        comments: {
-          orderBy: {
-            createdAt: 'desc',
-          },
-        },
-        reportedUser: {
-          include: {
-            members: {
-              include: {
-                group: true,
-                roles: {
-                  orderBy: {
-                    position: 'asc',
-                  },
-                },
-              },
-            },
-            socialAccounts: true,
-          },
-        },
       },
       orderBy: {
         createdAt: 'desc',

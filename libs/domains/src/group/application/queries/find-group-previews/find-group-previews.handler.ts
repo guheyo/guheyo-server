@@ -53,6 +53,9 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
           },
         },
         take: 3,
+        orderBy: {
+          bumpedAt: 'desc',
+        },
       });
       const buys = await this.prismaService.offer.findMany({
         where: {
@@ -81,6 +84,9 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
           },
         },
         take: 3,
+        orderBy: {
+          bumpedAt: 'desc',
+        },
       });
       return {
         ...group,
