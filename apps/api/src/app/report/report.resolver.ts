@@ -25,6 +25,7 @@ import { FindReportCommentArgs } from '@lib/domains/report/application/queries/f
 import { FindReportCommentQuery } from '@lib/domains/report/application/queries/find-report-comment/find-report-comment.query';
 import { UpdateReportCommentInput } from '@lib/domains/report/application/commands/update-report-comment/update-report-comment.input';
 import { UpdateReportCommentCommand } from '@lib/domains/report/application/commands/update-report-comment/update-report-comment.command';
+import { LastReportResponse } from '@lib/domains/report/application/dtos/last-report.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -55,7 +56,7 @@ export class ReportResolver {
   }
 
   @UseGuards(RequiredJwtUserGuard)
-  @Query(() => ReportResponse)
+  @Query(() => LastReportResponse)
   async findLastReport(@ExtractedUser() user: MyUserResponse) {
     const query = new FindLastReportQuery({
       user,
