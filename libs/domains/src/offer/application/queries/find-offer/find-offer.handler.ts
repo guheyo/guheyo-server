@@ -18,7 +18,7 @@ export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferRe
       where: {
         id: query.id,
         post: {
-          slug: query.slug,
+          slug: query.slug ? decodeURI(query.slug) : undefined,
         },
       },
       include: {
