@@ -21,8 +21,8 @@ export class ReportPreviewResponse {
   @Field(() => ID, { nullable: true })
   reportedCommentId: string | null;
 
-  @Field(() => AuthorResponse, { nullable: true })
-  reportedUser?: AuthorResponse;
+  @Field(() => AuthorResponse)
+  reportedUser: AuthorResponse;
 
   @Field(() => ID)
   groupId: string;

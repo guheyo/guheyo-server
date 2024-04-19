@@ -191,6 +191,11 @@ type JwtResponse {
   refreshToken: String!
 }
 
+type LastReportResponse {
+  createdAt: DateTime!
+  id: ID!
+}
+
 input LinkSocialProfileInput {
   provider: String!
 }
@@ -359,7 +364,7 @@ type Query {
   findGroupPreviews: [GroupPreviewResponse!]!
   findGroupProfiles(cursor: ID, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
-  findLastReport: ReportResponse!
+  findLastReport: LastReportResponse!
   findMyUser: MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferCount(businessFunction: String!, categoryId: ID!, fromHours: Int!, userId: ID!): Float!
@@ -396,7 +401,7 @@ type ReportPreviewResponse {
   reason: String!
   reportedCommentId: ID
   reportedPostId: ID
-  reportedUser: AuthorResponse
+  reportedUser: AuthorResponse!
   status: String!
   type: String!
   updatedAt: DateTime!
@@ -416,10 +421,11 @@ type ReportResponse {
   reason: String!
   reportedCommentId: ID
   reportedPostId: ID
-  reportedUser: AuthorResponse
+  reportedUser: AuthorResponse!
   status: String!
   type: String!
   updatedAt: DateTime!
+  version: VersionResponse!
 }
 
 type RoleResponse {

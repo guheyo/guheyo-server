@@ -1,6 +1,9 @@
 export enum ReportErrorMessage {
   REPORT_NOT_FOUND = 'Report not found',
   REPORT_COMMENT_NOT_FOUND = 'Report comment not found',
+  REPORT_REF_VERSION_NOT_FOUND = 'Report ref version not found',
+  REPORT_TYPE_NOT_FOUND = 'Report type not found',
+  REF_ID_OF_VERSION_NOT_FOUND = 'Ref id of version not found',
   REPORT_CHANGES_FROM_UNAUTHORIZED_USER = 'Report changes from unauthorized user',
   REPORT_DELETE_COMMAND_FROM_UNAUTHORIZED_USER = 'Report delete command from unauthorized user',
   FAILED_TO_FIND_REF_ID_OF_REPORT = 'Failed to find refId of report',
