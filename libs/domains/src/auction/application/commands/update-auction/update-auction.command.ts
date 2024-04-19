@@ -8,10 +8,13 @@ export class UpdateAuctionCommand implements ICommand {
 
   id: string;
 
+  content?: string;
+
   user: MyUserResponse;
 
   constructor({ input, user }: { input: UpdateAuctionInput; user: MyUserResponse }) {
     this.post = input.post;
+    this.content = input.content;
     this.id = input.id;
     this.user = user;
   }
