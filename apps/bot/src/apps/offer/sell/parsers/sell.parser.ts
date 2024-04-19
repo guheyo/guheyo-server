@@ -23,7 +23,6 @@ export class SellParser extends OfferParser {
     const post = {
       type: OFFER,
       title: match[1].trim(),
-      content: match[3].trim(),
       groupId: group.id,
       categoryId: this.parseCategoryId(message, group),
       tagIds: [],
@@ -34,6 +33,7 @@ export class SellParser extends OfferParser {
       id: this.parseIdFromMessage(message),
       businessFunction: 'sell',
       name0: match[1].trim(),
+      content: match[3].trim(),
       price: this.parsePrice(match[2]),
       priceCurrency: 'krw',
       shippingCost: 0,
@@ -46,12 +46,12 @@ export class SellParser extends OfferParser {
     const match = this.matchFormat(message.content);
     const post = {
       title: match[1].trim(),
-      content: match[3].trim(),
     };
     return {
       post,
       id: this.parseIdFromMessage(message),
       name0: match[1].trim(),
+      content: match[3].trim(),
       price: this.parsePrice(match[2]),
     };
   }
