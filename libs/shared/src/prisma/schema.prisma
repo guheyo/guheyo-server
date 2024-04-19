@@ -177,7 +177,6 @@ model Post {
   type                String
   title               String
   slug                String?
-  content             String?
   thumbnail           String?
   userAgent           String?
   ipAddress           String?
@@ -231,6 +230,7 @@ model Offer {
   businessFunction    String
   name0               String?
   name1               String?
+  content             String?
   price               Int
   priceCurrency       String
   shippingCost        Int             @default(0)
@@ -311,6 +311,7 @@ model UserReview {
   offer             Offer?            @relation(fields: [offerId], references: [id])
   auctionId         String?
   auction           Auction?          @relation(fields: [auctionId], references: [id])
+  content           String?
   rating            Int
   status            String
 
@@ -341,6 +342,7 @@ model Auction {
   extensionCount    Int               @default(0)
   postId            String?           @unique()
   post              Post?             @relation(fields: [postId], references: [id])
+  content           String?
   currentBidPrice   Int               @default(0)
   hammerPrice       Int               @default(0)
   shippingCost      Int               @default(0)
