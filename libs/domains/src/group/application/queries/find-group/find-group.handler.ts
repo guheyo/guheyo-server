@@ -13,7 +13,7 @@ export class FindGroupHandler extends PrismaQueryHandler<FindGroupQuery, GroupRe
     const group = await this.prismaService.group.findFirst({
       where: {
         id: query.id,
-        slug: query.slug ? decodeURI(query.slug) : undefined,
+        slug: query.slug,
       },
       include: {
         categories: {
