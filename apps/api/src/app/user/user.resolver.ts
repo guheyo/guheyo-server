@@ -3,7 +3,6 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { UpdateUserInput } from '@lib/domains/user/application/commands/update-user/update-user.input';
 import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
-import { PaginationArgs } from '@lib/shared/cqrs/queries/pagination/pagination.args';
 import { FindUsersQuery } from '@lib/domains/user/application/queries/find-users/find-users.query';
 import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/find-users/paginated-users.response';
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
@@ -20,6 +19,7 @@ import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extra
 import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-payload/extracted-jwt-payload.decorator';
 import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
+import { FindUsersArgs } from '@lib/domains/user/application/queries/find-users/find-users.args';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -49,8 +49,8 @@ export class UserResolver {
   }
 
   @Query(() => PaginatedUsersResponse)
-  async findUsers(@Args() paginationArgs: PaginationArgs) {
-    const query = new FindUsersQuery(paginationArgs);
+  async findUsers(@Args() args: FindUsersArgs) {
+    const query = new FindUsersQuery({ args });
     return this.queryBus.execute(query);
   }
 
