@@ -396,7 +396,7 @@ type Query {
   findUser(provider: String, socialId: String, username: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
-  findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
+  findUsers(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedUsersResponse!
   findVersion(id: ID!): VersionResponse
   findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
 }
