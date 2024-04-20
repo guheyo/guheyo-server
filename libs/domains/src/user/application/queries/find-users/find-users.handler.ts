@@ -18,12 +18,21 @@ export class FindUsersHandler extends PrismaQueryHandler<FindUsersQuery, UserRes
         }
       : undefined;
     const users = await this.prismaService.user.findMany({
+      where: {
+        id: query.where?.userId,
+        username: {
+          contains: query.keyword,
+          mode: 'insensitive',
+        },
+      },
       cursor,
       take: query.take + 1,
       skip: query.skip,
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: [
+        {
+          createdAt: query.orderBy?.createdAt,
+        },
+      ],
     });
     return paginate<UserResponse>(this.parseResponses(users), 'id', query.take);
   }
