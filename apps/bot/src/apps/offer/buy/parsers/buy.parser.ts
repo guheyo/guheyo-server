@@ -31,6 +31,8 @@ export class BuyParser extends OfferParser {
     return {
       post,
       id: this.parseIdFromMessage(message),
+      createdAt: message.createdAt,
+      updatedAt: message.editedAt || message.createdAt,
       businessFunction: 'buy',
       name0: match[1].trim(),
       content: match[3].trim(),
