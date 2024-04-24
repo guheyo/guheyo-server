@@ -155,6 +155,7 @@ type GroupPreviewResponse {
 }
 
 type GroupProfileResponse {
+  description: String
   icon: String
   id: ID!
   name: String!
