@@ -144,8 +144,7 @@ model Category {
   slug              String?
   description       String?
   position          Int
-  groupId           String
-  group             Group       @relation(fields: [groupId], references: [id])
+  groups            Group[]
   posts             Post[]
 
   @@schema("public")
