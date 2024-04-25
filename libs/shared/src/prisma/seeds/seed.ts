@@ -4,6 +4,7 @@ import { seedMouse } from './groups/seed-mouse';
 import { seedAudio } from './groups/seed-audio';
 import { seedRoot } from './groups/seed-root';
 import { seedTags } from './tags/seed-tags';
+import { seedUserReviewCategories } from './categories/seed-user-review-categories';
 
 const prisma = new PrismaClient();
 
@@ -13,6 +14,7 @@ async function main() {
   await seedMouse(prisma);
   await seedAudio(prisma);
   await seedTags(prisma);
+  await seedUserReviewCategories(prisma);
 }
 
 main()
