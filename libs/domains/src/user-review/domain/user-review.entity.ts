@@ -39,11 +39,6 @@ export class UserReviewEntity extends AggregateRoot {
     this.apply(
       new UserReviewCreatedEvent({
         reviewId: this.id,
-        type: this.type,
-        offerId: this.offerId || undefined,
-        auctionId: this.auctionId || undefined,
-        userId: this.post.userId,
-        reviewedUserId: this.reviewedUserId,
         reviewStatus: this.status,
       }),
     );
