@@ -54,20 +54,17 @@ export class UserReviewRepository
     offerId,
     auctionId,
     userId,
-    reviewedUserId,
   }: {
     type: string;
     offerId?: string;
     auctionId?: string;
     userId: string;
-    reviewedUserId: string;
   }): Promise<UserReviewEntity | null> {
     const userReview = await this.prismaService.userReview.findFirst({
       where: {
         type,
         offerId,
         auctionId,
-        reviewedUserId,
         post: {
           userId,
         },
