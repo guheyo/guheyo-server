@@ -62,6 +62,8 @@ export class OfferRepository
           'categoryId',
           'userId',
         ]),
+        createdAt: offer.createdAt,
+        updatedAt: offer.updatedAt,
       },
     });
     await this.prismaService.offer.create({

@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsString, IsUUID } from 'class-validator';
+import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreatePostInput {
@@ -15,9 +15,10 @@ export class CreatePostInput {
   @Field(() => ID)
   groupId: string;
 
+  @IsOptional()
   @IsUUID()
-  @Field(() => ID)
-  categoryId: string;
+  @Field(() => ID, { nullable: true })
+  categoryId?: string;
 
   @IsString({ each: true })
   @Field(() => [String])

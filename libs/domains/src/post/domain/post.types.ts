@@ -26,4 +26,6 @@ export interface UpdatePostProps {
   thumbnail?: string;
 
   categoryId?: string;
+
+  tagIds: string[];
 }

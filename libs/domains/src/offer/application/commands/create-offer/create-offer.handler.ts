@@ -23,7 +23,7 @@ export class CreateOfferHandler extends PrismaCommandHandler<CreateOfferCommand,
   async execute(command: CreateOfferCommand): Promise<void> {
     const countDailyOfferPostingInSameCategory = await this.prismaService.offer.countOffer({
       userId: command.user.id,
-      categoryId: command.post.categoryId,
+      categoryId: command.post.categoryId!,
       businessFunction: command.businessFunction,
       fromHours: DAY_HOURS,
     });

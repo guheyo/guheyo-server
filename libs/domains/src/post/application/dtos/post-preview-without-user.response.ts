@@ -32,8 +32,8 @@ export class PostPreviewWithoutUserResponse {
   @Field()
   groupId: string;
 
-  @Field()
-  categoryId: string;
+  @Field(() => String, { nullable: true })
+  categoryId: string | null;
 
   @Field(() => Int)
   reportCount: number;

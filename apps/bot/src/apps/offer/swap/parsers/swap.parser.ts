@@ -31,6 +31,8 @@ export class SwapParser extends OfferParser {
     return {
       post,
       id: this.parseIdFromMessage(message),
+      createdAt: message.createdAt,
+      updatedAt: message.editedAt || message.createdAt,
       businessFunction: 'swap',
       name0: match[1].trim(),
       name1: match[2].trim(),
