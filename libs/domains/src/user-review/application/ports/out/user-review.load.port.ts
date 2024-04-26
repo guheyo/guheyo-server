@@ -7,12 +7,10 @@ export interface UserReviewLoadPort extends LoadPort<UserReviewEntity> {
     offerId,
     auctionId,
     userId,
-    reviewedUserId,
   }: {
     type: string;
     offerId?: string;
     auctionId?: string;
     userId: string;
-    reviewedUserId: string;
   }): Promise<UserReviewEntity | null>;
 }
