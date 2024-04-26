@@ -1,9 +1,13 @@
 import { CreatePostInput } from '@lib/domains/post/application/commands/create-post/create-post.input';
+import { USER_REVIEW_ONE_WAY } from '@lib/domains/user-review/domain/user-review.constants';
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNumber, IsOptional, IsString, IsUUID, ValidateNested } from 'class-validator';
 
 @InputType()
 export class CreateUserReviewInput {
+  @ValidateNested()
+  @Type(() => CreatePostInput)
   @Field(() => CreatePostInput)
   post: CreatePostInput;
 
@@ -15,6 +19,10 @@ export class CreateUserReviewInput {
   @Field()
   type: string;
 
+  @IsUUID()
+  @Field(() => ID)
+  reviewedUserId: string;
+
   @IsOptional()
   @IsUUID()
   @Field(() => ID, { nullable: true })
@@ -25,10 +33,6 @@ export class CreateUserReviewInput {
   @Field(() => ID, { nullable: true })
   auctionId?: string;
 
-  @IsUUID()
-  @Field(() => ID)
-  reviewedUserId: string;
-
   @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
@@ -37,4 +41,8 @@ export class CreateUserReviewInput {
   @IsNumber()
   @Field(() => Int)
   rating: number;
+
+  @IsString()
+  @Field(() => String, { defaultValue: USER_REVIEW_ONE_WAY })
+  status: string;
 }

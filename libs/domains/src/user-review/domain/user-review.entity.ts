@@ -1,10 +1,8 @@
-import { VersionEntity } from '@lib/domains/version/domain/version.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Type } from 'class-transformer';
 import { PostEntity } from '@lib/domains/post/domain/post.entity';
 import { UserReviewCreatedEvent } from '../application/events/user-review-created/user-review-created.event';
-import { USER_REVIEW_ONE_WAY, USER_REVIEW_TWO_WAY } from './user-review.constants';
-import { CreateUserReviewCommand } from '../application/commands/create-user-review/create-user-review.command';
+import { USER_REVIEW_TWO_WAY } from './user-review.constants';
 
 export class UserReviewEntity extends AggregateRoot {
   id: string;
@@ -20,11 +18,6 @@ export class UserReviewEntity extends AggregateRoot {
 
   type: string;
 
-  refVersionId: string;
-
-  @Type(() => VersionEntity)
-  refVersion: VersionEntity;
-
   reviewedUserId: string;
 
   offerId: string | null;
@@ -37,17 +30,9 @@ export class UserReviewEntity extends AggregateRoot {
 
   status: string;
 
-  constructor(command: CreateUserReviewCommand) {
+  constructor(partial: Partial<UserReviewEntity>) {
     super();
-    const post = new PostEntity({
-      ...command.post,
-      userId: command.user.id,
-    });
-    Object.assign(this, {
-      ...command,
-      post,
-      status: USER_REVIEW_ONE_WAY,
-    });
+    Object.assign(this, partial);
   }
 
   create() {
