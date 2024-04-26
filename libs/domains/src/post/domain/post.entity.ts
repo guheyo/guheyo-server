@@ -35,7 +35,7 @@ export class PostEntity extends AggregateRoot {
 
   groupId: string;
 
-  categoryId: string;
+  categoryId: string | null;
 
   userId: string;
 

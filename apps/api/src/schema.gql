@@ -80,7 +80,7 @@ input CreateOfferInput {
 }
 
 input CreatePostInput {
-  categoryId: ID!
+  categoryId: ID
   groupId: ID!
   tagIds: [String!]!
   title: String!
@@ -324,7 +324,7 @@ type PaginatedUsersResponse {
 
 type PostPreviewResponse {
   archivedAt: DateTime
-  categoryId: String!
+  categoryId: String
   createdAt: DateTime!
   groupId: String!
   id: ID!
@@ -341,7 +341,7 @@ type PostPreviewResponse {
 
 type PostPreviewWithoutUserResponse {
   archivedAt: DateTime
-  categoryId: String!
+  categoryId: String
   createdAt: DateTime!
   groupId: String!
   id: ID!
@@ -357,8 +357,8 @@ type PostPreviewWithoutUserResponse {
 
 type PostResponse {
   archivedAt: DateTime
-  category: CategoryResponse!
-  categoryId: String!
+  category: CategoryResponse
+  categoryId: String
   createdAt: DateTime!
   group: GroupProfileResponse!
   groupId: String!
