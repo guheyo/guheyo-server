@@ -22,7 +22,7 @@ export class CreateAuctionHandler implements ICommandHandler<CreateAuctionComman
         }),
       }),
     );
-    auction.create(command.post.tagIds);
+    auction.create(command.post.tagIds || []);
     await this.savePort.create(auction);
     auction.commit();
   }

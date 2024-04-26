@@ -23,7 +23,8 @@ export class UpdatePostInput {
   @Field(() => ID, { nullable: true })
   categoryId?: string;
 
+  @IsOptional()
   @IsString({ each: true })
-  @Field(() => [ID])
-  tagIds: string[];
+  @Field(() => [ID], { nullable: true })
+  tagIds?: string[];
 }

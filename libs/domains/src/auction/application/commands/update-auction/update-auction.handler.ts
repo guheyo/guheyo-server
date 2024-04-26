@@ -1,7 +1,6 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
-import _ from 'lodash';
 import { UpdateAuctionCommand } from './update-auction.command';
 import { AuctionSavePort } from '../../ports/out/auction.save.port';
 import { AuctionLoadPort } from '../../ports/out/auction.load.port';

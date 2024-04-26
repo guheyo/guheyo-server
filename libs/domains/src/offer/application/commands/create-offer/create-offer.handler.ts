@@ -43,7 +43,7 @@ export class CreateOfferHandler extends PrismaCommandHandler<CreateOfferCommand,
     if (!offer) throw new InternalServerErrorException(OfferErrorMessage.OFFER_CREATION_FAILED);
 
     offer = this.publisher.mergeObjectContext(offer);
-    offer.create(command.post.tagIds);
+    offer.create(command.post.tagIds || []);
     offer.commit();
   }
 }
