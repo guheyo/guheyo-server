@@ -5,6 +5,7 @@ import { OfferCreatedEvent } from '@lib/domains/offer/application/events/offer-c
 import { ConfigService } from '@nestjs/config';
 import { OFFER_BUSINESS_FUNCTIONS } from '@lib/domains/offer/domain/offer.types';
 import { includes } from 'lodash';
+import { OFFER } from '@lib/domains/offer/domain/offer.constants';
 import { SendDiscordWebhookCommand } from '../commands/send-discord-webhook/send-discord-webhook.command';
 
 @Injectable()
@@ -29,7 +30,7 @@ export class DiscordWebhookSagas {
               title: event.title,
               price: event.price,
             }),
-            url: this.parseUrl({ businessFunction: event.businessFunction, slug: event.slug! }),
+            url: this.parseUrl({ slug: event.slug! }),
           }),
       ),
     );
@@ -56,7 +57,7 @@ export class DiscordWebhookSagas {
     return `[교환합니다] ${title} ${price ? `- 내 추가금 +${price}` : ''}`;
   }
 
-  parseUrl({ businessFunction, slug }: { businessFunction: string; slug: string }) {
-    return `${this.configService.get('frontend.host')}/${businessFunction}/${slug}`;
+  parseUrl({ slug }: { slug: string }) {
+    return `${this.configService.get('frontend.host')}/${OFFER}/${slug}`;
   }
 }

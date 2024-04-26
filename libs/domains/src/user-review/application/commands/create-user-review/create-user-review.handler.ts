@@ -22,7 +22,6 @@ export class CreateUserReviewHandler implements ICommandHandler<CreateUserReview
       offerId: command.offerId,
       auctionId: command.auctionId,
       userId: command.user.id,
-      reviewedUserId: command.reviewedUserId,
     });
     if (lastReview) throw new ForbiddenException(UserReviewErrorMessage.USER_REVIEW_ALREADY_EXIST);
 

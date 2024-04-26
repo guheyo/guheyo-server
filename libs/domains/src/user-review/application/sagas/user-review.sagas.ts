@@ -13,8 +13,8 @@ export class UserReviewSagas {
       map(
         (event) =>
           new CheckOtherUserReviewCommand({
-            ...event,
             sourceUserReviewId: event.reviewId,
+            reviewStatus: event.reviewStatus,
           }),
       ),
     );
