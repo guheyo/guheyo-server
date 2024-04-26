@@ -28,7 +28,7 @@ export class BumpOfferHandler extends PrismaCommandHandler<BumpOfferCommand, Off
 
     const countDailyOfferPostingInSameCategory = await this.prismaService.offer.countOffer({
       userId: offer.post.userId,
-      categoryId: offer.post.categoryId,
+      categoryId: offer.post.categoryId!,
       businessFunction: offer.businessFunction,
       fromHours: DAY_HOURS,
     });
