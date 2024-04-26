@@ -14,6 +14,10 @@ export class GroupProfileResponse {
 
   @IsOptional()
   @Field(() => String, { nullable: true })
+  description: string | null;
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
   icon: string | null;
 
   constructor(partial: Partial<GroupProfileResponse>) {

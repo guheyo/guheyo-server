@@ -13,8 +13,8 @@ export class PostResponse extends PostPreviewResponse {
   @Field(() => GroupProfileResponse)
   group: GroupProfileResponse;
 
-  @Field(() => CategoryResponse)
-  category: CategoryResponse;
+  @Field(() => CategoryResponse, { nullable: true })
+  category: CategoryResponse | null;
 
   @Field(() => AuthorResponse)
   declare user: AuthorResponse;

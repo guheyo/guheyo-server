@@ -22,4 +22,8 @@ export class UpdatePostInput {
   @IsUUID()
   @Field(() => ID, { nullable: true })
   categoryId?: string;
+
+  @IsString({ each: true })
+  @Field(() => [ID])
+  tagIds: string[];
 }

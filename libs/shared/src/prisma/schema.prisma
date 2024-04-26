@@ -144,8 +144,7 @@ model Category {
   slug              String?
   description       String?
   position          Int
-  groupId           String
-  group             Group       @relation(fields: [groupId], references: [id])
+  groups            Group[]
   posts             Post[]
 
   @@schema("public")
@@ -184,8 +183,8 @@ model Post {
   reportCommentCount  Int           @default(0)
   groupId             String
   group               Group         @relation(fields: [groupId], references: [id])
-  categoryId          String
-  category            Category      @relation(fields: [categoryId], references: [id])
+  categoryId          String?
+  category            Category?     @relation(fields: [categoryId], references: [id])
   userId              String
   user                User          @relation(fields: [userId], references: [id])
   offer               Offer?

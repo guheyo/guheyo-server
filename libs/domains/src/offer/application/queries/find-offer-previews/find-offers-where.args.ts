@@ -26,9 +26,10 @@ export class FindOffersWhereArgs {
   isArchived?: boolean;
 
   // Offer
+  @IsOptional()
   @IsString()
-  @Field(() => String)
-  businessFunction: string;
+  @Field(() => String, { nullable: true })
+  businessFunction?: string;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
