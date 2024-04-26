@@ -19,13 +19,15 @@ export class CheckOtherUserReviewHandler implements ICommandHandler<CheckOtherUs
       throw new ForbiddenException(UserReviewErrorMessage.USER_REVIEW_NOT_FOUND);
 
     const otherUserReview = await this.loadPort.findLastUserReview({
-      type: command.type,
-      offerId: command.offerId,
-      auctionId: command.auctionId,
-      userId: command.reviewedUserId,
-      reviewedUserId: command.userId,
+      type: sourceUserReview.type,
+      offerId: sourceUserReview.offerId || undefined,
+      auctionId: sourceUserReview.auctionId || undefined,
+      userId: sourceUserReview.reviewedUserId,
     });
     if (otherUserReview) {
+      if (sourceUserReview.post.userId !== otherUserReview?.reviewedUserId) {
+        throw new ForbiddenException(UserReviewErrorMessage.MISMATCH_FOR_CROSS_USER_REVIEW);
+      }
       otherUserReview.matching();
       sourceUserReview.matching();
       await this.savePort.save(otherUserReview);
