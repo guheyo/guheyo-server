@@ -135,6 +135,7 @@ input CreateUserReviewInput {
   post: CreatePostInput!
   rating: Int!
   reviewedUserId: ID!
+  status: String! = "oneWay"
   type: String!
 }
 
@@ -537,6 +538,7 @@ input UpdatePostInput {
   archivedAt: DateTime
   categoryId: ID
   pending: String
+  tagIds: [ID!]!
   title: String
 }
 
