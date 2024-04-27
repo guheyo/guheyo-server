@@ -3,38 +3,24 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { ForbiddenException } from '@nestjs/common';
 import { PostErrorMessage } from '@lib/domains/post/domain/post.error.message';
 import { FindPostPreviewQuery } from './find-post-preview.query';
-import { PostPreviewResponse } from '../../dtos/post-preview.response';
+import { PostPreviewWithUserResponse } from '../../dtos/post-preview-with-user.response';
 
 @QueryHandler(FindPostPreviewQuery)
 export class FindPostPreviewHandler extends PrismaQueryHandler<
   FindPostPreviewQuery,
-  PostPreviewResponse
+  PostPreviewWithUserResponse
 > {
   constructor() {
-    super(PostPreviewResponse);
+    super(PostPreviewWithUserResponse);
   }
 
-  async execute(query: FindPostPreviewQuery): Promise<PostPreviewResponse | null> {
+  async execute(query: FindPostPreviewQuery): Promise<PostPreviewWithUserResponse | null> {
     const post = await this.prismaService.post.findFirst({
       where: {
         id: query.id,
       },
       include: {
-        user: {
-          include: {
-            members: {
-              include: {
-                group: true,
-                roles: {
-                  orderBy: {
-                    position: 'asc',
-                  },
-                },
-              },
-            },
-            socialAccounts: true,
-          },
-        },
+        user: true,
       },
     });
     if (post?.archivedAt && post.userId !== query.userId)
