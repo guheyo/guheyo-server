@@ -82,7 +82,7 @@ input CreateOfferInput {
 input CreatePostInput {
   categoryId: ID
   groupId: ID!
-  tagIds: [String!]!
+  tagIds: [ID!]
   title: String!
   type: String!
 }
@@ -257,6 +257,7 @@ type OfferPreviewResponse {
   businessFunction: String!
   content: String
   createdAt: DateTime!
+  hasSubmittedReview: Boolean
   id: ID!
   name0: String
   name1: String
@@ -280,6 +281,7 @@ type OfferResponse {
   businessFunction: String!
   content: String
   createdAt: DateTime!
+  hasSubmittedReview: Boolean
   id: ID!
   name0: String
   name1: String
@@ -538,7 +540,7 @@ input UpdatePostInput {
   archivedAt: DateTime
   categoryId: ID
   pending: String
-  tagIds: [ID!]!
+  tagIds: [ID!]
   title: String
 }
 

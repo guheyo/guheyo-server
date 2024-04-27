@@ -5,6 +5,7 @@ import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
 import { ForbiddenException } from '@nestjs/common';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
+import { OFFER_CLOSED } from '@lib/domains/offer/domain/offer.constants';
 import { FindOfferPreviewsQuery } from './find-offer-previews.query';
 import { PaginatedOfferPreviewsResponse } from './paginated-offer-previews.response';
 import { OfferPreviewResponse } from '../../dtos/offer-preview.response';
@@ -54,6 +55,9 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
         }
       : undefined;
 
+    const isMyClosedOffers =
+      query.userId === query.where?.userId && query.where?.status === OFFER_CLOSED;
+
     const offers = await this.prismaService.offer.findMany({
       where,
       cursor,
@@ -73,6 +77,15 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
             },
           },
         },
+        userReviews: isMyClosedOffers
+          ? {
+              where: {
+                post: {
+                  userId: query.userId,
+                },
+              },
+            }
+          : false,
       },
       orderBy: [
         {
@@ -84,6 +97,12 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
       ],
     });
 
-    return paginate<OfferPreviewResponse>(this.parseResponses(offers), 'id', query.take);
+    const offerPreviews = isMyClosedOffers
+      ? offers.map((offer) => ({
+          ...offer,
+          hasSubmittedReview: offer.userReviews.length > 0,
+        }))
+      : offers;
+    return paginate<OfferPreviewResponse>(this.parseResponses(offerPreviews), 'id', query.take);
   }
 }
