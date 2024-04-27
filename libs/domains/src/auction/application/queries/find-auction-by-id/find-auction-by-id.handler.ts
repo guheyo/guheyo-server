@@ -39,6 +39,7 @@ export class FindAuctionByIdHandler extends PrismaQueryHandler<
                 socialAccounts: true,
               },
             },
+            tags: true,
           },
         },
         bids: {
