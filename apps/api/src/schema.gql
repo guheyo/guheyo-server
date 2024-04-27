@@ -261,7 +261,7 @@ type OfferPreviewResponse {
   id: ID!
   name0: String
   name1: String
-  post: PostPreviewResponse!
+  post: PostPreviewWithUserResponse!
   price: Int!
   priceCurrency: String!
   shippingCost: Int!
@@ -320,12 +320,17 @@ type PaginatedReportPreviewsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedUserReviewPreviewsResponse {
+  edges: [UserReviewPreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedUsersResponse {
   edges: [UserResponseEdge!]!
   pageInfo: PageInfo!
 }
 
-type PostPreviewResponse {
+type PostPreviewWithAuthorResponse {
   archivedAt: DateTime
   categoryId: String
   createdAt: DateTime!
@@ -335,6 +340,25 @@ type PostPreviewResponse {
   reportCommentCount: Int!
   reportCount: Int!
   slug: String
+  tags: [TagResponse!]!
+  thumbnail: String
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+  user: AuthorResponse!
+}
+
+type PostPreviewWithUserResponse {
+  archivedAt: DateTime
+  categoryId: String
+  createdAt: DateTime!
+  groupId: String!
+  id: ID!
+  pending: String
+  reportCommentCount: Int!
+  reportCount: Int!
+  slug: String
+  tags: [TagResponse!]!
   thumbnail: String
   title: String!
   type: String!
@@ -352,6 +376,7 @@ type PostPreviewWithoutUserResponse {
   reportCommentCount: Int!
   reportCount: Int!
   slug: String
+  tags: [TagResponse!]!
   thumbnail: String
   title: String!
   type: String!
@@ -371,6 +396,7 @@ type PostResponse {
   reportCommentCount: Int!
   reportCount: Int!
   slug: String
+  tags: [TagResponse!]!
   thumbnail: String
   title: String!
   type: String!
@@ -390,7 +416,7 @@ type Query {
   findOffer(id: ID, slug: String): OfferResponse
   findOfferCount(businessFunction: String!, categoryId: ID!, fromHours: Int!, userId: ID!): Float!
   findOfferPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
-  findPostPreview(id: ID!): PostPreviewResponse!
+  findPostPreview(id: ID!): PostPreviewWithUserResponse!
   findReport(id: ID!): ReportResponse!
   findReportComment(reportId: ID!): ReportCommentResponse!
   findReportPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportPreviewsResponse!
@@ -400,6 +426,7 @@ type Query {
   findUser(provider: String, socialId: String, username: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
+  findUserReviewPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedUserReviewPreviewsResponse!
   findUsers(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedUsersResponse!
   findVersion(id: ID!): VersionResponse
   findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
@@ -600,6 +627,25 @@ type UserResponse {
 type UserResponseEdge {
   cursor: String!
   node: UserResponse!
+}
+
+type UserReviewPreviewResponse {
+  auctionId: String
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  offerId: String
+  post: PostPreviewWithAuthorResponse!
+  rating: Int!
+  reviewedUser: AuthorResponse!
+  status: String!
+  type: String!
+  updatedAt: DateTime!
+}
+
+type UserReviewPreviewResponseEdge {
+  cursor: String!
+  node: UserReviewPreviewResponse!
 }
 
 type VersionPreviewResponse {
