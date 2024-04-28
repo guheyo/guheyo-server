@@ -43,6 +43,7 @@ export class FindReportHandler extends PrismaQueryHandler<FindReportQuery, Repor
             offer: true,
             auction: true,
             userReview: true,
+            tags: true,
           },
         },
         reportedComment: true,
