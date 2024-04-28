@@ -11,9 +11,9 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateUserReviewInput } from '@lib/domains/user-review/application/commands/create-user-review/create-user-review.input';
 import { CreateUserReviewCommand } from '@lib/domains/user-review/application/commands/create-user-review/create-user-review.command';
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
-import { FindUserReviewPreviewsArgs } from '@lib/domains/user-review/application/queries/find-user-review/find-user-review-previews.args';
-import { FindUserReviewPreviewsQuery } from '@lib/domains/user-review/application/queries/find-user-review/find-user-review-previews.query';
-import { PaginatedUserReviewPreviewsResponse } from '@lib/domains/user-review/application/queries/find-user-review/paginated-user-review-previews.response';
+import { FindUserReviewPreviewsArgs } from '@lib/domains/user-review/application/queries/find-user-review-previews/find-user-review-previews.args';
+import { FindUserReviewPreviewsQuery } from '@lib/domains/user-review/application/queries/find-user-review-previews/find-user-review-previews.query';
+import { PaginatedUserReviewPreviewsResponse } from '@lib/domains/user-review/application/queries/find-user-review-previews/paginated-user-review-previews.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)

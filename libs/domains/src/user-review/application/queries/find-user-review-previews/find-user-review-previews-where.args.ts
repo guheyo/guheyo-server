@@ -14,5 +14,14 @@ export class FindUserReviewPreviewsWhereArgs {
 
   @IsOptional()
   @Field(() => String, { nullable: true })
+  tagType?: string;
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
   pending?: string;
+
+  // User Review
+  @IsOptional()
+  @Field(() => ID, { nullable: true })
+  reviewedUserId?: string;
 }
