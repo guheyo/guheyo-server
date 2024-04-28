@@ -35,11 +35,13 @@ export class UserReviewEntity extends AggregateRoot {
     Object.assign(this, partial);
   }
 
-  create() {
+  create(tagIds: string[]) {
     this.apply(
       new UserReviewCreatedEvent({
         reviewId: this.id,
         reviewStatus: this.status,
+        postId: this.post.id,
+        tagIds,
       }),
     );
   }

@@ -58,6 +58,7 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler<
                 bot: true,
               },
             },
+            tags: true,
           },
         },
       },

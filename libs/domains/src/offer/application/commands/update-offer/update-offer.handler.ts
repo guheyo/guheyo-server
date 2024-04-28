@@ -1,7 +1,6 @@
 import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { ForbiddenException, Inject, NotFoundException } from '@nestjs/common';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
-import _ from 'lodash';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { UpdateOfferCommand } from './update-offer.command';
 import { OfferSavePort } from '../../ports/out/offer.save.port';

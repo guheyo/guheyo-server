@@ -1,10 +1,10 @@
-import { PostPreviewResponse } from '@lib/domains/post/application/dtos/post-preview.response';
+import { PostPreviewWithUserResponse } from '@lib/domains/post/application/dtos/post-preview-with-user.response';
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 
 @ObjectType()
 export class OfferPreviewResponse {
-  @Field(() => PostPreviewResponse)
-  post: PostPreviewResponse;
+  @Field(() => PostPreviewWithUserResponse)
+  post: PostPreviewWithUserResponse;
 
   @Field(() => ID)
   id: string;
@@ -47,6 +47,9 @@ export class OfferPreviewResponse {
 
   @Field()
   status: string;
+
+  @Field(() => Boolean, { nullable: true })
+  hasSubmittedReview?: boolean;
 
   constructor(partial: Partial<OfferPreviewResponse>) {
     Object.assign(this, partial);

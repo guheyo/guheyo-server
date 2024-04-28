@@ -111,11 +111,6 @@ export class UserReviewRepository
           'categoryId',
           'userId',
         ]),
-        tags: {
-          connect: userReview.post.tags.map((tag) => ({
-            id: tag.id,
-          })),
-        },
       },
     });
     await this.prismaService.userReview.create({

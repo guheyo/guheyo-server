@@ -1,10 +1,10 @@
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
-import { PostPreviewResponse } from '@lib/domains/post/application/dtos/post-preview.response';
+import { PostPreviewWithUserResponse } from '@lib/domains/post/application/dtos/post-preview-with-user.response';
 
 @ObjectType()
 export class AuctionPreviewResponse {
-  @Field(() => PostPreviewResponse)
-  post: PostPreviewResponse;
+  @Field(() => PostPreviewWithUserResponse)
+  post: PostPreviewWithUserResponse;
 
   @Field(() => ID)
   id: string;

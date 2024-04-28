@@ -1,3 +1,4 @@
+import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 
 @ObjectType()
@@ -40,6 +41,9 @@ export class PostPreviewWithoutUserResponse {
 
   @Field(() => Int)
   reportCommentCount: number;
+
+  @Field(() => [TagResponse])
+  tags: TagResponse[];
 
   constructor(partial: Partial<PostPreviewWithoutUserResponse>) {
     Object.assign(this, partial);
