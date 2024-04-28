@@ -52,7 +52,9 @@ export class PostEntity extends AggregateRoot {
 
   update(props: UpdatePostProps) {
     Object.assign(this, omitBy(props, isUndefined));
-    this.tags = props.tagIds.map((tagId) => new TagEntity({ id: tagId }));
+    if (props.tagIds) {
+      this.tags = props.tagIds.map((tagId) => new TagEntity({ id: tagId }));
+    }
   }
 
   isAuthorized(userId: string) {

@@ -13,7 +13,7 @@ export interface CreatePostProps {
 
   userId?: string;
 
-  tagIds: string[];
+  tagIds?: string[];
 }
 
 export interface UpdatePostProps {
@@ -27,5 +27,5 @@ export interface UpdatePostProps {
 
   categoryId?: string;
 
-  tagIds: string[];
+  tagIds?: string[];
 }

@@ -20,7 +20,8 @@ export class CreatePostInput {
   @Field(() => ID, { nullable: true })
   categoryId?: string;
 
+  @IsOptional()
   @IsString({ each: true })
-  @Field(() => [String])
-  tagIds: string[];
+  @Field(() => [ID], { nullable: true })
+  tagIds?: string[];
 }
