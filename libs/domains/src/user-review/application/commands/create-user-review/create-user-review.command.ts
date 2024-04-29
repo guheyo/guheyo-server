@@ -32,6 +32,7 @@ export class CreateUserReviewCommand implements ICommand {
     this.reviewedUserId = input.reviewedUserId;
     this.offerId = input.offerId;
     this.auctionId = input.auctionId;
+    this.content = input.content;
     this.rating = input.rating;
     this.status = input.status as UserReviewStatus;
     this.user = user;

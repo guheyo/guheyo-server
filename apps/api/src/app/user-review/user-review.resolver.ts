@@ -11,9 +11,12 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateUserReviewInput } from '@lib/domains/user-review/application/commands/create-user-review/create-user-review.input';
 import { CreateUserReviewCommand } from '@lib/domains/user-review/application/commands/create-user-review/create-user-review.command';
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
-import { FindUserReviewPreviewsArgs } from '@lib/domains/user-review/application/queries/find-user-review/find-user-review-previews.args';
-import { FindUserReviewPreviewsQuery } from '@lib/domains/user-review/application/queries/find-user-review/find-user-review-previews.query';
-import { PaginatedUserReviewPreviewsResponse } from '@lib/domains/user-review/application/queries/find-user-review/paginated-user-review-previews.response';
+import { FindUserReviewPreviewsArgs } from '@lib/domains/user-review/application/queries/find-user-review-previews/find-user-review-previews.args';
+import { FindUserReviewPreviewsQuery } from '@lib/domains/user-review/application/queries/find-user-review-previews/find-user-review-previews.query';
+import { PaginatedUserReviewPreviewsResponse } from '@lib/domains/user-review/application/queries/find-user-review-previews/paginated-user-review-previews.response';
+import { UserReviewResponse } from '@lib/domains/user-review/application/dtos/user-review.response';
+import { FindUserReviewArgs } from '@lib/domains/user-review/application/queries/find-user-review/find-user-review.args';
+import { FindUserReviewQuery } from '@lib/domains/user-review/application/queries/find-user-review/find-user-review.query';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -31,6 +34,19 @@ export class UserReviewResolver {
     @ExtractedUser() user: MyUserResponse,
   ) {
     const query = new FindUserReviewPreviewsQuery({
+      args,
+      userId: user.id,
+    });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(OptionalJwtUserGuard)
+  @Query(() => UserReviewResponse, { nullable: true })
+  async findUserReview(
+    @Args() args: FindUserReviewArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<UserReviewResponse | null> {
+    const query = new FindUserReviewQuery({
       args,
       userId: user.id,
     });

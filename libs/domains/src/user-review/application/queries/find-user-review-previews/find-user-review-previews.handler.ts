@@ -24,7 +24,15 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler<
             userId: query.where.userId,
             pending: query.where.pending,
             title: parseFollowedBySearcher(query.keyword),
+            tags: query.where.tagType
+              ? {
+                  some: {
+                    type: query.where.tagType,
+                  },
+                }
+              : undefined,
           },
+          reviewedUserId: query.where.reviewedUserId,
         }
       : {};
 
