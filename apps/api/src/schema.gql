@@ -426,6 +426,7 @@ type Query {
   findUser(provider: String, socialId: String, username: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
+  findUserReview(id: ID, slug: String): UserReviewResponse
   findUserReviewPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedUserReviewPreviewsResponse!
   findUsers(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedUsersResponse!
   findVersion(id: ID!): VersionResponse
@@ -646,6 +647,20 @@ type UserReviewPreviewResponse {
 type UserReviewPreviewResponseEdge {
   cursor: String!
   node: UserReviewPreviewResponse!
+}
+
+type UserReviewResponse {
+  auctionId: String
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  offerId: String
+  post: PostResponse!
+  rating: Int!
+  reviewedUser: AuthorResponse!
+  status: String!
+  type: String!
+  updatedAt: DateTime!
 }
 
 type VersionPreviewResponse {
