@@ -43,11 +43,25 @@ type CommentResponse {
   updatedAt: DateTime!
 }
 
+type CommentWithAuthorResponse {
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  parentId: ID
+  postId: ID!
+  updatedAt: DateTime!
+  user: AuthorResponse!
+}
+
+type CommentWithAuthorResponseEdge {
+  cursor: String!
+  node: CommentWithAuthorResponse!
+}
+
 input CreateCommentInput {
   content: String!
   id: ID!
   postId: ID!
-  userId: ID!
 }
 
 input CreateGroupInput {
@@ -144,6 +158,14 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input DeleteCommentInput {
+  id: ID!
+}
+
+type DeleteCommentResult {
+  id: ID!
+}
+
 type GroupPreviewResponse {
   buys: [OfferPreviewResponse!]!
   description: String
@@ -223,6 +245,7 @@ type Mutation {
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
   createUserImage(input: CreateUserImageInput!): String!
   createUserReview(input: CreateUserReviewInput!): String!
+  deleteComment(input: DeleteCommentInput!): DeleteCommentResult!
   deleteOffer(id: ID!): String!
   deleteRole(id: ID!): String!
   deleteUserImage(id: ID!): String!
@@ -298,6 +321,11 @@ type OfferResponse {
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
+}
+
+type PaginatedCommentsResponse {
+  edges: [CommentWithAuthorResponseEdge!]!
+  pageInfo: PageInfo!
 }
 
 type PaginatedGroupProfilesResponse {
@@ -407,6 +435,7 @@ type PostResponse {
 type Query {
   findAuthor(id: ID, username: String): AuthorResponse
   findComment(id: ID, postId: ID): CommentResponse
+  findComments(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedCommentsResponse!
   findGroup(id: ID, slug: String): GroupResponse
   findGroupPreviews: [GroupPreviewResponse!]!
   findGroupProfiles(cursor: ID, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
