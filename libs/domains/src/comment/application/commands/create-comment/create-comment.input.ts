@@ -11,10 +11,6 @@ export class CreateCommentInput {
   @Field(() => ID)
   postId: string;
 
-  @IsUUID()
-  @Field(() => ID)
-  userId: string;
-
   @IsString()
   @Field(() => String)
   content: string;
