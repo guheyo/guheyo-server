@@ -29,6 +29,7 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler<
           reportedCommentId: query.where.type === 'comment' ? query.where.refId : undefined,
           userId: query.where.userId,
           reportedUserId: query.where.reportedUserId,
+          groupId: query.where.groupId,
           status: query.where.status,
           reason: parseFollowedBySearcher(query.keyword),
           createdAt: query.where.createdAt
