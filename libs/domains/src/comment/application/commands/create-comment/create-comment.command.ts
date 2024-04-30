@@ -7,8 +7,6 @@ export class CreateCommentCommand implements ICommand {
 
   postId: string;
 
-  userId: string;
-
   content: string;
 
   user: MyUserResponse;
@@ -16,7 +14,6 @@ export class CreateCommentCommand implements ICommand {
   constructor({ input, user }: { input: CreateCommentInput; user: MyUserResponse }) {
     this.id = input.id;
     this.postId = input.postId;
-    this.userId = input.userId;
     this.content = input.content;
     this.user = user;
   }

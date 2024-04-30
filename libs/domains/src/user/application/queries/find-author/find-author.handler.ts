@@ -10,6 +10,8 @@ export class FindAuthorHandler extends PrismaQueryHandler<FindAuthorQuery, Autho
   }
 
   async execute(query: FindAuthorQuery): Promise<AuthorResponse | null> {
+    if (!query.id && !query.username) return null;
+
     const user = await this.prismaService.user.findFirst({
       where: {
         id: query.id,

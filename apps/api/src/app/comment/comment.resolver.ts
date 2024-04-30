@@ -11,6 +11,13 @@ import { UpdateCommentInput } from '@lib/domains/comment/application/commands/up
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { DeleteCommentInput } from '@lib/domains/comment/application/commands/delete-comment/delete-comment.input';
+import { DeleteCommentCommand } from '@lib/domains/comment/application/commands/delete-comment/delete-comment.command';
+import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
+import { FindCommentsArgs } from '@lib/domains/comment/application/queries/find-comments/find-comments.args';
+import { FindCommentsQuery } from '@lib/domains/comment/application/queries/find-comments/find-comments.query';
+import { PaginatedCommentsResponse } from '@lib/domains/comment/application/queries/find-comments/paginated-comments.response';
+import { DeleteCommentResult } from '@lib/domains/comment/application/dtos/delete-comment.result';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -24,6 +31,16 @@ export class CommentResolver {
   @Query(() => CommentResponse, { nullable: true })
   async findComment(@Args() args: FindCommentArgs) {
     const query = new FindCommentQuery(args);
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(OptionalJwtUserGuard)
+  @Query(() => PaginatedCommentsResponse)
+  async findComments(@Args() args: FindCommentsArgs, @ExtractedUser() user: MyUserResponse) {
+    const query = new FindCommentsQuery({
+      args,
+      userId: user.id,
+    });
     return this.queryBus.execute(query);
   }
 
@@ -44,5 +61,14 @@ export class CommentResolver {
     @ExtractedUser() user: MyUserResponse,
   ) {
     return this.commandBus.execute(new UpdateCommentCommand({ input, user }));
+  }
+
+  @UseGuards(RequiredJwtUserGuard)
+  @Mutation(() => DeleteCommentResult)
+  async deleteComment(
+    @Args('input') input: DeleteCommentInput,
+    @ExtractedUser() user: MyUserResponse,
+  ) {
+    return this.commandBus.execute(new DeleteCommentCommand({ input, user }));
   }
 }
