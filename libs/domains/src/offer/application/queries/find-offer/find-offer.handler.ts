@@ -28,14 +28,12 @@ export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferRe
             category: true,
             user: {
               include: {
-                members: {
+                roles: {
                   include: {
                     group: true,
-                    roles: {
-                      orderBy: {
-                        position: 'asc',
-                      },
-                    },
+                  },
+                  orderBy: {
+                    position: 'asc',
                   },
                 },
                 socialAccounts: true,
