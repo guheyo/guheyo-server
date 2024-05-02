@@ -26,14 +26,12 @@ export class FindAuctionByIdHandler extends PrismaQueryHandler<
             category: true,
             user: {
               include: {
-                members: {
+                roles: {
                   include: {
                     group: true,
-                    roles: {
-                      orderBy: {
-                        position: 'asc',
-                      },
-                    },
+                  },
+                  orderBy: {
+                    position: 'asc',
                   },
                 },
                 socialAccounts: true,
@@ -49,14 +47,12 @@ export class FindAuctionByIdHandler extends PrismaQueryHandler<
           include: {
             user: {
               include: {
-                members: {
+                roles: {
                   include: {
                     group: true,
-                    roles: {
-                      orderBy: {
-                        position: 'asc',
-                      },
-                    },
+                  },
+                  orderBy: {
+                    position: 'asc',
                   },
                 },
                 socialAccounts: true,

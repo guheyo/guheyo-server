@@ -27,14 +27,12 @@ export class AuctionRepository
             user: {
               include: {
                 socialAccounts: true,
-                members: {
+                roles: {
                   include: {
                     group: true,
-                    roles: {
-                      orderBy: {
-                        position: 'asc',
-                      },
-                    },
+                  },
+                  orderBy: {
+                    position: 'asc',
                   },
                 },
               },
@@ -51,14 +49,12 @@ export class AuctionRepository
             user: {
               include: {
                 socialAccounts: true,
-                members: {
+                roles: {
                   include: {
                     group: true,
-                    roles: {
-                      orderBy: {
-                        position: 'asc',
-                      },
-                    },
+                  },
+                  orderBy: {
+                    position: 'asc',
                   },
                 },
               },

@@ -3,9 +3,13 @@ import _ from 'lodash';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { UserLoadPort } from '@lib/domains/user/application/ports/out/user.load.port';
+import { UserSavePort } from '@lib/domains/user/application/ports/out/user.save.port';
 
 @Injectable()
-export class UserRepository extends PrismaRepository<UserEntity> implements UserLoadPort {
+export class UserRepository
+  extends PrismaRepository<UserEntity>
+  implements UserLoadPort, UserSavePort
+{
   constructor() {
     super(UserEntity);
   }
@@ -15,14 +19,12 @@ export class UserRepository extends PrismaRepository<UserEntity> implements User
       where: { id },
       include: {
         socialAccounts: true,
-        members: {
+        roles: {
           include: {
             group: true,
-            roles: {
-              orderBy: {
-                position: 'asc',
-              },
-            },
+          },
+          orderBy: {
+            position: 'asc',
           },
         },
       },
@@ -43,14 +45,12 @@ export class UserRepository extends PrismaRepository<UserEntity> implements User
       },
       include: {
         socialAccounts: true,
-        members: {
+        roles: {
           include: {
             group: true,
-            roles: {
-              orderBy: {
-                position: 'asc',
-              },
-            },
+          },
+          orderBy: {
+            position: 'asc',
           },
         },
       },
@@ -86,6 +86,62 @@ export class UserRepository extends PrismaRepository<UserEntity> implements User
     await this.prismaService.user.delete({
       where: {
         id: user.id,
+      },
+    });
+  }
+
+  async connectRoles({
+    userId,
+    roleIds,
+    roleNames,
+  }: {
+    userId: string;
+    roleIds: string[];
+    roleNames: string[];
+  }): Promise<void> {
+    await this.prismaService.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        roles: {
+          connect:
+            roleIds.length > 0
+              ? roleIds.map((roleId) => ({
+                  id: roleId,
+                }))
+              : roleNames.map((roleName) => ({
+                  name: roleName,
+                })),
+        },
+      },
+    });
+  }
+
+  async disconnectRoles({
+    userId,
+    roleIds,
+    roleNames,
+  }: {
+    userId: string;
+    roleIds: string[];
+    roleNames: string[];
+  }): Promise<void> {
+    await this.prismaService.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        roles: {
+          disconnect:
+            roleIds.length > 0
+              ? roleIds.map((roleId) => ({
+                  id: roleId,
+                }))
+              : roleNames.map((roleName) => ({
+                  name: roleName,
+                })),
+        },
       },
     });
   }

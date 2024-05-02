@@ -9,7 +9,6 @@ import { GROUP_PROVIDERS } from '@lib/domains/group/group.providers';
 import { USER_PROVIDERS } from '@lib/domains/user/user.providers';
 import { USER_IMAGE_PROVIDERS } from '@lib/domains/user-image/user-image.providers';
 import { SOCIAL_ACCOUNT_PROVIDERS } from '@lib/domains/social-account/social-account.providers';
-import { MEMBER_PROVIDERS } from '@lib/domains/member/member.providers';
 import { ROLE_PROVIDERS } from '@lib/domains/role/role.providers';
 import { OFFER_PROVIDERS } from '@lib/domains/offer/offer.providers';
 import { APP_FILTER } from '@nestjs/core';
@@ -48,7 +47,6 @@ import { DiscordConfigService } from './shared/discord/discord.config.service';
     ...USER_PROVIDERS,
     ...USER_IMAGE_PROVIDERS,
     ...SOCIAL_ACCOUNT_PROVIDERS,
-    ...MEMBER_PROVIDERS,
     ...ROLE_PROVIDERS,
     ...OFFER_PROVIDERS,
     ...POST_PROVIDERS,

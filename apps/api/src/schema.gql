@@ -8,7 +8,7 @@ type AuthorResponse {
   bot: Boolean!
   createdAt: DateTime!
   id: ID!
-  members: [MemberWithRolesResponse!]!
+  roles: [RoleResponse!]!
   socialAccounts: [SocialAccountWithoutAuthResponse!]!
   username: String!
 }
@@ -225,14 +225,6 @@ input LinkSocialProfileInput {
   provider: String!
 }
 
-type MemberWithRolesResponse {
-  createdAt: DateTime!
-  group: GroupProfileResponse!
-  id: ID!
-  roles: [RoleResponse!]!
-  userId: String!
-}
-
 type Mutation {
   bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
   commentReport(input: CommentReportInput!): ReportCommentResponse!
@@ -268,9 +260,9 @@ type MyUserResponse {
   bot: Boolean!
   createdAt: DateTime!
   id: ID!
-  members: [MemberWithRolesResponse!]!
   name: String
   phoneNumber: String
+  roles: [RoleResponse!]!
   socialAccounts: [SocialAccountResponse!]!
   username: String!
 }

@@ -32,14 +32,12 @@ export class FindUserReviewHandler extends PrismaQueryHandler<
             category: true,
             user: {
               include: {
-                members: {
+                roles: {
                   include: {
                     group: true,
-                    roles: {
-                      orderBy: {
-                        position: 'asc',
-                      },
-                    },
+                  },
+                  orderBy: {
+                    position: 'asc',
                   },
                 },
                 socialAccounts: true,
@@ -50,14 +48,12 @@ export class FindUserReviewHandler extends PrismaQueryHandler<
         },
         reviewedUser: {
           include: {
-            members: {
+            roles: {
               include: {
                 group: true,
-                roles: {
-                  orderBy: {
-                    position: 'asc',
-                  },
-                },
+              },
+              orderBy: {
+                position: 'asc',
               },
             },
             socialAccounts: true,

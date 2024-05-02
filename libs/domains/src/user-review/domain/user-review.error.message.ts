@@ -8,7 +8,6 @@ export enum UserReviewErrorMessage {
   FIND_USER_REVIEWS_REQUEST_FROM_UNAUTHORIZED_USER = 'Find userReview request from unauthorized user',
   USER_REVIEW_COOLDOWN_NOT_PASSED = 'UserReview cooldown not passed',
   REVIEWED_USER_NOT_FOUND = 'Reviewed user not found',
-  REVIEWED_USER_ROOT_GROUP_MEMBER_NOT_FOUND = 'Reviewed user root gorup member not found',
   CREATE_USER_REVIEW_REQUEST_FROM_UNAUTHORIZED_USER = 'Create userReview request from unauthorized user',
   USER_REVIEW_CREATION_FAILED = 'UserReview creation failed',
   MISMATCH_FOR_CROSS_USER_REVIEW = 'Mismatch for cross userReview',
