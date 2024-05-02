@@ -96,9 +96,11 @@ export class UserClient extends UserImageClient {
   async connectRoles(userId: string, roleNames: string[]) {
     await this.commandBus.execute(
       new ConnectRolesCommand({
+        input: {
+          roleIds: [],
+          roleNames,
+        },
         userId,
-        roleIds: [],
-        roleNames,
       }),
     );
   }
@@ -106,9 +108,11 @@ export class UserClient extends UserImageClient {
   async disconnectRoles(userId: string, roleNames: string[]) {
     await this.commandBus.execute(
       new DisconnectRolesCommand({
+        input: {
+          roleIds: [],
+          roleNames,
+        },
         userId,
-        roleIds: [],
-        roleNames,
       }),
     );
   }
