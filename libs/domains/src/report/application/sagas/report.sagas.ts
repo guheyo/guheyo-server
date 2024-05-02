@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
 import { Observable, concatMap, filter, map, of } from 'rxjs';
 import { pick } from 'lodash';
-import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
-import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
 import { CheckPostReportsCommand } from '@lib/domains/post/application/commands/check-post-reports/check-post-reports.command';
+import { ConnectRolesCommand } from '@lib/domains/user/application/commands/connect-roles/connect-roles.command';
+import { DisconnectRolesCommand } from '@lib/domains/user/application/commands/disconnect-roles/disconnect-roles.command';
 import { CheckReportCommentsCommand } from '../commands/check-report-comments/check-report-comments.command';
 import { ReportCreatedEvent } from '../events/report-created/report-created.event';
 import { ReportStatusUpdatedEvent } from '../events/report-status-updated/report-status-updated.event';
@@ -63,11 +63,9 @@ export class ReportSagas {
       ofType(CheckedReportedUserEvent),
       map((event) =>
         event.hasUncommentedReceivedReports
-          ? new ConnectRolesCommand(
-              pick(event, ['groupId', 'groupSlug', 'userId', 'roleIds', 'roleNames']),
-            )
+          ? new ConnectRolesCommand(pick(event, ['userId', 'roleIds', 'roleNames']))
           : new DisconnectRolesCommand({
-              id: event.memberId!,
+              userId: event.userId!,
               roleIds: [],
               roleNames: event.roleNames,
             }),
