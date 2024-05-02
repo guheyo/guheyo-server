@@ -8,8 +8,8 @@ export class ConnectRolesCommand implements ICommand {
 
   roleNames: string[];
 
-  constructor(input: ConnectRolesInput) {
-    this.userId = input.userId;
+  constructor({ input, userId }: { input: ConnectRolesInput; userId: string }) {
+    this.userId = userId;
     this.roleIds = input.roleIds;
     this.roleNames = input.roleNames;
   }

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
 import { Observable, concatMap, filter, map, of } from 'rxjs';
-import { pick } from 'lodash';
 import { CheckPostReportsCommand } from '@lib/domains/post/application/commands/check-post-reports/check-post-reports.command';
 import { ConnectRolesCommand } from '@lib/domains/user/application/commands/connect-roles/connect-roles.command';
 import { DisconnectRolesCommand } from '@lib/domains/user/application/commands/disconnect-roles/disconnect-roles.command';
@@ -63,11 +62,19 @@ export class ReportSagas {
       ofType(CheckedReportedUserEvent),
       map((event) =>
         event.hasUncommentedReceivedReports
-          ? new ConnectRolesCommand(pick(event, ['userId', 'roleIds', 'roleNames']))
+          ? new ConnectRolesCommand({
+              input: {
+                roleIds: event.roleIds,
+                roleNames: event.roleNames,
+              },
+              userId: event.userId,
+            })
           : new DisconnectRolesCommand({
+              input: {
+                roleIds: [],
+                roleNames: event.roleNames,
+              },
               userId: event.userId!,
-              roleIds: [],
-              roleNames: event.roleNames,
             }),
       ),
     );

@@ -1,12 +1,8 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsString, IsUUID } from 'class-validator';
+import { IsString } from 'class-validator';
 
 @InputType()
 export class DisconnectRolesInput {
-  @IsUUID()
-  @Field(() => ID)
-  userId: string;
-
   @IsString({ each: true })
   @Field(() => [ID])
   roleIds: string[];

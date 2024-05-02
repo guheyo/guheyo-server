@@ -8,8 +8,8 @@ export class DisconnectRolesCommand implements ICommand {
 
   roleNames: string[];
 
-  constructor(input: DisconnectRolesInput) {
-    this.userId = input.userId;
+  constructor({ input, userId }: { input: DisconnectRolesInput; userId: string }) {
+    this.userId = userId;
     this.roleIds = input.roleIds;
     this.roleNames = input.roleNames;
   }
