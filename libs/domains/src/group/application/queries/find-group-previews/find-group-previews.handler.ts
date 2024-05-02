@@ -53,7 +53,7 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
             },
           },
         },
-        take: 3,
+        take: 2,
         orderBy: {
           bumpedAt: 'desc',
         },
@@ -85,7 +85,7 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
             },
           },
         },
-        take: 3,
+        take: 2,
         orderBy: {
           bumpedAt: 'desc',
         },
