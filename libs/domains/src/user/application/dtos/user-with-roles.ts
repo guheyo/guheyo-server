@@ -1,17 +1,15 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
 import { RoleResponse } from '@lib/domains/role/application/dtos/role.response';
-import { MemberResponse } from './member.response';
+import { UserResponse } from './user.response';
 
 @ObjectType()
-export class MemberWithRolesResponse extends MemberResponse {
-  @IsOptional()
+export class UserWithRolesResponse extends UserResponse {
   @Type(() => RoleResponse)
   @Field(() => [RoleResponse])
   roles: RoleResponse[];
 
-  constructor(partial: Partial<MemberResponse>) {
+  constructor(partial: Partial<UserWithRolesResponse>) {
     super(partial);
     Object.assign(this, partial);
   }

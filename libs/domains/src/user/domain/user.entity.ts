@@ -1,8 +1,8 @@
-import { MemberEntity } from '@lib/domains/member/domain/member.entity';
 import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { isUndefined, omitBy } from 'lodash';
 import { Type } from 'class-transformer';
+import { RoleEntity } from '@lib/domains/role/domain/role.entity';
 import { UpdateUserProps } from './user.types';
 import { SocialAccountLinkedEvent } from '../application/events/social-account-linked/social-account-linked.event';
 import { UserUpdatedEvent } from '../application/events/user-updated/user-updated.event';
@@ -31,8 +31,8 @@ export class UserEntity extends AggregateRoot {
 
   socialAccounts: SocialAccountEntity[];
 
-  @Type(() => MemberEntity)
-  members: MemberEntity[];
+  @Type(() => RoleEntity)
+  roles: RoleEntity[];
 
   constructor(partial: Partial<UserEntity>) {
     super();

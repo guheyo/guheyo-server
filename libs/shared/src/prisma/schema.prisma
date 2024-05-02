@@ -30,7 +30,7 @@ model User {
   avatarURL         String?
   bot               Boolean       @default(false)
   socialAccounts    SocialAccount[]
-  members           Member[]
+  roles             Role[]
   userImages        UserImage[]
   posts             Post[]
   comments          Comment[]
@@ -67,20 +67,6 @@ model UserImage {
   @@schema("public")
 }
 
-model Member {
-  id                String      @id @default(uuid())
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
-  deletedAt         DateTime?
-  userId            String
-  user              User        @relation(fields: [userId], references: [id])
-  groupId           String
-  group             Group       @relation(fields: [groupId], references: [id])
-  roles             Role[]
-
-  @@schema("public")
-}
-
 model SocialAccount {
   id                String      @id @default(uuid())
   createdAt         DateTime    @default(now())
@@ -109,9 +95,9 @@ model Role {
   name              String      @unique
   position          Int
   hexColor          String      @default("#7f838e")
-  groupId           String
-  group             Group       @relation(fields: [groupId], references: [id])
-  members           Member[]
+  groupId           String?
+  group             Group?      @relation(fields: [groupId], references: [id])
+  users             User[]
 
   @@schema("public")
 }
@@ -126,7 +112,6 @@ model Group {
   description       String?
   icon              String?
   position          Int
-  members           Member[]
   roles             Role[]
   brands            Brand[]
   categories        Category[]
@@ -237,6 +222,8 @@ model Reaction {
   post              Post?         @relation(fields: [postId], references: [id])
   commentId         String?
   comment           Comment?      @relation(fields: [commentId], references: [id])
+  userAgent         String?
+  ipAddress         String?
 
   @@schema("public")
 }

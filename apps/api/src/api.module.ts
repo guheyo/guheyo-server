@@ -18,7 +18,6 @@ import { ReportModule } from './app/report/report.module';
 import { CommentModule } from './app/comment/comment.module';
 import { VersionModule } from './app/version/version.module';
 import { SocialAccountModule } from './app/social-account/social-account.module';
-import { MemberModule } from './app/member/member.module';
 import { BumpModule } from './app/bump/bump.module';
 import { DiscordWebhookModule } from './app/discord-webhook/discord-webhook.module';
 import { UserReviewModule } from './app/user-review/user-review.module';
@@ -48,7 +47,6 @@ import { PostModule } from './app/post/post.module';
     ]),
     AuthModule,
     SocialAccountModule,
-    MemberModule,
     CommonModule,
     UserModule,
     RoleModule,

@@ -25,14 +25,12 @@ export class OfferRepository
             user: {
               include: {
                 socialAccounts: true,
-                members: {
+                roles: {
                   include: {
                     group: true,
-                    roles: {
-                      orderBy: {
-                        position: 'asc',
-                      },
-                    },
+                  },
+                  orderBy: {
+                    position: 'asc',
                   },
                 },
               },

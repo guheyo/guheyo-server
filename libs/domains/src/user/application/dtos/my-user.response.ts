@@ -1,10 +1,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import { SocialAccountResponse } from '@lib/domains/social-account/application/dtos/social-account.response';
-import { UserWithMembersResponse } from './user-with-members';
+import { UserWithRolesResponse } from './user-with-roles';
 
 @ObjectType()
-export class MyUserResponse extends UserWithMembersResponse {
+export class MyUserResponse extends UserWithRolesResponse {
   @Field(() => String, { nullable: true })
   name: string | null;
 
