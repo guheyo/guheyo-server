@@ -39,6 +39,7 @@ model User {
   receivedReports   Report[]      @relation("receivedReports")
   reportComments    ReportComment[]
   receivedReviews   UserReview[]  @relation("receivedUserReviews")
+  reactions         Reaction[]
 
   @@schema("public")
 }
@@ -194,6 +195,7 @@ model Post {
   tags                Tag[]
   brands              Brand[]
   reports             Report[]
+  reactions           Reaction[]
 
   @@schema("public")
 }
@@ -211,9 +213,40 @@ model Comment {
   parent            Comment?      @relation("ChildComments", fields: [parentId], references: [id])
   replies           Comment[]     @relation("ChildComments")
   reports           Report[]
+  reactions         Reaction[]
   content           String
   userAgent         String?
   ipAddress         String?
+
+  @@schema("public")
+}
+
+model Reaction {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  canceledAt        DateTime?
+  emojiId           String
+  emoji             Emoji         @relation(fields: [emojiId], references: [id])
+  userId            String
+  user              User          @relation(fields: [userId], references: [id])
+  postId            String?
+  post              Post?         @relation(fields: [postId], references: [id])
+  commentId         String?
+  comment           Comment?      @relation(fields: [commentId], references: [id])
+
+  @@schema("public")
+}
+
+model Emoji {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  name              String
+  url               String?
+  reactions         Reaction[]
 
   @@schema("public")
 }
