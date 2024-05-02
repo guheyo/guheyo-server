@@ -40,6 +40,7 @@ model User {
   reportComments    ReportComment[]
   receivedReviews   UserReview[]  @relation("receivedUserReviews")
   reactions         Reaction[]
+  uploadedEmojis    Emoji[]
 
   @@schema("public")
 }
@@ -131,6 +132,7 @@ model Group {
   categories        Category[]
   posts             Post[]
   reports           Report[]
+  emojis            Emoji[]
 
   @@schema("public")
 }
@@ -246,7 +248,12 @@ model Emoji {
   deletedAt         DateTime?
   name              String
   url               String?
+  isCustom          Boolean       @default(true)
   reactions         Reaction[]
+  groupId           String?
+  group             Group?        @relation(fields: [groupId], references: [id])
+  userId            String?
+  user              User?         @relation(fields: [userId], references: [id])
 
   @@schema("public")
 }
