@@ -235,7 +235,7 @@ model Emoji {
   deletedAt         DateTime?
   name              String
   url               String?
-  isCustom          Boolean       @default(true)
+  position          Int
   reactions         Reaction[]
   groupId           String?
   group             Group?        @relation(fields: [groupId], references: [id])

@@ -1,16 +1,17 @@
 import { PrismaClient } from '@prisma/client';
 
-const LIKE = 'like';
 const LOVE = 'love';
+const LIKE = 'like';
+const HMM = 'hmm';
 const SAD = 'sad';
 const ANGRY = 'angry';
 
 export async function seedEmojis(prisma: PrismaClient) {
   // Define the emojis to be seeded
-  const emojis = [LIKE, LOVE, SAD, ANGRY];
+  const emojis = [LOVE, LIKE, HMM, SAD, ANGRY];
 
   // Iterate over each emoji
-  emojis.forEach(async (emoji) => {
+  emojis.forEach(async (emoji, index) => {
     // Check if the emoji already exists in the database
     const existingEmoji = await prisma.emoji.findFirst({
       where: { name: emoji },
@@ -19,7 +20,10 @@ export async function seedEmojis(prisma: PrismaClient) {
     // If the emoji does not exist, create it
     if (!existingEmoji) {
       await prisma.emoji.create({
-        data: { name: emoji },
+        data: {
+          name: emoji,
+          position: index,
+        },
       });
       console.log(`Emoji ${emoji} seeded successfully.`);
     } else {
