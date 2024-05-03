@@ -166,6 +166,14 @@ type DeleteCommentResult {
   id: ID!
 }
 
+type EmojiResponse {
+  groupId: ID
+  id: ID!
+  name: String!
+  position: Int!
+  url: String
+}
+
 type GroupPreviewResponse {
   buys: [OfferPreviewResponse!]!
   description: String
@@ -428,6 +436,7 @@ type Query {
   findAuthor(id: ID, username: String): AuthorResponse
   findComment(id: ID, postId: ID): CommentResponse
   findComments(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedCommentsResponse!
+  findEmojis(groupId: ID): [EmojiResponse!]!
   findGroup(id: ID, slug: String): GroupResponse
   findGroupPreviews: [GroupPreviewResponse!]!
   findGroupProfiles(cursor: ID, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
