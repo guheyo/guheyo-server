@@ -23,6 +23,7 @@ import { DiscordWebhookModule } from './app/discord-webhook/discord-webhook.modu
 import { UserReviewModule } from './app/user-review/user-review.module';
 import { TagModule } from './app/tag/tag.module';
 import { PostModule } from './app/post/post.module';
+import { EmojiModule } from './app/emoji/emoji.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { PostModule } from './app/post/post.module';
     DiscordWebhookModule,
     UserReviewModule,
     TagModule,
+    EmojiModule,
   ],
 })
 export class ApiModule {}
