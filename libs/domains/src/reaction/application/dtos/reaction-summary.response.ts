@@ -1,5 +1,5 @@
 import { EmojiResponse } from '@lib/domains/emoji/application/dtos/emoji.response';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class ReactionSummaryResponse {
@@ -11,6 +11,12 @@ export class ReactionSummaryResponse {
 
   @Field(() => Boolean)
   me: boolean;
+
+  @Field(() => ID, { nullable: true })
+  postId: string | null;
+
+  @Field(() => ID, { nullable: true })
+  commentId: string | null;
 
   constructor(partial: Partial<ReactionSummaryResponse>) {
     Object.assign(this, partial);

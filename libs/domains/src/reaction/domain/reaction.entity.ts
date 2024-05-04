@@ -29,6 +29,6 @@ export class ReactionEntity extends AggregateRoot {
   }
 
   cancel() {
-    this.canceledAt = null;
+    this.canceledAt = new Date();
   }
 }

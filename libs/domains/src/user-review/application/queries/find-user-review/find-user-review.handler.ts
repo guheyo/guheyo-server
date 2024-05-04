@@ -49,6 +49,11 @@ export class FindUserReviewHandler extends PrismaQueryHandler<
               include: {
                 emoji: true,
               },
+              where: {
+                canceledAt: {
+                  equals: null,
+                },
+              },
             },
           },
         },
@@ -82,6 +87,8 @@ export class FindUserReviewHandler extends PrismaQueryHandler<
             emoji,
             count: 0,
             me: false,
+            postId: reaction.postId,
+            commentId: reaction.commentId,
           };
         }
         acc[emoji.id].count++;
@@ -106,9 +113,7 @@ export class FindUserReviewHandler extends PrismaQueryHandler<
       ...userReview,
       post: {
         ...userReview.post,
-        post: {
-          reactions: reactionCountsByEmoji,
-        },
+        reactions: Object.keys(reactionCountsByEmoji).map((key) => reactionCountsByEmoji[key]),
         images,
       },
     });
