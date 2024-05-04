@@ -31,4 +31,8 @@ export class ReactionEntity extends AggregateRoot {
   cancel() {
     this.canceledAt = new Date();
   }
+
+  readd() {
+    this.canceledAt = null;
+  }
 }
