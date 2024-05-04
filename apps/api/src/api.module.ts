@@ -24,6 +24,7 @@ import { UserReviewModule } from './app/user-review/user-review.module';
 import { TagModule } from './app/tag/tag.module';
 import { PostModule } from './app/post/post.module';
 import { EmojiModule } from './app/emoji/emoji.module';
+import { ReactionModule } from './app/reaction/reaction.module';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { EmojiModule } from './app/emoji/emoji.module';
     UserReviewModule,
     TagModule,
     EmojiModule,
+    ReactionModule,
   ],
 })
 export class ApiModule {}

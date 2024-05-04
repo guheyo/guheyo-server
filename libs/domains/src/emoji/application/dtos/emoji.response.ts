@@ -9,13 +9,13 @@ export class EmojiResponse {
   name: string;
 
   @Field(() => String, { nullable: true })
-  url?: string;
+  url: string | null;
 
   @Field(() => Int)
   position: number;
 
   @Field(() => ID, { nullable: true })
-  groupId?: string;
+  groupId: string | null;
 
   constructor(partial: Partial<EmojiResponse>) {
     Object.assign(this, partial);

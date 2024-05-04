@@ -19,6 +19,12 @@ input BumpOfferInput {
   offerId: ID!
 }
 
+input CancelReactionInput {
+  commentId: ID
+  emojiId: ID!
+  postId: ID
+}
+
 type CategoryResponse {
   description: String
   id: ID!
@@ -99,6 +105,13 @@ input CreatePostInput {
   tagIds: [ID!]
   title: String!
   type: String!
+}
+
+input CreateReactionInput {
+  commentId: ID
+  emojiId: ID!
+  id: ID!
+  postId: ID
 }
 
 input CreateReportInput {
@@ -235,11 +248,13 @@ input LinkSocialProfileInput {
 
 type Mutation {
   bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
+  cancelReaction(input: CancelReactionInput!): String!
   commentReport(input: CommentReportInput!): ReportCommentResponse!
   createComment(input: CreateCommentInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
   createOffer(input: CreateOfferInput!): String!
+  createReaction(input: CreateReactionInput!): String!
   createReport(input: CreateReportInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
@@ -432,6 +447,28 @@ type PostResponse {
   user: AuthorResponse!
 }
 
+type PostWithReactionsResponse {
+  archivedAt: DateTime
+  category: CategoryResponse
+  categoryId: String
+  createdAt: DateTime!
+  group: GroupProfileResponse!
+  groupId: String!
+  id: ID!
+  images: [UserImageResponse!]!
+  pending: String
+  reactions: [ReactionSummaryResponse!]!
+  reportCommentCount: Int!
+  reportCount: Int!
+  slug: String
+  tags: [TagResponse!]!
+  thumbnail: String
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+  user: AuthorResponse!
+}
+
 type Query {
   findAuthor(id: ID, username: String): AuthorResponse
   findComment(id: ID, postId: ID): CommentResponse
@@ -461,6 +498,14 @@ type Query {
   findUsers(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedUsersResponse!
   findVersion(id: ID!): VersionResponse
   findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
+}
+
+type ReactionSummaryResponse {
+  commentId: ID
+  count: Int!
+  emoji: EmojiResponse!
+  me: Boolean!
+  postId: ID
 }
 
 type ReportCommentResponse {
@@ -685,7 +730,7 @@ type UserReviewResponse {
   createdAt: DateTime!
   id: ID!
   offerId: String
-  post: PostResponse!
+  post: PostWithReactionsResponse!
   rating: Int!
   reviewedUser: AuthorResponse!
   status: String!
