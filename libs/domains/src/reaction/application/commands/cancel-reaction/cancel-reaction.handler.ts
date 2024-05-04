@@ -13,7 +13,15 @@ export class CancelReactionHandler implements ICommandHandler<CancelReactionComm
   ) {}
 
   async execute(command: CancelReactionCommand): Promise<void> {
-    const reaction = await this.loadPort.findById(command.reactionId);
+    if (!command.postId && !command.commentId)
+      throw new ForbiddenException(ReactionErrorMessage.INVALID_REACTION_REQUEST);
+
+    const reaction = await this.loadPort.findReaction({
+      emojiId: command.emojiId,
+      postId: command.postId,
+      commentId: command.commentId,
+      userId: command.user.id,
+    });
     if (!reaction) throw new NotFoundException(ReactionErrorMessage.REACTION_NOT_FOUND);
 
     if (!reaction.isAuthorized(command.user.id)) {

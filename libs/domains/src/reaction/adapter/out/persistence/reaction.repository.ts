@@ -23,6 +23,28 @@ export class ReactionRepository
     return this.toEntity(reaction);
   }
 
+  async findReaction({
+    emojiId,
+    postId,
+    commentId,
+    userId,
+  }: {
+    emojiId: string;
+    postId?: string | undefined;
+    commentId?: string | undefined;
+    userId: string;
+  }) {
+    const reaction = await this.prismaService.reaction.findFirst({
+      where: {
+        emojiId,
+        postId,
+        commentId,
+        userId,
+      },
+    });
+    return this.toEntity(reaction);
+  }
+
   async create(reaction: ReactionEntity): Promise<void> {
     await this.prismaService.reaction.create({
       data: _.pick(reaction, ['id', 'emojiId', 'userId', 'postId', 'commentId']),

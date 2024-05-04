@@ -3,12 +3,18 @@ import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.respo
 import { CancelReactionInput } from './cancel-reaction.input';
 
 export class CancelReactionCommand implements ICommand {
-  reactionId: string;
+  emojiId: string;
+
+  postId?: string;
+
+  commentId?: string;
 
   user: MyUserResponse;
 
   constructor({ input, user }: { input: CancelReactionInput; user: MyUserResponse }) {
-    this.reactionId = input.reactionId;
+    this.emojiId = input.emojiId;
+    this.postId = input.postId;
+    this.commentId = input.commentId;
     this.user = user;
   }
 }

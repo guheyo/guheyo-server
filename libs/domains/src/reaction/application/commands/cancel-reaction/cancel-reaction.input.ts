@@ -1,9 +1,19 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsUUID } from 'class-validator';
+import { IsOptional, IsUUID } from 'class-validator';
 
 @InputType()
 export class CancelReactionInput {
   @IsUUID()
   @Field(() => ID)
-  reactionId: string;
+  emojiId: string;
+
+  @IsOptional()
+  @IsUUID()
+  @Field(() => ID, { nullable: true })
+  postId?: string;
+
+  @IsOptional()
+  @IsUUID()
+  @Field(() => ID, { nullable: true })
+  commentId?: string;
 }
