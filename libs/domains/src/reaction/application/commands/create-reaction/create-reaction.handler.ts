@@ -9,7 +9,10 @@ export class CreateReactionHandler implements ICommandHandler<CreateReactionComm
   constructor(@Inject('ReactionSavePort') private savePort: ReactionSavePort) {}
 
   async execute(command: CreateReactionCommand): Promise<void> {
-    const reawction = new ReactionEntity(command);
-    await this.savePort.create(reawction);
+    const reaction = new ReactionEntity({
+      ...command,
+      userId: command.user.id,
+    });
+    await this.savePort.create(reaction);
   }
 }
