@@ -43,6 +43,6 @@ export class ReactionResolver {
     @ExtractedUser() user: MyUserResponse,
   ): Promise<string> {
     await this.commandBus.execute(new CancelReactionCommand({ input, user }));
-    return input.reactionId;
+    return input.emojiId;
   }
 }

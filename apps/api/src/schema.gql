@@ -20,7 +20,9 @@ input BumpOfferInput {
 }
 
 input CancelReactionInput {
-  reactionId: ID!
+  commentId: ID
+  emojiId: ID!
+  postId: ID
 }
 
 type CategoryResponse {
@@ -499,9 +501,11 @@ type Query {
 }
 
 type ReactionSummaryResponse {
+  commentId: ID
   count: Int!
   emoji: EmojiResponse!
   me: Boolean!
+  postId: ID
 }
 
 type ReportCommentResponse {
