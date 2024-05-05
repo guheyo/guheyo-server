@@ -457,7 +457,7 @@ type PostWithReactionsResponse {
   id: ID!
   images: [UserImageResponse!]!
   pending: String
-  reactions: [ReactionSummaryResponse!]!
+  reactions: [ReactionResponse!]!
   reportCommentCount: Int!
   reportCount: Int!
   slug: String
@@ -500,12 +500,15 @@ type Query {
   findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
 }
 
-type ReactionSummaryResponse {
+type ReactionResponse {
+  canceledAt: DateTime
   commentId: ID
-  count: Int!
+  createdAt: DateTime!
   emoji: EmojiResponse!
-  me: Boolean!
+  id: ID!
   postId: ID
+  updatedAt: DateTime!
+  userId: ID!
 }
 
 type ReportCommentResponse {
