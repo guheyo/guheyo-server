@@ -599,6 +599,7 @@ type SocialUserResponse {
 
 type Subscription {
   commentCreated: CommentWithAuthorResponse!
+  reactionCreated: ReactionResponse!
 }
 
 type TagResponse {

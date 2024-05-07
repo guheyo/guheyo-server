@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Subscription } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { UseGuards } from '@nestjs/common';
 import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
@@ -12,9 +12,11 @@ import { CreateReactionCommand } from '@lib/domains/reaction/application/command
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { CancelReactionCommand } from '@lib/domains/reaction/application/commands/cancel-reaction/cancel-reaction.command';
+import { ReactionResponse } from '@lib/domains/reaction/application/dtos/reaction.response';
+import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
+import { REACTION_CREATED } from '@lib/domains/reaction/domain/reaction.constants';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
-@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class ReactionResolver {
   constructor(
@@ -24,7 +26,7 @@ export class ReactionResolver {
 
   @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
   @AllowlistRoleNames([])
-  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
+  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
   async createReaction(
     @Args('input') input: CreateReactionInput,
@@ -36,7 +38,7 @@ export class ReactionResolver {
 
   @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
   @AllowlistRoleNames([])
-  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
+  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
   async cancelReaction(
     @Args('input') input: CancelReactionInput,
@@ -44,5 +46,10 @@ export class ReactionResolver {
   ): Promise<string> {
     await this.commandBus.execute(new CancelReactionCommand({ input, user }));
     return input.emojiId;
+  }
+
+  @Subscription(() => ReactionResponse)
+  async reactionCreated() {
+    return GraphqlPubSub.asyncIterator(REACTION_CREATED);
   }
 }
