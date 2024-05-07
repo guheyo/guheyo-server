@@ -3,7 +3,6 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { USER_REVIEW } from '@lib/domains/user-review/domain/user-review.constants';
 import { UserReviewErrorMessage } from '@lib/domains/user-review/domain/user-review.error.message';
-import { ReactionSummaryResponse } from '@lib/domains/reaction/application/dtos/reaction-summary.response';
 import { FindUserReviewQuery } from './find-user-review.query';
 import { UserReviewResponse } from '../../dtos/user-review.response';
 
@@ -79,27 +78,6 @@ export class FindUserReviewHandler extends PrismaQueryHandler<
         UserReviewErrorMessage.FIND_USER_REVIEWS_REQUEST_FROM_UNAUTHORIZED_USER,
       );
 
-    const reactionCountsByEmoji = userReview.post.reactions.reduce(
-      (acc, reaction) => {
-        const { emoji } = reaction;
-        if (!acc[emoji.id]) {
-          acc[emoji.id] = {
-            emoji,
-            count: 0,
-            me: false,
-            postId: reaction.postId,
-            commentId: reaction.commentId,
-          };
-        }
-        acc[emoji.id].count++;
-        if (reaction.userId === query.userId) {
-          acc[emoji.id].me = true;
-        }
-        return acc;
-      },
-      {} as Record<string, ReactionSummaryResponse>,
-    );
-
     const images = await this.prismaService.userImage.findMany({
       where: {
         type: USER_REVIEW,
@@ -113,7 +91,6 @@ export class FindUserReviewHandler extends PrismaQueryHandler<
       ...userReview,
       post: {
         ...userReview.post,
-        reactions: Object.keys(reactionCountsByEmoji).map((key) => reactionCountsByEmoji[key]),
         images,
       },
     });
