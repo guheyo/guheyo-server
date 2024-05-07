@@ -597,6 +597,10 @@ type SocialUserResponse {
   socialId: String!
 }
 
+type Subscription {
+  commentCreated: CommentWithAuthorResponse!
+}
+
 type TagResponse {
   description: String
   id: ID!

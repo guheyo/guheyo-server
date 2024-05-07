@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { UseGuards } from '@nestjs/common';
 import { CreateCommentInput } from '@lib/domains/comment/application/commands/create-comment/create-comment.input';
@@ -18,9 +18,10 @@ import { FindCommentsArgs } from '@lib/domains/comment/application/queries/find-
 import { FindCommentsQuery } from '@lib/domains/comment/application/queries/find-comments/find-comments.query';
 import { PaginatedCommentsResponse } from '@lib/domains/comment/application/queries/find-comments/paginated-comments.response';
 import { DeleteCommentResult } from '@lib/domains/comment/application/dtos/delete-comment.result';
+import { CommentWithAuthorResponse } from '@lib/domains/comment/application/dtos/comment-with-author.response';
+import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
-@UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
 export class CommentResolver {
   constructor(
@@ -28,13 +29,14 @@ export class CommentResolver {
     private readonly queryBus: QueryBus,
   ) {}
 
+  @UseGuards(GqlThrottlerBehindProxyGuard)
   @Query(() => CommentResponse, { nullable: true })
   async findComment(@Args() args: FindCommentArgs) {
     const query = new FindCommentQuery(args);
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(OptionalJwtUserGuard)
+  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
   @Query(() => PaginatedCommentsResponse)
   async findComments(@Args() args: FindCommentsArgs, @ExtractedUser() user: MyUserResponse) {
     const query = new FindCommentsQuery({
@@ -44,7 +46,7 @@ export class CommentResolver {
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(RequiredJwtUserGuard)
+  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard)
   @Mutation(() => String)
   async createComment(
     @Args('input') input: CreateCommentInput,
@@ -54,7 +56,7 @@ export class CommentResolver {
     return input.id;
   }
 
-  @UseGuards(RequiredJwtUserGuard)
+  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard)
   @Mutation(() => CommentResponse)
   async updateComment(
     @Args('input') input: UpdateCommentInput,
@@ -63,12 +65,17 @@ export class CommentResolver {
     return this.commandBus.execute(new UpdateCommentCommand({ input, user }));
   }
 
-  @UseGuards(RequiredJwtUserGuard)
+  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard)
   @Mutation(() => DeleteCommentResult)
   async deleteComment(
     @Args('input') input: DeleteCommentInput,
     @ExtractedUser() user: MyUserResponse,
   ) {
     return this.commandBus.execute(new DeleteCommentCommand({ input, user }));
+  }
+
+  @Subscription(() => CommentWithAuthorResponse)
+  async commentCreated() {
+    return GraphqlPubSub.asyncIterator('commentCreated');
   }
 }
