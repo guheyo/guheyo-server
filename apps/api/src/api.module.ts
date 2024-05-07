@@ -40,6 +40,9 @@ import { ReactionModule } from './app/reaction/reaction.module';
         JSON: GraphQLJSON,
       },
       context: (context: any) => context,
+      subscriptions: {
+        'graphql-ws': true,
+      },
     }),
     ThrottlerModule.forRoot([
       {

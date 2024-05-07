@@ -1,15 +1,25 @@
-import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
+import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
+import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
 import { CreateCommentCommand } from './create-comment.command';
 import { CommentSavePort } from '../../ports/out/comment.save.port';
+import { CommentLoadPort } from '../../ports/out/comment.load.port';
+import { CommentWithAuthorResponse } from '../../dtos/comment-with-author.response';
 
 @CommandHandler(CreateCommentCommand)
-export class CreateCommentHandler implements ICommandHandler<CreateCommentCommand> {
+export class CreateCommentHandler extends PrismaCommandHandler<
+  CreateCommentCommand,
+  CommentWithAuthorResponse
+> {
   constructor(
     @Inject('CommentSavePort') private savePort: CommentSavePort,
+    @Inject('CommentLoadPort') private loadPort: CommentLoadPort,
     private readonly publisher: EventPublisher,
-  ) {}
+  ) {
+    super(CommentWithAuthorResponse);
+  }
 
   async execute(command: CreateCommentCommand): Promise<void> {
     const comment = this.publisher.mergeObjectContext(
@@ -20,5 +30,27 @@ export class CreateCommentHandler implements ICommandHandler<CreateCommentComman
     );
     await this.savePort.create(comment);
     comment.commit();
+
+    const newComment = await this.prismaService.comment.findUnique({
+      where: {
+        id: comment.id,
+      },
+      include: {
+        user: {
+          include: {
+            roles: {
+              include: {
+                group: true,
+              },
+              orderBy: {
+                position: 'asc',
+              },
+            },
+            socialAccounts: true,
+          },
+        },
+      },
+    });
+    await GraphqlPubSub.publish('commentCreated', { commentCreated: newComment });
   }
 }

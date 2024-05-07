@@ -35,6 +35,7 @@
     "express": "^4.18.2",
     "fs": "^0.0.1-security",
     "graphql": "^16.8.0",
+    "graphql-subscriptions": "^2.0.0",
     "graphql-type-json": "^0.3.2",
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
