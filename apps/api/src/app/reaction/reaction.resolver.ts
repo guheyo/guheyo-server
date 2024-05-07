@@ -14,7 +14,11 @@ import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.respo
 import { CancelReactionCommand } from '@lib/domains/reaction/application/commands/cancel-reaction/cancel-reaction.command';
 import { ReactionResponse } from '@lib/domains/reaction/application/dtos/reaction.response';
 import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
-import { REACTION_CREATED } from '@lib/domains/reaction/domain/reaction.constants';
+import {
+  REACTION_CANCELED,
+  REACTION_CREATED,
+} from '@lib/domains/reaction/domain/reaction.constants';
+import { CanceledReactionResponse } from '@lib/domains/reaction/application/dtos/canceled-reaction.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @Resolver()
@@ -51,5 +55,10 @@ export class ReactionResolver {
   @Subscription(() => ReactionResponse)
   async reactionCreated() {
     return GraphqlPubSub.asyncIterator(REACTION_CREATED);
+  }
+
+  @Subscription(() => CanceledReactionResponse)
+  async reactionCanceled() {
+    return GraphqlPubSub.asyncIterator(REACTION_CANCELED);
   }
 }

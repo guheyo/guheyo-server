@@ -25,6 +25,10 @@ input CancelReactionInput {
   postId: ID
 }
 
+type CanceledReactionResponse {
+  id: ID!
+}
+
 type CategoryResponse {
   description: String
   id: ID!
@@ -599,6 +603,7 @@ type SocialUserResponse {
 
 type Subscription {
   commentCreated: CommentWithAuthorResponse!
+  reactionCanceled: CanceledReactionResponse!
   reactionCreated: ReactionResponse!
 }
 

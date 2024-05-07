@@ -1,6 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs/dist';
 import { ForbiddenException, Inject, NotFoundException } from '@nestjs/common';
 import { ReactionErrorMessage } from '@lib/domains/reaction/domain/reaction.error.message';
+import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
+import { REACTION_CANCELED } from '@lib/domains/reaction/domain/reaction.constants';
 import { CancelReactionCommand } from './cancel-reaction.command';
 import { ReactionLoadPort } from '../../ports/out/reaction.load.port';
 import { ReactionSavePort } from '../../ports/out/reaction.save.port';
@@ -32,5 +34,8 @@ export class CancelReactionHandler implements ICommandHandler<CancelReactionComm
 
     reaction.cancel();
     await this.savePort.save(reaction);
+    await GraphqlPubSub.publish(REACTION_CANCELED, {
+      reactionCanceled: { id: reaction.id },
+    });
   }
 }
