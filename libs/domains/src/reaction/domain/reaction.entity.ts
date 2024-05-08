@@ -15,7 +15,7 @@ export class ReactionEntity extends AggregateRoot {
 
   userId: string;
 
-  postId: string | null;
+  postId: string;
 
   commentId: string | null;
 

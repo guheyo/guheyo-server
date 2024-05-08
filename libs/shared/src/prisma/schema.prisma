@@ -218,8 +218,8 @@ model Reaction {
   emoji             Emoji         @relation(fields: [emojiId], references: [id])
   userId            String
   user              User          @relation(fields: [userId], references: [id])
-  postId            String?
-  post              Post?         @relation(fields: [postId], references: [id])
+  postId            String
+  post              Post          @relation(fields: [postId], references: [id])
   commentId         String?
   comment           Comment?      @relation(fields: [commentId], references: [id])
   userAgent         String?

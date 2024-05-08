@@ -7,10 +7,9 @@ export class CancelReactionInput {
   @Field(() => ID)
   emojiId: string;
 
-  @IsOptional()
   @IsUUID()
-  @Field(() => ID, { nullable: true })
-  postId?: string;
+  @Field(() => ID)
+  postId: string;
 
   @IsOptional()
   @IsUUID()

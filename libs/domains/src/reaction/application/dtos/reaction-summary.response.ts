@@ -12,8 +12,8 @@ export class ReactionSummaryResponse {
   @Field(() => Boolean)
   me: boolean;
 
-  @Field(() => ID, { nullable: true })
-  postId: string | null;
+  @Field(() => ID)
+  postId: string;
 
   @Field(() => ID, { nullable: true })
   commentId: string | null;
