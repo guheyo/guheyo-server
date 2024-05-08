@@ -20,6 +20,8 @@ import { PaginatedCommentsResponse } from '@lib/domains/comment/application/quer
 import { DeleteCommentResult } from '@lib/domains/comment/application/dtos/delete-comment.result';
 import { CommentWithAuthorResponse } from '@lib/domains/comment/application/dtos/comment-with-author.response';
 import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
+import { parseCommentCreatedTriggerName } from '@lib/domains/comment/application/subscriptions/comment-created/parse-comment-created-trigger-name';
+import { CommentCreatedArgs } from '@lib/domains/comment/application/subscriptions/comment-created/comment-created.args';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @Resolver()
@@ -75,7 +77,7 @@ export class CommentResolver {
   }
 
   @Subscription(() => CommentWithAuthorResponse)
-  async commentCreated() {
-    return GraphqlPubSub.asyncIterator('commentCreated');
+  async commentCreated(@Args() args: CommentCreatedArgs) {
+    return GraphqlPubSub.asyncIterator(parseCommentCreatedTriggerName(args.postId));
   }
 }

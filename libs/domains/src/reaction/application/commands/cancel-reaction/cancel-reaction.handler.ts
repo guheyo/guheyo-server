@@ -1,9 +1,11 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs/dist';
 import { ForbiddenException, Inject, NotFoundException } from '@nestjs/common';
 import { ReactionErrorMessage } from '@lib/domains/reaction/domain/reaction.error.message';
+import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
 import { CancelReactionCommand } from './cancel-reaction.command';
 import { ReactionLoadPort } from '../../ports/out/reaction.load.port';
 import { ReactionSavePort } from '../../ports/out/reaction.save.port';
+import { parseReactionCanceledTriggerName } from '../../subscriptions/reaction-canceled/parse-reaction-canceled-trigger-name';
 
 @CommandHandler(CancelReactionCommand)
 export class CancelReactionHandler implements ICommandHandler<CancelReactionCommand> {
@@ -32,5 +34,19 @@ export class CancelReactionHandler implements ICommandHandler<CancelReactionComm
 
     reaction.cancel();
     await this.savePort.save(reaction);
+
+    await GraphqlPubSub.publish(
+      parseReactionCanceledTriggerName({
+        type: reaction.commentId ? 'comment' : 'post',
+        postId: reaction.postId,
+      }),
+      {
+        reactionCanceled: {
+          id: reaction.id,
+          postId: reaction.postId,
+          commentId: reaction.commentId,
+        },
+      },
+    );
   }
 }

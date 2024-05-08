@@ -21,8 +21,8 @@ export class ReactionResponse {
   @Field(() => ID)
   userId: string;
 
-  @Field(() => ID, { nullable: true })
-  postId: string | null;
+  @Field(() => ID)
+  postId: string;
 
   @Field(() => ID, { nullable: true })
   commentId: string | null;
