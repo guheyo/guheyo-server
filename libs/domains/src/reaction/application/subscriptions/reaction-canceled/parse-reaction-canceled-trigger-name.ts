@@ -1,7 +1,7 @@
 export const parseReactionCanceledTriggerName = ({
+  type,
   postId,
-  commentId,
 }: {
-  postId?: string;
-  commentId?: string;
-}) => (postId ? `reactionCanceled-post-${postId}` : `reactionCanceled-comment-${commentId}`);
+  type: string;
+  postId: string;
+}) => `reactionCanceled-${type}-${postId}`;

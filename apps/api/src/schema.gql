@@ -22,11 +22,13 @@ input BumpOfferInput {
 input CancelReactionInput {
   commentId: ID
   emojiId: ID!
-  postId: ID
+  postId: ID!
 }
 
 type CanceledReactionResponse {
+  commentId: ID
   id: ID!
+  postId: ID!
 }
 
 type CategoryResponse {
@@ -115,7 +117,7 @@ input CreateReactionInput {
   commentId: ID
   emojiId: ID!
   id: ID!
-  postId: ID
+  postId: ID!
 }
 
 input CreateReportInput {
@@ -489,7 +491,7 @@ type ReactionResponse {
   createdAt: DateTime!
   emoji: EmojiResponse!
   id: ID!
-  postId: ID
+  postId: ID!
   updatedAt: DateTime!
   userId: ID!
 }
@@ -582,8 +584,8 @@ type SocialUserResponse {
 
 type Subscription {
   commentCreated(postId: ID!): CommentWithAuthorResponse!
-  reactionCanceled(commentId: ID, postId: ID): CanceledReactionResponse!
-  reactionCreated(commentId: ID, postId: ID): ReactionResponse!
+  reactionCanceled(postId: ID!, type: String!): CanceledReactionResponse!
+  reactionCreated(postId: ID!, type: String!): ReactionResponse!
 }
 
 type TagResponse {

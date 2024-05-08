@@ -1,15 +1,13 @@
 import { ArgsType, Field, ID } from '@nestjs/graphql';
-import { IsOptional, IsUUID } from 'class-validator';
+import { IsString, IsUUID } from 'class-validator';
 
 @ArgsType()
 export class ReactionCreatedArgs {
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  postId?: string;
+  @IsString()
+  @Field()
+  type: string;
 
-  @IsOptional()
   @IsUUID()
-  @Field(() => ID, { nullable: true })
-  commentId?: string;
+  @Field(() => ID)
+  postId: string;
 }

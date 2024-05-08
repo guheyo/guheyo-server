@@ -34,14 +34,17 @@ export class CancelReactionHandler implements ICommandHandler<CancelReactionComm
 
     reaction.cancel();
     await this.savePort.save(reaction);
+
     await GraphqlPubSub.publish(
       parseReactionCanceledTriggerName({
-        postId: reaction.postId || undefined,
-        commentId: reaction.commentId || undefined,
+        type: reaction.commentId ? 'comment' : 'post',
+        postId: reaction.postId,
       }),
       {
         reactionCanceled: {
           id: reaction.id,
+          postId: reaction.postId,
+          commentId: reaction.commentId,
         },
       },
     );

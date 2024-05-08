@@ -1,8 +1,9 @@
 import { CommandHandler } from '@nestjs/cqrs/dist';
-import { Inject } from '@nestjs/common';
+import { ForbiddenException, Inject } from '@nestjs/common';
 import { ReactionEntity } from '@lib/domains/reaction/domain/reaction.entity';
 import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
+import { ReactionErrorMessage } from '@lib/domains/reaction/domain/reaction.error.message';
 import { CreateReactionCommand } from './create-reaction.command';
 import { ReactionSavePort } from '../../ports/out/reaction.save.port';
 import { ReactionLoadPort } from '../../ports/out/reaction.load.port';
@@ -46,10 +47,12 @@ export class CreateReactionHandler extends PrismaCommandHandler<
         emoji: true,
       },
     });
+    if (!newReaction) throw new ForbiddenException(ReactionErrorMessage.REACTION_CREATION_FAILED);
+
     await GraphqlPubSub.publish(
       parseReactionCreatedTriggerName({
-        postId: newReaction?.postId || undefined,
-        commentId: newReaction?.commentId || undefined,
+        type: newReaction.commentId ? 'comment' : 'post',
+        postId: newReaction.postId,
       }),
       { reactionCreated: newReaction },
     );

@@ -60,17 +60,27 @@ export class ReactionResolver {
     return input.emojiId;
   }
 
-  @Subscription(() => ReactionResponse)
+  @Subscription(() => ReactionResponse, {
+    filter: (payload, variables) =>
+      payload.reactionCreated.postId === variables.postId && variables.type === 'post'
+        ? !payload.reactionCreated.commentId
+        : !!payload.reactionCreated.commentId,
+  })
   async reactionCreated(@Args() args: ReactionCreatedArgs) {
     return GraphqlPubSub.asyncIterator(
-      parseReactionCreatedTriggerName({ postId: args.postId, commentId: args.commentId }),
+      parseReactionCreatedTriggerName({ type: args.type, postId: args.postId }),
     );
   }
 
-  @Subscription(() => CanceledReactionResponse)
+  @Subscription(() => CanceledReactionResponse, {
+    filter: (payload, variables) =>
+      payload.reactionCanceled.postId === variables.postId && variables.type === 'post'
+        ? !payload.reactionCanceled.commentId
+        : !!payload.reactionCanceled.commentId,
+  })
   async reactionCanceled(@Args() args: ReactionCanceledArgs) {
     return GraphqlPubSub.asyncIterator(
-      parseReactionCanceledTriggerName({ postId: args.postId, commentId: args.commentId }),
+      parseReactionCanceledTriggerName({ type: args.type, postId: args.postId }),
     );
   }
 }
