@@ -1,12 +1,14 @@
 import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
+import { ForbiddenException, Inject } from '@nestjs/common';
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
+import { CommentErrorMessage } from '@lib/domains/comment/domain/comment.error.message';
 import { CreateCommentCommand } from './create-comment.command';
 import { CommentSavePort } from '../../ports/out/comment.save.port';
 import { CommentLoadPort } from '../../ports/out/comment.load.port';
 import { CommentWithAuthorResponse } from '../../dtos/comment-with-author.response';
+import { parseCommentCreatedTriggerName } from '../../subscriptions/comment-created/parse-comment-created-trigger-name';
 
 @CommandHandler(CreateCommentCommand)
 export class CreateCommentHandler extends PrismaCommandHandler<
@@ -51,6 +53,10 @@ export class CreateCommentHandler extends PrismaCommandHandler<
         },
       },
     });
-    await GraphqlPubSub.publish('commentCreated', { commentCreated: newComment });
+    if (!newComment) throw new ForbiddenException(CommentErrorMessage.COMMENT_CREATION_FAILED);
+
+    await GraphqlPubSub.publish(parseCommentCreatedTriggerName(newComment.postId), {
+      commentCreated: newComment,
+    });
   }
 }
