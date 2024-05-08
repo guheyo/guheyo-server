@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver, Subscription } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { UseGuards } from '@nestjs/common';
 import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
@@ -19,6 +19,8 @@ import {
   REACTION_CREATED,
 } from '@lib/domains/reaction/domain/reaction.constants';
 import { CanceledReactionResponse } from '@lib/domains/reaction/application/dtos/canceled-reaction.response';
+import { FindReactionsArgs } from '@lib/domains/reaction/application/queries/find-reactions/find-reactions.args';
+import { FindReactionsQuery } from '@lib/domains/reaction/application/queries/find-reactions/find-reactions.query';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @Resolver()
@@ -27,6 +29,12 @@ export class ReactionResolver {
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
   ) {}
+
+  @UseGuards(GqlThrottlerBehindProxyGuard)
+  @Query(() => [ReactionResponse])
+  async findReactions(@Args() args: FindReactionsArgs) {
+    return this.queryBus.execute(new FindReactionsQuery({ args }));
+  }
 
   @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
   @AllowlistRoleNames([])
