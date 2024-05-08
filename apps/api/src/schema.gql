@@ -582,8 +582,8 @@ type SocialUserResponse {
 
 type Subscription {
   commentCreated(postId: ID!): CommentWithAuthorResponse!
-  reactionCanceled: CanceledReactionResponse!
-  reactionCreated: ReactionResponse!
+  reactionCanceled(commentId: ID, postId: ID): CanceledReactionResponse!
+  reactionCreated(commentId: ID, postId: ID): ReactionResponse!
 }
 
 type TagResponse {

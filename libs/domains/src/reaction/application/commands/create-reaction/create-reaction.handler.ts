@@ -2,12 +2,12 @@ import { CommandHandler } from '@nestjs/cqrs/dist';
 import { Inject } from '@nestjs/common';
 import { ReactionEntity } from '@lib/domains/reaction/domain/reaction.entity';
 import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
-import { REACTION_CREATED } from '@lib/domains/reaction/domain/reaction.constants';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { CreateReactionCommand } from './create-reaction.command';
 import { ReactionSavePort } from '../../ports/out/reaction.save.port';
 import { ReactionLoadPort } from '../../ports/out/reaction.load.port';
 import { ReactionResponse } from '../../dtos/reaction.response';
+import { parseReactionCreatedTriggerName } from '../../subscriptions/reaction-created/parse-reaction-created-trigger-name';
 
 @CommandHandler(CreateReactionCommand)
 export class CreateReactionHandler extends PrismaCommandHandler<
@@ -46,6 +46,12 @@ export class CreateReactionHandler extends PrismaCommandHandler<
         emoji: true,
       },
     });
-    await GraphqlPubSub.publish(REACTION_CREATED, { reactionCreated: newReaction });
+    await GraphqlPubSub.publish(
+      parseReactionCreatedTriggerName({
+        postId: newReaction?.postId || undefined,
+        commentId: newReaction?.commentId || undefined,
+      }),
+      { reactionCreated: newReaction },
+    );
   }
 }

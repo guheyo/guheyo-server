@@ -14,13 +14,13 @@ import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.respo
 import { CancelReactionCommand } from '@lib/domains/reaction/application/commands/cancel-reaction/cancel-reaction.command';
 import { ReactionResponse } from '@lib/domains/reaction/application/dtos/reaction.response';
 import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
-import {
-  REACTION_CANCELED,
-  REACTION_CREATED,
-} from '@lib/domains/reaction/domain/reaction.constants';
 import { CanceledReactionResponse } from '@lib/domains/reaction/application/dtos/canceled-reaction.response';
 import { FindReactionsArgs } from '@lib/domains/reaction/application/queries/find-reactions/find-reactions.args';
 import { FindReactionsQuery } from '@lib/domains/reaction/application/queries/find-reactions/find-reactions.query';
+import { ReactionCreatedArgs } from '@lib/domains/reaction/application/subscriptions/reaction-created/reaction-created.args';
+import { parseReactionCreatedTriggerName } from '@lib/domains/reaction/application/subscriptions/reaction-created/parse-reaction-created-trigger-name';
+import { ReactionCanceledArgs } from '@lib/domains/reaction/application/subscriptions/reaction-canceled/reaction-canceled.args';
+import { parseReactionCanceledTriggerName } from '@lib/domains/reaction/application/subscriptions/reaction-canceled/parse-reaction-canceled-trigger-name';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @Resolver()
@@ -61,12 +61,16 @@ export class ReactionResolver {
   }
 
   @Subscription(() => ReactionResponse)
-  async reactionCreated() {
-    return GraphqlPubSub.asyncIterator(REACTION_CREATED);
+  async reactionCreated(@Args() args: ReactionCreatedArgs) {
+    return GraphqlPubSub.asyncIterator(
+      parseReactionCreatedTriggerName({ postId: args.postId, commentId: args.commentId }),
+    );
   }
 
   @Subscription(() => CanceledReactionResponse)
-  async reactionCanceled() {
-    return GraphqlPubSub.asyncIterator(REACTION_CANCELED);
+  async reactionCanceled(@Args() args: ReactionCanceledArgs) {
+    return GraphqlPubSub.asyncIterator(
+      parseReactionCanceledTriggerName({ postId: args.postId, commentId: args.commentId }),
+    );
   }
 }
