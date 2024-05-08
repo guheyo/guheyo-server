@@ -22,7 +22,13 @@ input BumpOfferInput {
 input CancelReactionInput {
   commentId: ID
   emojiId: ID!
-  postId: ID
+  postId: ID!
+}
+
+type CanceledReactionResponse {
+  commentId: ID
+  id: ID!
+  postId: ID!
 }
 
 type CategoryResponse {
@@ -111,7 +117,7 @@ input CreateReactionInput {
   commentId: ID
   emojiId: ID!
   id: ID!
-  postId: ID
+  postId: ID!
 }
 
 input CreateReportInput {
@@ -447,28 +453,6 @@ type PostResponse {
   user: AuthorResponse!
 }
 
-type PostWithReactionsResponse {
-  archivedAt: DateTime
-  category: CategoryResponse
-  categoryId: String
-  createdAt: DateTime!
-  group: GroupProfileResponse!
-  groupId: String!
-  id: ID!
-  images: [UserImageResponse!]!
-  pending: String
-  reactions: [ReactionResponse!]!
-  reportCommentCount: Int!
-  reportCount: Int!
-  slug: String
-  tags: [TagResponse!]!
-  thumbnail: String
-  title: String!
-  type: String!
-  updatedAt: DateTime!
-  user: AuthorResponse!
-}
-
 type Query {
   findAuthor(id: ID, username: String): AuthorResponse
   findComment(id: ID, postId: ID): CommentResponse
@@ -484,6 +468,7 @@ type Query {
   findOfferCount(businessFunction: String!, categoryId: ID!, fromHours: Int!, userId: ID!): Float!
   findOfferPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
   findPostPreview(id: ID!): PostPreviewWithUserResponse!
+  findReactions(commentId: ID, postId: ID): [ReactionResponse!]!
   findReport(id: ID!): ReportResponse!
   findReportComment(reportId: ID!): ReportCommentResponse!
   findReportPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportPreviewsResponse!
@@ -506,7 +491,7 @@ type ReactionResponse {
   createdAt: DateTime!
   emoji: EmojiResponse!
   id: ID!
-  postId: ID
+  postId: ID!
   updatedAt: DateTime!
   userId: ID!
 }
@@ -598,7 +583,9 @@ type SocialUserResponse {
 }
 
 type Subscription {
-  commentCreated: CommentWithAuthorResponse!
+  commentCreated(postId: ID!): CommentWithAuthorResponse!
+  reactionCanceled(postId: ID!, type: String!): CanceledReactionResponse!
+  reactionCreated(postId: ID!, type: String!): ReactionResponse!
 }
 
 type TagResponse {
@@ -737,7 +724,7 @@ type UserReviewResponse {
   createdAt: DateTime!
   id: ID!
   offerId: String
-  post: PostWithReactionsResponse!
+  post: PostResponse!
   rating: Int!
   reviewedUser: AuthorResponse!
   status: String!

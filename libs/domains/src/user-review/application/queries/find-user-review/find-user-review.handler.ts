@@ -44,16 +44,6 @@ export class FindUserReviewHandler extends PrismaQueryHandler<
               },
             },
             tags: true,
-            reactions: {
-              include: {
-                emoji: true,
-              },
-              where: {
-                canceledAt: {
-                  equals: null,
-                },
-              },
-            },
           },
         },
         reviewedUser: {
