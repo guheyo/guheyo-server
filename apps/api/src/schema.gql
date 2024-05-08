@@ -451,28 +451,6 @@ type PostResponse {
   user: AuthorResponse!
 }
 
-type PostWithReactionsResponse {
-  archivedAt: DateTime
-  category: CategoryResponse
-  categoryId: String
-  createdAt: DateTime!
-  group: GroupProfileResponse!
-  groupId: String!
-  id: ID!
-  images: [UserImageResponse!]!
-  pending: String
-  reactions: [ReactionResponse!]!
-  reportCommentCount: Int!
-  reportCount: Int!
-  slug: String
-  tags: [TagResponse!]!
-  thumbnail: String
-  title: String!
-  type: String!
-  updatedAt: DateTime!
-  user: AuthorResponse!
-}
-
 type Query {
   findAuthor(id: ID, username: String): AuthorResponse
   findComment(id: ID, postId: ID): CommentResponse
@@ -743,7 +721,7 @@ type UserReviewResponse {
   createdAt: DateTime!
   id: ID!
   offerId: String
-  post: PostWithReactionsResponse!
+  post: PostResponse!
   rating: Int!
   reviewedUser: AuthorResponse!
   status: String!
