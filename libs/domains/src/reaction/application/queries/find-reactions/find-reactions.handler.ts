@@ -14,6 +14,7 @@ export class FindReactionsHandler extends PrismaQueryHandler<FindReactionsQuery,
       where: {
         postId: query.postId,
         commentId: query.commentId,
+        canceledAt: null,
       },
       orderBy: [
         {
