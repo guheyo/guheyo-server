@@ -5,7 +5,7 @@ import { CancelReactionInput } from './cancel-reaction.input';
 export class CancelReactionCommand implements ICommand {
   emojiId: string;
 
-  postId?: string;
+  postId: string;
 
   commentId?: string;
 

@@ -44,6 +44,11 @@ export class FindUserReviewHandler extends PrismaQueryHandler<
               },
             },
             tags: true,
+            comments: {
+              select: {
+                id: true,
+              },
+            },
           },
         },
         reviewedUser: {
@@ -82,6 +87,7 @@ export class FindUserReviewHandler extends PrismaQueryHandler<
       post: {
         ...userReview.post,
         images,
+        commentCount: userReview.post.comments.length,
       },
     });
   }

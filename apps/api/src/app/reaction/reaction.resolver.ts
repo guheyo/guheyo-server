@@ -30,8 +30,8 @@ export class ReactionResolver {
     private readonly queryBus: QueryBus,
   ) {}
 
-  @UseGuards(GqlThrottlerBehindProxyGuard)
   @Query(() => [ReactionResponse])
+  @UseGuards(GqlThrottlerBehindProxyGuard)
   async findReactions(@Args() args: FindReactionsArgs) {
     return this.queryBus.execute(new FindReactionsQuery({ args }));
   }

@@ -15,6 +15,16 @@ export class FindCommentHandler extends PrismaQueryHandler<FindCommentQuery, Com
         id: query.id,
         postId: query.postId,
       },
+      include: {
+        reactions: {
+          where: {
+            canceledAt: null,
+          },
+          include: {
+            emoji: true,
+          },
+        },
+      },
     });
     return this.parseResponse(comment);
   }

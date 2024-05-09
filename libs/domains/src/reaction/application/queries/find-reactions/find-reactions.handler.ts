@@ -13,7 +13,7 @@ export class FindReactionsHandler extends PrismaQueryHandler<FindReactionsQuery,
     const reactions = await this.prismaService.reaction.findMany({
       where: {
         postId: query.postId,
-        commentId: query.commentId,
+        commentId: query.commentId || null,
         canceledAt: null,
       },
       orderBy: [
@@ -27,6 +27,7 @@ export class FindReactionsHandler extends PrismaQueryHandler<FindReactionsQuery,
         emoji: true,
       },
     });
+
     return this.parseResponses(reactions);
   }
 }
