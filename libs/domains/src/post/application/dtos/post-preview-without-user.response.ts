@@ -45,6 +45,9 @@ export class PostPreviewWithoutUserResponse {
   @Field(() => [TagResponse])
   tags: TagResponse[];
 
+  @Field(() => Int, { nullable: true })
+  commentCount: number | null;
+
   constructor(partial: Partial<PostPreviewWithoutUserResponse>) {
     Object.assign(this, partial);
   }

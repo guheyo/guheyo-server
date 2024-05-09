@@ -382,6 +382,7 @@ type PaginatedUsersResponse {
 type PostPreviewWithAuthorResponse {
   archivedAt: DateTime
   categoryId: String
+  commentCount: Int
   createdAt: DateTime!
   groupId: String!
   id: ID!
@@ -400,6 +401,7 @@ type PostPreviewWithAuthorResponse {
 type PostPreviewWithUserResponse {
   archivedAt: DateTime
   categoryId: String
+  commentCount: Int
   createdAt: DateTime!
   groupId: String!
   id: ID!
@@ -418,6 +420,7 @@ type PostPreviewWithUserResponse {
 type PostPreviewWithoutUserResponse {
   archivedAt: DateTime
   categoryId: String
+  commentCount: Int
   createdAt: DateTime!
   groupId: String!
   id: ID!
@@ -436,6 +439,7 @@ type PostResponse {
   archivedAt: DateTime
   category: CategoryResponse
   categoryId: String
+  commentCount: Int
   createdAt: DateTime!
   group: GroupProfileResponse!
   groupId: String!
