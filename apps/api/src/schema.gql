@@ -183,7 +183,7 @@ input DeleteCommentInput {
   id: ID!
 }
 
-type DeleteCommentResult {
+type DeletedCommentResponse {
   id: ID!
 }
 
@@ -268,7 +268,7 @@ type Mutation {
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
   createUserImage(input: CreateUserImageInput!): String!
   createUserReview(input: CreateUserReviewInput!): String!
-  deleteComment(input: DeleteCommentInput!): DeleteCommentResult!
+  deleteComment(input: DeleteCommentInput!): String!
   deleteOffer(id: ID!): String!
   deleteRole(id: ID!): String!
   deleteUserImage(id: ID!): String!
@@ -276,7 +276,7 @@ type Mutation {
   logout: SocialUserResponse!
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
-  updateComment(input: UpdateCommentInput!): CommentResponse!
+  updateComment(input: UpdateCommentInput!): String!
   updateGroup(input: UpdateGroupInput!): String!
   updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
   updateReportComment(input: UpdateReportCommentInput!): ReportCommentResponse!
@@ -590,6 +590,8 @@ type SocialUserResponse {
 
 type Subscription {
   commentCreated(postId: ID!): CommentWithAuthorResponse!
+  commentDeleted(postId: ID!): DeletedCommentResponse!
+  commentUpdated(postId: ID!): UpdatedCommentResponse!
   reactionCanceled(postId: ID!, type: String!): CanceledReactionResponse!
   reactionCreated(postId: ID!, type: String!): ReactionResponse!
 }
@@ -672,6 +674,12 @@ input UpdateUserInput {
   name: String
   phoneNumber: String
   username: String
+}
+
+type UpdatedCommentResponse {
+  content: String!
+  id: ID!
+  updatedAt: DateTime!
 }
 
 type UserImageResponse {
