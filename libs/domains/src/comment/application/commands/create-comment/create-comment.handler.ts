@@ -56,7 +56,10 @@ export class CreateCommentHandler extends PrismaCommandHandler<
     if (!newComment) throw new ForbiddenException(CommentErrorMessage.COMMENT_CREATION_FAILED);
 
     await GraphqlPubSub.publish(parseCommentCreatedTriggerName(newComment.postId), {
-      commentCreated: newComment,
+      commentCreated: {
+        ...newComment,
+        reactions: [],
+      },
     });
   }
 }

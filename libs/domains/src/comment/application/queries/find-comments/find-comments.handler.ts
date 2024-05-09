@@ -57,6 +57,14 @@ export class FindCommentsHandler extends PrismaQueryHandler<
             socialAccounts: true,
           },
         },
+        reactions: {
+          where: {
+            canceledAt: null,
+          },
+          include: {
+            emoji: true,
+          },
+        },
       },
     });
 

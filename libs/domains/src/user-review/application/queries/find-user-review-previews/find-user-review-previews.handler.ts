@@ -64,6 +64,11 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler<
               },
             },
             tags: true,
+            comments: {
+              select: {
+                id: true,
+              },
+            },
           },
         },
         reviewedUser: {
@@ -87,6 +92,18 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler<
       ],
     });
 
-    return paginate<UserReviewPreviewResponse>(this.parseResponses(userReviews), 'id', query.take);
+    return paginate<UserReviewPreviewResponse>(
+      this.parseResponses(
+        userReviews.map((userReview) => ({
+          ...userReview,
+          post: {
+            ...userReview.post,
+            commentCount: userReview.post.comments.length,
+          },
+        })),
+      ),
+      'id',
+      query.take,
+    );
   }
 }

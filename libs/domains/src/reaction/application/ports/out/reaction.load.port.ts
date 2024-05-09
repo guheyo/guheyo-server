@@ -9,7 +9,7 @@ export interface ReactionLoadPort extends LoadPort<ReactionEntity> {
     userId,
   }: {
     emojiId: string;
-    postId?: string;
+    postId: string;
     commentId?: string;
     userId: string;
   }) => Promise<ReactionEntity | null>;

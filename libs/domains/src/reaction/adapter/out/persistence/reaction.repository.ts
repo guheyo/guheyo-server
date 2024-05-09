@@ -30,7 +30,7 @@ export class ReactionRepository
     userId,
   }: {
     emojiId: string;
-    postId?: string | undefined;
+    postId: string;
     commentId?: string | undefined;
     userId: string;
   }) {
@@ -38,7 +38,7 @@ export class ReactionRepository
       where: {
         emojiId,
         postId,
-        commentId,
+        commentId: commentId || null,
         userId,
       },
     });

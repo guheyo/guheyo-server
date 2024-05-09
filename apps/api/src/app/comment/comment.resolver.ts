@@ -17,11 +17,16 @@ import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-
 import { FindCommentsArgs } from '@lib/domains/comment/application/queries/find-comments/find-comments.args';
 import { FindCommentsQuery } from '@lib/domains/comment/application/queries/find-comments/find-comments.query';
 import { PaginatedCommentsResponse } from '@lib/domains/comment/application/queries/find-comments/paginated-comments.response';
-import { DeleteCommentResult } from '@lib/domains/comment/application/dtos/delete-comment.result';
+import { DeletedCommentResponse } from '@lib/domains/comment/application/commands/delete-comment/deleted-comment.response';
 import { CommentWithAuthorResponse } from '@lib/domains/comment/application/dtos/comment-with-author.response';
 import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
 import { parseCommentCreatedTriggerName } from '@lib/domains/comment/application/subscriptions/comment-created/parse-comment-created-trigger-name';
 import { CommentCreatedArgs } from '@lib/domains/comment/application/subscriptions/comment-created/comment-created.args';
+import { CommentDeletedArgs } from '@lib/domains/comment/application/subscriptions/comment-deleted/comment-deleted.args';
+import { parseCommentDeletedTriggerName } from '@lib/domains/comment/application/subscriptions/comment-deleted/parse-comment-deleted-trigger-name';
+import { UpdatedCommentResponse } from '@lib/domains/comment/application/commands/update-comment/updated-comment.response';
+import { CommentUpdatedArgs } from '@lib/domains/comment/application/subscriptions/comment-updated/comment-updated.args';
+import { parseCommentUpdatedTriggerName } from '@lib/domains/comment/application/subscriptions/comment-updated/parse-comment-updated-trigger-name';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @Resolver()
@@ -59,25 +64,37 @@ export class CommentResolver {
   }
 
   @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard)
-  @Mutation(() => CommentResponse)
+  @Mutation(() => String)
   async updateComment(
     @Args('input') input: UpdateCommentInput,
     @ExtractedUser() user: MyUserResponse,
   ) {
-    return this.commandBus.execute(new UpdateCommentCommand({ input, user }));
+    await this.commandBus.execute(new UpdateCommentCommand({ input, user }));
+    return input.id;
   }
 
   @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard)
-  @Mutation(() => DeleteCommentResult)
+  @Mutation(() => String)
   async deleteComment(
     @Args('input') input: DeleteCommentInput,
     @ExtractedUser() user: MyUserResponse,
   ) {
-    return this.commandBus.execute(new DeleteCommentCommand({ input, user }));
+    await this.commandBus.execute(new DeleteCommentCommand({ input, user }));
+    return input.id;
   }
 
   @Subscription(() => CommentWithAuthorResponse)
   async commentCreated(@Args() args: CommentCreatedArgs) {
     return GraphqlPubSub.asyncIterator(parseCommentCreatedTriggerName(args.postId));
+  }
+
+  @Subscription(() => UpdatedCommentResponse)
+  async commentUpdated(@Args() args: CommentUpdatedArgs) {
+    return GraphqlPubSub.asyncIterator(parseCommentUpdatedTriggerName(args.postId));
+  }
+
+  @Subscription(() => DeletedCommentResponse)
+  async commentDeleted(@Args() args: CommentDeletedArgs) {
+    return GraphqlPubSub.asyncIterator(parseCommentDeletedTriggerName(args.postId));
   }
 }
