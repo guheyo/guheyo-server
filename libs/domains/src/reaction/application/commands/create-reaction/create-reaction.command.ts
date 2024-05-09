@@ -7,7 +7,7 @@ export class CreateReactionCommand implements ICommand {
 
   emojiId: string;
 
-  postId?: string;
+  postId: string;
 
   commentId?: string;
 
