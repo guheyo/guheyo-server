@@ -32,11 +32,14 @@ export class UpdateCommentHandler extends PrismaCommandHandler<
     comment.update(pick(command, ['id', 'content']));
     await this.savePort.save(comment);
 
+    const updatedComment = await this.loadPort.findById(comment.id);
+    if (!updatedComment) throw new ForbiddenException(CommentErrorMessage.COMMENT_UPDATE_FAILED);
+
     await GraphqlPubSub.publish(parseCommentUpdatedTriggerName(comment.postId), {
       commentUpdated: {
-        id: comment.id,
-        updatedAt: comment.updatedAt,
-        content: comment.content,
+        id: updatedComment.id,
+        updatedAt: updatedComment.updatedAt,
+        content: updatedComment.content,
       },
     });
   }
