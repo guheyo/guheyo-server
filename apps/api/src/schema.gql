@@ -389,8 +389,6 @@ type PostPreviewWithAuthorResponse {
   groupId: String!
   id: ID!
   pending: String
-  reportCommentCount: Int!
-  reportCount: Int!
   slug: String
   tags: [TagResponse!]!
   thumbnail: String
@@ -408,8 +406,6 @@ type PostPreviewWithUserResponse {
   groupId: String!
   id: ID!
   pending: String
-  reportCommentCount: Int!
-  reportCount: Int!
   slug: String
   tags: [TagResponse!]!
   thumbnail: String
@@ -427,8 +423,6 @@ type PostPreviewWithoutUserResponse {
   groupId: String!
   id: ID!
   pending: String
-  reportCommentCount: Int!
-  reportCount: Int!
   slug: String
   tags: [TagResponse!]!
   thumbnail: String
@@ -448,7 +442,6 @@ type PostResponse {
   id: ID!
   images: [UserImageResponse!]!
   pending: String
-  reportCommentCount: Int!
   reportCount: Int!
   slug: String
   tags: [TagResponse!]!

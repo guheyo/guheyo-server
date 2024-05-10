@@ -1,5 +1,4 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { REPORT_COMMENTED, REPORT_OPEN } from '@lib/domains/report/domain/report.constants';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { Type } from 'class-transformer';
 import { TagEntity } from '@lib/domains/tag/domain/tag.entity';
@@ -59,14 +58,6 @@ export class PostEntity extends AggregateRoot {
 
   isAuthorized(userId: string) {
     return this.userId === userId;
-  }
-
-  checkReports(reportStatus: string) {
-    if (reportStatus === REPORT_OPEN) {
-      this.reportCount += 1;
-    } else if (reportStatus === REPORT_COMMENTED) {
-      this.reportCommentCount += 1;
-    }
   }
 
   hasUncommentedReports() {
