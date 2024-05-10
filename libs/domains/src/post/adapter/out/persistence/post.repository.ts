@@ -88,16 +88,7 @@ export class PostRepository
       where: {
         id: post.id,
       },
-      data: _.pick(post, [
-        'archivedAt',
-        'pending',
-        'type',
-        'title',
-        'thumbnail',
-        'categoryId',
-        'reportCount',
-        'reportCommentCount',
-      ]),
+      data: _.pick(post, ['archivedAt', 'pending', 'type', 'title', 'thumbnail', 'categoryId']),
     });
   }
 
