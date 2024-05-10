@@ -167,8 +167,6 @@ model Post {
   thumbnail           String?
   userAgent           String?
   ipAddress           String?
-  reportCount         Int           @default(0)
-  reportCommentCount  Int           @default(0)
   groupId             String
   group               Group         @relation(fields: [groupId], references: [id])
   categoryId          String?
