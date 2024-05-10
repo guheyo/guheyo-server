@@ -5,7 +5,6 @@ import { DiscordManager } from '@app/bot/shared/discord/discord.manager';
 import { GroupClient } from '@app/bot/apps/group/clients/group.client';
 import { Guild } from 'discord.js';
 import { PostMessage } from '@app/bot/shared/interfaces/post-message.interfaces';
-import { UserReviewClient } from '@app/bot/apps/user-review/clients/user-review.client';
 
 @Injectable()
 export abstract class BulkSavePostsSlashCommandHandler {
@@ -20,7 +19,7 @@ export abstract class BulkSavePostsSlashCommandHandler {
 
   protected discordManager: DiscordManager;
 
-  constructor(protected readonly userReviewClient: UserReviewClient) {}
+  abstract saveMessage(postMessage: any, discordGuild: Guild): void;
 
   async bulkSave(discordGuild: Guild, guildName: string, categoryName: string, limit: number) {
     const channelId = this.groupParser.discordConfigService.findCommunityChannelId(
@@ -36,21 +35,5 @@ export abstract class BulkSavePostsSlashCommandHandler {
 
   async bulkSavePostMessages(postMessages: PostMessage[], discordGuild: Guild) {
     return postMessages.map(async (postMessage) => this.saveMessage(postMessage, discordGuild));
-  }
-
-  async saveMessage(postMessage: PostMessage, discordGuild: Guild) {
-    try {
-      const member = await this.discordManager.fetchMember(
-        discordGuild,
-        postMessage.message.author,
-      );
-      const user = await this.userClient.fetchMyUser('discord', member);
-      const group = await this.groupClient.fetchGroupFromMessage(postMessage.message);
-      const tags = await this.groupClient.fetchTags();
-      await this.userReviewClient.createUserReviewFromPostMessage(user, postMessage, group, tags);
-    } catch (e) {
-      // NOTE: do nothing
-      // console.log(e);
-    }
   }
 }

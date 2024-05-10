@@ -3,6 +3,8 @@ import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
 import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { UserReviewClient } from '@app/bot/apps/user-review/clients/user-review.client';
+import { PostMessage } from '@app/bot/shared/interfaces/post-message.interfaces';
+import { Guild } from 'discord.js';
 import { BulkSaveRequest } from './bulk-save.request';
 import { BulkSavePostsSlashCommandHandler } from './bulk-save-posts.slash-command.handler';
 
@@ -10,7 +12,23 @@ import { BulkSavePostsSlashCommandHandler } from './bulk-save-posts.slash-comman
 @Injectable()
 export class BulkSaveUserReviewsSlashCommandHandler extends BulkSavePostsSlashCommandHandler {
   constructor(protected readonly userReviewClient: UserReviewClient) {
-    super(userReviewClient);
+    super();
+  }
+
+  async saveMessage(postMessage: PostMessage, discordGuild: Guild) {
+    try {
+      const member = await this.discordManager.fetchMember(
+        discordGuild,
+        postMessage.message.author,
+      );
+      const user = await this.userClient.fetchMyUser('discord', member);
+      const group = await this.groupClient.fetchGroupFromMessage(postMessage.message);
+      const tags = await this.groupClient.fetchTags();
+      await this.userReviewClient.createUserReviewFromPostMessage(user, postMessage, group, tags);
+    } catch (e) {
+      // NOTE: do nothing
+      // console.log(e);
+    }
   }
 
   @SlashCommand({
