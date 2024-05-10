@@ -20,7 +20,7 @@ export class UpdateReportCommentHandler extends PrismaCommandHandler<
     super(ReportCommentResponse);
   }
 
-  async execute(command: UpdateReportCommentCommand): Promise<ReportCommentResponse | null> {
+  async execute(command: UpdateReportCommentCommand): Promise<ReportCommentResponse> {
     const report = await this.loadPort.findById(command.reportId);
     if (!report) throw new NotFoundException(ReportErrorMessage.REPORT_NOT_FOUND);
     if (!report.validateCommenter(command.user.id))
