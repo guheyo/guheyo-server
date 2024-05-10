@@ -36,12 +36,6 @@ export class PostPreviewWithoutUserResponse {
   @Field(() => String, { nullable: true })
   categoryId: string | null;
 
-  @Field(() => Int)
-  reportCount: number;
-
-  @Field(() => Int)
-  reportCommentCount: number;
-
   @Field(() => [TagResponse])
   tags: TagResponse[];
 

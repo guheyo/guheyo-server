@@ -40,6 +40,11 @@ export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferRe
               },
             },
             tags: true,
+            reports: {
+              select: {
+                id: true,
+              },
+            },
           },
         },
       },
@@ -62,6 +67,7 @@ export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferRe
       post: {
         ...offer.post,
         images,
+        reportCount: offer.post.reports.length,
       },
     });
   }

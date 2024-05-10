@@ -38,6 +38,11 @@ export class FindAuctionByIdHandler extends PrismaQueryHandler<
               },
             },
             tags: true,
+            reports: {
+              select: {
+                id: true,
+              },
+            },
           },
         },
         bids: {
@@ -75,7 +80,11 @@ export class FindAuctionByIdHandler extends PrismaQueryHandler<
     });
     return this.parseResponse({
       ...auction,
-      images,
+      post: {
+        ...auction.post,
+        images,
+        reportCount: auction.post.reports.length,
+      },
     });
   }
 }
