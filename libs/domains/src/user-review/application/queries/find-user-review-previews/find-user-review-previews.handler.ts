@@ -65,6 +65,9 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler<
             },
             tags: true,
             comments: {
+              where: {
+                deletedAt: null,
+              },
               select: {
                 id: true,
               },
