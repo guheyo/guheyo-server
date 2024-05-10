@@ -1,4 +1,5 @@
 import { Parser } from '@app/bot/shared/parsers/parser';
+import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
 import { Injectable } from '@nestjs/common';
 import { Message } from 'discord.js';
 
@@ -16,5 +17,9 @@ export class GroupParser extends Parser {
 
   parseRootGroupId() {
     return this.discordIdConverter.convertIdUsingDiscordNamespace('root');
+  }
+
+  parseTagIds(tagNames: string[], tags: TagResponse[]): string[] {
+    return tags.filter((tag) => tagNames.includes(tag.name)).map((tag) => tag.id);
   }
 }
