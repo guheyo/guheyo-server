@@ -8,7 +8,7 @@ import { MarketChannelType } from '@app/bot/shared/types/market-channel.type';
 import { OfferClient } from '@app/bot/apps/offer/clients/offer.client';
 
 @Injectable()
-export abstract class BulkSaveSlashCommandHandler {
+export abstract class BulkSaveOffersSlashCommandHandler {
   @Inject()
   protected readonly groupParser: GroupParser;
 
