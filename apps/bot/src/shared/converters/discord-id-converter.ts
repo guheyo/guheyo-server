@@ -13,4 +13,8 @@ export class DiscordIdConverter {
   convertIdUsingGroupNamespace(discordId: string) {
     return uuid5(discordId, this.discordConfigService.getGroupNamespace());
   }
+
+  convertIdUsingPostNamespace(discordId: string) {
+    return uuid5(discordId, this.discordConfigService.getPostNamespace());
+  }
 }
