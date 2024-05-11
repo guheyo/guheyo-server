@@ -65,10 +65,7 @@ export class DiscordManager {
         postMessagesPromise: Promise<PostMessage[]>,
         threadChannel,
       ): Promise<PostMessage[]> => {
-        const postMessage = await this.fetchPostMessageFromThreadChannel(
-          threadChannel,
-          channel.availableTags,
-        );
+        const postMessage = await this.fetchPostMessage(threadChannel, channel.availableTags);
         if (!postMessage) return postMessagesPromise;
         return [...(await postMessagesPromise), postMessage];
       },
@@ -76,7 +73,7 @@ export class DiscordManager {
     );
   }
 
-  async fetchPostMessageFromThreadChannel(
+  async fetchPostMessage(
     threadChannel: ThreadChannel,
     availableTags: GuildForumTag[],
   ): Promise<PostMessage | null> {
