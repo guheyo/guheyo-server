@@ -61,10 +61,10 @@ export class DiscordManager {
 
     const threadChannels = await this.getThreadChannels(channel);
     return threadChannels.reduce(
-      async (postsPromise: Promise<ThreadPost[]>, threadChannel): Promise<ThreadPost[]> => {
-        const post = await this.fetchThreadPost(threadChannel, channel.availableTags);
-        if (!post) return postsPromise;
-        return [...(await postsPromise), post];
+      async (threadPostsPromise: Promise<ThreadPost[]>, threadChannel): Promise<ThreadPost[]> => {
+        const threadPost = await this.fetchThreadPost(threadChannel, channel.availableTags);
+        if (!threadPost) return threadPostsPromise;
+        return [...(await threadPostsPromise), threadPost];
       },
       Promise.resolve([]),
     );
@@ -74,8 +74,13 @@ export class DiscordManager {
     threadChannel: ThreadChannel,
     availableTags: GuildForumTag[],
   ): Promise<ThreadPost | null> {
-    const starterMessage = await threadChannel.fetchStarterMessage();
-    if (!starterMessage) return null;
+    let starterMessage: Message | null;
+    try {
+      starterMessage = await threadChannel.fetchStarterMessage();
+      if (!starterMessage) return null;
+    } catch (e) {
+      return null;
+    }
 
     return {
       threadChannel,
