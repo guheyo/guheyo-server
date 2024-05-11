@@ -109,10 +109,12 @@ input CreateOfferInput {
 
 input CreatePostInput {
   categoryId: ID
+  createdAt: DateTime
   groupId: ID!
   tagIds: [ID!]
   title: String!
   type: String!
+  updatedAt: DateTime
 }
 
 input CreateReactionInput {

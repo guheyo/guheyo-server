@@ -1,8 +1,18 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreatePostInput {
+  @IsOptional()
+  @IsDate()
+  @Field(() => Date, { nullable: true })
+  createdAt?: Date;
+
+  @IsOptional()
+  @IsDate()
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
   @IsString()
   @Field()
   type: string;

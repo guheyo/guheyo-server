@@ -5,6 +5,7 @@ import { RegisterDiscordUserSlashCommandHandler } from './register-discord-user/
 import { BulkSaveSellsSlashCommandHandler } from './bulk-save/bulk-save-sells.slash-command.handler';
 import { BulkSaveBuysSlashCommandHandler } from './bulk-save/bulk-save-buys.slash-command.handler';
 import { BulkSaveSwapsSlashCommandHandler } from './bulk-save/bulk-save-swaps.slash-command.handler';
+import { BulkSaveUserReviewsSlashCommandHandler } from './bulk-save/bulk-save-user-reviews.slash-command.handler';
 
 export const COMMAND_HANDLERS = [
   PingSlashCommandHandler,
@@ -14,4 +15,5 @@ export const COMMAND_HANDLERS = [
   BulkSaveSellsSlashCommandHandler,
   BulkSaveBuysSlashCommandHandler,
   BulkSaveSwapsSlashCommandHandler,
+  BulkSaveUserReviewsSlashCommandHandler,
 ];
