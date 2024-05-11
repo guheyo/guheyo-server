@@ -29,12 +29,12 @@ export class UserReviewParser extends GroupParser {
     };
 
     return {
+      id: this.parseIdFromMessage(threadPost.starterMessage),
       type: OFFER,
       reviewedUserId,
       rating: this.parseRating(threadPost.tagNames),
       status: USER_REVIEW_ONE_WAY,
       post,
-      id: this.parseIdFromMessage(threadPost.starterMessage),
       content: threadPost.starterMessage.content,
     };
   }
