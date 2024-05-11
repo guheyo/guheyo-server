@@ -1,3 +1,4 @@
+import { BOT_COMMENT_PROVIDERS } from './comment/comment.providers';
 import { BOT_GROUP_PROVIDERS } from './group/group.providers';
 import { BOT_OFFER_PROVIDERS } from './offer/offer.proviers';
 import { BOT_USER_IMAGE_PROVIDERS } from './user-image/user-image.providers';
@@ -10,4 +11,5 @@ export const BOT_PROVIDERS = [
   ...BOT_USER_IMAGE_PROVIDERS,
   ...BOT_OFFER_PROVIDERS,
   ...BOT_USER_REVIEW_PROVIDERS,
+  ...BOT_COMMENT_PROVIDERS,
 ];
