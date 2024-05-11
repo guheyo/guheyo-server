@@ -22,6 +22,8 @@ export class CommentRepository extends PrismaRepository<CommentEntity> {
     await this.prismaService.comment.create({
       data: pick(comment, [
         'id',
+        'createdAt',
+        'updatedAt',
         'userId',
         'postId',
         'parentId',
@@ -33,19 +35,7 @@ export class CommentRepository extends PrismaRepository<CommentEntity> {
   }
 
   async createMany(comments: CommentEntity[]): Promise<void> {
-    await this.prismaService.comment.createMany({
-      data: comments.map((comment) =>
-        _.pick(comment, [
-          'id',
-          'userId',
-          'postId',
-          'parentId',
-          'content',
-          'userAgent',
-          'ipAddress',
-        ]),
-      ),
-    });
+    await comments.map(async (comment) => this.create(comment));
   }
 
   async save(comment: CommentEntity): Promise<void> {
