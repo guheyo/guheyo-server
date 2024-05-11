@@ -6,11 +6,14 @@ import { CreateUserReviewCommand } from '@lib/domains/user-review/application/co
 import { PostMessage } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { USER_REVIEW } from '@lib/domains/user-review/domain/user-review.constants';
 import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
-import { UserReviewParser } from '../parsers/user-review.parser';
+import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
+import { MessageMentions } from 'discord.js';
+import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
+import { UserReviewParser } from '../parsers/user-review.parser';
 
 @Injectable()
-export abstract class UserReviewClient extends UserImageClient {
+export class UserReviewClient extends UserImageClient {
   constructor(protected readonly userReviewParser: UserReviewParser) {
     super();
   }
@@ -23,6 +26,7 @@ export abstract class UserReviewClient extends UserImageClient {
 
   async createUserReviewFromPostMessage(
     user: MyUserResponse,
+    reviewedUserId: string,
     postMessage: PostMessage,
     group: GroupResponse,
     tags: TagResponse[],
@@ -33,6 +37,7 @@ export abstract class UserReviewClient extends UserImageClient {
       USER_REVIEW,
     );
     const createUserReviewInput = this.userReviewParser.parseCreateUserReviewInput(
+      reviewedUserId,
       postMessage,
       group,
       tags,
@@ -41,5 +46,16 @@ export abstract class UserReviewClient extends UserImageClient {
     await this.uploadAndCreateAttachments(uploadUserImageInputList, USER_REVIEW);
     await this.createUserReview({ input: createUserReviewInput, user });
     this.logger.log(`userReview<@${createUserReviewInput.id}> created`);
+  }
+
+  async fetchReviewedUser(mentions: MessageMentions): Promise<UserResponse | null> {
+    const mentionedUser = mentions.users.first();
+    if (!mentionedUser) return null;
+    return this.queryBus.execute(
+      new FindUserQuery({
+        provider: 'discord',
+        socialId: mentionedUser.id,
+      }),
+    );
   }
 }
