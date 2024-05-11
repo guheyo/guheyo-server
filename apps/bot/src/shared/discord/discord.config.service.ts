@@ -40,11 +40,9 @@ export class DiscordConfigService {
     return server?.market || null;
   }
 
-  findDiscordServerByMessage(message: Message): DiscordServer | null {
+  findDiscordServerByChannelId(channelId: string): DiscordServer | null {
     const servers = this.getDiscordServers();
-    return (
-      servers.find((server) => this.findAllChannelIds(server).includes(message.channelId)) || null
-    );
+    return servers.find((server) => this.findAllChannelIds(server).includes(channelId)) || null;
   }
 
   findDiscordServer(guildName: string): DiscordServer | null {

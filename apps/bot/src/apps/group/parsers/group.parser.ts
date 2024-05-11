@@ -1,17 +1,16 @@
 import { Parser } from '@app/bot/shared/parsers/parser';
 import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
 import { Injectable } from '@nestjs/common';
-import { Message } from 'discord.js';
 
 @Injectable()
 export class GroupParser extends Parser {
-  parseGroupSlugFromMessage(message: Message): string | null {
-    const server = this.discordConfigService.findDiscordServerByMessage(message);
+  parseGroupSlug(channelId: string): string | null {
+    const server = this.discordConfigService.findDiscordServerByChannelId(channelId);
     return server?.slug || null;
   }
 
-  parseGroupIdFromMessage(message: Message): string {
-    const server = this.discordConfigService.findDiscordServerByMessage(message);
+  parseGroupId(channelId: string): string {
+    const server = this.discordConfigService.findDiscordServerByChannelId(channelId);
     return this.discordIdConverter.convertIdUsingDiscordNamespace(server?.name || '');
   }
 
