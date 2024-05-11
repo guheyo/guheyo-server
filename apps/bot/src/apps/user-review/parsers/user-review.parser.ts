@@ -8,9 +8,12 @@ import {
 } from '@lib/domains/user-review/domain/user-review.constants';
 import { OFFER } from '@lib/domains/offer/domain/offer.constants';
 import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class UserReviewParser extends GroupParser {
   parseCreateUserReviewInput(
+    reviewedUserId: string,
     postMessage: PostMessage,
     group: GroupResponse,
     tags: TagResponse[],
@@ -26,12 +29,16 @@ export class UserReviewParser extends GroupParser {
 
     return {
       type: OFFER,
-      reviewedUserId: '', // TODO
-      rating: 1, // TODO
+      reviewedUserId,
+      rating: this.parseRating(postMessage.tagNames),
       status: USER_REVIEW_ONE_WAY,
       post,
       id: this.parseIdFromMessage(postMessage.message),
       content: postMessage.message.content,
     };
+  }
+
+  parseRating(tagNames: string[]) {
+    return tagNames.some((tagName) => tagName === '비매너') ? 1 : 2;
   }
 }
