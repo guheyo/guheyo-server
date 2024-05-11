@@ -3,7 +3,7 @@ import { GroupResponse } from '@lib/domains/group/application/dtos/group.respons
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { CreateUserReviewInput } from '@lib/domains/user-review/application/commands/create-user-review/create-user-review.input';
 import { CreateUserReviewCommand } from '@lib/domains/user-review/application/commands/create-user-review/create-user-review.command';
-import { PostMessage } from '@app/bot/shared/interfaces/post-message.interfaces';
+import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { USER_REVIEW } from '@lib/domains/user-review/domain/user-review.constants';
 import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
@@ -21,21 +21,21 @@ export class UserReviewClient extends UserImageClient {
     await this.commandBus.execute(new CreateUserReviewCommand({ input, user }));
   }
 
-  async createUserReviewFromPostMessage(
+  async createUserReviewFromPost(
     user: MyUserResponse,
     reviewedUserId: string,
-    postMessage: PostMessage,
+    threadPost: ThreadPost,
     group: GroupResponse,
     tags: TagResponse[],
   ) {
     const uploadUserImageInputList = this.userImageParser.parseUploadUserImageInputList(
       user.id,
-      postMessage.message,
+      threadPost.starterMessage,
       USER_REVIEW,
     );
     const createUserReviewInput = this.userReviewParser.parseCreateUserReviewInput(
       reviewedUserId,
-      postMessage,
+      threadPost,
       group,
       tags,
     );

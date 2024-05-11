@@ -9,7 +9,7 @@ import {
   GuildForumTag,
   ForumChannel,
 } from 'discord.js';
-import { PostMessage } from '../interfaces/post-message.interfaces';
+import { ThreadPost } from '../interfaces/post-message.interfaces';
 
 export class DiscordManager {
   constructor(private readonly guild: Guild) {}
@@ -55,35 +55,32 @@ export class DiscordManager {
     return guild.members.fetch(author.id);
   }
 
-  async fetchPostMessagesFromForum(channelId: string, limit: number): Promise<PostMessage[]> {
+  async fetchThreadPostsFromForum(channelId: string, limit: number): Promise<ThreadPost[]> {
     const channel = await this.guild.channels.fetch(channelId);
     if (channel?.type !== ChannelType.GuildForum) return [];
 
     const threadChannels = await this.getThreadChannels(channel);
     return threadChannels.reduce(
-      async (
-        postMessagesPromise: Promise<PostMessage[]>,
-        threadChannel,
-      ): Promise<PostMessage[]> => {
-        const postMessage = await this.fetchPostMessage(threadChannel, channel.availableTags);
-        if (!postMessage) return postMessagesPromise;
-        return [...(await postMessagesPromise), postMessage];
+      async (postsPromise: Promise<ThreadPost[]>, threadChannel): Promise<ThreadPost[]> => {
+        const post = await this.fetchThreadPost(threadChannel, channel.availableTags);
+        if (!post) return postsPromise;
+        return [...(await postsPromise), post];
       },
       Promise.resolve([]),
     );
   }
 
-  async fetchPostMessage(
+  async fetchThreadPost(
     threadChannel: ThreadChannel,
     availableTags: GuildForumTag[],
-  ): Promise<PostMessage | null> {
-    const firstMessage = await threadChannel.fetchStarterMessage();
-    if (!firstMessage) return null;
+  ): Promise<ThreadPost | null> {
+    const starterMessage = await threadChannel.fetchStarterMessage();
+    if (!starterMessage) return null;
 
     return {
-      title: threadChannel.name,
+      threadChannel,
       tagNames: this.getTagNames(threadChannel.appliedTags, availableTags),
-      message: firstMessage,
+      starterMessage,
     };
   }
 

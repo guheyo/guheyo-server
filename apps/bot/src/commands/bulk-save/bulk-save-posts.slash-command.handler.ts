@@ -4,7 +4,7 @@ import { GroupParser } from '@app/bot/apps/group/parsers/group.parser';
 import { DiscordManager } from '@app/bot/shared/discord/discord.manager';
 import { GroupClient } from '@app/bot/apps/group/clients/group.client';
 import { Guild } from 'discord.js';
-import { PostMessage } from '@app/bot/shared/interfaces/post-message.interfaces';
+import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 
 @Injectable()
 export abstract class BulkSavePostsSlashCommandHandler {
@@ -19,7 +19,7 @@ export abstract class BulkSavePostsSlashCommandHandler {
 
   protected discordManager: DiscordManager;
 
-  abstract saveMessage(postMessage: any, discordGuild: Guild): void;
+  abstract saveThreadPost(threadPost: ThreadPost, discordGuild: Guild): void;
 
   async bulkSave(discordGuild: Guild, guildName: string, categoryName: string, limit: number) {
     const channelId = this.groupParser.discordConfigService.findCommunityChannelId(
@@ -29,11 +29,11 @@ export abstract class BulkSavePostsSlashCommandHandler {
     if (!channelId) return;
 
     this.discordManager = new DiscordManager(discordGuild);
-    const postMessages = await this.discordManager.fetchPostMessagesFromForum(channelId, limit);
-    await this.bulkSavePostMessages(postMessages, discordGuild);
+    const threadPosts = await this.discordManager.fetchThreadPostsFromForum(channelId, limit);
+    await this.bulkSaveThreadPosts(threadPosts, discordGuild);
   }
 
-  async bulkSavePostMessages(postMessages: PostMessage[], discordGuild: Guild) {
-    return postMessages.map(async (postMessage) => this.saveMessage(postMessage, discordGuild));
+  async bulkSaveThreadPosts(threadPosts: ThreadPost[], discordGuild: Guild) {
+    return threadPosts.map(async (threadPost) => this.saveThreadPost(threadPost, discordGuild));
   }
 }
