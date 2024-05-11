@@ -1,7 +1,7 @@
 import { GroupParser } from '@app/bot/apps/group/parsers/group.parser';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { CreateUserReviewInput } from '@lib/domains/user-review/application/commands/create-user-review/create-user-review.input';
-import { PostMessage } from '@app/bot/shared/interfaces/post-message.interfaces';
+import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import {
   USER_REVIEW,
   USER_REVIEW_ONE_WAY,
@@ -14,27 +14,28 @@ import { Injectable } from '@nestjs/common';
 export class UserReviewParser extends GroupParser {
   parseCreateUserReviewInput(
     reviewedUserId: string,
-    postMessage: PostMessage,
+    threadPost: ThreadPost,
     group: GroupResponse,
     tags: TagResponse[],
   ): CreateUserReviewInput {
     const post = {
-      createdAt: postMessage.message.createdAt,
-      updatedAt: postMessage.message.editedAt || postMessage.message.createdAt,
+      id: this.parseIdFromChannel(threadPost.threadChannel),
+      createdAt: threadPost.starterMessage.createdAt,
+      updatedAt: threadPost.starterMessage.editedAt || threadPost.starterMessage.createdAt,
       type: USER_REVIEW,
-      title: postMessage.title,
+      title: threadPost.threadChannel.name,
       groupId: group.id,
-      tagIds: this.parseTagIds(postMessage.tagNames, tags),
+      tagIds: this.parseTagIds(threadPost.tagNames, tags),
     };
 
     return {
+      id: this.parseIdFromMessage(threadPost.starterMessage),
       type: OFFER,
       reviewedUserId,
-      rating: this.parseRating(postMessage.tagNames),
+      rating: this.parseRating(threadPost.tagNames),
       status: USER_REVIEW_ONE_WAY,
       post,
-      id: this.parseIdFromMessage(postMessage.message),
-      content: postMessage.message.content,
+      content: threadPost.starterMessage.content,
     };
   }
 

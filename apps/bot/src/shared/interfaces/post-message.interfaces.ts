@@ -1,7 +1,7 @@
-import { Message } from 'discord.js';
+import { Message, ThreadChannel } from 'discord.js';
 
-export interface PostMessage {
-  title: string;
+export interface ThreadPost {
+  threadChannel: ThreadChannel;
   tagNames: string[];
-  message: Message;
+  starterMessage: Message;
 }

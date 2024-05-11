@@ -11,12 +11,14 @@ export class UserImageParser extends Parser {
 
   parseCreateUserImageInputFromUrl({
     id,
+    type,
     name,
     url,
     contentType,
     userId,
   }: {
     id: string;
+    type: string;
     name: string;
     url: string;
     contentType: string | undefined;
@@ -28,7 +30,7 @@ export class UserImageParser extends Parser {
       url,
       contentType,
       position: 0,
-      type: 'avatar',
+      type,
       refId: userId,
       userId,
     };

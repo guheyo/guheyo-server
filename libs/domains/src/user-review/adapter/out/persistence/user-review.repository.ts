@@ -99,6 +99,7 @@ export class UserReviewRepository
     const post = await this.prismaService.post.create({
       data: {
         ..._.pick(userReview.post, [
+          'id',
           'createdAt',
           'updatedAt',
           'type',

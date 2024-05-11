@@ -5,6 +5,10 @@ import { CreateCommentInput } from './create-comment.input';
 export class CreateCommentCommand implements ICommand {
   id: string;
 
+  createdAt?: Date;
+
+  updatedAt?: Date;
+
   postId: string;
 
   content: string;
@@ -13,6 +17,8 @@ export class CreateCommentCommand implements ICommand {
 
   constructor({ input, user }: { input: CreateCommentInput; user: MyUserResponse }) {
     this.id = input.id;
+    this.createdAt = input.createdAt;
+    this.updatedAt = input.updatedAt;
     this.postId = input.postId;
     this.content = input.content;
     this.user = user;

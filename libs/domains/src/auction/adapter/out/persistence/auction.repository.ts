@@ -73,6 +73,9 @@ export class AuctionRepository
     const post = await this.prismaService.post.create({
       data: {
         ..._.pick(auction.post, [
+          'id',
+          'createdAt',
+          'updatedAt',
           'type',
           'title',
           'userAgent',

@@ -74,8 +74,10 @@ type CommentWithAuthorResponseEdge {
 
 input CreateCommentInput {
   content: String!
+  createdAt: DateTime
   id: ID!
   postId: ID!
+  updatedAt: DateTime
 }
 
 input CreateGroupInput {
@@ -94,7 +96,6 @@ input CreateManyUserImageInput {
 input CreateOfferInput {
   businessFunction: String!
   content: String
-  createdAt: DateTime
   id: ID!
   name0: String
   name1: String
@@ -104,13 +105,13 @@ input CreateOfferInput {
   shippingCost: Int!
   shippingType: String!
   status: String! = "open"
-  updatedAt: DateTime
 }
 
 input CreatePostInput {
   categoryId: ID
   createdAt: DateTime
   groupId: ID!
+  id: ID
   tagIds: [ID!]
   title: String!
   type: String!

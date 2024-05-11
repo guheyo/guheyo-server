@@ -20,6 +20,10 @@ export class DiscordConfigService {
     return this.configService.get('namespace.group')!;
   }
 
+  getPostNamespace(): string {
+    return this.configService.get('namespace.post')!;
+  }
+
   getDiscordServers(): DiscordServer[] {
     return this.configService.get('discord.servers')!;
   }
