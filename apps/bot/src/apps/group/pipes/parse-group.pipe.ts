@@ -17,6 +17,6 @@ export class ParseGroupPipe implements PipeTransform {
     if (newMessage) message = await newMessage.fetch();
     else message = await createdOrOldmessage.fetch();
 
-    return this.groupClient.fetchGroupFromMessage(message);
+    return this.groupClient.fetchGroup(message.channelId);
   }
 }

@@ -99,6 +99,8 @@ export class UserReviewRepository
     const post = await this.prismaService.post.create({
       data: {
         ..._.pick(userReview.post, [
+          'createdAt',
+          'updatedAt',
           'type',
           'title',
           'userAgent',
@@ -122,6 +124,8 @@ export class UserReviewRepository
           'status',
         ]),
         postId: post.id,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
       },
     });
   }
@@ -140,8 +144,8 @@ export class UserReviewRepository
           update: {
             ..._.pick(userReview.post, ['pending', 'title', 'categoryId']),
           },
-          ..._.pick(userReview, ['content', 'rating', 'status']),
         },
+        ..._.pick(userReview, ['content', 'rating', 'status']),
       },
     });
   }

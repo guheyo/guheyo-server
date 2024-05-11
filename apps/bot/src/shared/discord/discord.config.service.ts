@@ -40,11 +40,9 @@ export class DiscordConfigService {
     return server?.market || null;
   }
 
-  findDiscordServerByMessage(message: Message): DiscordServer | null {
+  findDiscordServerByChannelId(channelId: string): DiscordServer | null {
     const servers = this.getDiscordServers();
-    return (
-      servers.find((server) => this.findAllChannelIds(server).includes(message.channelId)) || null
-    );
+    return servers.find((server) => this.findAllChannelIds(server).includes(channelId)) || null;
   }
 
   findDiscordServer(guildName: string): DiscordServer | null {
@@ -77,5 +75,11 @@ export class DiscordConfigService {
     const server = this.findDiscordServer(guildName);
     const channel = server?.market[marketChannelType].channels.find((c) => c.name === categoryName);
     return channel ? channel.id : null;
+  }
+
+  findCommunityChannelId(guildName: string, channelName: string): string | null {
+    const server = this.findDiscordServer(guildName);
+    const channel = server?.community.channels.find((c) => c.name === channelName);
+    return channel?.id || null;
   }
 }

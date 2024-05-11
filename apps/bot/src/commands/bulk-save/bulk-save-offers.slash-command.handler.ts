@@ -8,7 +8,7 @@ import { MarketChannelType } from '@app/bot/shared/types/market-channel.type';
 import { OfferClient } from '@app/bot/apps/offer/clients/offer.client';
 
 @Injectable()
-export abstract class BulkSaveSlashCommandHandler {
+export abstract class BulkSaveOffersSlashCommandHandler {
   @Inject()
   protected readonly groupParser: GroupParser;
 
@@ -56,7 +56,7 @@ export abstract class BulkSaveSlashCommandHandler {
     try {
       const member = await this.discordManager.fetchMember(discordGuild, message.author);
       const user = await this.userClient.fetchMyUser('discord', member);
-      const group = await this.groupClient.fetchGroupFromMessage(message);
+      const group = await this.groupClient.fetchGroup(message.channelId);
       await this.offerClient.createOfferFromMessage(user, message, group);
     } catch (e) {
       // NOTE: do nothing
