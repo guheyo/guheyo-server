@@ -16,13 +16,16 @@ export class CreateUserReviewHandler implements ICommandHandler<CreateUserReview
   ) {}
 
   async execute(command: CreateUserReviewCommand): Promise<void> {
-    const lastReview = await this.loadPort.findLastUserReview({
-      type: command.type,
-      offerId: command.offerId,
-      auctionId: command.auctionId,
-      userId: command.user.id,
-    });
-    if (lastReview) throw new ForbiddenException(UserReviewErrorMessage.USER_REVIEW_ALREADY_EXIST);
+    if (command.offerId || command.auctionId) {
+      const lastReview = await this.loadPort.findLastUserReview({
+        type: command.type,
+        offerId: command.offerId,
+        auctionId: command.auctionId,
+        userId: command.user.id,
+      });
+      if (lastReview)
+        throw new ForbiddenException(UserReviewErrorMessage.USER_REVIEW_ALREADY_EXIST);
+    }
 
     await this.savePort.create(
       new UserReviewEntity({
