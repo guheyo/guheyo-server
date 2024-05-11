@@ -7,6 +7,7 @@ import {
   FetchMessagesOptions,
   ThreadChannel,
   GuildForumTag,
+  ForumChannel,
 } from 'discord.js';
 import { PostMessage } from '../interfaces/post-message.interfaces';
 
@@ -58,9 +59,7 @@ export class DiscordManager {
     const channel = await this.guild.channels.fetch(channelId);
     if (channel?.type !== ChannelType.GuildForum) return [];
 
-    const { threads } = channel;
-    const fetchedThreads = await threads.fetch();
-    const threadChannels = fetchedThreads.threads.map((c) => c);
+    const threadChannels = await this.getThreadChannels(channel);
     return threadChannels.reduce(
       async (
         postMessagesPromise: Promise<PostMessage[]>,
@@ -89,6 +88,20 @@ export class DiscordManager {
       tagNames: this.getTagNames(threadChannel.appliedTags, availableTags),
       message: firstMessage,
     };
+  }
+
+  async fetchThreadChannelsFromForum(channelId: string, limit: number): Promise<ThreadChannel[]> {
+    const channel = await this.guild.channels.fetch(channelId);
+    if (channel?.type !== ChannelType.GuildForum) return [];
+
+    return this.getThreadChannels(channel);
+  }
+
+  async getThreadChannels(channel: ForumChannel): Promise<ThreadChannel[]> {
+    const { threads } = channel;
+    const fetchedThreads = await threads.fetch();
+    const threadChannels = fetchedThreads.threads.map((c) => c);
+    return threadChannels;
   }
 
   getTagNames(appliedTagIds: string[], availableTags: GuildForumTag[]): string[] {
