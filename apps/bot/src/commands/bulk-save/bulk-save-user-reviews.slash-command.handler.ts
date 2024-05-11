@@ -4,7 +4,7 @@ import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { UserReviewClient } from '@app/bot/apps/user-review/clients/user-review.client';
 import { PostMessage } from '@app/bot/shared/interfaces/post-message.interfaces';
-import { Guild } from 'discord.js';
+import { Guild, ThreadChannel } from 'discord.js';
 import { BulkSaveRequest } from './bulk-save.request';
 import { BulkSavePostsSlashCommandHandler } from './bulk-save-posts.slash-command.handler';
 
@@ -17,14 +17,28 @@ export class BulkSaveUserReviewsSlashCommandHandler extends BulkSavePostsSlashCo
 
   async saveMessage(postMessage: PostMessage, discordGuild: Guild) {
     try {
+      const reviewedUser = await this.userReviewClient.fetchReviewedUser(
+        postMessage.message.mentions,
+      );
+      if (!reviewedUser) return;
+
+      const channelId = (postMessage.message.channel as ThreadChannel).parentId;
+      if (!channelId) return;
+
       const member = await this.discordManager.fetchMember(
         discordGuild,
         postMessage.message.author,
       );
       const user = await this.userClient.fetchMyUser('discord', member);
-      const group = await this.groupClient.fetchGroupFromMessage(postMessage.message);
+      const group = await this.groupClient.fetchGroup(channelId);
       const tags = await this.groupClient.fetchTags();
-      await this.userReviewClient.createUserReviewFromPostMessage(user, postMessage, group, tags);
+      await this.userReviewClient.createUserReviewFromPostMessage(
+        user,
+        reviewedUser.id,
+        postMessage,
+        group,
+        tags,
+      );
     } catch (e) {
       // NOTE: do nothing
       // console.log(e);
