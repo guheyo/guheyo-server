@@ -23,4 +23,8 @@ export abstract class Parser {
   parseIdFromMessage(message: Message | PartialMessage) {
     return this.discordIdConverter.convertIdUsingDiscordNamespace(message.id);
   }
+
+  parsePostIdFromMessage(message: Message | PartialMessage) {
+    return this.discordIdConverter.convertIdUsingPostNamespace(message.id);
+  }
 }
