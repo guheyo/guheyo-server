@@ -52,6 +52,7 @@ export class OfferRepository
     const post = await this.prismaService.post.create({
       data: {
         ..._.pick(offer.post, [
+          'id',
           'type',
           'title',
           'userAgent',
