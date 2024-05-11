@@ -4,6 +4,11 @@ import { IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
 @InputType()
 export class CreatePostInput {
   @IsOptional()
+  @IsUUID()
+  @Field(() => ID, { nullable: true })
+  id?: string;
+
+  @IsOptional()
   @IsDate()
   @Field(() => Date, { nullable: true })
   createdAt?: Date;

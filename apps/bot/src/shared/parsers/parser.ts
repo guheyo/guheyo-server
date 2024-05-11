@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { v4 as uuid4 } from 'uuid';
-import { Message, PartialMessage } from 'discord.js';
+import { BaseChannel, Channel, Message, PartialMessage } from 'discord.js';
 import { DiscordIdConverter } from '@app/bot/shared/converters/discord-id-converter';
 import { DiscordConfigService } from '../discord/discord.config.service';
 
@@ -22,5 +22,9 @@ export abstract class Parser {
 
   parseIdFromMessage(message: Message | PartialMessage) {
     return this.discordIdConverter.convertIdUsingDiscordNamespace(message.id);
+  }
+
+  parseIdFromChannel(channel: BaseChannel) {
+    return this.discordIdConverter.convertIdUsingDiscordNamespace(channel.id);
   }
 }

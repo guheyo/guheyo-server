@@ -3,7 +3,7 @@ import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
 import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { UserReviewClient } from '@app/bot/apps/user-review/clients/user-review.client';
-import { PostMessage } from '@app/bot/shared/interfaces/post-message.interfaces';
+import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { Guild, ThreadChannel } from 'discord.js';
 import { BulkSaveRequest } from './bulk-save.request';
 import { BulkSavePostsSlashCommandHandler } from './bulk-save-posts.slash-command.handler';
@@ -15,27 +15,25 @@ export class BulkSaveUserReviewsSlashCommandHandler extends BulkSavePostsSlashCo
     super();
   }
 
-  async saveMessage(postMessage: PostMessage, discordGuild: Guild) {
+  async saveThreadPost(threadPost: ThreadPost, discordGuild: Guild) {
     try {
-      const reviewedUser = await this.userReviewClient.fetchReviewedUser(
-        postMessage.message.mentions,
-      );
-      if (!reviewedUser) return;
-
-      const channelId = (postMessage.message.channel as ThreadChannel).parentId;
+      const mentionedUser = await threadPost.starterMessage.mentions.users.first();
+      if (!mentionedUser) return;
+      const reviewedUser = await this.userClient.fetchMyUser('discord', mentionedUser);
+      const channelId = (threadPost.starterMessage.channel as ThreadChannel).parentId;
       if (!channelId) return;
 
       const member = await this.discordManager.fetchMember(
         discordGuild,
-        postMessage.message.author,
+        threadPost.starterMessage.author,
       );
       const user = await this.userClient.fetchMyUser('discord', member);
       const group = await this.groupClient.fetchGroup(channelId);
       const tags = await this.groupClient.fetchTags();
-      await this.userReviewClient.createUserReviewFromPostMessage(
+      await this.userReviewClient.createUserReviewFromPost(
         user,
         reviewedUser.id,
-        postMessage,
+        threadPost,
         group,
         tags,
       );

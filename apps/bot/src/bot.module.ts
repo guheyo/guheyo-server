@@ -15,6 +15,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { POST_PROVIDERS } from '@lib/domains/post/post.providers';
 import { TAG_PROVIDERS } from '@lib/domains/tag/tag.providers';
 import { USER_REVIEW_PROVIDERS } from '@lib/domains/user-review/user-review.providers';
+import { COMMENT_PROVIDERS } from '@lib/domains/comment/comment.providers';
 import { NecordConfigService } from './necord/necord.config.service';
 import { COMMAND_HANDLERS } from './commands/command-handlers';
 import { EVENT_HANDLERS } from './events/event-handlers';
@@ -54,6 +55,7 @@ import { DiscordConfigService } from './shared/discord/discord.config.service';
     ...POST_PROVIDERS,
     ...TAG_PROVIDERS,
     ...USER_REVIEW_PROVIDERS,
+    ...COMMENT_PROVIDERS,
     ...COMMAND_HANDLERS,
     ...EVENT_HANDLERS,
     DiscordConfigService,

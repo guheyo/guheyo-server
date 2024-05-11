@@ -6,6 +6,7 @@ import { BulkSaveSellsSlashCommandHandler } from './bulk-save/bulk-save-sells.sl
 import { BulkSaveBuysSlashCommandHandler } from './bulk-save/bulk-save-buys.slash-command.handler';
 import { BulkSaveSwapsSlashCommandHandler } from './bulk-save/bulk-save-swaps.slash-command.handler';
 import { BulkSaveUserReviewsSlashCommandHandler } from './bulk-save/bulk-save-user-reviews.slash-command.handler';
+import { BulkSaveUserReviewCommentsSlashCommandHandler } from './bulk-save/bulk-save-user-review-comments.slash-command.handler';
 
 export const COMMAND_HANDLERS = [
   PingSlashCommandHandler,
@@ -16,4 +17,5 @@ export const COMMAND_HANDLERS = [
   BulkSaveBuysSlashCommandHandler,
   BulkSaveSwapsSlashCommandHandler,
   BulkSaveUserReviewsSlashCommandHandler,
+  BulkSaveUserReviewCommentsSlashCommandHandler,
 ];

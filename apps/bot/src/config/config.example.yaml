@@ -49,6 +49,7 @@ discord:
 namespace:
   discord:
   group:
+  post:
 document:
   title:
   description:
