@@ -35,7 +35,10 @@ export abstract class BulkSaveCommentsSlashCommandHandler {
       ],
       Promise.resolve<MessageWithUser[]>([]),
     );
-    await this.commentClient.createCommentsFromMessageWithUsers(messageWithUsers);
+    await this.commentClient.createCommentsFromMessageWithUsers(
+      threadChannel,
+      messageWithUsers.splice(0, messageWithUsers.length - 1),
+    );
   }
 
   async bulkSave(discordGuild: Guild, guildName: string, categoryName: string, limit: number) {
