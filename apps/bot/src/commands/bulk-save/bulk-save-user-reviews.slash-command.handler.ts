@@ -17,11 +17,9 @@ export class BulkSaveUserReviewsSlashCommandHandler extends BulkSavePostsSlashCo
 
   async saveMessage(postMessage: PostMessage, discordGuild: Guild) {
     try {
-      const reviewedUser = await this.userReviewClient.fetchReviewedUser(
-        postMessage.message.mentions,
-      );
-      if (!reviewedUser) return;
-
+      const mentionedUser = await postMessage.message.mentions.users.first();
+      if (!mentionedUser) return;
+      const reviewedUser = await this.userClient.fetchMyUser('discord', mentionedUser);
       const channelId = (postMessage.message.channel as ThreadChannel).parentId;
       if (!channelId) return;
 
