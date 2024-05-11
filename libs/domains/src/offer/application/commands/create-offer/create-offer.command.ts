@@ -9,10 +9,6 @@ export class CreateOfferCommand implements ICommand {
 
   id: string;
 
-  createdAt?: Date;
-
-  updatedAt?: Date;
-
   businessFunction: string;
 
   name0?: string;
@@ -36,8 +32,6 @@ export class CreateOfferCommand implements ICommand {
   constructor({ input, user }: { input: CreateOfferInput; user: MyUserResponse }) {
     this.post = input.post;
     this.id = input.id;
-    this.createdAt = input.createdAt;
-    this.updatedAt = input.updatedAt;
     this.businessFunction = input.businessFunction;
     this.name0 = input.name0;
     this.name1 = input.name1;

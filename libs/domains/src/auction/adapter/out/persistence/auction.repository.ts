@@ -74,6 +74,8 @@ export class AuctionRepository
       data: {
         ..._.pick(auction.post, [
           'id',
+          'createdAt',
+          'updatedAt',
           'type',
           'title',
           'userAgent',

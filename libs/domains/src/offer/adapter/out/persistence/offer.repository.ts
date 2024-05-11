@@ -53,6 +53,8 @@ export class OfferRepository
       data: {
         ..._.pick(offer.post, [
           'id',
+          'createdAt',
+          'updatedAt',
           'type',
           'title',
           'userAgent',
@@ -61,16 +63,12 @@ export class OfferRepository
           'categoryId',
           'userId',
         ]),
-        createdAt: offer.createdAt,
-        updatedAt: offer.updatedAt,
       },
     });
     await this.prismaService.offer.create({
       data: {
         ..._.pick(offer, [
           'id',
-          'createdAt',
-          'updatedAt',
           'businessFunction',
           'name0',
           'name1',
@@ -82,7 +80,9 @@ export class OfferRepository
           'status',
         ]),
         postId: post.id,
-        bumpedAt: offer.createdAt,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+        bumpedAt: post.createdAt,
       },
     });
   }
