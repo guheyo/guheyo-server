@@ -12,7 +12,7 @@ export class CheckPostsNotExistHandler extends PrismaQueryHandler<CheckPostsNotE
     const existingPosts = await this.prismaService.post.findMany({
       where: {
         id: {
-          in: query.ids,
+          in: query.postIds,
         },
       },
       select: {
@@ -21,7 +21,7 @@ export class CheckPostsNotExistHandler extends PrismaQueryHandler<CheckPostsNotE
     });
 
     const existingPostIds = existingPosts.map((post) => post.id);
-    const nonExistingPostIds = query.ids.filter((id) => !existingPostIds.includes(id));
+    const nonExistingPostIds = query.postIds.filter((postId) => !existingPostIds.includes(postId));
     return nonExistingPostIds;
   }
 }
