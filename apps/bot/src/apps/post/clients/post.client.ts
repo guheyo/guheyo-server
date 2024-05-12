@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ThreadChannel } from 'discord.js';
+import { Message, ThreadChannel } from 'discord.js';
 import { CheckPostsNotExistQuery } from '@lib/domains/post/application/quries/check-user-posts-not-exist/check-posts-not-exist.query';
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
@@ -21,7 +21,7 @@ export class PostClient extends UserImageClient {
   }
 
   async checkPostsNotExistFromThreadChannels(threadChannels: ThreadChannel[]): Promise<string[]> {
-    const postIds = this.postParser.parsePostIds(threadChannels);
+    const postIds = this.postParser.parsePostIdsFromThreadChannels(threadChannels);
     return this.checkPostsNotExist(postIds);
   }
 
@@ -30,6 +30,18 @@ export class PostClient extends UserImageClient {
     const nonExistingPostIds = await this.checkPostsNotExistFromThreadChannels(threadChannels);
     return threadPosts.filter((threadPost) =>
       nonExistingPostIds.includes(this.postParser.parseIdFromChannel(threadPost.threadChannel)),
+    );
+  }
+
+  async checkPostsNotExistFromMessages(messages: Message[]): Promise<string[]> {
+    const postIds = this.postParser.parsePostIdsFromMessages(messages);
+    return this.checkPostsNotExist(postIds);
+  }
+
+  async findNonExistingMessages(messages: Message[]): Promise<Message[]> {
+    const nonExistingPostIds = await this.checkPostsNotExistFromMessages(messages);
+    return messages.filter((message) =>
+      nonExistingPostIds.includes(this.postParser.parsePostIdFromMessage(message)),
     );
   }
 }
