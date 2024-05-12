@@ -24,21 +24,26 @@ export abstract class BulkSaveCommentsSlashCommandHandler {
   protected discordManager: DiscordManager;
 
   async saveThread(threadChannel: ThreadChannel) {
-    const messageCollection = await threadChannel.messages.fetch();
-    const messageWithUsers = await messageCollection.reduce(
-      async (cc, message) => [
-        ...(await cc),
-        {
-          message,
-          user: await this.userClient.fetchMyUser('discord', message.author),
-        },
-      ],
-      Promise.resolve<MessageWithUser[]>([]),
-    );
-    await this.commentClient.createCommentsFromMessageWithUsers(
-      threadChannel,
-      messageWithUsers.splice(0, messageWithUsers.length - 1),
-    );
+    try {
+      const messageCollection = await threadChannel.messages.fetch();
+      const messageWithUsers = await messageCollection.reduce(
+        async (cc, message) => [
+          ...(await cc),
+          {
+            message,
+            user: await this.userClient.fetchMyUser('discord', message.author),
+          },
+        ],
+        Promise.resolve<MessageWithUser[]>([]),
+      );
+      await this.commentClient.createCommentsFromMessageWithUsers(
+        threadChannel,
+        messageWithUsers.splice(0, messageWithUsers.length - 1),
+      );
+    } catch (e) {
+      // NOTE: do nothing
+      // console.log(e);
+    }
   }
 
   async bulkSave(discordGuild: Guild, guildName: string, categoryName: string, limit: number) {
