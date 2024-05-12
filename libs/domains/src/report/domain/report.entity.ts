@@ -65,6 +65,9 @@ export class ReportEntity extends AggregateRoot {
         type: this.type,
         reportedPostId: this.reportedPostId || undefined,
         reportedCommentId: this.reportedCommentId || undefined,
+        reportedUserUsername: this.reportedUser.username,
+        reportedUserAvatarURL: this.reportedUser.avatarURL || undefined,
+        reason: this.reason,
         reportStatus: this.status,
       }),
     );
