@@ -21,6 +21,7 @@ export class BuyParser extends OfferParser {
   parseCreateOfferInput(message: Message, group: GroupResponse): CreateOfferInput {
     const match = this.matchFormat(message.content);
     const post = {
+      id: this.parsePostIdFromMessage(message),
       createdAt: message.createdAt,
       updatedAt: message.editedAt || message.createdAt,
       type: OFFER,
