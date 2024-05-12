@@ -22,6 +22,7 @@ export class DiscordWebhookSagas {
       map(
         (event) =>
           new SendDiscordWebhookCommand({
+            target: 'offer',
             color: this.parseColor(event.businessFunction),
             username: event.username,
             avatarURL: event.avatarURL,
