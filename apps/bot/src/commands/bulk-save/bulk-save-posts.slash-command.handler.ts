@@ -5,6 +5,7 @@ import { DiscordManager } from '@app/bot/shared/discord/discord.manager';
 import { GroupClient } from '@app/bot/apps/group/clients/group.client';
 import { Guild } from 'discord.js';
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
+import { PostClient } from '@app/bot/apps/post/clients/post.client';
 
 @Injectable()
 export abstract class BulkSavePostsSlashCommandHandler {
@@ -16,6 +17,9 @@ export abstract class BulkSavePostsSlashCommandHandler {
 
   @Inject()
   protected readonly userClient: UserClient;
+
+  @Inject()
+  protected readonly postClient: PostClient;
 
   protected discordManager: DiscordManager;
 
@@ -30,7 +34,8 @@ export abstract class BulkSavePostsSlashCommandHandler {
 
     this.discordManager = new DiscordManager(discordGuild);
     const threadPosts = await this.discordManager.fetchThreadPostsFromForum(channelId, limit);
-    await this.bulkSaveThreadPosts(threadPosts, discordGuild);
+    const nonExistingThreadPosts = await this.postClient.findNonExistingThreadPosts(threadPosts);
+    await this.bulkSaveThreadPosts(nonExistingThreadPosts, discordGuild);
   }
 
   async bulkSaveThreadPosts(threadPosts: ThreadPost[], discordGuild: Guild) {
