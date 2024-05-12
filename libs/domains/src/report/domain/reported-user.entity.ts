@@ -17,6 +17,8 @@ export class ReportedUserEntity {
 
   name: string | null;
 
+  avatarURL: string | null;
+
   bot: boolean;
 
   @Type(() => RoleEntity)
