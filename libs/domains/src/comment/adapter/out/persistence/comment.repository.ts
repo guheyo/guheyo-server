@@ -2,9 +2,14 @@ import _, { pick } from 'lodash';
 import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
+import { CommentLoadPort } from '@lib/domains/comment/application/ports/out/comment.load.port';
+import { CommentSavePort } from '@lib/domains/comment/application/ports/out/comment.save.port';
 
 @Injectable()
-export class CommentRepository extends PrismaRepository<CommentEntity> {
+export class CommentRepository
+  extends PrismaRepository<CommentEntity>
+  implements CommentLoadPort, CommentSavePort
+{
   constructor() {
     super(CommentEntity);
   }
