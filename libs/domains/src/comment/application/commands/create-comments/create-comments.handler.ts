@@ -21,14 +21,33 @@ export class CreateCommentsHandler extends PrismaCommandHandler<
   }
 
   async execute(command: CreateCommentsCommand): Promise<void> {
-    await this.savePort.createMany(
-      command.commentCommands.map(
-        (commentCommand) =>
-          new CommentEntity({
-            ...commentCommand,
-            userId: commentCommand.user.id,
-          }),
-      ),
+    const existingComments = await this.prismaService.comment.findMany({
+      where: {
+        id: {
+          in: command.commentCommands.map((commentCommand) => commentCommand.id),
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    // Filter out existing comments
+    const newComments = command.commentCommands.filter(
+      (commentCommand) =>
+        !existingComments.some((existingComment) => existingComment.id === commentCommand.id),
     );
+
+    // Create new comments
+    const commentsToCreate = newComments.map(
+      (commentCommand) =>
+        new CommentEntity({
+          ...commentCommand,
+          userId: commentCommand.user.id,
+        }),
+    );
+
+    // Save new comments
+    await this.savePort.createMany(commentsToCreate);
   }
 }
