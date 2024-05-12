@@ -6,6 +6,7 @@ import { GroupClient } from '@app/bot/apps/group/clients/group.client';
 import { Guild, Message } from 'discord.js';
 import { MarketChannelType } from '@app/bot/shared/types/market-channel.type';
 import { OfferClient } from '@app/bot/apps/offer/clients/offer.client';
+import { PostClient } from '@app/bot/apps/post/clients/post.client';
 
 @Injectable()
 export abstract class BulkSaveOffersSlashCommandHandler {
@@ -17,6 +18,9 @@ export abstract class BulkSaveOffersSlashCommandHandler {
 
   @Inject()
   protected readonly userClient: UserClient;
+
+  @Inject()
+  protected readonly postClient: PostClient;
 
   protected discordManager: DiscordManager;
 
@@ -45,7 +49,8 @@ export abstract class BulkSaveOffersSlashCommandHandler {
     }
     this.discordManager = new DiscordManager(discordGuild);
     const messages = await this.discordManager.fetchMessagesFromChannels(channelIds, limit);
-    await this.bulkSaveMessages(messages, discordGuild);
+    const nonExistingMessages = await this.postClient.findNonExistingMessages(messages);
+    await this.bulkSaveMessages(nonExistingMessages, discordGuild);
   }
 
   async bulkSaveMessages(messages: Message[], discordGuild: Guild) {
