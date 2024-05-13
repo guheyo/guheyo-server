@@ -16,6 +16,6 @@ export class SendDiscordWebhookHandler implements ICommandHandler<SendDiscordWeb
         iconURL: command.avatarURL,
       })
       .setDescription(command.url);
-    await this.discordWebhookClient.sendWebhook({ embeds: [embed] });
+    await this.discordWebhookClient.sendWebhook({ target: command.target, embeds: [embed] });
   }
 }

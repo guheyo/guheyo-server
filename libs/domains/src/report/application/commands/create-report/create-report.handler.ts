@@ -20,7 +20,7 @@ export class CreateReportHandler implements ICommandHandler<CreateReportCommand>
     if (lastSubmittedReport && !lastSubmittedReport.validateSubmitTerm())
       throw new ForbiddenException(ReportErrorMessage.REPORT_COOLDOWN_NOT_PASSED);
 
-    const report = this.publisher.mergeObjectContext(
+    await this.savePort.create(
       new ReportEntity({
         ...pick(command, [
           'id',
@@ -35,9 +35,11 @@ export class CreateReportHandler implements ICommandHandler<CreateReportCommand>
         userId: command.user.id,
       }),
     );
+    let report = await this.loadPort.findById(command.id);
+    if (!report) throw new ForbiddenException(ReportErrorMessage.FAILED_CREATE_REPORT);
 
+    report = this.publisher.mergeObjectContext(report);
     report.create();
-    await this.savePort.create(report);
     report.commit();
   }
 }
