@@ -12,4 +12,5 @@ export enum ReportErrorMessage {
   REPORT_COOLDOWN_NOT_PASSED = 'Report cooldown not passed',
   REPORTED_USER_NOT_FOUND = 'Reported user not found',
   CREATE_REPORT_REQUEST_FROM_UNAUTHORIZED_USER = 'Create report request from unauthorized user',
+  FAILED_CREATE_REPORT = 'Failed create report',
 }

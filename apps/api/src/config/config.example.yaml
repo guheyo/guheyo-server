@@ -47,5 +47,8 @@ logger:
   level:
   stdout:
 discord:
-  webhook:
-    url:
+  webhookURL:
+    offer:
+    userReview:
+    auction:
+    report:
