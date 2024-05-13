@@ -42,6 +42,11 @@ export class UserReviewEntity extends AggregateRoot {
         reviewStatus: this.status,
         postId: this.post.id,
         tagIds,
+        username: this.post.user.username,
+        userAvatarURL: this.post.user.avatarURL || undefined,
+        title: this.post.title,
+        slug: this.post.slug || undefined,
+        rating: this.rating,
       }),
     );
   }
