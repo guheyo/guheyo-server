@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { OFFER_BUSINESS_FUNCTIONS } from '@lib/domains/offer/domain/offer.types';
 import { includes } from 'lodash';
 import { OFFER } from '@lib/domains/offer/domain/offer.constants';
+import { ReportCreatedEvent } from '@lib/domains/report/application/events/report-created/report-created.event';
 import { SendDiscordWebhookCommand } from '../commands/send-discord-webhook/send-discord-webhook.command';
 
 @Injectable()
@@ -31,16 +32,33 @@ export class DiscordWebhookSagas {
               title: event.title,
               price: event.price,
             }),
-            url: this.parseUrl({ slug: event.slug! }),
+            url: this.parseOfferURL({ slug: event.slug! }),
+          }),
+      ),
+    );
+
+  @Saga()
+  reportCreated = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(ReportCreatedEvent),
+      map(
+        (event) =>
+          new SendDiscordWebhookCommand({
+            target: 'report',
+            color: 'Red',
+            username: event.reportedUserUsername,
+            avatarURL: event.reportedUserAvatarURL,
+            title: event.reason,
+            url: this.parseReportURL({ reportId: event.reportId }),
           }),
       ),
     );
 
   parseColor(businessFunction: string) {
-    if (businessFunction === 'sell') return 0xef4444;
-    if (businessFunction === 'buy') return 0x22c55e;
+    if (businessFunction === 'sell') return 'Blue';
+    if (businessFunction === 'buy') return 'DarkGreen';
     // SWAP
-    return 0xf97316;
+    return 'Orange';
   }
 
   parseTitle({
@@ -58,7 +76,11 @@ export class DiscordWebhookSagas {
     return `[교환합니다] ${title} ${price ? `- 내 추가금 +${price}` : ''}`;
   }
 
-  parseUrl({ slug }: { slug: string }) {
+  parseOfferURL({ slug }: { slug: string }) {
     return `${this.configService.get('frontend.host')}/${OFFER}/${slug}`;
+  }
+
+  parseReportURL({ reportId }: { reportId: string }) {
+    return `${this.configService.get('frontend.host')}/report/${reportId}`;
   }
 }
