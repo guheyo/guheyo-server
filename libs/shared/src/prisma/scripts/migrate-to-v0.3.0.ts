@@ -43,7 +43,7 @@ const migrateRole = async () => {
   console.log('migrate role passed, oldRoles len: ', oldRoles.length);
 };
 
-const migrateUser = async () => {
+const migrateUser = async (offset = 0, batchSize = 100) => {
   const oldUsers = await prismaClient2.user.findMany({
     include: {
       members: {
@@ -53,9 +53,17 @@ const migrateUser = async () => {
       },
       socialAccounts: true,
     },
+    take: batchSize,
+    skip: offset,
   });
-  oldUsers.map(async (oldUser) => {
-    await prismaClient3.user.upsert({
+
+  if (oldUsers.length === 0) {
+    console.log('migrate user completed (offset): ', offset);
+    return;
+  }
+
+  const promises = oldUsers.map(async (oldUser) =>
+    prismaClient3.user.upsert({
       where: {
         id: oldUser.id,
       },
@@ -92,10 +100,11 @@ const migrateUser = async () => {
         },
       },
       update: {},
-    });
-  });
+    }),
+  );
+  await Promise.all(promises);
 
-  console.log('migrate user passed, oldUsers len: ', oldUsers.length);
+  await migrateUser(offset + batchSize, batchSize);
 };
 
 const migrateCategory = async () => {
@@ -114,15 +123,23 @@ const migrateCategory = async () => {
   console.log('migrate category passed, oldCategories len: ', oldCategories.length);
 };
 
-const migrateOffer = async () => {
+const migrateOffer = async (offset = 0, batchSize = 100) => {
   const oldOffers = await prismaClient2.offer.findMany({
     include: {
       seller: true,
       productCategory: true,
     },
+    take: batchSize,
+    skip: offset,
   });
-  oldOffers.map(async (oldOffer) => {
-    await prismaClient3.offer.upsert({
+
+  if (oldOffers.length === 0) {
+    console.log('migrate offer completed (offset): ', offset);
+    return;
+  }
+
+  const promises = oldOffers.map(async (oldOffer) =>
+    prismaClient3.offer.upsert({
       where: {
         id: oldOffer.id,
       },
@@ -156,21 +173,30 @@ const migrateOffer = async () => {
         status: oldOffer.status,
       },
       update: {},
-    });
-  });
+    }),
+  );
+  await Promise.all(promises);
 
-  console.log('migrate offer passed, oldOffers len: ', oldOffers.length);
+  await migrateOffer(offset + batchSize, batchSize);
 };
 
-const migrateDemand = async () => {
+const migrateDemand = async (offset = 0, batchSize = 100) => {
   const oldDemands = await prismaClient2.demand.findMany({
     include: {
       buyer: true,
       productCategory: true,
     },
+    take: batchSize,
+    skip: offset,
   });
-  oldDemands.map(async (oldDemand) => {
-    await prismaClient3.offer.upsert({
+
+  if (oldDemands.length === 0) {
+    console.log('migrate demand completed (offset): ', offset);
+    return;
+  }
+
+  const promises = oldDemands.map(async (oldDemand) =>
+    prismaClient3.offer.upsert({
       where: {
         id: oldDemand.id,
       },
@@ -204,21 +230,30 @@ const migrateDemand = async () => {
         status: oldDemand.status,
       },
       update: {},
-    });
-  });
+    }),
+  );
+  await Promise.all(promises);
 
-  console.log('migrate demand passed, oldDemands len: ', oldDemands.length);
+  await migrateDemand(offset + batchSize, batchSize);
 };
 
-const migrateSwap = async () => {
+const migrateSwap = async (offset = 0, batchSize = 100) => {
   const oldSwaps = await prismaClient2.swap.findMany({
     include: {
       proposer: true,
       productCategory: true,
     },
+    take: batchSize,
+    skip: offset,
   });
-  oldSwaps.map(async (oldSwap) => {
-    await prismaClient3.offer.upsert({
+
+  if (oldSwaps.length === 0) {
+    console.log('migrate swap completed (offset): ', offset);
+    return;
+  }
+
+  const promises = oldSwaps.map(async (oldSwap) =>
+    prismaClient3.offer.upsert({
       where: {
         id: oldSwap.id,
       },
@@ -253,16 +288,26 @@ const migrateSwap = async () => {
         status: oldSwap.status,
       },
       update: {},
-    });
-  });
+    }),
+  );
+  await Promise.all(promises);
 
-  console.log('migrate swap passed, oldSwaps len', oldSwaps.length);
+  await migrateSwap(offset + batchSize, batchSize);
 };
 
-const migrateUserImage = async () => {
-  const oldUserImages = await prismaClient2.userImage.findMany();
-  oldUserImages.map(async (oldUserImage) => {
-    await prismaClient3.userImage.upsert({
+const migrateUserImage = async (offset = 0, batchSize = 100) => {
+  const oldUserImages = await prismaClient2.userImage.findMany({
+    take: batchSize,
+    skip: offset,
+  });
+
+  if (oldUserImages.length === 0) {
+    console.log('migrate userImage completed (offset): ', offset);
+    return;
+  }
+
+  const promises = oldUserImages.map(async (oldUserImage) =>
+    prismaClient3.userImage.upsert({
       where: {
         id: oldUserImage.id,
       },
@@ -271,16 +316,25 @@ const migrateUserImage = async () => {
         type: ['offer', 'demand', 'swap'].includes(oldUserImage.type) ? 'offer' : oldUserImage.type,
       },
       update: {},
-    });
-  });
+    }),
+  );
+  await Promise.all(promises);
 
-  console.log('migrate userImage passed, oldUserImages len: ', oldUserImages.length);
+  await migrateUserImage(offset + batchSize, batchSize);
 };
 
-const migratePostThumbnail = async () => {
-  const offers = await prismaClient3.offer.findMany();
+const migratePostThumbnail = async (offset = 0, batchSize = 100) => {
+  const offers = await prismaClient3.offer.findMany({
+    take: batchSize,
+    skip: offset,
+  });
 
-  offers.map(async (offer) => {
+  if (offers.length === 0) {
+    console.log('migrate postThumbnail completed (offset): ', offset);
+    return;
+  }
+
+  const promises = offers.map(async (offer) => {
     const thumbnail = await prismaClient3.userImage.findFirst({
       where: {
         type: 'offer',
@@ -293,7 +347,7 @@ const migratePostThumbnail = async () => {
     });
 
     if (thumbnail?.url) {
-      await prismaClient3.post.update({
+      return prismaClient3.post.update({
         where: {
           id: offer.postId,
         },
@@ -303,9 +357,11 @@ const migratePostThumbnail = async () => {
         },
       });
     }
+    return null;
   });
+  await Promise.all(promises);
 
-  console.log('migrate postThumbnail passed, posts len: ', offers.length);
+  await migratePostThumbnail(offset + batchSize, batchSize);
 };
 
 const migrateTerm = async () => {
