@@ -308,6 +308,47 @@ const migratePostThumbnail = async () => {
   console.log('migrate postThumbnail passed, posts len: ', offers.length);
 };
 
+const migrateTerm = async () => {
+  const oldTerms = await prismaClient2.term.findMany();
+  oldTerms.map(async (oldTerm) => {
+    await prismaClient3.term.upsert({
+      where: {
+        id: oldTerm.id,
+      },
+      create: {
+        ...oldTerm,
+        meta: oldTerm.meta || undefined,
+      },
+      update: {},
+    });
+  });
+
+  console.log('migrate oldTerm passed, oldTerms len: ', oldTerms.length);
+};
+
+const migrateBump = async () => {
+  const oldBumps = await prismaClient2.bump.findMany();
+  oldBumps.map(async (oldBump) => {
+    await prismaClient3.bump.upsert({
+      where: {
+        id: oldBump.id,
+      },
+      create: {
+        id: oldBump.id,
+        createdAt: oldBump.createdAt,
+        updatedAt: oldBump.updatedAt,
+        deletedAt: oldBump.deletedAt,
+        offerId: (oldBump.offerId || oldBump.demandId || oldBump.swapId)!,
+        oldPrice: oldBump.oldPrice,
+        newPrice: oldBump.newPrice,
+      },
+      update: {},
+    });
+  });
+
+  console.log('migrate oldBump passed, oldBumps len: ', oldBumps.length);
+};
+
 async function migrateData() {
   // await migrateRole();
   // await migrateUser();
@@ -317,6 +358,8 @@ async function migrateData() {
   // await migrateSwap();
   // await migrateUserImage();
   // await migratePostThumbnail();
+  // await migrateTerm();
+  // await migrateBump();
 }
 
 migrateData();
