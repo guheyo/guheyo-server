@@ -1,0 +1,425 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL_V0_3_0")
+  schemas  = ["public", "audit"]
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output = "./../generated/client-v0.3.0"
+  previewFeatures = ["fullTextSearch", "multiSchema"]
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+// NOTE: Used for code generation only
+
+// generator prismaClassGenerator {
+//   provider = "prisma-class-generator"
+//   output = "./gen"
+//   dryRun = false
+// }
+
+model User {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  username          String        @unique
+  name              String?
+  about             String?
+  phoneNumber       String?       @unique
+  avatarURL         String?
+  bot               Boolean       @default(false)
+  socialAccounts    SocialAccount[]
+  roles             Role[]
+  userImages        UserImage[]
+  posts             Post[]
+  comments          Comment[]
+  bids              Bid[]
+  submittedReports  Report[]      @relation("submittedReports")
+  receivedReports   Report[]      @relation("receivedReports")
+  reportComments    ReportComment[]
+  receivedReviews   UserReview[]  @relation("receivedUserReviews")
+  reactions         Reaction[]
+  uploadedEmojis    Emoji[]
+
+  @@schema("public")
+}
+
+model UserImage {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  name              String
+  url               String
+  contentType       String?
+  description       String?
+  size              Int?
+  height            Int?
+  width             Int?
+  position          Int
+  type              String
+  refId             String
+  tracked           Boolean
+  userId            String
+  user              User          @relation(fields: [userId], references: [id])
+
+  @@schema("public")
+}
+
+model SocialAccount {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  provider          String
+  socialId          String
+  userId            String
+  user              User        @relation(fields: [userId], references: [id])
+  accessToken       String?
+  refreshToken      String?
+  expiresAt         Int?
+  tokenType         String?
+  scope             String?
+
+  @@unique([provider, socialId])
+
+  @@schema("public")
+}
+
+model Role {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updateedAt        DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String      @unique
+  position          Int
+  hexColor          String      @default("#7f838e")
+  groupId           String?
+  group             Group?      @relation(fields: [groupId], references: [id])
+  users             User[]
+
+  @@schema("public")
+}
+
+model Group {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String      @unique
+  slug              String?
+  description       String?
+  icon              String?
+  position          Int
+  roles             Role[]
+  brands            Brand[]
+  categories        Category[]
+  posts             Post[]
+  reports           Report[]
+  emojis            Emoji[]
+
+  @@schema("public")
+}
+
+model Category {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  type              String
+  name              String
+  slug              String?
+  description       String?
+  position          Int
+  groups            Group[]
+  posts             Post[]
+
+  @@schema("public")
+}
+
+model Brand {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String
+  slug              String?
+  description       String?
+  logo              String?
+  position          Int
+  groups            Group[]
+  posts             Post[]
+
+  @@schema("public")
+}
+
+model Post {
+  id                  String        @id @default(uuid())
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  deletedAt           DateTime?
+  archivedAt          DateTime?
+  pending             String?
+  type                String
+  title               String
+  slug                String?
+  thumbnail           String?
+  userAgent           String?
+  ipAddress           String?
+  groupId             String
+  group               Group         @relation(fields: [groupId], references: [id])
+  categoryId          String?
+  category            Category?     @relation(fields: [categoryId], references: [id])
+  userId              String
+  user                User          @relation(fields: [userId], references: [id])
+  offer               Offer?
+  auction             Auction?
+  userReview          UserReview?
+  comments            Comment[]
+  tags                Tag[]
+  brands              Brand[]
+  reports             Report[]
+  reactions           Reaction[]
+
+  @@schema("public")
+}
+
+model Comment {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  userId            String
+  user              User          @relation(fields: [userId], references: [id])
+  postId            String
+  post              Post          @relation(fields: [postId], references: [id])
+  parentId          String?
+  parent            Comment?      @relation("ChildComments", fields: [parentId], references: [id])
+  replies           Comment[]     @relation("ChildComments")
+  reports           Report[]
+  reactions         Reaction[]
+  content           String
+  userAgent         String?
+  ipAddress         String?
+
+  @@schema("public")
+}
+
+model Reaction {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  canceledAt        DateTime?
+  emojiId           String
+  emoji             Emoji         @relation(fields: [emojiId], references: [id])
+  userId            String
+  user              User          @relation(fields: [userId], references: [id])
+  postId            String
+  post              Post          @relation(fields: [postId], references: [id])
+  commentId         String?
+  comment           Comment?      @relation(fields: [commentId], references: [id])
+  userAgent         String?
+  ipAddress         String?
+
+  @@schema("public")
+}
+
+model Emoji {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  name              String
+  url               String?
+  position          Int
+  reactions         Reaction[]
+  groupId           String?
+  group             Group?        @relation(fields: [groupId], references: [id])
+  userId            String?
+  user              User?         @relation(fields: [userId], references: [id])
+
+  @@schema("public")
+}
+
+model Offer {
+  id                  String          @id @default(uuid())
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  bumpedAt            DateTime        @default(now())
+  deletedAt           DateTime?
+  postId              String          @unique()
+  post                Post            @relation(fields: [postId], references: [id])
+  businessFunction    String
+  name0               String?
+  name1               String?
+  content             String?
+  price               Int
+  priceCurrency       String
+  shippingCost        Int             @default(0)
+  shippingType        String          @default("free")
+  status              String
+  bumps               Bump[]
+  userReviews         UserReview[]
+
+  @@schema("public")
+}
+
+model Bump {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  offerId           String
+  offer             Offer             @relation(fields: [offerId], references: [id])
+  oldPrice          Int?
+  newPrice          Int?
+
+  @@schema("public")
+}
+
+model Report {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  userId            String
+  user              User              @relation(fields: [userId], references: [id], name: "submittedReports")
+  reportedUserId    String
+  reportedUser      User              @relation(fields: [reportedUserId], references: [id], name: "receivedReports")
+  reportedPostId    String?
+  reportedPost      Post?             @relation(fields: [reportedPostId], references: [id])
+  reportedCommentId String?
+  reportedComment   Comment?          @relation(fields: [reportedCommentId], references: [id])
+  groupId           String
+  group             Group             @relation(fields: [groupId], references: [id])
+  type              String
+  reason            String
+  description       String?
+  status            String
+  userAgent         String?
+  ipAddress         String?
+  comments          ReportComment[]
+
+  @@schema("public")
+}
+
+model ReportComment {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  userId            String
+  user              User          @relation(fields: [userId], references: [id])
+  reportId          String
+  report            Report        @relation(fields: [reportId], references: [id])
+  content           String
+  userAgent         String?
+  ipAddress         String?
+
+  @@schema("public")
+}
+
+model UserReview {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  postId            String            @unique()
+  post              Post              @relation(fields: [postId], references: [id])
+  type              String
+  reviewedUserId    String
+  reviewedUser      User              @relation(fields: [reviewedUserId], references: [id], name: "receivedUserReviews")
+  offerId           String?
+  offer             Offer?            @relation(fields: [offerId], references: [id])
+  auctionId         String?
+  auction           Auction?          @relation(fields: [auctionId], references: [id])
+  content           String?
+  rating            Int
+  status            String
+
+  @@schema("public")
+}
+
+model Tag {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  type              String
+  name              String
+  description       String?
+  position          Int
+  posts             Post[]
+
+  @@schema("public")
+}
+
+model Auction {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  originalEndDate   DateTime
+  extendedEndDate   DateTime
+  extensionCount    Int               @default(0)
+  postId            String            @unique()
+  post              Post              @relation(fields: [postId], references: [id])
+  content           String?
+  currentBidPrice   Int               @default(0)
+  hammerPrice       Int               @default(0)
+  shippingCost      Int               @default(0)
+  shippingType      String            @default("free")
+  status            String
+  bids              Bid[]
+  userReviews       UserReview[]
+
+  @@schema("public")
+}
+
+model Bid {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  canceledAt        DateTime?
+  auctionId         String
+  auction           Auction           @relation(fields: [auctionId], references: [id])
+  userId            String
+  user              User              @relation(fields: [userId], references: [id])
+  price             Int
+  priceCurrency     String
+  status            String
+  userAgent         String?
+  ipAddress         String?
+
+  @@schema("public")
+}
+
+model Term {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  name              String
+  title             String
+  content           String
+  meta              Json?             @default("{}")
+
+  @@schema("public")
+}
+
+model Version {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  deletedAt         DateTime?
+  schemaName        String
+  tableName         String
+  op                String
+  refId             String
+  values            Json
+
+  @@schema("audit")
+}
