@@ -326,6 +326,29 @@ const migrateTerm = async () => {
   console.log('migrate oldTerm passed, oldTerms len: ', oldTerms.length);
 };
 
+const migrateBump = async () => {
+  const oldBumps = await prismaClient2.bump.findMany();
+  oldBumps.map(async (oldBump) => {
+    await prismaClient3.bump.upsert({
+      where: {
+        id: oldBump.id,
+      },
+      create: {
+        id: oldBump.id,
+        createdAt: oldBump.createdAt,
+        updatedAt: oldBump.updatedAt,
+        deletedAt: oldBump.deletedAt,
+        offerId: (oldBump.offerId || oldBump.demandId || oldBump.swapId)!,
+        oldPrice: oldBump.oldPrice,
+        newPrice: oldBump.newPrice,
+      },
+      update: {},
+    });
+  });
+
+  console.log('migrate oldBump passed, oldBumps len: ', oldBumps.length);
+};
+
 async function migrateData() {
   // await migrateRole();
   // await migrateUser();
@@ -336,6 +359,7 @@ async function migrateData() {
   // await migrateUserImage();
   // await migratePostThumbnail();
   // await migrateTerm();
+  // await migrateBump();
 }
 
 migrateData();
