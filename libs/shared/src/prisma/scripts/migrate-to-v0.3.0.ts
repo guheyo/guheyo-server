@@ -295,10 +295,19 @@ const migrateSwap = async (offset = 0, batchSize = 100) => {
   await migrateSwap(offset + batchSize, batchSize);
 };
 
-const migrateUserImage = async () => {
-  const oldUserImages = await prismaClient2.userImage.findMany();
-  oldUserImages.map(async (oldUserImage) => {
-    await prismaClient3.userImage.upsert({
+const migrateUserImage = async (offset = 0, batchSize = 100) => {
+  const oldUserImages = await prismaClient2.userImage.findMany({
+    take: batchSize,
+    skip: offset,
+  });
+
+  if (oldUserImages.length === 0) {
+    console.log('migrate userImage completed (offset): ', offset);
+    return;
+  }
+
+  const promises = oldUserImages.map(async (oldUserImage) =>
+    prismaClient3.userImage.upsert({
       where: {
         id: oldUserImage.id,
       },
@@ -307,10 +316,11 @@ const migrateUserImage = async () => {
         type: ['offer', 'demand', 'swap'].includes(oldUserImage.type) ? 'offer' : oldUserImage.type,
       },
       update: {},
-    });
-  });
+    }),
+  );
+  await Promise.all(promises);
 
-  console.log('migrate userImage passed, oldUserImages len: ', oldUserImages.length);
+  await migrateUserImage(offset + batchSize, batchSize);
 };
 
 const migratePostThumbnail = async () => {
