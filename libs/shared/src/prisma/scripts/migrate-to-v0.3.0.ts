@@ -323,10 +323,18 @@ const migrateUserImage = async (offset = 0, batchSize = 100) => {
   await migrateUserImage(offset + batchSize, batchSize);
 };
 
-const migratePostThumbnail = async () => {
-  const offers = await prismaClient3.offer.findMany();
+const migratePostThumbnail = async (offset = 0, batchSize = 100) => {
+  const offers = await prismaClient3.offer.findMany({
+    take: batchSize,
+    skip: offset,
+  });
 
-  offers.map(async (offer) => {
+  if (offers.length === 0) {
+    console.log('migrate postThumbnail completed (offset): ', offset);
+    return;
+  }
+
+  const promises = offers.map(async (offer) => {
     const thumbnail = await prismaClient3.userImage.findFirst({
       where: {
         type: 'offer',
@@ -339,7 +347,7 @@ const migratePostThumbnail = async () => {
     });
 
     if (thumbnail?.url) {
-      await prismaClient3.post.update({
+      return prismaClient3.post.update({
         where: {
           id: offer.postId,
         },
@@ -349,9 +357,11 @@ const migratePostThumbnail = async () => {
         },
       });
     }
+    return null;
   });
+  await Promise.all(promises);
 
-  console.log('migrate postThumbnail passed, posts len: ', offers.length);
+  await migratePostThumbnail(offset + batchSize, batchSize);
 };
 
 const migrateTerm = async () => {
