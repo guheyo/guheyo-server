@@ -1,4 +1,5 @@
 /* eslint-disable import/no-relative-packages */
+import { omit } from 'lodash';
 import { PrismaClient as PrismaClient2 } from '../generated/client-v0.2.0';
 import { PrismaClient as PrismaClient3 } from '../generated/client-v0.3.0';
 
@@ -255,6 +256,23 @@ const migrateSwap = async () => {
   console.log('migrate swap passed, oldSwaps len', oldSwaps.length);
 };
 
+const migrateUserImage = async () => {
+  const oldUserImages = await prismaClient2.userImage.findMany();
+  oldUserImages.map(async (oldUserImage) => {
+    await prismaClient3.userImage.upsert({
+      where: {
+        id: oldUserImage.id,
+      },
+      create: {
+        ...omit(oldUserImage, ['source']),
+      },
+      update: {},
+    });
+  });
+
+  console.log('migrate userImage passed, oldUserImages len: ', oldUserImages.length);
+};
+
 async function migrateData() {
   // await migrateRole();
   // await migrateUser();
@@ -262,6 +280,7 @@ async function migrateData() {
   // await migrateOffer();
   // await migrateDemand();
   // await migrateSwap();
+  // await migrateUserImage();
 }
 
 migrateData();
