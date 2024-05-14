@@ -141,6 +141,7 @@ const migrateOffer = async () => {
             userId: oldOffer.sellerId,
           },
         },
+        id: oldOffer.id,
         createdAt: oldOffer.createdAt,
         updatedAt: oldOffer.updatedAt,
         bumpedAt: oldOffer.bumpedAt,
@@ -188,6 +189,7 @@ const migrateDemand = async () => {
             userId: oldDemand.buyerId,
           },
         },
+        id: oldDemand.id,
         createdAt: oldDemand.createdAt,
         updatedAt: oldDemand.updatedAt,
         bumpedAt: oldDemand.bumpedAt,
@@ -235,6 +237,7 @@ const migrateSwap = async () => {
             userId: oldSwap.proposerId,
           },
         },
+        id: oldSwap.id,
         createdAt: oldSwap.createdAt,
         updatedAt: oldSwap.updatedAt,
         bumpedAt: oldSwap.bumpedAt,
@@ -265,12 +268,44 @@ const migrateUserImage = async () => {
       },
       create: {
         ...omit(oldUserImage, ['source']),
+        type: ['offer', 'demand', 'swap'].includes(oldUserImage.type) ? 'offer' : oldUserImage.type,
       },
       update: {},
     });
   });
 
   console.log('migrate userImage passed, oldUserImages len: ', oldUserImages.length);
+};
+
+const migratePostThumbnail = async () => {
+  const offers = await prismaClient3.offer.findMany();
+
+  offers.map(async (offer) => {
+    const thumbnail = await prismaClient3.userImage.findFirst({
+      where: {
+        type: 'offer',
+        refId: offer.id,
+        tracked: true,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+
+    if (thumbnail?.url) {
+      await prismaClient3.post.update({
+        where: {
+          id: offer.postId,
+        },
+        data: {
+          updatedAt: offer.updatedAt,
+          thumbnail: thumbnail.url,
+        },
+      });
+    }
+  });
+
+  console.log('migrate postThumbnail passed, posts len: ', offers.length);
 };
 
 async function migrateData() {
@@ -281,6 +316,7 @@ async function migrateData() {
   // await migrateDemand();
   // await migrateSwap();
   // await migrateUserImage();
+  // await migratePostThumbnail();
 }
 
 migrateData();
