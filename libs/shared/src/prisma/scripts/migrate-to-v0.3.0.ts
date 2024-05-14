@@ -308,6 +308,24 @@ const migratePostThumbnail = async () => {
   console.log('migrate postThumbnail passed, posts len: ', offers.length);
 };
 
+const migrateTerm = async () => {
+  const oldTerms = await prismaClient2.term.findMany();
+  oldTerms.map(async (oldTerm) => {
+    await prismaClient3.term.upsert({
+      where: {
+        id: oldTerm.id,
+      },
+      create: {
+        ...oldTerm,
+        meta: oldTerm.meta || undefined,
+      },
+      update: {},
+    });
+  });
+
+  console.log('migrate oldTerm passed, oldTerms len: ', oldTerms.length);
+};
+
 async function migrateData() {
   // await migrateRole();
   // await migrateUser();
@@ -317,6 +335,7 @@ async function migrateData() {
   // await migrateSwap();
   // await migrateUserImage();
   // await migratePostThumbnail();
+  // await migrateTerm();
 }
 
 migrateData();
