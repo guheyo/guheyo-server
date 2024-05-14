@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DB_URL_v0.2.0")
+  url      = env("DB_URL_V0_2_0")
   schemas  = ["public", "audit"]
 }
 
