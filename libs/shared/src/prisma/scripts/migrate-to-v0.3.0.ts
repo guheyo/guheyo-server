@@ -43,7 +43,7 @@ const migrateRole = async () => {
   console.log('migrate role passed, oldRoles len: ', oldRoles.length);
 };
 
-const migrateUser = async () => {
+const migrateUser = async (offset = 0, batchSize = 100) => {
   const oldUsers = await prismaClient2.user.findMany({
     include: {
       members: {
@@ -53,9 +53,17 @@ const migrateUser = async () => {
       },
       socialAccounts: true,
     },
+    take: batchSize,
+    skip: offset,
   });
-  oldUsers.map(async (oldUser) => {
-    await prismaClient3.user.upsert({
+
+  if (oldUsers.length === 0) {
+    console.log('migrate user completed (offset): ', offset);
+    return;
+  }
+
+  const promises = oldUsers.map(async (oldUser) =>
+    prismaClient3.user.upsert({
       where: {
         id: oldUser.id,
       },
@@ -92,10 +100,11 @@ const migrateUser = async () => {
         },
       },
       update: {},
-    });
-  });
+    }),
+  );
+  await Promise.all(promises);
 
-  console.log('migrate user passed, oldUsers len: ', oldUsers.length);
+  await migrateUser(offset + batchSize, batchSize);
 };
 
 const migrateCategory = async () => {
