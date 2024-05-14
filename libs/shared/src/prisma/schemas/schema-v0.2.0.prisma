@@ -1,0 +1,503 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL_v0.2.0")
+  schemas  = ["public", "audit"]
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output = "./../generated/client-v0.2.0"
+  previewFeatures = ["fullTextSearch", "multiSchema"]
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+// NOTE: Used for code generation only
+
+// generator prismaClassGenerator {
+//   provider = "prisma-class-generator"
+//   output = "./gen"
+//   dryRun = false
+// }
+
+model User {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  username          String      @unique
+  name              String?
+  about             String?
+  phoneNumber       String?     @unique
+  socialAccounts    SocialAccount[]
+  avatarURL         String?
+  bot               Boolean     @default(false)
+  members           Member[]
+  sessions          Session[]
+  userImages        UserImage[]
+  offers            Offer[]
+  demands           Demand[]
+  swaps             Swap[]
+  auctions          Auction[]
+  bids              Bid[]
+  comments          Comment[]
+  posts             Post[]
+  discordMessages   DiscordMessage[]
+  submittedReports  Report[]    @relation("author")
+  receivedReports   Report[]    @relation("reportedUser")
+
+  @@schema("public")
+}
+
+model UserImage {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  name              String
+  url               String
+  contentType       String?
+  description       String?
+  size              Int?
+  height            Int?
+  width             Int?
+  position          Int
+  type              String
+  refId             String
+  tracked           Boolean
+  source            String
+  userId            String
+  user              User          @relation(fields: [userId], references: [id])
+
+  @@schema("public")
+}
+
+model Member {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  userId            String
+  user              User        @relation(fields: [userId], references: [id])
+  groupId           String
+  group             Group       @relation(fields: [groupId], references: [id])
+  roles             Role[]
+
+  @@schema("public")
+}
+
+model SocialAccount {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  provider          String
+  socialId          String
+  userId            String
+  user              User        @relation(fields: [userId], references: [id])
+  accessToken       String?
+  refreshToken      String?
+  expiresAt         Int?
+  tokenType         String?
+  scope             String?
+  idToken           String?
+  sessionState      String?
+
+  @@unique([provider, socialId])
+
+  @@schema("public")
+}
+
+model Session {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  sessionToken      String      @unique
+  expires           DateTime
+  userId            String
+  user              User        @relation(fields: [userId], references: [id])
+
+  @@schema("public")
+}
+
+model VerificationToken {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  identifier        String
+  token             String      @unique
+  expires           DateTime
+
+  @@unique([identifier, token])
+
+  @@schema("public")
+}
+
+model Role {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updateedAt        DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String      @unique
+  position          Int
+  hexColor          String      @default("#7f838e")
+  groupId           String
+  group             Group       @relation(fields: [groupId], references: [id])
+  members           Member[]
+
+  @@schema("public")
+}
+
+model Group {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String      @unique
+  slug              String?
+  description       String?
+  icon              String?
+  position          Int
+  members           Member[]
+  roles             Role[]
+  brands            Brand[]
+  productCategories ProductCategory[]
+  offers            Offer[]
+  demands           Demand[]
+  swaps             Swap[]
+  auctions          Auction[]
+  postCategories    PostCategory[]
+  posts             Post[]
+  reports           Report[]
+
+  @@schema("public")
+}
+
+model PostCategory {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String
+  slug              String?
+  description       String?
+  position          Int
+  groupId           String
+  group             Group       @relation(fields: [groupId], references: [id])
+  posts Post[]
+
+  @@schema("public")
+}
+
+model ProductCategory {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String
+  slug              String?
+  description       String?
+  position          Int
+  groupId           String
+  group             Group       @relation(fields: [groupId], references: [id])
+  offers            Offer[]
+  demands           Demand[]
+  swaps             Swap[]
+  auctions          Auction[]
+
+  @@schema("public")
+}
+
+model Brand {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String
+  slug              String?
+  description       String?
+  logo              String?
+  position          Int
+  offers            Offer[]
+  demands           Demand[]
+  swaps             Swap[]
+  auctions          Auction[]
+  groups            Group[]
+
+  @@schema("public")
+}
+
+model Post {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  title             String
+  slug              String?
+  content           String
+  source            String
+  groupId           String
+  group             Group         @relation(fields: [groupId], references: [id])
+  postCategoryId    String
+  postCategory      PostCategory  @relation(fields: [postCategoryId], references: [id])
+  authorId          String
+  author            User          @relation(fields: [authorId], references: [id])
+  comments          Comment[]
+
+  @@schema("public")
+}
+
+model Comment {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  type              String
+  source            String
+  authorId          String
+  author            User          @relation(fields: [authorId], references: [id])
+  content           String
+  parentId          String?
+  parent            Comment?      @relation("Comments", fields: [parentId], references: [id])
+  comments          Comment[]     @relation("Comments")
+  postId            String?
+  post              Post?         @relation(fields: [postId], references: [id])
+  reportId          String?
+  report            Report?       @relation(fields: [reportId], references: [id])
+  auctionId         String?
+  auction           Auction?      @relation(fields: [auctionId], references: [id])
+
+  @@schema("public")
+}
+
+model Offer {
+  id                  String          @id @default(uuid())
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  bumpedAt            DateTime        @default(now())
+  deletedAt           DateTime?
+  name                String
+  slug                String?
+  description         String?
+  price               Int
+  priceCurrency       String
+  shippingCost        Int             @default(0)
+  shippingType        String          @default("free")
+  businessFunction    String
+  status              String
+  isHidden            Boolean         @default(false)
+  pending             String?
+  source              String
+  groupId             String
+  group               Group           @relation(fields: [groupId], references: [id])
+  productCategoryId   String
+  productCategory     ProductCategory @relation(fields: [productCategoryId], references: [id])
+  sellerId            String
+  seller              User            @relation(fields: [sellerId], references: [id])
+  brandId             String?
+  brand               Brand?          @relation(fields: [brandId], references: [id])
+  bumps               Bump[]
+  reportCount         Int             @default(0)
+  reportCommentCount  Int             @default(0)
+
+  @@schema("public")
+}
+
+model Bump {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  type              String
+  offerId           String?
+  offer             Offer?            @relation(fields: [offerId], references: [id])
+  demandId          String?
+  demand            Demand?           @relation(fields: [demandId], references: [id])
+  swapId            String?
+  swap              Swap?             @relation(fields: [swapId], references: [id])
+  oldPrice          Int
+  newPrice          Int
+
+  @@schema("public")
+}
+
+model Report {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  type              String
+  refId             String
+  refVersionId      String
+  refVersion        Version           @relation(fields: [refVersionId], references: [id])
+  authorId          String
+  author            User              @relation(fields: [authorId], references: [id], name: "author")
+  reportedUserId    String
+  reportedUser      User              @relation(fields: [reportedUserId], references: [id], name: "reportedUser")
+  groupId           String
+  group             Group             @relation(fields: [groupId], references: [id])
+  title             String
+  content           String?
+  status            String
+  comments          Comment[]
+
+  @@schema("public")
+}
+
+model Demand {
+  id                  String          @id @default(uuid())
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  bumpedAt            DateTime        @default(now())
+  deletedAt           DateTime?
+  name                String
+  slug                String?
+  description         String?
+  price               Int
+  priceCurrency       String
+  shippingCost        Int             @default(0)
+  shippingType        String          @default("free")
+  businessFunction    String
+  status              String
+  isHidden            Boolean         @default(false)
+  pending             String?
+  source              String
+  groupId             String
+  group               Group           @relation(fields: [groupId], references: [id])
+  productCategoryId   String
+  productCategory     ProductCategory @relation(fields: [productCategoryId], references: [id])
+  buyerId             String
+  buyer               User            @relation(fields: [buyerId], references: [id])
+  brandId             String?
+  brand               Brand?          @relation(fields: [brandId], references: [id])
+  bumps               Bump[]
+  reportCount         Int             @default(0)
+  reportCommentCount  Int             @default(0)
+
+  @@schema("public")
+}
+
+model Swap {
+  id                  String          @id @default(uuid())
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  bumpedAt            DateTime        @default(now())
+  deletedAt           DateTime?
+  slug                String?
+  name0               String
+  description0        String?
+  name1               String
+  description1        String?
+  price               Int
+  priceCurrency       String
+  shippingCost        Int             @default(0)
+  shippingType        String          @default("free")
+  businessFunction    String
+  status              String
+  isHidden            Boolean         @default(false)
+  pending             String?
+  source              String
+  groupId             String
+  group               Group           @relation(fields: [groupId], references: [id])
+  productCategoryId   String
+  productCategory     ProductCategory @relation(fields: [productCategoryId], references: [id])
+  proposerId          String
+  proposer            User            @relation(fields: [proposerId], references: [id])
+  brandId             String?
+  brand               Brand?          @relation(fields: [brandId], references: [id])
+  bumps               Bump[]
+  reportCount         Int             @default(0)
+  reportCommentCount  Int             @default(0)
+
+  @@schema("public")
+}
+
+model Auction {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  endedAt           DateTime
+  name              String
+  slug              String?
+  description       String?
+  businessFunction  String
+  source            String
+  bids              Bid[]
+  groupId           String
+  group             Group             @relation(fields: [groupId], references: [id])
+  brandId           String?
+  brand             Brand?            @relation(fields: [brandId], references: [id])
+  productCategoryId String
+  productCategory   ProductCategory   @relation(fields: [productCategoryId], references: [id])
+  sellerId          String
+  seller            User              @relation(fields: [sellerId], references: [id])
+  comments          Comment[]
+  status            String
+  pending           String?
+
+  @@schema("public")
+}
+
+model Bid {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  canceledAt        DateTime?
+  price             Int
+  priceCurrency     String
+  auctionId         String
+  auction           Auction           @relation(fields: [auctionId], references: [id])
+  bidderId          String
+  bidder            User              @relation(fields: [bidderId], references: [id])
+  status            String
+  source            String
+
+  @@schema("public")
+}
+
+model DiscordMessage {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  discordMessageId  String            @unique
+  discordChannelId  String
+  discordGuildId    String
+  modelName         String
+  modelId           String
+  userId            String
+  user              User              @relation(fields: [userId], references: [id])
+  bot               Boolean           @default(false)
+
+  @@schema("public")
+}
+
+model Term {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  name              String
+  title             String
+  content           String
+  meta              Json?             @default("{}")
+
+  @@schema("public")
+}
+
+model Version {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  deletedAt         DateTime?
+  schemaName        String
+  tableName         String
+  op                String
+  refId             String
+  values            Json
+  reports           Report[]
+
+  @@schema("audit")
+}

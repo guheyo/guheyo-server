@@ -14,7 +14,8 @@
     "seed:dev": "dotenv -e ./src/prisma/config/.env.dev ts-node ./src/prisma/seeds/seed.ts",
     "seed:test": "dotenv -e ./src/prisma/config/.env.test ts-node ./src/prisma/seeds/seed.ts",
     "seed:production": "dotenv -e ./src/prisma/config/.env.production ts-node ./src/prisma/seeds/seed.ts",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "prisma:generate:v": "prisma generate --schema=./src/prisma/schemas/schema-v${0}.prisma"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.417.0",
