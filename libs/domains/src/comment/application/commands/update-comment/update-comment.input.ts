@@ -7,15 +7,7 @@ export class UpdateCommentInput {
   @Field(() => ID)
   id: string;
 
-  @IsUUID()
-  @Field(() => ID)
-  authorId: string;
-
   @IsString()
   @Field(() => String)
   content: string;
-
-  @IsString()
-  @Field(() => String)
-  source: string;
 }

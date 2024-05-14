@@ -1,10 +1,11 @@
-import _, { omit } from 'lodash';
+import _ from 'lodash';
 import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { ReportEntity } from '@lib/domains/report/domain/report.entity';
 import { ReportLoadPort } from '@lib/domains/report/application/ports/out/report.load.port';
 import { ReportSavePort } from '@lib/domains/report/application/ports/out/report.save.port';
 import { CreateReportCommentInput } from '@lib/domains/report/application/commands/create-report-comment/create-report-comment.input';
+import { ReportCommentEntity } from '@lib/domains/report/domain/report-comment.entity';
 
 @Injectable()
 export class ReportRepository
@@ -26,17 +27,14 @@ export class ReportRepository
             createdAt: 'desc',
           },
         },
-        refVersion: true,
         reportedUser: {
           include: {
-            members: {
+            roles: {
               include: {
                 group: true,
-                roles: {
-                  orderBy: {
-                    position: 'asc',
-                  },
-                },
+              },
+              orderBy: {
+                position: 'asc',
               },
             },
             receivedReports: {
@@ -56,10 +54,10 @@ export class ReportRepository
     return this.toEntity(report);
   }
 
-  async findLastSubmittedReport(authorId: string): Promise<ReportEntity | null> {
+  async findLastSubmittedReport(userId: string): Promise<ReportEntity | null> {
     const report = await this.prismaService.report.findFirst({
       where: {
-        authorId,
+        userId,
       },
       include: {
         comments: {
@@ -67,17 +65,14 @@ export class ReportRepository
             createdAt: 'desc',
           },
         },
-        refVersion: true,
         reportedUser: {
           include: {
-            members: {
+            roles: {
               include: {
                 group: true,
-                roles: {
-                  orderBy: {
-                    position: 'asc',
-                  },
-                },
+              },
+              orderBy: {
+                position: 'asc',
               },
             },
             receivedReports: {
@@ -105,13 +100,13 @@ export class ReportRepository
       data: _.pick(report, [
         'id',
         'type',
-        'refId',
-        'refVersionId',
-        'authorId',
+        'reportedPostId',
+        'reportedCommentId',
+        'userId',
         'reportedUserId',
         'groupId',
-        'title',
-        'content',
+        'reason',
+        'description',
         'status',
       ]),
     });
@@ -123,13 +118,13 @@ export class ReportRepository
         _.pick(report, [
           'id',
           'type',
-          'refId',
-          'refVersionId',
-          'authorId',
+          'reportedPostId',
+          'reportedCommentId',
+          'userId',
           'reportedUserId',
           'groupId',
-          'title',
-          'content',
+          'reason',
+          'description',
           'status',
         ]),
       ),
@@ -141,7 +136,7 @@ export class ReportRepository
       where: {
         id: report.id,
       },
-      data: _.pick(report, ['title', 'content', 'status']),
+      data: _.pick(report, ['reason', 'description', 'status']),
     });
   }
 
@@ -153,16 +148,27 @@ export class ReportRepository
     });
   }
 
-  async createComment(input: CreateReportCommentInput): Promise<void> {
-    await this.prismaService.report.update({
-      where: {
-        id: input.reportId,
-      },
+  async createComment(input: CreateReportCommentInput): Promise<ReportCommentEntity> {
+    const comment = await this.prismaService.reportComment.create({
       data: {
-        comments: {
-          create: omit(input, ['reportId']),
-        },
+        id: input.id,
+        reportId: input.reportId,
+        userId: input.userId,
+        content: input.content,
       },
     });
+    return new ReportCommentEntity(comment);
+  }
+
+  async updateComment(reportComment: ReportCommentEntity): Promise<ReportCommentEntity> {
+    const comment = await this.prismaService.reportComment.update({
+      where: {
+        id: reportComment.id,
+      },
+      data: {
+        content: reportComment.content,
+      },
+    });
+    return new ReportCommentEntity(comment);
   }
 }

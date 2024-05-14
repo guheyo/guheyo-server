@@ -16,7 +16,7 @@ export class AddBidHandler implements ICommandHandler<AddBidCommand> {
 
   async execute(command: AddBidCommand): Promise<void> {
     let auction = await this.auctionLoadPort.findById(command.auctionId);
-    if (!auction) throw new Error(AuctionErrorMessage.AUCTION_IS_NOT_FOUND);
+    if (!auction) throw new Error(AuctionErrorMessage.AUCTION_NOT_FOUND);
     auction = this.publisher.mergeObjectContext(new AuctionEntity(auction));
     await auction.addBid(command);
     await this.bidSavePort.addBid(auction.getLastBid());

@@ -1,0 +1,112 @@
+import { QueryHandler } from '@nestjs/cqrs';
+import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
+import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
+import { parseFollowedBySearcher } from '@lib/shared/search/search';
+import { Prisma } from '@prisma/client';
+import { PaginatedUserReviewPreviewsResponse } from './paginated-user-review-previews.response';
+import { UserReviewPreviewResponse } from '../../dtos/user-review-preview.response';
+import { FindUserReviewPreviewsQuery } from './find-user-review-previews.query';
+
+@QueryHandler(FindUserReviewPreviewsQuery)
+export class FindUserReviewPreviewsHandler extends PrismaQueryHandler<
+  FindUserReviewPreviewsQuery,
+  UserReviewPreviewResponse
+> {
+  constructor() {
+    super(UserReviewPreviewResponse);
+  }
+
+  async execute(query: FindUserReviewPreviewsQuery): Promise<PaginatedUserReviewPreviewsResponse> {
+    const where: Prisma.UserReviewWhereInput = query.where
+      ? {
+          post: {
+            groupId: query.where.groupId,
+            userId: query.where.userId,
+            pending: query.where.pending,
+            title: parseFollowedBySearcher(query.keyword),
+            tags: query.where.tagType
+              ? {
+                  some: {
+                    type: query.where.tagType,
+                  },
+                }
+              : undefined,
+          },
+          reviewedUserId: query.where.reviewedUserId,
+        }
+      : {};
+
+    const cursor = query.cursor
+      ? {
+          id: query.cursor,
+        }
+      : undefined;
+
+    const userReviews = await this.prismaService.userReview.findMany({
+      where,
+      cursor,
+      take: query.take + 1,
+      skip: query.skip,
+      include: {
+        post: {
+          include: {
+            user: {
+              include: {
+                roles: {
+                  include: {
+                    group: true,
+                  },
+                  orderBy: {
+                    position: 'asc',
+                  },
+                },
+                socialAccounts: true,
+              },
+            },
+            tags: true,
+            comments: {
+              where: {
+                deletedAt: null,
+              },
+              select: {
+                id: true,
+              },
+            },
+          },
+        },
+        reviewedUser: {
+          include: {
+            roles: {
+              include: {
+                group: true,
+              },
+              orderBy: {
+                position: 'asc',
+              },
+            },
+            socialAccounts: true,
+          },
+        },
+      },
+      orderBy: [
+        {
+          createdAt: query.orderBy?.createdAt,
+        },
+      ],
+    });
+
+    return paginate<UserReviewPreviewResponse>(
+      this.parseResponses(
+        userReviews.map((userReview) => ({
+          ...userReview,
+          post: {
+            ...userReview.post,
+            commentCount: userReview.post.comments.length,
+          },
+        })),
+      ),
+      'id',
+      query.take,
+    );
+  }
+}

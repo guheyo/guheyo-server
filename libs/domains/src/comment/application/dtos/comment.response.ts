@@ -1,3 +1,4 @@
+import { ReactionResponse } from '@lib/domains/reaction/application/dtos/reaction.response';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
@@ -11,23 +12,17 @@ export class CommentResponse {
   @Field()
   updatedAt: Date;
 
-  @Field()
-  type: string;
-
   @Field(() => ID, { nullable: true })
   parentId: string | null;
 
-  @Field(() => ID, { nullable: true })
-  postId: string | null;
-
-  @Field(() => ID, { nullable: true })
-  reportId: string | null;
-
-  @Field(() => ID, { nullable: true })
-  auctionId: string | null;
+  @Field(() => ID)
+  postId: string;
 
   @Field(() => String)
   content: string;
+
+  @Field(() => [ReactionResponse])
+  reactions: ReactionResponse[];
 
   constructor(partial: Partial<CommentResponse>) {
     Object.assign(this, partial);

@@ -10,33 +10,24 @@ export class FindGroupHandler extends PrismaQueryHandler<FindGroupQuery, GroupRe
   }
 
   async execute(query: FindGroupQuery): Promise<GroupResponse | null> {
-    let group: GroupResponse | null;
-    if (query.id || query.slug) {
-      group = await this.prismaService.group.findFirst({
-        where: {
-          id: query.id,
-          slug: query.slug,
-        },
-        include: {
-          productCategories: {
-            orderBy: {
-              position: 'asc',
-            },
-          },
-          postCategories: {
-            orderBy: {
-              position: 'asc',
-            },
-          },
-          roles: {
-            orderBy: {
-              position: 'asc',
-            },
+    const group = await this.prismaService.group.findFirst({
+      where: {
+        id: query.id,
+        slug: query.slug,
+      },
+      include: {
+        categories: {
+          orderBy: {
+            position: 'asc',
           },
         },
-      });
-      return this.parseResponse(group);
-    }
-    return null;
+        roles: {
+          orderBy: {
+            position: 'asc',
+          },
+        },
+      },
+    });
+    return this.parseResponse(group);
   }
 }

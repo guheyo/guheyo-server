@@ -4,6 +4,7 @@ import { OfferEntity } from '@lib/domains/offer/domain/offer.entity';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
 import { DAILY_OFFER_POSTING_LIMIT, DAY_HOURS } from '@lib/domains/offer/domain/offer.constants';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
+import { PostEntity } from '@lib/domains/post/domain/post.entity';
 import { CreateOfferCommand } from './create-offer.command';
 import { OfferSavePort } from '../../ports/out/offer.save.port';
 import { OfferResponse } from '../../dtos/offer.response';
@@ -20,23 +21,29 @@ export class CreateOfferHandler extends PrismaCommandHandler<CreateOfferCommand,
   }
 
   async execute(command: CreateOfferCommand): Promise<void> {
-    if (command.sellerId !== command.user.id)
-      throw new ForbiddenException(OfferErrorMessage.CREATE_REQUEST_FROM_UNAUTHORIZED_USER);
-
     const countDailyOfferPostingInSameCategory = await this.prismaService.offer.countOffer({
-      sellerId: command.sellerId,
-      productCategoryId: command.productCategoryId,
+      userId: command.user.id,
+      categoryId: command.post.categoryId!,
+      businessFunction: command.businessFunction,
       fromHours: DAY_HOURS,
     });
     if (countDailyOfferPostingInSameCategory > DAILY_OFFER_POSTING_LIMIT)
       throw new ForbiddenException(OfferErrorMessage.DAILY_OFFER_POSTING_LIMIT_EXCEEDED);
 
-    await this.savePort.create(new OfferEntity(command));
+    await this.savePort.create(
+      new OfferEntity({
+        ...command,
+        post: new PostEntity({
+          ...command.post,
+          userId: command.user.id,
+        }),
+      }),
+    );
     let offer = await this.loadPort.findById(command.id);
     if (!offer) throw new InternalServerErrorException(OfferErrorMessage.OFFER_CREATION_FAILED);
 
     offer = this.publisher.mergeObjectContext(offer);
-    offer.create();
+    offer.create(command.post.tagIds || []);
     offer.commit();
   }
 }

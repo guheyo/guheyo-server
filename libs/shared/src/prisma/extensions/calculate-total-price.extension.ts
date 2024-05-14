@@ -14,11 +14,5 @@ export const calculateTotalPrice = Prisma.defineExtension({
     offer: {
       totalPrice,
     },
-    demand: {
-      totalPrice,
-    },
-    swap: {
-      totalPrice,
-    },
   },
 });

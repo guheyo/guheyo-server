@@ -1,13 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
 import { Observable, concatMap, filter, map, of } from 'rxjs';
-import { includes, pick } from 'lodash';
-import { CheckOfferReportsCommand } from '@lib/domains/offer/application/commands/check-offer-reports/check-offer-reports.command';
-import { CheckDemandReportsCommand } from '@lib/domains/demand/application/commands/check-demand-reports/check-demand-reports.command';
-import { CheckSwapReportsCommand } from '@lib/domains/swap/application/commands/check-swap-reports/check-swap-reports.command';
-import { DEAL_TYPES } from '@lib/domains/deal/domain/deal.types';
-import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
-import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
+import { ConnectRolesCommand } from '@lib/domains/user/application/commands/connect-roles/connect-roles.command';
+import { DisconnectRolesCommand } from '@lib/domains/user/application/commands/disconnect-roles/disconnect-roles.command';
 import { CheckReportCommentsCommand } from '../commands/check-report-comments/check-report-comments.command';
 import { ReportCreatedEvent } from '../events/report-created/report-created.event';
 import { ReportStatusUpdatedEvent } from '../events/report-status-updated/report-status-updated.event';
@@ -25,17 +20,12 @@ export class ReportSagas {
     );
 
   @Saga()
-  reportCreated = (events$: Observable<any>): Observable<ICommand> =>
+  postReportCreated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
       ofType(ReportCreatedEvent),
-      filter((event) => includes(DEAL_TYPES, event.type)),
+      filter((event) => event.type === 'post'),
       concatMap((event) =>
         of(
-          event.type === 'offer'
-            ? new CheckOfferReportsCommand(event)
-            : event.type === 'demand'
-            ? new CheckDemandReportsCommand(event)
-            : new CheckSwapReportsCommand(event),
           new CheckReportedUserCommand({
             reportId: event.reportId,
           }),
@@ -44,17 +34,12 @@ export class ReportSagas {
     );
 
   @Saga()
-  reportStatusUpdated = (events$: Observable<any>): Observable<ICommand> =>
+  postReportStatusUpdated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
       ofType(ReportStatusUpdatedEvent),
-      filter((event) => includes(DEAL_TYPES, event.type)),
+      filter((event) => event.type === 'post'),
       concatMap((event) =>
         of(
-          event.type === 'offer'
-            ? new CheckOfferReportsCommand(event)
-            : event.type === 'demand'
-            ? new CheckDemandReportsCommand(event)
-            : new CheckSwapReportsCommand(event),
           new CheckReportedUserCommand({
             reportId: event.reportId,
           }),
@@ -68,13 +53,19 @@ export class ReportSagas {
       ofType(CheckedReportedUserEvent),
       map((event) =>
         event.hasUncommentedReceivedReports
-          ? new ConnectRolesCommand(
-              pick(event, ['groupId', 'groupSlug', 'userId', 'roleIds', 'roleNames']),
-            )
+          ? new ConnectRolesCommand({
+              input: {
+                roleIds: event.roleIds,
+                roleNames: event.roleNames,
+              },
+              userId: event.userId,
+            })
           : new DisconnectRolesCommand({
-              id: event.memberId!,
-              roleIds: [],
-              roleNames: event.roleNames,
+              input: {
+                roleIds: [],
+                roleNames: event.roleNames,
+              },
+              userId: event.userId!,
             }),
       ),
     );

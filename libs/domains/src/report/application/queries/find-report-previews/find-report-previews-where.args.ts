@@ -14,11 +14,15 @@ export class FindReportPreviewsWhereArgs {
 
   @IsOptional()
   @Field(() => ID, { nullable: true })
-  authorId?: string;
+  userId?: string;
 
   @IsOptional()
   @Field(() => ID, { nullable: true })
   reportedUserId?: string;
+
+  @IsOptional()
+  @Field(() => ID, { nullable: true })
+  groupId?: string;
 
   @IsOptional()
   @Field(() => String, { nullable: true })

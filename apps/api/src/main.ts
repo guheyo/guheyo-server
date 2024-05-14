@@ -1,5 +1,5 @@
 import { NestFactory, Reflector } from '@nestjs/core';
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from '@lib/shared';
@@ -7,6 +7,7 @@ import { ApiModule } from '@app/api/api.module';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import { GlobalClassSerializerInterceptor } from '@lib/shared/serializer-interceptor/global-serializer-interceptor';
 
 async function bootstrap(): Promise<void> {
   const expressAdapter = new ExpressAdapter();
@@ -27,7 +28,7 @@ async function bootstrap(): Promise<void> {
       transform: true, // 넘어오는값은 무조건 String이라 하나하나 원하는 타입으로 바꿔줘야하는데 이런 불편함을 없애줌
     }),
   );
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.useGlobalInterceptors(new GlobalClassSerializerInterceptor(app.get(Reflector)));
   app.use(passport.initialize());
   app.use(cookieParser());
 

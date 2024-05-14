@@ -5,16 +5,16 @@ import { IsOptional, IsString, IsUUID } from 'class-validator';
 export class FindMyUserArgs {
   @IsOptional()
   @IsUUID()
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   userId?: string;
 
   @IsOptional()
   @IsString()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   provider?: string;
 
   @IsOptional()
   @IsString()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   socialId?: string;
 }

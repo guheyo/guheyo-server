@@ -11,8 +11,6 @@ import { RoleModule } from './app/role/role.module';
 import { GroupModule } from './app/group/group.module';
 import { UserImageModule } from './app/user-image/user-image.module';
 import { OfferModule } from './app/offer/offer.module';
-import { DemandModule } from './app/demand/demand.module';
-import { SwapModule } from './app/swap/swap.module';
 import { TermModule } from './app/term/term.module';
 import { AuthModule } from './app/auth/auth.module';
 import { CommonModule } from './app/common/common.module';
@@ -20,9 +18,13 @@ import { ReportModule } from './app/report/report.module';
 import { CommentModule } from './app/comment/comment.module';
 import { VersionModule } from './app/version/version.module';
 import { SocialAccountModule } from './app/social-account/social-account.module';
-import { MemberModule } from './app/member/member.module';
 import { BumpModule } from './app/bump/bump.module';
 import { DiscordWebhookModule } from './app/discord-webhook/discord-webhook.module';
+import { UserReviewModule } from './app/user-review/user-review.module';
+import { TagModule } from './app/tag/tag.module';
+import { PostModule } from './app/post/post.module';
+import { EmojiModule } from './app/emoji/emoji.module';
+import { ReactionModule } from './app/reaction/reaction.module';
 
 @Module({
   imports: [
@@ -38,6 +40,9 @@ import { DiscordWebhookModule } from './app/discord-webhook/discord-webhook.modu
         JSON: GraphQLJSON,
       },
       context: (context: any) => context,
+      subscriptions: {
+        'graphql-ws': true,
+      },
     }),
     ThrottlerModule.forRoot([
       {
@@ -47,21 +52,23 @@ import { DiscordWebhookModule } from './app/discord-webhook/discord-webhook.modu
     ]),
     AuthModule,
     SocialAccountModule,
-    MemberModule,
     CommonModule,
     UserModule,
     RoleModule,
     GroupModule,
     UserImageModule,
     OfferModule,
-    DemandModule,
-    SwapModule,
     BumpModule,
     TermModule,
     ReportModule,
+    PostModule,
     CommentModule,
     VersionModule,
     DiscordWebhookModule,
+    UserReviewModule,
+    TagModule,
+    EmojiModule,
+    ReactionModule,
   ],
 })
 export class ApiModule {}

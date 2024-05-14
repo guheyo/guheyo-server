@@ -9,12 +9,13 @@ import { GROUP_PROVIDERS } from '@lib/domains/group/group.providers';
 import { USER_PROVIDERS } from '@lib/domains/user/user.providers';
 import { USER_IMAGE_PROVIDERS } from '@lib/domains/user-image/user-image.providers';
 import { SOCIAL_ACCOUNT_PROVIDERS } from '@lib/domains/social-account/social-account.providers';
-import { MEMBER_PROVIDERS } from '@lib/domains/member/member.providers';
 import { ROLE_PROVIDERS } from '@lib/domains/role/role.providers';
 import { OFFER_PROVIDERS } from '@lib/domains/offer/offer.providers';
-import { DEMAND_PROVIDERS } from '@lib/domains/demand/demand.providers';
-import { SWAP_PROVIDERS } from '@lib/domains/swap/swap.providers';
 import { APP_FILTER } from '@nestjs/core';
+import { POST_PROVIDERS } from '@lib/domains/post/post.providers';
+import { TAG_PROVIDERS } from '@lib/domains/tag/tag.providers';
+import { USER_REVIEW_PROVIDERS } from '@lib/domains/user-review/user-review.providers';
+import { COMMENT_PROVIDERS } from '@lib/domains/comment/comment.providers';
 import { NecordConfigService } from './necord/necord.config.service';
 import { COMMAND_HANDLERS } from './commands/command-handlers';
 import { EVENT_HANDLERS } from './events/event-handlers';
@@ -49,11 +50,12 @@ import { DiscordConfigService } from './shared/discord/discord.config.service';
     ...USER_PROVIDERS,
     ...USER_IMAGE_PROVIDERS,
     ...SOCIAL_ACCOUNT_PROVIDERS,
-    ...MEMBER_PROVIDERS,
     ...ROLE_PROVIDERS,
     ...OFFER_PROVIDERS,
-    ...SWAP_PROVIDERS,
-    ...DEMAND_PROVIDERS,
+    ...POST_PROVIDERS,
+    ...TAG_PROVIDERS,
+    ...USER_REVIEW_PROVIDERS,
+    ...COMMENT_PROVIDERS,
     ...COMMAND_HANDLERS,
     ...EVENT_HANDLERS,
     DiscordConfigService,

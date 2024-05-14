@@ -1,4 +1,3 @@
-import { CommentType } from '@lib/domains/comment/domain/comment.types';
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsString, IsUUID } from 'class-validator';
 
@@ -8,23 +7,15 @@ export class CreateReportCommentInput {
   @Field(() => ID)
   id: string;
 
-  @IsString()
-  @Field(() => String)
-  type: CommentType;
-
   @IsUUID()
   @Field(() => ID)
   reportId: string;
 
   @IsUUID()
   @Field(() => ID)
-  authorId: string;
+  userId: string;
 
   @IsString()
   @Field(() => String)
   content: string;
-
-  @IsString()
-  @Field(() => String)
-  source: string;
 }

@@ -1,16 +1,17 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import dayjs from 'dayjs';
-import { isUndefined, omitBy } from 'lodash';
+import { isUndefined, omitBy, pick } from 'lodash';
+import { Type } from 'class-transformer';
+import { PostEntity } from '@lib/domains/post/domain/post.entity';
 import { UpdateAuctionProps } from './auction.types';
 import { AuctionCreatedEvent } from '../application/events/auction-created/auction-created.event';
 import { AuctionUpdatedEvent } from '../application/events/auction-updated/auction-updated.event';
 import { BidEntity } from './bid.entity';
-import { AddBidInput } from '../application/commands/add-bid/add-bid.input';
 import { AuctionErrorMessage } from './auction.error.message';
 import { CancelBidCommand } from '../application/commands/cancel-bid/cancel-bid.command';
-import { AUCTION_CLOSED, AUCTION_OPEN } from './auction.constants';
+import { AUCTION_CLOSED } from './auction.constants';
 import { BID_BID } from './bid.constants';
+import { AddBidCommand } from '../application/commands/add-bid/add-bid.command';
 
 export class AuctionEntity extends AggregateRoot {
   id: string;
@@ -19,40 +20,44 @@ export class AuctionEntity extends AggregateRoot {
 
   updatedAt: Date;
 
-  endedAt: Date;
+  originalEndDate: Date;
 
-  name: string;
+  extendedEndDate: Date;
 
-  description: string | null;
+  extensionCount: number;
 
-  businessFunction: string;
+  postId: string;
+
+  @Type(() => PostEntity)
+  post: PostEntity;
+
+  content: string | null;
+
+  currentBidPrice: number;
+
+  hammerPrice: number;
+
+  shippingCost: number;
+
+  shippingType: string;
 
   status: string;
 
-  pending?: string;
-
-  groupId: string;
-
-  brandId: string | null;
-
-  productCategoryId: string;
-
-  sellerId: string;
-
-  seller: UserEntity;
-
+  @Type(() => BidEntity)
   bids: BidEntity[];
-
-  source: string;
 
   constructor(partial: Partial<AuctionEntity>) {
     super();
     Object.assign(this, partial);
-    this.status = AUCTION_OPEN;
   }
 
-  create() {
-    this.apply(new AuctionCreatedEvent(this.id));
+  create(tagIds: string[]) {
+    this.apply(
+      new AuctionCreatedEvent({
+        id: this.id,
+        tagIds,
+      }),
+    );
   }
 
   update(props: UpdateAuctionProps) {
@@ -60,23 +65,24 @@ export class AuctionEntity extends AggregateRoot {
     this.apply(new AuctionUpdatedEvent(this.id));
   }
 
-  addBid(input: AddBidInput) {
+  addBid(command: AddBidCommand) {
     const bid = new BidEntity({
-      ...input,
+      ...pick(command, ['id', 'auctionId', 'price', 'priceCurrency']),
+      userId: command.user.id,
       status: BID_BID,
     });
     if (this.isBidBelowTheCurrentPrice(bid.price))
       throw new Error(AuctionErrorMessage.BID_BELOW_THE_CURRENT_PRICE);
-    if (this.isCanceler(bid.bidderId))
+    if (this.isCanceler(bid.userId))
       throw new Error(AuctionErrorMessage.CANCELLERS_ATTEMPT_TO_RE_BID);
     this.bids.push(bid);
   }
 
-  cancelBid(input: CancelBidCommand): BidEntity {
+  cancelBid(command: CancelBidCommand): BidEntity {
     if (this.hasClosed()) throw new Error(AuctionErrorMessage.AUCTION_HAS_ENDED);
 
-    const bidToBeCanceled = this.bids.find((bid) => bid.bidderId === input.bidderId);
-    if (!bidToBeCanceled) throw new Error(AuctionErrorMessage.BID_IS_NOT_FOUND);
+    const bidToBeCanceled = this.bids.find((bid) => bid.userId === command.user.id);
+    if (!bidToBeCanceled) throw new Error(AuctionErrorMessage.BID_NOT_FOUND);
 
     if (this.cancellationTimeout(bidToBeCanceled.createdAt))
       throw new Error(AuctionErrorMessage.BID_CANCELLATION_TIMEOUT);
@@ -87,7 +93,7 @@ export class AuctionEntity extends AggregateRoot {
 
   getLastBid(): BidEntity {
     const lastBid = this.bids.at(-1);
-    if (!lastBid) throw new Error(AuctionErrorMessage.BID_IS_NOT_FOUND);
+    if (!lastBid) throw new Error(AuctionErrorMessage.BID_NOT_FOUND);
     return lastBid;
   }
 
@@ -100,7 +106,7 @@ export class AuctionEntity extends AggregateRoot {
   }
 
   isCanceler(bidderId: string) {
-    return this.bids.some((bid) => bid.canceledAt && bid.bidderId === bidderId);
+    return this.bids.some((bid) => bid.canceledAt && bid.userId === bidderId);
   }
 
   cancellationTimeout(createdAt: Date) {

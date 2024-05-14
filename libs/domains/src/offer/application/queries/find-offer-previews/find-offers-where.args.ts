@@ -1,32 +1,39 @@
 import { ArgsType, Field, ID } from '@nestjs/graphql';
-import { IsOptional } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { GraphQLJSON } from 'graphql-type-json';
 
 @ArgsType()
 export class FindOffersWhereArgs {
+  // Post
   @IsOptional()
   @Field(() => ID, { nullable: true })
   groupId?: string;
 
   @IsOptional()
   @Field(() => ID, { nullable: true })
-  productCategoryId?: string;
+  categoryId?: string;
 
   @IsOptional()
   @Field(() => ID, { nullable: true })
-  sellerId?: string;
-
-  @IsOptional()
-  @Field(() => String, { nullable: true })
-  status?: string;
-
-  @IsOptional()
-  @Field(() => Boolean, { nullable: true })
-  isHidden?: boolean;
+  userId?: string;
 
   @IsOptional()
   @Field(() => String, { nullable: true })
   pending?: string;
+
+  @IsOptional()
+  @Field(() => Boolean, { nullable: true })
+  isArchived?: boolean;
+
+  // Offer
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  businessFunction?: string;
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  status?: string;
 
   @IsOptional()
   @Field(() => GraphQLJSON, { nullable: true })

@@ -20,17 +20,24 @@ export class OfferRepository
         id,
       },
       include: {
-        seller: {
+        post: {
           include: {
-            socialAccounts: true,
-            members: {
+            user: {
               include: {
-                group: true,
+                socialAccounts: true,
                 roles: {
+                  include: {
+                    group: true,
+                  },
                   orderBy: {
                     position: 'asc',
                   },
                 },
+              },
+            },
+            tags: {
+              orderBy: {
+                position: 'asc',
               },
             },
           },
@@ -42,52 +49,46 @@ export class OfferRepository
   }
 
   async create(offer: OfferEntity): Promise<void> {
+    const post = await this.prismaService.post.create({
+      data: {
+        ..._.pick(offer.post, [
+          'id',
+          'createdAt',
+          'updatedAt',
+          'type',
+          'title',
+          'userAgent',
+          'ipAddress',
+          'groupId',
+          'categoryId',
+          'userId',
+        ]),
+      },
+    });
     await this.prismaService.offer.create({
       data: {
         ..._.pick(offer, [
           'id',
-          'createdAt',
-          'updatedAt',
-          'name',
-          'description',
+          'businessFunction',
+          'name0',
+          'name1',
+          'content',
           'price',
           'priceCurrency',
           'shippingCost',
           'shippingType',
-          'businessFunction',
-          'groupId',
-          'brandId',
-          'productCategoryId',
-          'sellerId',
           'status',
-          'source',
         ]),
-        bumpedAt: offer.createdAt,
+        postId: post.id,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+        bumpedAt: post.createdAt,
       },
     });
   }
 
   async createMany(offers: OfferEntity[]): Promise<void> {
-    await this.prismaService.offer.createMany({
-      data: offers.map((offer) =>
-        _.pick(offer, [
-          'id',
-          'name',
-          'description',
-          'price',
-          'priceCurrency',
-          'shippingCost',
-          'shippingType',
-          'businessFunction',
-          'groupId',
-          'brandId',
-          'productCategoryId',
-          'sellerId',
-          'status',
-          'source',
-        ]),
-      ),
-    });
+    await offers.map(async (offer) => this.create(offer));
   }
 
   async save(offer: OfferEntity): Promise<void> {
@@ -95,25 +96,24 @@ export class OfferRepository
       where: {
         id: offer.id,
       },
-      data: _.pick(offer, [
-        'bumpedAt',
-        'name',
-        'description',
-        'price',
-        'priceCurrency',
-        'shippingCost',
-        'shippingType',
-        'businessFunction',
-        'groupId',
-        'brandId',
-        'productCategoryId',
-        'sellerId',
-        'status',
-        'isHidden',
-        'pending',
-        'reportCount',
-        'reportCommentCount',
-      ]),
+      data: {
+        post: {
+          update: {
+            ..._.pick(offer.post, ['archivedAt', 'pending', 'title', 'categoryId']),
+          },
+        },
+        ..._.pick(offer, [
+          'bumpedAt',
+          'name0',
+          'name1',
+          'content',
+          'price',
+          'priceCurrency',
+          'shippingCost',
+          'shippingType',
+          'status',
+        ]),
+      },
     });
   }
 

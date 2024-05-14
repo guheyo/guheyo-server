@@ -20,15 +20,16 @@ export class BumpOfferHandler extends PrismaCommandHandler<BumpOfferCommand, Off
 
   async execute(command: BumpOfferCommand): Promise<OfferPreviewResponse> {
     let offer = await this.offerLoadPort.findById(command.input.offerId);
-    if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
+    if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_NOT_FOUND);
     if (!offer.isAuthorized(command.user.id))
       throw new ForbiddenException(OfferErrorMessage.OFFER_CHANGES_FROM_UNAUTHORIZED_USER);
     if (!offer.canBump())
       throw new ForbiddenException(OfferErrorMessage.OFFER_BUMP_STUCK_ON_COOLDOWN);
 
     const countDailyOfferPostingInSameCategory = await this.prismaService.offer.countOffer({
-      sellerId: offer.sellerId,
-      productCategoryId: offer.productCategoryId,
+      userId: offer.post.userId,
+      categoryId: offer.post.categoryId!,
+      businessFunction: offer.businessFunction,
       fromHours: DAY_HOURS,
     });
     if (countDailyOfferPostingInSameCategory > DAILY_OFFER_POSTING_LIMIT)

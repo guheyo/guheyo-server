@@ -16,31 +16,30 @@ export class CreateReportHandler implements ICommandHandler<CreateReportCommand>
   ) {}
 
   async execute(command: CreateReportCommand): Promise<void> {
-    if (command.authorId !== command.user.id)
-      throw new ForbiddenException(ReportErrorMessage.CREATE_REPORT_REQUEST_FROM_UNAUTHORIZED_USER);
-
-    const lastSubmittedReport = await this.loadPort.findLastSubmittedReport(command.authorId);
+    const lastSubmittedReport = await this.loadPort.findLastSubmittedReport(command.user.id);
     if (lastSubmittedReport && !lastSubmittedReport.validateSubmitTerm())
       throw new ForbiddenException(ReportErrorMessage.REPORT_COOLDOWN_NOT_PASSED);
 
-    const report = this.publisher.mergeObjectContext(
+    await this.savePort.create(
       new ReportEntity({
         ...pick(command, [
           'id',
           'type',
-          'refId',
-          'refVersionId',
-          'authorId',
+          'reportedPostId',
+          'reportedCommentId',
           'reportedUserId',
           'groupId',
-          'title',
-          'content',
+          'reason',
+          'description',
         ]),
+        userId: command.user.id,
       }),
     );
+    let report = await this.loadPort.findById(command.id);
+    if (!report) throw new ForbiddenException(ReportErrorMessage.FAILED_CREATE_REPORT);
 
+    report = this.publisher.mergeObjectContext(report);
     report.create();
-    await this.savePort.create(report);
     report.commit();
   }
 }

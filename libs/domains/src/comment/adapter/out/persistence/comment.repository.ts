@@ -1,10 +1,15 @@
-import _ from 'lodash';
+import _, { pick } from 'lodash';
 import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
+import { CommentLoadPort } from '@lib/domains/comment/application/ports/out/comment.load.port';
+import { CommentSavePort } from '@lib/domains/comment/application/ports/out/comment.save.port';
 
 @Injectable()
-export class CommentRepository extends PrismaRepository<CommentEntity> {
+export class CommentRepository
+  extends PrismaRepository<CommentEntity>
+  implements CommentLoadPort, CommentSavePort
+{
   constructor() {
     super(CommentEntity);
   }
@@ -14,49 +19,28 @@ export class CommentRepository extends PrismaRepository<CommentEntity> {
       where: {
         id,
       },
-      include: {
-        comments: {
-          orderBy: {
-            createdAt: 'desc',
-          },
-        },
-      },
     });
     return this.toEntity(comment);
   }
 
   async create(comment: CommentEntity): Promise<void> {
     await this.prismaService.comment.create({
-      data: _.pick(comment, [
+      data: pick(comment, [
         'id',
-        'type',
-        'authorId',
-        'content',
-        'source',
-        'parentId',
+        'createdAt',
+        'updatedAt',
+        'userId',
         'postId',
-        'reportId',
-        'auctionId',
+        'parentId',
+        'content',
+        'userAgent',
+        'ipAddress',
       ]),
     });
   }
 
   async createMany(comments: CommentEntity[]): Promise<void> {
-    await this.prismaService.comment.createMany({
-      data: comments.map((comment) =>
-        _.pick(comment, [
-          'id',
-          'type',
-          'authorId',
-          'content',
-          'source',
-          'parentId',
-          'postId',
-          'reportId',
-          'auctionId',
-        ]),
-      ),
-    });
+    await comments.map(async (comment) => this.create(comment));
   }
 
   async save(comment: CommentEntity): Promise<void> {

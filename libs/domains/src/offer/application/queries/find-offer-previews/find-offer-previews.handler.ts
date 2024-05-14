@@ -5,6 +5,7 @@ import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
 import { ForbiddenException } from '@nestjs/common';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
+import { OFFER_CLOSED } from '@lib/domains/offer/domain/offer.constants';
 import { FindOfferPreviewsQuery } from './find-offer-previews.query';
 import { PaginatedOfferPreviewsResponse } from './paginated-offer-previews.response';
 import { OfferPreviewResponse } from '../../dtos/offer-preview.response';
@@ -19,48 +20,73 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
   }
 
   async execute(query: FindOfferPreviewsQuery): Promise<PaginatedOfferPreviewsResponse> {
-    let where: Prisma.OfferWhereInput;
-    if (!!query.where?.sellerId && query.where.sellerId === query.userId) {
-      where = {
-        ...query.where,
-        isHidden: !!query.where.isHidden,
-      };
-    } else {
-      if (query.where?.isHidden)
-        throw new ForbiddenException(OfferErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
-      where = {
-        ...query.where,
-      };
-    }
+    if (!!query.where?.userId && query.where.userId !== query.userId && query.where.isArchived)
+      throw new ForbiddenException(OfferErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
+
+    const where: Prisma.OfferWhereInput = query.where
+      ? {
+          post: {
+            groupId: query.where.groupId,
+            categoryId: query.where.categoryId,
+            userId: query.where.userId,
+            pending: query.where.pending,
+            archivedAt: query.where.isArchived
+              ? {
+                  not: null,
+                }
+              : {
+                  equals: null,
+                },
+            title: parseFollowedBySearcher(query.keyword),
+          },
+          businessFunction: query.where.businessFunction,
+          status: query.where.status,
+          bumpedAt: query.where?.bumpedAt
+            ? {
+                gt: new Date(query.where.bumpedAt.gt),
+              }
+            : undefined,
+        }
+      : {};
 
     const cursor = query.cursor
       ? {
           id: query.cursor,
         }
       : undefined;
+
+    const isMyClosedOffers =
+      query.userId === query.where?.userId && query.where?.status === OFFER_CLOSED;
+
     const offers = await this.prismaService.offer.findMany({
-      where: {
-        ...where,
-        name: parseFollowedBySearcher(query.keyword),
-        bumpedAt: query.where?.bumpedAt
-          ? {
-              gt: new Date(query.where.bumpedAt.gt),
-            }
-          : undefined,
-      },
+      where,
       cursor,
       take: query.take + 1,
       skip: query.skip,
       include: {
-        seller: {
-          select: {
-            id: true,
-            createdAt: true,
-            username: true,
-            avatarURL: true,
-            bot: true,
+        post: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                createdAt: true,
+                username: true,
+                avatarURL: true,
+                bot: true,
+              },
+            },
+            tags: true,
           },
         },
+        userReviews: isMyClosedOffers
+          ? {
+              where: {
+                post: {
+                  userId: query.userId,
+                },
+              },
+            }
+          : false,
       },
       orderBy: [
         {
@@ -70,30 +96,14 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
           bumpedAt: query.orderBy?.bumpedAt,
         },
       ],
-      distinct: query.distinct ? ['name', 'sellerId'] : undefined,
     });
 
-    const offerPreviewPromises = offers.map(async (offer) => {
-      const thumbnail = await this.prismaService.userImage.findFirst({
-        where: {
-          type: 'offer',
-          refId: offer.id,
-          tracked: true,
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-      });
-      return {
-        ...offer,
-        thumbnail,
-      };
-    });
-
-    return paginate<OfferPreviewResponse>(
-      this.parseResponses(await Promise.all(offerPreviewPromises)),
-      'id',
-      query.take,
-    );
+    const offerPreviews = isMyClosedOffers
+      ? offers.map((offer) => ({
+          ...offer,
+          hasSubmittedReview: offer.userReviews.length > 0,
+        }))
+      : offers;
+    return paginate<OfferPreviewResponse>(this.parseResponses(offerPreviews), 'id', query.take);
   }
 }

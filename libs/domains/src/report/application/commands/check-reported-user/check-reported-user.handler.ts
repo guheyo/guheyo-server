@@ -17,7 +17,7 @@ export class CheckReportedUserHandler implements ICommandHandler<CheckReportedUs
 
   async execute(command: CheckReportedUserCommand): Promise<void> {
     let report = await this.loadPort.findById(command.reportId);
-    if (!report) throw new NotFoundException(ReportErrorMessage.REPORT_IS_NOT_FOUND);
+    if (!report) throw new NotFoundException(ReportErrorMessage.REPORT_NOT_FOUND);
 
     report = this.publisher.mergeObjectContext(report);
     report.checkReportedUser();

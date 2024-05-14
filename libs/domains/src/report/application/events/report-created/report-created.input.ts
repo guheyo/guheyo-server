@@ -3,24 +3,44 @@ export class ReportCreatedInput {
 
   type: string;
 
-  refId: string;
+  reportedPostId?: string;
+
+  reportedCommentId?: string;
+
+  reportedUserUsername: string;
+
+  reportedUserAvatarURL?: string;
+
+  reason: string;
 
   reportStatus: string;
 
   constructor({
     reportId,
     type,
-    refId,
+    reportedPostId,
+    reportedCommentId,
+    reportedUserUsername,
+    reportedUserAvatarURL,
+    reason,
     reportStatus,
   }: {
     reportId: string;
     type: string;
-    refId: string;
+    reportedPostId?: string;
+    reportedCommentId?: string;
+    reportedUserUsername: string;
+    reportedUserAvatarURL: string;
+    reason: string;
     reportStatus: string;
   }) {
     this.reportId = reportId;
     this.type = type;
-    this.refId = refId;
+    this.reportedPostId = reportedPostId;
+    this.reportedCommentId = reportedCommentId;
+    this.reportedUserUsername = reportedUserUsername;
+    this.reportedUserAvatarURL = reportedUserAvatarURL;
+    this.reason = reason;
     this.reportStatus = reportStatus;
   }
 }

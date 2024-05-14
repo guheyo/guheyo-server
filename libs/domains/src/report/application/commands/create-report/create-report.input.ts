@@ -11,17 +11,15 @@ export class CreateReportInput {
   @Field()
   type: string;
 
+  @IsOptional()
   @IsUUID()
-  @Field(() => ID)
-  refId: string;
+  @Field(() => ID, { nullable: true })
+  reportedPostId?: string;
 
+  @IsOptional()
   @IsUUID()
-  @Field(() => ID)
-  refVersionId: string;
-
-  @IsUUID()
-  @Field(() => ID)
-  authorId: string;
+  @Field(() => ID, { nullable: true })
+  reportedCommentId?: string;
 
   @IsUUID()
   @Field(() => ID)
@@ -33,10 +31,10 @@ export class CreateReportInput {
 
   @IsString()
   @Field()
-  title: string;
+  reason: string;
 
   @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
-  content?: string;
+  description?: string;
 }

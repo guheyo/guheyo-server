@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { v5 as uuid5 } from 'uuid';
 
+export const PRODUCT_CATEGORY_TYPE = 'product';
+
 const GROUP_NAME = '음향기기';
 const CATEGORY_AUDIO_NAME = '음향기기';
 
@@ -24,9 +26,10 @@ export async function seedAudio(prisma: PrismaClient) {
       name: GROUP_NAME,
       slug: GROUP_SLUG,
       position: 3,
-      productCategories: {
+      categories: {
         create: [
           {
+            type: PRODUCT_CATEGORY_TYPE,
             name: CATEGORY_AUDIO_NAME,
             slug: CATEGORY_AUDIO_SLUG,
             position: 0,

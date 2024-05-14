@@ -10,8 +10,6 @@ export class FindReportPreviewsQuery extends PaginationQuery {
 
   keyword?: string;
 
-  distinct?: boolean;
-
   userId?: string;
 
   constructor({ args, userId }: { args: FindReportPreviewsArgs; userId?: string }) {
@@ -19,7 +17,6 @@ export class FindReportPreviewsQuery extends PaginationQuery {
     this.where = args.where;
     this.orderBy = args.orderBy;
     this.keyword = args.keyword;
-    this.distinct = args.distinct;
     this.userId = userId;
   }
 }

@@ -1,33 +1,40 @@
 import { OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
+import { CreatePostInput } from '@lib/domains/post/application/commands/create-post/create-post.input';
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { IsDate, IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNumber, IsOptional, IsString, IsUUID, ValidateNested } from 'class-validator';
 
 @InputType()
 export class CreateOfferInput {
+  @ValidateNested()
+  @Type(() => CreatePostInput)
+  @Field(() => CreatePostInput)
+  post: CreatePostInput;
+
   @IsUUID()
   @Field(() => ID)
   id: string;
 
-  @IsOptional()
-  @IsDate()
-  @Field(() => Date, { nullable: true })
-  createdAt?: Date;
-
-  @IsOptional()
-  @IsDate()
-  @Field(() => Date, { nullable: true })
-  updatedAt?: Date;
-
   @IsString()
   @Field()
-  name: string;
+  businessFunction: string;
 
   @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
-  description?: string;
+  name0?: string;
 
-  @IsInt()
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  name1?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  content?: string;
+
+  @IsNumber()
   @Field(() => Int)
   price: number;
 
@@ -35,7 +42,7 @@ export class CreateOfferInput {
   @Field()
   priceCurrency: string;
 
-  @IsInt()
+  @IsNumber()
   @Field(() => Int)
   shippingCost: number;
 
@@ -44,31 +51,6 @@ export class CreateOfferInput {
   shippingType: string;
 
   @IsString()
-  @Field()
-  businessFunction: string;
-
-  @IsString()
   @Field(() => String, { defaultValue: OFFER_OPEN })
   status: string;
-
-  @IsString()
-  @Field()
-  source: string;
-
-  @IsUUID()
-  @Field(() => ID)
-  groupId: string;
-
-  @IsUUID()
-  @Field()
-  productCategoryId: string;
-
-  @IsUUID()
-  @Field(() => ID)
-  sellerId: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => String, { nullable: true })
-  brandId?: string;
 }

@@ -1,5 +1,9 @@
 export enum ReportErrorMessage {
-  REPORT_IS_NOT_FOUND = 'Report is not found',
+  REPORT_NOT_FOUND = 'Report not found',
+  REPORT_COMMENT_NOT_FOUND = 'Report comment not found',
+  REPORT_REF_VERSION_NOT_FOUND = 'Report ref version not found',
+  REPORT_TYPE_NOT_FOUND = 'Report type not found',
+  REF_ID_OF_VERSION_NOT_FOUND = 'Ref id of version not found',
   REPORT_CHANGES_FROM_UNAUTHORIZED_USER = 'Report changes from unauthorized user',
   REPORT_DELETE_COMMAND_FROM_UNAUTHORIZED_USER = 'Report delete command from unauthorized user',
   FAILED_TO_FIND_REF_ID_OF_REPORT = 'Failed to find refId of report',
@@ -7,6 +11,6 @@ export enum ReportErrorMessage {
   FIND_REPORTS_REQUEST_FROM_UNAUTHORIZED_USER = 'Find reports request from unauthorized user',
   REPORT_COOLDOWN_NOT_PASSED = 'Report cooldown not passed',
   REPORTED_USER_NOT_FOUND = 'Reported user not found',
-  REPORTED_USER_ROOT_GROUP_MEMBER_NOT_FOUND = 'Reported user root gorup member not found',
   CREATE_REPORT_REQUEST_FROM_UNAUTHORIZED_USER = 'Create report request from unauthorized user',
+  FAILED_CREATE_REPORT = 'Failed create report',
 }

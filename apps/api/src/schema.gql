@@ -8,77 +8,75 @@ type AuthorResponse {
   bot: Boolean!
   createdAt: DateTime!
   id: ID!
-  members: [MemberWithRolesResponse!]!
+  roles: [RoleResponse!]!
   socialAccounts: [SocialAccountWithoutAuthResponse!]!
   username: String!
-}
-
-input BumpDemandInput {
-  buyerId: ID!
-  demandId: ID!
-  id: ID!
-  newPrice: Int!
 }
 
 input BumpOfferInput {
   id: ID!
   newPrice: Int!
   offerId: ID!
-  sellerId: ID!
 }
 
-input BumpSwapInput {
+input CancelReactionInput {
+  commentId: ID
+  emojiId: ID!
+  postId: ID!
+}
+
+type CanceledReactionResponse {
+  commentId: ID
   id: ID!
-  newPrice: Int!
-  proposerId: ID!
-  swapId: ID!
+  postId: ID!
+}
+
+type CategoryResponse {
+  description: String
+  id: ID!
+  name: String!
+  position: Int
+  slug: String
+  type: String!
 }
 
 input CommentReportInput {
-  authorId: ID!
   content: String!
   id: ID!
   reportId: ID!
-  source: String!
 }
 
 type CommentResponse {
-  auctionId: ID
   content: String!
   createdAt: DateTime!
   id: ID!
   parentId: ID
-  postId: ID
-  reportId: ID
-  type: String!
+  postId: ID!
+  reactions: [ReactionResponse!]!
   updatedAt: DateTime!
 }
 
-input CreateCommentInput {
-  authorId: ID!
+type CommentWithAuthorResponse {
   content: String!
+  createdAt: DateTime!
   id: ID!
-  refId: ID!
-  source: String!
-  type: String!
+  parentId: ID
+  postId: ID!
+  reactions: [ReactionResponse!]!
+  updatedAt: DateTime!
+  user: AuthorResponse!
 }
 
-input CreateDemandInput {
-  brandId: String
-  businessFunction: String!
-  buyerId: ID!
+type CommentWithAuthorResponseEdge {
+  cursor: String!
+  node: CommentWithAuthorResponse!
+}
+
+input CreateCommentInput {
+  content: String!
   createdAt: DateTime
-  description: String
-  groupId: ID!
   id: ID!
-  name: String!
-  price: Int!
-  priceCurrency: String!
-  productCategoryId: String!
-  shippingCost: Int!
-  shippingType: String!
-  source: String!
-  status: String! = "open"
+  postId: ID!
   updatedAt: DateTime
 }
 
@@ -96,33 +94,45 @@ input CreateManyUserImageInput {
 }
 
 input CreateOfferInput {
-  brandId: String
   businessFunction: String!
-  createdAt: DateTime
-  description: String
-  groupId: ID!
+  content: String
   id: ID!
-  name: String!
+  name0: String
+  name1: String
+  post: CreatePostInput!
   price: Int!
   priceCurrency: String!
-  productCategoryId: String!
-  sellerId: ID!
   shippingCost: Int!
   shippingType: String!
-  source: String!
   status: String! = "open"
+}
+
+input CreatePostInput {
+  categoryId: ID
+  createdAt: DateTime
+  groupId: ID!
+  id: ID
+  tagIds: [ID!]
+  title: String!
+  type: String!
   updatedAt: DateTime
 }
 
+input CreateReactionInput {
+  commentId: ID
+  emojiId: ID!
+  id: ID!
+  postId: ID!
+}
+
 input CreateReportInput {
-  authorId: ID!
-  content: String
+  description: String
   groupId: ID!
   id: ID!
-  refId: ID!
-  refVersionId: ID!
+  reason: String!
+  reportedCommentId: ID
+  reportedPostId: ID
   reportedUserId: ID!
-  title: String!
   type: String!
 }
 
@@ -140,27 +150,6 @@ input CreateSignedUrlInput {
   userId: String!
 }
 
-input CreateSwapInput {
-  brandId: String
-  businessFunction: String!
-  createdAt: DateTime
-  description0: String
-  description1: String
-  groupId: ID!
-  id: ID!
-  name0: String!
-  name1: String!
-  price: Int!
-  priceCurrency: String!
-  productCategoryId: String!
-  proposerId: ID!
-  shippingCost: Int!
-  shippingType: String!
-  source: String!
-  status: String! = "open"
-  updatedAt: DateTime
-}
-
 input CreateUserImageInput {
   contentType: String
   description: String
@@ -170,11 +159,22 @@ input CreateUserImageInput {
   position: Int!
   refId: ID!
   size: Int
-  source: String!
   type: String!
   url: String!
   userId: ID!
   width: Int
+}
+
+input CreateUserReviewInput {
+  auctionId: ID
+  content: String
+  id: ID!
+  offerId: ID
+  post: CreatePostInput!
+  rating: Int!
+  reviewedUserId: ID!
+  status: String! = "oneWay"
+  type: String!
 }
 
 """
@@ -182,75 +182,35 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type DemandPreviewResponse {
-  brandId: String
-  bumpedAt: DateTime!
-  businessFunction: String!
-  buyer: UserResponse!
-  createdAt: DateTime!
-  groupId: String!
+input DeleteCommentInput {
   id: ID!
-  isHidden: Boolean!
-  name: String!
-  pending: String
-  price: Int!
-  priceCurrency: String!
-  productCategoryId: String!
-  reportCommentCount: Int!
-  reportCount: Int!
-  shippingCost: Int!
-  shippingType: String!
-  slug: String
-  source: String!
-  status: String!
-  totalPrice: Int!
-  updatedAt: DateTime!
 }
 
-type DemandPreviewResponseEdge {
-  cursor: String!
-  node: DemandPreviewResponse!
+type DeletedCommentResponse {
+  id: ID!
 }
 
-type DemandResponse {
-  brandId: String
-  bumpedAt: DateTime!
-  businessFunction: String!
-  buyer: AuthorResponse!
-  createdAt: DateTime!
-  description: String
-  group: GroupProfileResponse!
+type EmojiResponse {
+  groupId: ID
   id: ID!
-  images: [UserImageResponse!]!
-  isHidden: Boolean!
   name: String!
-  pending: String
-  price: Int!
-  priceCurrency: String!
-  productCategory: ProductCategoryResponse!
-  reportCommentCount: Int!
-  reportCount: Int!
-  shippingCost: Int!
-  shippingType: String!
-  slug: String
-  source: String!
-  status: String!
-  totalPrice: Int!
-  updatedAt: DateTime!
+  position: Int!
+  url: String
 }
 
 type GroupPreviewResponse {
-  demands: [DemandPreviewResponse!]!
+  buys: [OfferPreviewResponse!]!
   description: String
   icon: String
   id: ID!
   name: String!
-  offers: [OfferPreviewResponse!]!
   position: Int!
+  sells: [OfferPreviewResponse!]!
   slug: String
 }
 
 type GroupProfileResponse {
+  description: String
   icon: String
   id: ID!
   name: String!
@@ -263,13 +223,12 @@ type GroupProfileResponseEdge {
 }
 
 type GroupResponse {
+  categories: [CategoryResponse!]!
   description: String
   icon: String
   id: ID!
   name: String!
   position: Int
-  postCategories: [PostCategoryResponse!]!
-  productCategories: [ProductCategoryResponse!]!
   roles: [RoleResponse!]!
   slug: String
 }
@@ -289,48 +248,42 @@ type JwtResponse {
   refreshToken: String!
 }
 
+type LastReportResponse {
+  createdAt: DateTime!
+  id: ID!
+}
+
 input LinkSocialProfileInput {
   provider: String!
 }
 
-type MemberWithRolesResponse {
-  createdAt: DateTime!
-  group: GroupProfileResponse!
-  id: ID!
-  roles: [RoleResponse!]!
-  userId: String!
-}
-
 type Mutation {
-  bumpDemand(input: BumpDemandInput!): DemandPreviewResponse!
   bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
-  bumpSwap(input: BumpSwapInput!): SwapPreviewResponse!
-  commentReport(input: CommentReportInput!): String!
+  cancelReaction(input: CancelReactionInput!): String!
+  commentReport(input: CommentReportInput!): ReportCommentResponse!
   createComment(input: CreateCommentInput!): String!
-  createDemand(input: CreateDemandInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
   createOffer(input: CreateOfferInput!): String!
+  createReaction(input: CreateReactionInput!): String!
   createReport(input: CreateReportInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
-  createSwap(input: CreateSwapInput!): String!
   createUserImage(input: CreateUserImageInput!): String!
-  deleteDemand(buyerId: ID!, id: ID!): String!
-  deleteOffer(id: ID!, sellerId: ID!): String!
+  createUserReview(input: CreateUserReviewInput!): String!
+  deleteComment(input: DeleteCommentInput!): String!
+  deleteOffer(id: ID!): String!
   deleteRole(id: ID!): String!
-  deleteSwap(id: ID!, proposerId: ID!): String!
   deleteUserImage(id: ID!): String!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
-  updateComment(input: UpdateCommentInput!): CommentResponse!
-  updateDemand(input: UpdateDemandInput!): DemandPreviewResponse!
+  updateComment(input: UpdateCommentInput!): String!
   updateGroup(input: UpdateGroupInput!): String!
   updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
+  updateReportComment(input: UpdateReportCommentInput!): ReportCommentResponse!
   updateRole(input: UpdateRoleInput!): String!
-  updateSwap(input: UpdateSwapInput!): SwapPreviewResponse!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
 }
@@ -341,35 +294,28 @@ type MyUserResponse {
   bot: Boolean!
   createdAt: DateTime!
   id: ID!
-  members: [MemberWithRolesResponse!]!
   name: String
   phoneNumber: String
+  roles: [RoleResponse!]!
   socialAccounts: [SocialAccountResponse!]!
   username: String!
 }
 
 type OfferPreviewResponse {
-  brandId: String
   bumpedAt: DateTime!
   businessFunction: String!
+  content: String
   createdAt: DateTime!
-  groupId: String!
+  hasSubmittedReview: Boolean
   id: ID!
-  isHidden: Boolean!
-  name: String!
-  pending: String
+  name0: String
+  name1: String
+  post: PostPreviewWithUserResponse!
   price: Int!
   priceCurrency: String!
-  productCategoryId: String!
-  reportCommentCount: Int!
-  reportCount: Int!
-  seller: UserResponse!
   shippingCost: Int!
   shippingType: String!
-  slug: String
-  source: String!
   status: String!
-  thumbnail: UserImageResponse
   totalPrice: Int!
   updatedAt: DateTime!
 }
@@ -380,29 +326,20 @@ type OfferPreviewResponseEdge {
 }
 
 type OfferResponse {
-  brandId: String
   bumpedAt: DateTime!
   businessFunction: String!
+  content: String
   createdAt: DateTime!
-  description: String
-  group: GroupProfileResponse!
+  hasSubmittedReview: Boolean
   id: ID!
-  images: [UserImageResponse!]!
-  isHidden: Boolean!
-  name: String!
-  pending: String
+  name0: String
+  name1: String
+  post: PostResponse!
   price: Int!
   priceCurrency: String!
-  productCategory: ProductCategoryResponse!
-  reportCommentCount: Int!
-  reportCount: Int!
-  seller: AuthorResponse!
   shippingCost: Int!
   shippingType: String!
-  slug: String
-  source: String!
   status: String!
-  thumbnail: UserImageResponse
   totalPrice: Int!
   updatedAt: DateTime!
 }
@@ -412,8 +349,8 @@ type PageInfo {
   hasNextPage: Boolean!
 }
 
-type PaginatedDemandPreviewsResponse {
-  edges: [DemandPreviewResponseEdge!]!
+type PaginatedCommentsResponse {
+  edges: [CommentWithAuthorResponseEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -437,8 +374,8 @@ type PaginatedReportPreviewsResponse {
   pageInfo: PageInfo!
 }
 
-type PaginatedSwapPreviewsResponse {
-  edges: [SwapPreviewResponseEdge!]!
+type PaginatedUserReviewPreviewsResponse {
+  edges: [UserReviewPreviewResponseEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -447,62 +384,139 @@ type PaginatedUsersResponse {
   pageInfo: PageInfo!
 }
 
-type PostCategoryResponse {
-  description: String
+type PostPreviewWithAuthorResponse {
+  archivedAt: DateTime
+  categoryId: String
+  commentCount: Int
+  createdAt: DateTime!
+  groupId: String!
   id: ID!
-  name: String!
-  position: Int
+  pending: String
   slug: String
+  tags: [TagResponse!]!
+  thumbnail: String
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+  user: AuthorResponse!
 }
 
-type ProductCategoryResponse {
-  description: String
+type PostPreviewWithUserResponse {
+  archivedAt: DateTime
+  categoryId: String
+  commentCount: Int
+  createdAt: DateTime!
+  groupId: String!
   id: ID!
-  name: String!
-  position: Int
+  pending: String
   slug: String
+  tags: [TagResponse!]!
+  thumbnail: String
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+  user: UserResponse!
+}
+
+type PostPreviewWithoutUserResponse {
+  archivedAt: DateTime
+  categoryId: String
+  commentCount: Int
+  createdAt: DateTime!
+  groupId: String!
+  id: ID!
+  pending: String
+  slug: String
+  tags: [TagResponse!]!
+  thumbnail: String
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+}
+
+type PostResponse {
+  archivedAt: DateTime
+  category: CategoryResponse
+  categoryId: String
+  commentCount: Int
+  createdAt: DateTime!
+  group: GroupProfileResponse!
+  groupId: String!
+  id: ID!
+  images: [UserImageResponse!]!
+  pending: String
+  reportCount: Int!
+  slug: String
+  tags: [TagResponse!]!
+  thumbnail: String
+  title: String!
+  type: String!
+  updatedAt: DateTime!
+  user: AuthorResponse!
 }
 
 type Query {
   findAuthor(id: ID, username: String): AuthorResponse
-  findComment(id: ID, refId: ID, type: String): CommentResponse
-  findDemand(id: ID, slug: String): DemandResponse
-  findDemandCount(buyerId: ID!, fromHours: Int!, productCategoryId: ID!): Float!
-  findDemandPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedDemandPreviewsResponse!
+  findComment(id: ID, postId: ID): CommentResponse
+  findComments(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedCommentsResponse!
+  findEmojis(groupId: ID): [EmojiResponse!]!
   findGroup(id: ID, slug: String): GroupResponse
   findGroupPreviews: [GroupPreviewResponse!]!
-  findGroupProfiles(cursor: ID, distinct: Boolean, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
+  findGroupProfiles(cursor: ID, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
-  findLastReport: ReportResponse!
+  findLastReport: LastReportResponse!
   findMyUser: MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
-  findOfferCount(fromHours: Int!, productCategoryId: ID!, sellerId: ID!): Float!
-  findOfferPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
+  findOfferCount(businessFunction: String!, categoryId: ID!, fromHours: Int!, userId: ID!): Float!
+  findOfferPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
+  findPostPreview(id: ID!): PostPreviewWithUserResponse!
+  findReactions(commentId: ID, postId: ID): [ReactionResponse!]!
   findReport(id: ID!): ReportResponse!
-  findReportPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportPreviewsResponse!
+  findReportComment(reportId: ID!): ReportCommentResponse!
+  findReportPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
-  findSwap(id: ID, slug: String): SwapResponse
-  findSwapCount(fromHours: Int!, productCategoryId: ID!, proposerId: ID!): Float!
-  findSwapPreviews(cursor: ID, distinct: Boolean, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedSwapPreviewsResponse!
+  findTags: [TagResponse!]!
   findTerm(name: String!): TermResponse
-  findUser(provider: String, sessionToken: String, socialId: String, username: String): UserResponse
+  findUser(provider: String, socialId: String, username: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
-  findUsers(cursor: ID, skip: Int! = 1, take: Int!): PaginatedUsersResponse!
+  findUserReview(id: ID, slug: String): UserReviewResponse
+  findUserReviewPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedUserReviewPreviewsResponse!
+  findUsers(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedUsersResponse!
   findVersion(id: ID!): VersionResponse
   findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
 }
 
-type ReportPreviewResponse {
-  content: String
+type ReactionResponse {
+  canceledAt: DateTime
+  commentId: ID
   createdAt: DateTime!
+  emoji: EmojiResponse!
+  id: ID!
+  postId: ID!
+  updatedAt: DateTime!
+  userId: ID!
+}
+
+type ReportCommentResponse {
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  reportId: ID!
+  updatedAt: DateTime!
+  userId: String!
+}
+
+type ReportPreviewResponse {
+  createdAt: DateTime!
+  description: String
   groupId: ID!
   id: ID!
-  refId: ID!
-  refVersionId: ID!
-  reportedUser: AuthorResponse
+  reason: String!
+  reportedCommentId: ID
+  reportedPostId: ID
+  reportedUser: AuthorResponse!
   status: String!
-  title: String!
   type: String!
   updatedAt: DateTime!
 }
@@ -513,18 +527,20 @@ type ReportPreviewResponseEdge {
 }
 
 type ReportResponse {
-  comments: [CommentResponse!]!
-  content: String
+  comments: [ReportCommentResponse!]!
   createdAt: DateTime!
+  description: String
   groupId: ID!
   id: ID!
-  refId: ID!
-  refVersionId: ID!
-  reportedUser: AuthorResponse
+  reason: String!
+  reportedCommentId: ID
+  reportedPost: PostPreviewWithoutUserResponse
+  reportedPostId: ID
+  reportedUser: AuthorResponse!
   status: String!
-  title: String!
   type: String!
   updatedAt: DateTime!
+  version: VersionResponse!
 }
 
 type RoleResponse {
@@ -568,66 +584,20 @@ type SocialUserResponse {
   socialId: String!
 }
 
-type SwapPreviewResponse {
-  brandId: String
-  bumpedAt: DateTime!
-  businessFunction: String!
-  createdAt: DateTime!
-  groupId: String!
-  id: ID!
-  isHidden: Boolean!
-  name0: String!
-  name1: String!
-  pending: String
-  price: Int!
-  priceCurrency: String!
-  productCategoryId: String!
-  proposer: UserResponse!
-  reportCommentCount: Int!
-  reportCount: Int!
-  shippingCost: Int!
-  shippingType: String!
-  slug: String
-  source: String!
-  status: String!
-  thumbnail: UserImageResponse
-  totalPrice: Int!
-  updatedAt: DateTime!
+type Subscription {
+  commentCreated(postId: ID!): CommentWithAuthorResponse!
+  commentDeleted(postId: ID!): DeletedCommentResponse!
+  commentUpdated(postId: ID!): UpdatedCommentResponse!
+  reactionCanceled(postId: ID!, type: String!): CanceledReactionResponse!
+  reactionCreated(postId: ID!, type: String!): ReactionResponse!
 }
 
-type SwapPreviewResponseEdge {
-  cursor: String!
-  node: SwapPreviewResponse!
-}
-
-type SwapResponse {
-  brandId: String
-  bumpedAt: DateTime!
-  businessFunction: String!
-  createdAt: DateTime!
-  description0: String
-  description1: String
-  group: GroupProfileResponse!
+type TagResponse {
+  description: String
   id: ID!
-  images: [UserImageResponse!]!
-  isHidden: Boolean!
-  name0: String!
-  name1: String!
-  pending: String
-  price: Int!
-  priceCurrency: String!
-  productCategory: ProductCategoryResponse!
-  proposer: AuthorResponse!
-  reportCommentCount: Int!
-  reportCount: Int!
-  shippingCost: Int!
-  shippingType: String!
-  slug: String
-  source: String!
-  status: String!
-  thumbnail: UserImageResponse
-  totalPrice: Int!
-  updatedAt: DateTime!
+  name: String!
+  position: Int!
+  type: String!
 }
 
 type TermResponse {
@@ -641,27 +611,8 @@ type TermResponse {
 }
 
 input UpdateCommentInput {
-  authorId: ID!
   content: String!
   id: ID!
-  source: String!
-}
-
-input UpdateDemandInput {
-  brandId: ID
-  businessFunction: String
-  buyerId: ID!
-  description: String
-  id: ID!
-  isHidden: Boolean
-  name: String
-  price: Int
-  priceCurrency: String
-  productCategoryId: ID
-  shippingCost: Int
-  shippingType: String
-  source: String!
-  status: String
 }
 
 input UpdateGroupInput {
@@ -674,20 +625,30 @@ input UpdateGroupInput {
 }
 
 input UpdateOfferInput {
-  brandId: ID
-  businessFunction: String
-  description: String
+  content: String
   id: ID!
-  isHidden: Boolean
-  name: String
+  name0: String
+  name1: String
+  post: UpdatePostInput!
   price: Int
   priceCurrency: String
-  productCategoryId: ID
-  sellerId: ID!
   shippingCost: Int
   shippingType: String
-  source: String!
   status: String
+}
+
+input UpdatePostInput {
+  archivedAt: DateTime
+  categoryId: ID
+  pending: String
+  tagIds: [ID!]
+  title: String
+}
+
+input UpdateReportCommentInput {
+  content: String!
+  id: ID!
+  reportId: ID!
 }
 
 input UpdateRoleInput {
@@ -695,25 +656,6 @@ input UpdateRoleInput {
   id: ID!
   name: String
   position: Int
-}
-
-input UpdateSwapInput {
-  brandId: String
-  businessFunction: String
-  description0: String
-  description1: String
-  id: ID!
-  isHidden: Boolean
-  name0: String
-  name1: String
-  price: Int
-  priceCurrency: String
-  productCategoryId: ID
-  proposerId: ID!
-  shippingCost: Int
-  shippingType: String
-  source: String!
-  status: String
 }
 
 input UpdateUserImageInput {
@@ -730,6 +672,12 @@ input UpdateUserInput {
   username: String
 }
 
+type UpdatedCommentResponse {
+  content: String!
+  id: ID!
+  updatedAt: DateTime!
+}
+
 type UserImageResponse {
   contentType: String
   createdAt: DateTime!
@@ -740,7 +688,6 @@ type UserImageResponse {
   position: Int!
   refId: ID!
   size: Int
-  source: String!
   type: String!
   updatedAt: DateTime!
   url: String!
@@ -760,6 +707,39 @@ type UserResponse {
 type UserResponseEdge {
   cursor: String!
   node: UserResponse!
+}
+
+type UserReviewPreviewResponse {
+  auctionId: String
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  offerId: String
+  post: PostPreviewWithAuthorResponse!
+  rating: Int!
+  reviewedUser: AuthorResponse!
+  status: String!
+  type: String!
+  updatedAt: DateTime!
+}
+
+type UserReviewPreviewResponseEdge {
+  cursor: String!
+  node: UserReviewPreviewResponse!
+}
+
+type UserReviewResponse {
+  auctionId: String
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  offerId: String
+  post: PostResponse!
+  rating: Int!
+  reviewedUser: AuthorResponse!
+  status: String!
+  type: String!
+  updatedAt: DateTime!
 }
 
 type VersionPreviewResponse {

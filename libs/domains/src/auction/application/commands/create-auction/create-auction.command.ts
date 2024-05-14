@@ -1,43 +1,35 @@
 import { ICommand } from '@nestjs/cqrs/dist';
+import { CreatePostInput } from '@lib/domains/post/application/commands/create-post/create-post.input';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { CreateAuctionInput } from './create-auction.input';
 
 export class CreateAuctionCommand implements ICommand {
+  post: CreatePostInput;
+
   id: string;
 
   createdAt: Date;
 
-  endedAt: Date;
+  originalEndDate: Date;
 
-  name: string;
+  content?: string;
 
-  description?: string;
+  shippingCost: number;
 
-  businessFunction: string;
+  shippingType: string;
 
   status: string;
 
-  source: string;
+  user: MyUserResponse;
 
-  groupId: string;
-
-  productCategoryId: string;
-
-  sellerId: string;
-
-  brandId?: string;
-
-  constructor(input: CreateAuctionInput) {
+  constructor({ input, user }: { input: CreateAuctionInput; user: MyUserResponse }) {
     this.id = input.id;
     this.createdAt = input.createdAt;
-    this.endedAt = input.endedAt;
-    this.name = input.name;
-    this.description = input.description;
-    this.businessFunction = input.businessFunction;
+    this.originalEndDate = input.originalEndDate;
+    this.content = input.content;
+    this.shippingCost = input.shippingCost;
+    this.shippingType = input.shippingType;
     this.status = input.status;
-    this.source = input.source;
-    this.groupId = input.groupId;
-    this.productCategoryId = input.productCategoryId;
-    this.sellerId = input.sellerId;
-    this.brandId = input.brandId;
+    this.user = user;
   }
 }

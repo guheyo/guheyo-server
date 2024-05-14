@@ -1,8 +1,12 @@
+import { UpdatePostInput } from '@lib/domains/post/application/commands/update-post/update-post.input';
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class UpdateAuctionInput {
+  @Field(() => UpdatePostInput)
+  post: UpdatePostInput;
+
   @IsUUID()
   @Field(() => ID)
   id: string;
@@ -10,25 +14,5 @@ export class UpdateAuctionInput {
   @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
-  name?: string;
-
-  @IsOptional()
-  @IsString()
-  @Field(() => String, { nullable: true })
-  description?: string;
-
-  @IsOptional()
-  @IsString()
-  @Field(() => String, { nullable: true })
-  businessFunction?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  productCategoryId?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  brandId?: string;
+  content?: string;
 }

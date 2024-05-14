@@ -4,6 +4,7 @@ import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { ForbiddenException } from '@nestjs/common';
 import { ReportErrorMessage } from '@lib/domains/report/domain/report.error.message';
+import { Prisma } from '@prisma/client';
 import { FindReportPreviewsQuery } from './find-report-previews.query';
 import { PaginatedReportPreviewsResponse } from './paginated-report-previews.response';
 import { ReportPreviewResponse } from '../../dtos/report-preview.response';
@@ -18,38 +19,44 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler<
   }
 
   async execute(query: FindReportPreviewsQuery): Promise<PaginatedReportPreviewsResponse> {
-    if (!!query.where?.authorId && query.where.authorId !== query.userId)
+    if (!!query.where?.userId && query.where.userId !== query.userId)
       throw new ForbiddenException(ReportErrorMessage.FIND_REPORTS_REQUEST_FROM_UNAUTHORIZED_USER);
+
+    const where: Prisma.ReportWhereInput = query.where
+      ? {
+          type: query.where.type,
+          reportedPostId: query.where.type === 'post' ? query.where.refId : undefined,
+          reportedCommentId: query.where.type === 'comment' ? query.where.refId : undefined,
+          userId: query.where.userId,
+          reportedUserId: query.where.reportedUserId,
+          groupId: query.where.groupId,
+          status: query.where.status,
+          reason: parseFollowedBySearcher(query.keyword),
+          createdAt: query.where.createdAt
+            ? {
+                gt: new Date(query.where.createdAt.gt),
+              }
+            : undefined,
+        }
+      : {};
 
     const cursor = query.cursor
       ? {
           id: query.cursor,
         }
       : undefined;
+
     const reports = await this.prismaService.report.findMany({
-      where: {
-        type: query.where?.type && query.where.refId ? query.where.type : undefined,
-        refId: query.where?.type && query.where.refId ? query.where.refId : undefined,
-        reportedUserId: query.where?.reportedUserId,
-        authorId: query.where?.authorId,
-        title: parseFollowedBySearcher(query.keyword),
-        createdAt: query.where?.createdAt
-          ? {
-              gt: new Date(query.where.createdAt.gt),
-            }
-          : undefined,
-      },
+      where,
       include: {
         reportedUser: {
           include: {
-            members: {
+            roles: {
               include: {
                 group: true,
-                roles: {
-                  orderBy: {
-                    position: 'asc',
-                  },
-                },
+              },
+              orderBy: {
+                position: 'asc',
               },
             },
             socialAccounts: true,

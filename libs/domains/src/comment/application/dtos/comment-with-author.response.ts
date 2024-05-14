@@ -5,7 +5,7 @@ import { CommentResponse } from './comment.response';
 @ObjectType()
 export class CommentWithAuthorResponse extends CommentResponse {
   @Field(() => AuthorResponse)
-  author: AuthorResponse;
+  user: AuthorResponse;
 
   constructor(partial: Partial<CommentWithAuthorResponse>) {
     super(partial);

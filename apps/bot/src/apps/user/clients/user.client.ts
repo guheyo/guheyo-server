@@ -2,15 +2,13 @@ import { GuildMember, PartialUser, RoleManager, User } from 'discord.js';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuid4 } from 'uuid';
 import { UpsertRolesCommand } from '@lib/domains/role/application/commands/upsert-roles/upsert-roles.command';
-import { ConnectRolesCommand } from '@lib/domains/member/application/commands/connect-roles/connect-roles.command';
-import { DisconnectRolesCommand } from '@lib/domains/member/application/commands/disconnect-roles/disconnect-roles.command';
 import { SignInUserCommand } from '@lib/domains/user/application/commands/sign-in-user/sign-in-user.command';
 import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
-import { MemberResponse } from '@lib/domains/member/application/dtos/member.response';
-import { FindMemberQuery } from '@lib/domains/member/application/queries/find-member/find-member.query';
 import { CreateUserImageCommand } from '@lib/domains/user-image/application/commands/create-user-image/create-user-image.command';
 import { FindMyUserQuery } from '@lib/domains/user/application/queries/find-my-user/find-my-user.query';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { ConnectRolesCommand } from '@lib/domains/user/application/commands/connect-roles/connect-roles.command';
+import { DisconnectRolesCommand } from '@lib/domains/user/application/commands/disconnect-roles/disconnect-roles.command';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { UserParser } from '../parsers/user.parser';
 import { UserErrorMessage } from '../parsers/user.error-message';
@@ -52,15 +50,6 @@ export class UserClient extends UserImageClient {
     );
   }
 
-  async findMember(userId: string): Promise<MemberResponse | null> {
-    return this.queryBus.execute(
-      new FindMemberQuery({
-        userId,
-        groupId: this.userParser.parseRootGroupId(),
-      }),
-    );
-  }
-
   isUpdatedAvatar(oldUser: PartialUser | User, newUser: User): boolean {
     const oldUserAvatarURL = this.getAvatarURL(oldUser);
     const newUserAvatarURL = this.getAvatarURL(newUser);
@@ -80,6 +69,7 @@ export class UserClient extends UserImageClient {
     });
     const createUserImageInput = this.userImageParser.parseCreateUserImageInputFromUrl({
       id: uuid4(),
+      type: 'avatar',
       name: this.imageService.parseNameFromURL(url),
       url,
       contentType: this.imageService.parseMimeType(url),
@@ -107,20 +97,23 @@ export class UserClient extends UserImageClient {
   async connectRoles(userId: string, roleNames: string[]) {
     await this.commandBus.execute(
       new ConnectRolesCommand({
-        groupId: this.userParser.parseRootGroupId(),
+        input: {
+          roleIds: [],
+          roleNames,
+        },
         userId,
-        roleIds: [],
-        roleNames,
       }),
     );
   }
 
-  async disconnectRoles(memberId: string, roleNames: string[]) {
+  async disconnectRoles(userId: string, roleNames: string[]) {
     await this.commandBus.execute(
       new DisconnectRolesCommand({
-        id: memberId,
-        roleIds: [],
-        roleNames,
+        input: {
+          roleIds: [],
+          roleNames,
+        },
+        userId,
       }),
     );
   }

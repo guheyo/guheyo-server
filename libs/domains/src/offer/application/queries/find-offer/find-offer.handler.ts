@@ -17,30 +17,40 @@ export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferRe
     const offer = await this.prismaService.offer.findFirst({
       where: {
         id: query.id,
-        slug: query.slug,
+        post: {
+          slug: query.slug,
+        },
       },
       include: {
-        group: true,
-        productCategory: true,
-        seller: {
+        post: {
           include: {
-            members: {
+            group: true,
+            category: true,
+            user: {
               include: {
-                group: true,
                 roles: {
+                  include: {
+                    group: true,
+                  },
                   orderBy: {
                     position: 'asc',
                   },
                 },
+                socialAccounts: true,
               },
             },
-            socialAccounts: true,
+            tags: true,
+            reports: {
+              select: {
+                id: true,
+              },
+            },
           },
         },
       },
     });
-    if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_IS_NOT_FOUND);
-    if (offer.isHidden && offer.sellerId !== query.userId)
+    if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_NOT_FOUND);
+    if (offer.post.archivedAt && offer.post.userId !== query.userId)
       throw new ForbiddenException(OfferErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
 
     const images = await this.prismaService.userImage.findMany({
@@ -54,7 +64,11 @@ export class FindOfferHandler extends PrismaQueryHandler<FindOfferQuery, OfferRe
     });
     return this.parseResponse({
       ...offer,
-      images,
+      post: {
+        ...offer.post,
+        images,
+        reportCount: offer.post.reports.length,
+      },
     });
   }
 }

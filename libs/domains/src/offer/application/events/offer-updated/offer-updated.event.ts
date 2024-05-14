@@ -1,9 +1,12 @@
 import { IEvent } from '@nestjs/cqrs';
 
 export class OfferUpdatedEvent implements IEvent {
-  id: string;
+  offerId: string;
 
-  constructor(id: string) {
-    this.id = id;
+  postId: string;
+
+  constructor({ offerId, postId }: { offerId: string; postId: string }) {
+    this.offerId = offerId;
+    this.postId = postId;
   }
 }

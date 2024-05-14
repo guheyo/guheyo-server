@@ -1,4 +1,17 @@
-import { ChannelType, Guild, Message, TextChannel, User, FetchMessagesOptions } from 'discord.js';
+import {
+  ChannelType,
+  Guild,
+  Message,
+  TextChannel,
+  User,
+  FetchMessagesOptions,
+  ThreadChannel,
+  GuildForumTag,
+  ForumChannel,
+  GuildForumThreadManager,
+  FetchArchivedThreadOptions,
+} from 'discord.js';
+import { ThreadPost } from '../interfaces/post-message.interfaces';
 
 export class DiscordManager {
   constructor(private readonly guild: Guild) {}
@@ -42,5 +55,78 @@ export class DiscordManager {
 
   async fetchMember(guild: Guild, author: User) {
     return guild.members.fetch(author.id);
+  }
+
+  async fetchThreadPostsFromForum(channelId: string, limit: number): Promise<ThreadPost[]> {
+    const channel = await this.guild.channels.fetch(channelId);
+    if (channel?.type !== ChannelType.GuildForum) return [];
+
+    const threadChannels = await this.fetchAllThreadChannels(channel, limit);
+    return threadChannels.reduce(
+      async (threadPostsPromise: Promise<ThreadPost[]>, threadChannel): Promise<ThreadPost[]> => {
+        const threadPost = await this.fetchThreadPost(threadChannel, channel.availableTags);
+        if (!threadPost) return threadPostsPromise;
+        return [...(await threadPostsPromise), threadPost];
+      },
+      Promise.resolve([]),
+    );
+  }
+
+  async fetchThreadPost(
+    threadChannel: ThreadChannel,
+    availableTags: GuildForumTag[],
+  ): Promise<ThreadPost | null> {
+    let starterMessage: Message | null;
+    try {
+      starterMessage = await threadChannel.fetchStarterMessage();
+      if (!starterMessage) return null;
+    } catch (e) {
+      return null;
+    }
+
+    return {
+      threadChannel,
+      tagNames: this.getTagNames(threadChannel.appliedTags, availableTags),
+      starterMessage,
+    };
+  }
+
+  async fetchThreadChannelsFromForum(channelId: string, limit: number): Promise<ThreadChannel[]> {
+    const channel = await this.guild.channels.fetch(channelId);
+    if (channel?.type !== ChannelType.GuildForum) return [];
+
+    return this.fetchAllThreadChannels(channel, limit);
+  }
+
+  async fetchAllThreadChannels(channel: ForumChannel, limit: number): Promise<ThreadChannel[]> {
+    const { threads } = channel;
+    const fetchedThreads = await threads.fetch();
+    const threadChannels = fetchedThreads.threads.map((c) => c);
+    return this.fetchOldThreadChannels(threadChannels, threads, undefined, limit);
+  }
+
+  async fetchOldThreadChannels(
+    oldThreadChannels: ThreadChannel[],
+    threads: GuildForumThreadManager,
+    lastThreadChannelId: string | undefined,
+    limit: number,
+  ): Promise<ThreadChannel[]> {
+    const options: FetchArchivedThreadOptions = {
+      limit: 100,
+    };
+    if (lastThreadChannelId) options.before = lastThreadChannelId;
+
+    const fetchedThreads = await threads.fetchArchived(options);
+    const threadChannels = fetchedThreads.threads.map((c) => c);
+    oldThreadChannels.push(...threadChannels);
+    if (threadChannels.length < 100 || oldThreadChannels.length > limit) {
+      return oldThreadChannels.slice(0, limit);
+    }
+    const lastThreadChannel = fetchedThreads.threads.last();
+    return this.fetchOldThreadChannels(oldThreadChannels, threads, lastThreadChannel?.id, limit);
+  }
+
+  getTagNames(appliedTagIds: string[], availableTags: GuildForumTag[]): string[] {
+    return availableTags.filter((tag) => appliedTagIds.includes(tag.id)).map((tag) => tag.name);
   }
 }

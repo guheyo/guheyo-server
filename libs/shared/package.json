@@ -14,7 +14,9 @@
     "seed:dev": "dotenv -e ./src/prisma/config/.env.dev ts-node ./src/prisma/seeds/seed.ts",
     "seed:test": "dotenv -e ./src/prisma/config/.env.test ts-node ./src/prisma/seeds/seed.ts",
     "seed:production": "dotenv -e ./src/prisma/config/.env.production ts-node ./src/prisma/seeds/seed.ts",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "prisma:generate:v": "prisma generate --schema=./src/prisma/schemas/schema-v${0}.prisma",
+    "migrate:v": "dotenv -e ./src/prisma/config/.env.v${0} ts-node --project ./tsconfig.lib.json ./src/prisma/scripts/migrate-to-v${0}.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.417.0",
@@ -24,7 +26,7 @@
     "@nestjs/core": "^10.2.4",
     "@nestjs/cqrs": "^10.2.6",
     "@nestjs/graphql": "^12.0.8",
-    "@prisma/client": "^5.8.1",
+    "@prisma/client": "^5.12.1",
     "@types/bcrypt": "^5.0.2",
     "axios": "^1.5.0",
     "bcrypt": "^5.1.1",
@@ -35,6 +37,7 @@
     "express": "^4.18.2",
     "fs": "^0.0.1-security",
     "graphql": "^16.8.0",
+    "graphql-subscriptions": "^2.0.0",
     "graphql-type-json": "^0.3.2",
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.2",

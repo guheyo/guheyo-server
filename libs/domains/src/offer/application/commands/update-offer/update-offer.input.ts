@@ -1,8 +1,15 @@
+import { UpdatePostInput } from '@lib/domains/post/application/commands/update-post/update-post.input';
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { IsBoolean, IsInt, IsOptional, IsString, IsUUID } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsInt, IsOptional, IsString, IsUUID, ValidateNested } from 'class-validator';
 
 @InputType()
 export class UpdateOfferInput {
+  @ValidateNested()
+  @Type(() => UpdatePostInput)
+  @Field(() => UpdatePostInput)
+  post: UpdatePostInput;
+
   @IsUUID()
   @Field(() => ID)
   id: string;
@@ -10,12 +17,17 @@ export class UpdateOfferInput {
   @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
-  name?: string;
+  name0?: string;
 
   @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
-  description?: string;
+  name1?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  content?: string;
 
   @IsOptional()
   @IsInt()
@@ -40,33 +52,5 @@ export class UpdateOfferInput {
   @IsOptional()
   @IsString()
   @Field(() => String, { nullable: true })
-  businessFunction?: string;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  productCategoryId?: string;
-
-  @IsUUID()
-  @Field(() => ID)
-  sellerId: string;
-
-  @IsOptional()
-  @IsString()
-  @Field(() => String, { nullable: true })
   status?: string;
-
-  @IsOptional()
-  @IsBoolean()
-  @Field(() => Boolean, { nullable: true })
-  isHidden?: boolean;
-
-  @IsOptional()
-  @IsUUID()
-  @Field(() => ID, { nullable: true })
-  brandId?: string;
-
-  @IsString()
-  @Field()
-  source: string;
 }
