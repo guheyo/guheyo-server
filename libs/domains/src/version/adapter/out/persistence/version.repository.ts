@@ -25,11 +25,7 @@ export class VersionRepository extends PrismaRepository<VersionEntity> {
   }
 
   async createMany(versions: VersionEntity[]): Promise<void> {
-    await this.prismaService.version.createMany({
-      data: versions.map((version) =>
-        _.pick(version, ['id', 'schemaName', 'tableName', 'op', 'refId', 'values']),
-      ),
-    });
+    await Promise.all(versions.map((version) => this.create(version)));
   }
 
   async save(version: VersionEntity): Promise<void> {

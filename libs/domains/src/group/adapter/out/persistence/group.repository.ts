@@ -32,11 +32,7 @@ export class GroupRepository extends PrismaRepository<GroupEntity> {
   }
 
   async createMany(groups: GroupEntity[]): Promise<void> {
-    await this.prismaService.group.createMany({
-      data: groups.map((group) =>
-        _.pick(group, ['id', 'name', 'slug', 'description', 'icon', 'position']),
-      ),
-    });
+    await Promise.all(groups.map((group) => this.create(group)));
   }
 
   async save(group: GroupEntity): Promise<void> {

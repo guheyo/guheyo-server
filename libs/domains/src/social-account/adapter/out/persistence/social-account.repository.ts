@@ -40,9 +40,7 @@ export class SocialAccountRepository
   }
 
   async createMany(socialAccounts: SocialAccountEntity[]): Promise<void> {
-    await this.prismaService.socialAccount.createMany({
-      data: socialAccounts,
-    });
+    await Promise.all(socialAccounts.map((socialAccount) => this.create(socialAccount)));
   }
 
   async save(socialAccount: SocialAccountEntity): Promise<void> {

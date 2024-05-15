@@ -5,4 +5,5 @@ export enum CommentErrorMessage {
   CREATE_COMMENT_REQUEST_FROM_UNAUTHORIZED_USER = 'Create comment request from unauthorized user',
   COMMENT_CREATION_FAILED = 'Comment creation failed',
   COMMENT_UPDATE_FAILED = 'Comment update failed',
+  POST_NOT_EXISET = 'Post not exist',
 }

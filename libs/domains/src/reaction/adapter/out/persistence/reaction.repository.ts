@@ -52,7 +52,7 @@ export class ReactionRepository
   }
 
   async createMany(reactions: ReactionEntity[]): Promise<void> {
-    await reactions.map(async (reaction) => this.create(reaction));
+    await Promise.all(reactions.map((reaction) => this.create(reaction)));
   }
 
   async save(reaction: ReactionEntity): Promise<void> {

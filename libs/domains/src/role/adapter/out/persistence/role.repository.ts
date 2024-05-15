@@ -26,9 +26,7 @@ export class RoleRepository extends PrismaRepository<RoleEntity> implements Role
   }
 
   async createMany(roles: RoleEntity[]): Promise<void> {
-    await this.prismaService.role.createMany({
-      data: roles.map((role) => _.pick(role, ['id', 'name', 'position', 'hexColor', 'groupId'])),
-    });
+    await Promise.all(roles.map((role) => this.create(role)));
   }
 
   async save(role: RoleEntity): Promise<void> {

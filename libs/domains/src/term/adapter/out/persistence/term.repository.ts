@@ -25,9 +25,7 @@ export class TermRepository extends PrismaRepository<TermEntity> {
   }
 
   async createMany(terms: TermEntity[]): Promise<void> {
-    await this.prismaService.term.createMany({
-      data: terms.map((term) => _.pick(term, ['id', 'name', 'title', 'content', 'meta'])),
-    });
+    await Promise.all(terms.map((term) => this.create(term)));
   }
 
   async save(term: TermEntity): Promise<void> {
