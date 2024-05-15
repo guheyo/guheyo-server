@@ -103,7 +103,7 @@ export class AuctionRepository
   }
 
   async createMany(auctions: AuctionEntity[]): Promise<void> {
-    await auctions.map(async (auction) => this.create(auction));
+    await Promise.all(auctions.map((auction) => this.create(auction)));
   }
 
   async save(auction: AuctionEntity): Promise<void> {

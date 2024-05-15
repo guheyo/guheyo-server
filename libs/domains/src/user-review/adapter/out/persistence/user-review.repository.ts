@@ -132,7 +132,7 @@ export class UserReviewRepository
   }
 
   async createMany(userReviews: UserReviewEntity[]): Promise<void> {
-    await userReviews.map(async (userReview) => this.create(userReview));
+    await Promise.all(userReviews.map((userReview) => this.create(userReview)));
   }
 
   async save(userReview: UserReviewEntity): Promise<void> {

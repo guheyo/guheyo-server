@@ -64,23 +64,7 @@ export class PostRepository
   }
 
   async createMany(posts: PostEntity[]): Promise<void> {
-    await this.prismaService.post.createMany({
-      data: posts.map((post) =>
-        _.pick(post, [
-          'id',
-          'createdAt',
-          'updatedAt',
-          'type',
-          'title',
-          'thumbnail',
-          'userAgent',
-          'ipAddress',
-          'groupId',
-          'categoryId',
-          'userId',
-        ]),
-      ),
-    });
+    await Promise.all(posts.map((post) => this.create(post)));
   }
 
   async save(post: PostEntity): Promise<void> {

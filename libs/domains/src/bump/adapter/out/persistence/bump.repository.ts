@@ -25,9 +25,7 @@ export class BumpRepository extends PrismaRepository<BumpEntity> {
   }
 
   async createMany(bumps: BumpEntity[]): Promise<void> {
-    await this.prismaService.bump.createMany({
-      data: bumps.map((bump) => _.pick(bump, ['id', 'offerId', 'oldPrice', 'newPrice'])),
-    });
+    await Promise.all(bumps.map((bump) => this.create(bump)));
   }
 
   async save(bump: BumpEntity): Promise<void> {

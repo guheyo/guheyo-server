@@ -113,22 +113,7 @@ export class ReportRepository
   }
 
   async createMany(reports: ReportEntity[]): Promise<void> {
-    await this.prismaService.report.createMany({
-      data: reports.map((report) =>
-        _.pick(report, [
-          'id',
-          'type',
-          'reportedPostId',
-          'reportedCommentId',
-          'userId',
-          'reportedUserId',
-          'groupId',
-          'reason',
-          'description',
-          'status',
-        ]),
-      ),
-    });
+    await Promise.all(reports.map((report) => this.create(report)));
   }
 
   async save(report: ReportEntity): Promise<void> {
