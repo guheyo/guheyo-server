@@ -40,7 +40,7 @@ export class CommentRepository
   }
 
   async createMany(comments: CommentEntity[]): Promise<void> {
-    await comments.map(async (comment) => this.create(comment));
+    await Promise.all(comments.map((comment) => this.create(comment)));
   }
 
   async save(comment: CommentEntity): Promise<void> {
