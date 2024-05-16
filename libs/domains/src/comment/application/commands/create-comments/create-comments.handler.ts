@@ -2,11 +2,11 @@ import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { ForbiddenException, Inject } from '@nestjs/common';
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
+import { CommentErrorMessage } from '@lib/domains/comment/domain/comment.error.message';
 import { CreateCommentsCommand } from './create-comments.command';
 import { CommentSavePort } from '../../ports/out/comment.save.port';
 import { CommentLoadPort } from '../../ports/out/comment.load.port';
 import { CommentWithAuthorResponse } from '../../dtos/comment-with-author.response';
-import { CommentErrorMessage } from '@lib/domains/comment/domain/comment.error.message';
 
 @CommandHandler(CreateCommentsCommand)
 export class CreateCommentsHandler extends PrismaCommandHandler<
@@ -24,7 +24,7 @@ export class CreateCommentsHandler extends PrismaCommandHandler<
   async execute(command: CreateCommentsCommand): Promise<void> {
     const post = await this.prismaService.post.findUnique({
       where: {
-        id: command.commentCommands[0].id,
+        id: command.commentCommands[0].postId,
       },
     });
     if (!post) throw new ForbiddenException(CommentErrorMessage.POST_NOT_EXISET);
