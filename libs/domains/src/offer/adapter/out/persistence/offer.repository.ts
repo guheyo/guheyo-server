@@ -88,7 +88,7 @@ export class OfferRepository
   }
 
   async createMany(offers: OfferEntity[]): Promise<void> {
-    await offers.map(async (offer) => this.create(offer));
+    await Promise.all(offers.map(async (offer) => this.create(offer)));
   }
 
   async save(offer: OfferEntity): Promise<void> {

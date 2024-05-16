@@ -27,11 +27,7 @@ export class TagRepository extends PrismaRepository<TagEntity> implements TagLoa
   }
 
   async createMany(mannerTags: TagEntity[]): Promise<void> {
-    await this.prismaService.tag.createMany({
-      data: mannerTags.map((mannerTag) =>
-        _.pick(mannerTag, ['id', 'type', 'name', 'description', 'position']),
-      ),
-    });
+    await Promise.all(mannerTags.map((mannerTag) => this.create(mannerTag)));
   }
 
   async save(mannerTag: TagEntity): Promise<void> {

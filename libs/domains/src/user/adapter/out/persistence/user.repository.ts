@@ -66,11 +66,7 @@ export class UserRepository
   }
 
   async createMany(users: UserEntity[]): Promise<void> {
-    await this.prismaService.user.createMany({
-      data: users.map((user) =>
-        _.pick(user, 'id', 'username', 'name', 'about', 'phoneNumber', 'avatarURL'),
-      ),
-    });
+    await Promise.all(users.map((user) => this.create(user)));
   }
 
   async save(user: UserEntity): Promise<void> {

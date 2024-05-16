@@ -45,26 +45,7 @@ export class UserImageRepository
   }
 
   async createMany(userImages: UserImageEntity[]): Promise<void> {
-    await this.prismaService.userImage.createMany({
-      data: userImages.map((userImage) =>
-        _.pick(userImage, [
-          'id',
-          'name',
-          'url',
-          'contentType',
-          'description',
-          'size',
-          'height',
-          'width',
-          'position',
-          'type',
-          'refId',
-          'tracked',
-          'userId',
-          'source',
-        ]),
-      ),
-    });
+    await Promise.all(userImages.map((userImage) => this.create(userImage)));
   }
 
   async save(userImage: UserImageEntity): Promise<void> {
