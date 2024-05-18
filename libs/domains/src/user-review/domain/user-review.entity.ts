@@ -51,6 +51,10 @@ export class UserReviewEntity extends AggregateRoot {
     );
   }
 
+  isAuthorized(userId: string) {
+    return this.post.userId === userId;
+  }
+
   matching() {
     this.status = USER_REVIEW_TWO_WAY;
   }
