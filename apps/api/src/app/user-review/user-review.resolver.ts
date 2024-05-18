@@ -17,6 +17,9 @@ import { PaginatedUserReviewPreviewsResponse } from '@lib/domains/user-review/ap
 import { UserReviewResponse } from '@lib/domains/user-review/application/dtos/user-review.response';
 import { FindUserReviewArgs } from '@lib/domains/user-review/application/queries/find-user-review/find-user-review.args';
 import { FindUserReviewQuery } from '@lib/domains/user-review/application/queries/find-user-review/find-user-review.query';
+import { REPORTED_USER_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
+import { DeleteUserReviewArgs } from '@lib/domains/user-review/application/commands/delete-user-review/delete-user-review.args';
+import { DeleteUserReviewCommand } from '@lib/domains/user-review/application/commands/delete-user-review/delete-user-review.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -63,5 +66,17 @@ export class UserReviewResolver {
   ): Promise<string> {
     await this.commandBus.execute(new CreateUserReviewCommand({ input, user }));
     return input.id;
+  }
+
+  @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
+  @AllowlistRoleNames([])
+  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
+  @Mutation(() => String)
+  async deleteUserReview(
+    @Args() args: DeleteUserReviewArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new DeleteUserReviewCommand({ args, user }));
+    return args.id;
   }
 }
