@@ -81,7 +81,7 @@ export class AuctionEntity extends AggregateRoot {
   }
 
   cancelBid(command: CancelBidCommand): BidEntity {
-    if (this.hasClosed()) throw new Error(AuctionErrorMessage.AUCTION_HAS_ENDED);
+    if (this.hasEnded()) throw new Error(AuctionErrorMessage.AUCTION_HAS_ENDED);
 
     const bidToBeCanceled = this.bids.find((bid) => bid.userId === command.user.id);
     if (!bidToBeCanceled) throw new Error(AuctionErrorMessage.BID_NOT_FOUND);
@@ -99,7 +99,7 @@ export class AuctionEntity extends AggregateRoot {
     return lastBid;
   }
 
-  hasClosed() {
+  hasEnded() {
     return this.status === AUCTION_CLOSED;
   }
 

@@ -1,4 +1,4 @@
-import { AUCTION_OPEN } from '@lib/domains/auction/domain/auction.constants';
+import { AUCTION_LIVE } from '@lib/domains/auction/domain/auction.constants';
 import { CreatePostInput } from '@lib/domains/post/application/commands/create-post/create-post.input';
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
@@ -36,6 +36,6 @@ export class CreateAuctionInput {
   shippingType: string;
 
   @IsString()
-  @Field(() => String, { defaultValue: AUCTION_OPEN })
+  @Field(() => String, { defaultValue: AUCTION_LIVE })
   status: string;
 }
