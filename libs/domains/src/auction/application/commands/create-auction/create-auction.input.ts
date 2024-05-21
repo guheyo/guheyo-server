@@ -1,10 +1,13 @@
 import { AUCTION_OPEN } from '@lib/domains/auction/domain/auction.constants';
 import { CreatePostInput } from '@lib/domains/post/application/commands/create-post/create-post.input';
-import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
+import { Field, ID, InputType, Int } from '@nestjs/graphql';
+import { Type } from 'class-transformer';
+import { IsDate, IsNumber, IsString, IsUUID, ValidateNested } from 'class-validator';
 
 @InputType()
 export class CreateAuctionInput {
+  @ValidateNested()
+  @Type(() => CreatePostInput)
   @Field(() => CreatePostInput)
   post: CreatePostInput;
 
@@ -13,23 +16,21 @@ export class CreateAuctionInput {
   id: string;
 
   @IsDate()
-  @Field()
+  @Field(() => Date)
   createdAt: Date;
 
   @IsDate()
   @Field(() => Date)
   originalEndDate: Date;
 
-  @IsOptional()
   @IsString()
-  @Field(() => String, { nullable: true })
-  content?: string;
+  @Field(() => String)
+  content: string;
 
-  @IsString()
-  @Field()
+  @IsNumber()
+  @Field(() => Int)
   shippingCost: number;
 
-  @IsOptional()
   @IsString()
   @Field()
   shippingType: string;

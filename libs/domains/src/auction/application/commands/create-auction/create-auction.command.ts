@@ -12,7 +12,7 @@ export class CreateAuctionCommand implements ICommand {
 
   originalEndDate: Date;
 
-  content?: string;
+  content: string;
 
   shippingCost: number;
 
@@ -23,6 +23,7 @@ export class CreateAuctionCommand implements ICommand {
   user: MyUserResponse;
 
   constructor({ input, user }: { input: CreateAuctionInput; user: MyUserResponse }) {
+    this.post = input.post;
     this.id = input.id;
     this.createdAt = input.createdAt;
     this.originalEndDate = input.originalEndDate;
