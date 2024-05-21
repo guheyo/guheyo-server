@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { Inject, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Inject, NotFoundException } from '@nestjs/common';
 import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
 import { UpdateAuctionCommand } from './update-auction.command';
 import { AuctionSavePort } from '../../ports/out/auction.save.port';
@@ -16,6 +16,10 @@ export class UpdateAuctionHandler implements ICommandHandler<UpdateAuctionComman
   async execute(command: UpdateAuctionCommand): Promise<void> {
     let auction = await this.auctionLoadPort.findById(command.id);
     if (!auction) throw new NotFoundException(AuctionErrorMessage.AUCTION_NOT_FOUND);
+    if (!auction.post.isAuthorized(command.user.id))
+      throw new ForbiddenException(
+        AuctionErrorMessage.AUCTION_UPDATE_REQUEST_FROM_UNAUTHORIZED_USER,
+      );
 
     auction = this.publisher.mergeObjectContext(auction);
     auction.update(command);

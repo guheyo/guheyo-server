@@ -6,4 +6,5 @@ export enum AuctionErrorMessage {
   CANCELLERS_ATTEMPT_TO_RE_BID = 'Cancellers attempt to re-bid',
   BID_CANCELLATION_TIMEOUT = 'Bid cancellation Timeout',
   AUCTION_CREATION_FAILED = 'Auction creation failed',
+  AUCTION_UPDATE_REQUEST_FROM_UNAUTHORIZED_USER = 'Auction update request from unauthorized user',
 }
