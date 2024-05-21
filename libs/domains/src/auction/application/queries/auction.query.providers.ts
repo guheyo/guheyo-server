@@ -1,4 +1,4 @@
-import { FindAuctionByIdHandler } from './find-auction-by-id/find-auction-by-id.handler';
 import { FindAuctionPreviewsHandler } from './find-auction-previews/find-auction-previews.handler';
+import { FindAuctionHandler } from './find-auction/find-auction.handler';
 
-export const AUCTION_QUERY_PROVIDERS = [FindAuctionByIdHandler, FindAuctionPreviewsHandler];
+export const AUCTION_QUERY_PROVIDERS = [FindAuctionHandler, FindAuctionPreviewsHandler];

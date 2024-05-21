@@ -17,6 +17,7 @@ export class CancelBidHandler implements ICommandHandler<CancelBidCommand> {
   async execute(command: CancelBidCommand): Promise<void> {
     let auction = await this.auctionLoadPort.findById(command.auctionId);
     if (!auction) throw new Error(AuctionErrorMessage.AUCTION_NOT_FOUND);
+
     auction = this.publisher.mergeObjectContext(new AuctionEntity(auction));
     const bid = auction.cancelBid(command);
     await this.bidSavePort.cancelBid(bid);

@@ -1,13 +1,11 @@
 import { CreateAuctionCommand } from '@lib/domains/auction/application/commands/create-auction/create-auction.command';
 import { CreateAuctionInput } from '@lib/domains/auction/application/commands/create-auction/create-auction.input';
 import { AddBidInput } from '@lib/domains/auction/application/commands/add-bid/add-bid.input';
-import { DeleteAuctionCommand } from '@lib/domains/auction/application/commands/delete-auction/delete-auction.command';
 import { UpdateAuctionCommand } from '@lib/domains/auction/application/commands/update-auction/update-auction.command';
 import { UpdateAuctionInput } from '@lib/domains/auction/application/commands/update-auction/update-auction.input';
 import { AuctionResponse } from '@lib/domains/auction/application/dtos/auction.response';
-import { FindAuctionByIdQuery } from '@lib/domains/auction/application/queries/find-auction-by-id/find-auction-by-id.query';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AddBidCommand } from '@lib/domains/auction/application/commands/add-bid/add-bid.command';
 import { CancelBidInput } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.input';
 import { CancelBidCommand } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.command';
@@ -20,10 +18,11 @@ import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
-import { ADMIN_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
 import { PaginatedAuctionPreviewsResponse } from '@lib/domains/auction/application/queries/find-auction-previews/paginated-auction-previews.response';
 import { FindAuctionPreviewsQuery } from '@lib/domains/auction/application/queries/find-auction-previews/find-auction-previews.query';
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
+import { FindAuctionQuery } from '@lib/domains/auction/application/queries/find-auction/find-auction.query';
+import { FindAuctionArgs } from '@lib/domains/auction/application/queries/find-auction/find-auction.args';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -35,10 +34,11 @@ export class AuctionResolver {
   ) {}
 
   @Query(() => AuctionResponse, { nullable: true })
-  async findAuctionById(
-    @Args('id', { type: () => ID }) id: string,
+  async findAuction(
+    @Args() args: FindAuctionArgs,
+    @ExtractedUser() user: MyUserResponse,
   ): Promise<AuctionResponse | null> {
-    const query = new FindAuctionByIdQuery(id);
+    const query = new FindAuctionQuery({ args, userId: user.id });
     return this.queryBus.execute(query);
   }
 
@@ -74,15 +74,6 @@ export class AuctionResolver {
   ): Promise<string> {
     await this.commandBus.execute(new UpdateAuctionCommand({ input, user }));
     return input.id;
-  }
-
-  @BlocklistRoleNames([])
-  @AllowlistRoleNames([ADMIN_ROLE_NAME])
-  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
-  @Mutation(() => String)
-  async deleteAuction(@Args('id', { type: () => ID }) id: string): Promise<string> {
-    await this.commandBus.execute(new DeleteAuctionCommand(id));
-    return id;
   }
 
   @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])

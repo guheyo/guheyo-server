@@ -10,7 +10,7 @@ import { BidEntity } from './bid.entity';
 import { AuctionErrorMessage } from './auction.error.message';
 import { CancelBidCommand } from '../application/commands/cancel-bid/cancel-bid.command';
 import { AUCTION_CLOSED } from './auction.constants';
-import { BID_BID } from './bid.constants';
+import { BID } from './bid.constants';
 import { AddBidCommand } from '../application/commands/add-bid/add-bid.command';
 
 export class AuctionEntity extends AggregateRoot {
@@ -49,12 +49,14 @@ export class AuctionEntity extends AggregateRoot {
   constructor(partial: Partial<AuctionEntity>) {
     super();
     Object.assign(this, partial);
+    this.extendedEndDate = this.originalEndDate;
   }
 
   create(tagIds: string[]) {
     this.apply(
       new AuctionCreatedEvent({
         id: this.id,
+        postId: this.post.id,
         tagIds,
       }),
     );
@@ -69,7 +71,7 @@ export class AuctionEntity extends AggregateRoot {
     const bid = new BidEntity({
       ...pick(command, ['id', 'auctionId', 'price', 'priceCurrency']),
       userId: command.user.id,
-      status: BID_BID,
+      status: BID,
     });
     if (this.isBidBelowTheCurrentPrice(bid.price))
       throw new Error(AuctionErrorMessage.BID_BELOW_THE_CURRENT_PRICE);
@@ -79,30 +81,31 @@ export class AuctionEntity extends AggregateRoot {
   }
 
   cancelBid(command: CancelBidCommand): BidEntity {
-    if (this.hasClosed()) throw new Error(AuctionErrorMessage.AUCTION_HAS_ENDED);
+    if (this.hasEnded()) throw new Error(AuctionErrorMessage.AUCTION_HAS_ENDED);
 
-    const bidToBeCanceled = this.bids.find((bid) => bid.userId === command.user.id);
-    if (!bidToBeCanceled) throw new Error(AuctionErrorMessage.BID_NOT_FOUND);
+    const userBids = this.bids.filter((bid) => bid.userId === command.user.id);
+    if (userBids.length === 0) throw new Error(AuctionErrorMessage.BID_NOT_FOUND);
 
-    if (this.cancellationTimeout(bidToBeCanceled.createdAt))
+    const lastBid = userBids[userBids.length - 1];
+
+    if (this.cancellationTimeout(lastBid.createdAt))
       throw new Error(AuctionErrorMessage.BID_CANCELLATION_TIMEOUT);
 
-    bidToBeCanceled.canceledAt = new Date();
-    return bidToBeCanceled;
-  }
-
-  getLastBid(): BidEntity {
-    const lastBid = this.bids.at(-1);
-    if (!lastBid) throw new Error(AuctionErrorMessage.BID_NOT_FOUND);
+    lastBid.canceledAt = new Date();
     return lastBid;
   }
 
-  hasClosed() {
+  getLastBid(): BidEntity | null {
+    const lastBid = this.bids.at(-1);
+    return lastBid || null;
+  }
+
+  hasEnded() {
     return this.status === AUCTION_CLOSED;
   }
 
   isBidBelowTheCurrentPrice(price: number) {
-    return this.bids ? price <= (this.bids.at(-1)?.price || 0) : price <= 0;
+    return price <= (this.getLastBid()?.price || 0);
   }
 
   isCanceler(bidderId: string) {
