@@ -10,7 +10,7 @@ import { BidEntity } from './bid.entity';
 import { AuctionErrorMessage } from './auction.error.message';
 import { CancelBidCommand } from '../application/commands/cancel-bid/cancel-bid.command';
 import { AUCTION_CLOSED } from './auction.constants';
-import { BID_BID } from './bid.constants';
+import { BID } from './bid.constants';
 import { AddBidCommand } from '../application/commands/add-bid/add-bid.command';
 
 export class AuctionEntity extends AggregateRoot {
@@ -71,7 +71,7 @@ export class AuctionEntity extends AggregateRoot {
     const bid = new BidEntity({
       ...pick(command, ['id', 'auctionId', 'price', 'priceCurrency']),
       userId: command.user.id,
-      status: BID_BID,
+      status: BID,
     });
     if (this.isBidBelowTheCurrentPrice(bid.price))
       throw new Error(AuctionErrorMessage.BID_BELOW_THE_CURRENT_PRICE);
