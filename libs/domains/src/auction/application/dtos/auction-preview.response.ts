@@ -13,6 +13,9 @@ export class AuctionPreviewResponse {
   createdAt: Date;
 
   @Field(() => Date)
+  updatedAt: Date;
+
+  @Field(() => Date)
   originalEndDate: Date;
 
   @Field(() => Date)

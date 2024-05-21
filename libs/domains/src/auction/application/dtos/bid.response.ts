@@ -26,7 +26,4 @@ export class BidResponse {
 
   @Field()
   status: string;
-
-  @Field()
-  source: string;
 }
