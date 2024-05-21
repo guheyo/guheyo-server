@@ -25,6 +25,7 @@ import { TagModule } from './app/tag/tag.module';
 import { PostModule } from './app/post/post.module';
 import { EmojiModule } from './app/emoji/emoji.module';
 import { ReactionModule } from './app/reaction/reaction.module';
+import { AuctionModule } from './app/auction/auction.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { ReactionModule } from './app/reaction/reaction.module';
       },
     ]),
     AuthModule,
+    AuctionModule,
     SocialAccountModule,
     CommonModule,
     UserModule,

@@ -2,6 +2,51 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AddBidInput {
+  auctionId: String!
+  id: ID!
+  price: Int!
+  priceCurrency: String!
+}
+
+type AuctionPreviewResponse {
+  content: String
+  createdAt: DateTime!
+  currentBidPrice: Int!
+  extendedEndDate: DateTime!
+  extensionCount: Int!
+  hammerPrice: Int!
+  id: ID!
+  originalEndDate: DateTime!
+  post: PostPreviewWithUserResponse!
+  shippingCost: Int!
+  shippingType: String!
+  status: String!
+  updatedAt: DateTime!
+}
+
+type AuctionPreviewResponseEdge {
+  cursor: String!
+  node: AuctionPreviewResponse!
+}
+
+type AuctionResponse {
+  bids: [BidResponse!]!
+  content: String
+  createdAt: DateTime!
+  currentBidPrice: Int!
+  extendedEndDate: DateTime!
+  extensionCount: Int!
+  hammerPrice: Int!
+  id: ID!
+  originalEndDate: DateTime!
+  post: PostResponse!
+  shippingCost: Int!
+  shippingType: String!
+  status: String!
+  updatedAt: DateTime!
+}
+
 type AuthorResponse {
   about: String
   avatarURL: String
@@ -13,10 +58,25 @@ type AuthorResponse {
   username: String!
 }
 
+type BidResponse {
+  auctionId: ID!
+  bidder: AuthorResponse!
+  canceledAt: DateTime!
+  createdAt: DateTime!
+  id: ID!
+  price: Int!
+  priceCurrency: String!
+  status: String!
+}
+
 input BumpOfferInput {
   id: ID!
   newPrice: Int!
   offerId: ID!
+}
+
+input CancelBidInput {
+  auctionId: String!
 }
 
 input CancelReactionInput {
@@ -70,6 +130,17 @@ type CommentWithAuthorResponse {
 type CommentWithAuthorResponseEdge {
   cursor: String!
   node: CommentWithAuthorResponse!
+}
+
+input CreateAuctionInput {
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  originalEndDate: DateTime!
+  post: CreatePostInput!
+  shippingCost: Int!
+  shippingType: String!
+  status: String! = "live"
 }
 
 input CreateCommentInput {
@@ -258,9 +329,12 @@ input LinkSocialProfileInput {
 }
 
 type Mutation {
+  addBid(input: AddBidInput!): String!
   bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
+  cancelBid(input: CancelBidInput!): String!
   cancelReaction(input: CancelReactionInput!): String!
   commentReport(input: CommentReportInput!): ReportCommentResponse!
+  createAuction(input: CreateAuctionInput!): String!
   createComment(input: CreateCommentInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
@@ -280,6 +354,7 @@ type Mutation {
   logout: SocialUserResponse!
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
+  updateAuction(input: UpdateAuctionInput!): String!
   updateComment(input: UpdateCommentInput!): String!
   updateGroup(input: UpdateGroupInput!): String!
   updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
@@ -348,6 +423,11 @@ type OfferResponse {
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
+}
+
+type PaginatedAuctionPreviewsResponse {
+  edges: [AuctionPreviewResponseEdge!]!
+  pageInfo: PageInfo!
 }
 
 type PaginatedCommentsResponse {
@@ -457,6 +537,8 @@ type PostResponse {
 }
 
 type Query {
+  findAuction(id: ID, slug: String): AuctionResponse
+  findAuctionPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionPreviewsResponse!
   findAuthor(id: ID, username: String): AuthorResponse
   findComment(id: ID, postId: ID): CommentResponse
   findComments(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedCommentsResponse!
@@ -609,6 +691,12 @@ type TermResponse {
   name: String!
   title: String!
   updatedAt: DateTime!
+}
+
+input UpdateAuctionInput {
+  content: String
+  id: ID!
+  post: UpdatePostInput!
 }
 
 input UpdateCommentInput {
