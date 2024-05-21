@@ -64,7 +64,12 @@ export class AuctionEntity extends AggregateRoot {
 
   update(props: UpdateAuctionProps) {
     Object.assign(this, omitBy(props, isUndefined));
-    this.apply(new AuctionUpdatedEvent(this.id));
+    this.apply(
+      new AuctionUpdatedEvent({
+        auctionId: this.id,
+        postId: this.post.id,
+      }),
+    );
   }
 
   addBid(command: AddBidCommand) {
