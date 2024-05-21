@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
+import { Inject, InternalServerErrorException } from '@nestjs/common';
 import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
 import { AuctionEntity } from '@lib/domains/auction/domain/auction.entity';
 import { AddBidCommand } from './add-bid.command';
@@ -20,6 +20,9 @@ export class AddBidHandler implements ICommandHandler<AddBidCommand> {
 
     auction = this.publisher.mergeObjectContext(new AuctionEntity(auction));
     await auction.addBid(command);
-    await this.bidSavePort.addBid(auction.getLastBid());
+
+    const lastBid = auction.getLastBid();
+    if (!lastBid) throw new InternalServerErrorException(AuctionErrorMessage.BID_NOT_ADDED);
+    await this.bidSavePort.addBid(lastBid);
   }
 }
