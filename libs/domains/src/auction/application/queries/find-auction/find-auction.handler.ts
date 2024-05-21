@@ -3,18 +3,23 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { NotFoundException } from '@nestjs/common';
 import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
 import { AuctionResponse } from '../../dtos/auction.response';
-import { FindAuctionArgs } from './find-auction.args';
+import { FindAuctionQuery } from './find-auction.query';
 
-@QueryHandler(FindAuctionArgs)
-export class FindAuctionHandler extends PrismaQueryHandler<FindAuctionArgs, AuctionResponse> {
+@QueryHandler(FindAuctionQuery)
+export class FindAuctionHandler extends PrismaQueryHandler<FindAuctionQuery, AuctionResponse> {
   constructor() {
     super(AuctionResponse);
   }
 
-  async execute(query: FindAuctionArgs): Promise<any> {
-    const auction = await this.prismaService.auction.findUnique({
+  async execute(query: FindAuctionQuery): Promise<any> {
+    if (!query.id && !query.slug) return null;
+
+    const auction = await this.prismaService.auction.findFirst({
       where: {
         id: query.id,
+        post: {
+          slug: query.slug,
+        },
       },
       include: {
         post: {

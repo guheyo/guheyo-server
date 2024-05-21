@@ -33,6 +33,7 @@ export class AuctionResolver {
     private readonly commandBus: CommandBus,
   ) {}
 
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => AuctionResponse, { nullable: true })
   async findAuction(
     @Args() args: FindAuctionArgs,
