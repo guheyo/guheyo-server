@@ -19,7 +19,7 @@ export class AuctionSagas {
             refId: event.id,
           }),
           new ConnectTagsCommand({
-            postId: event.id,
+            postId: event.postId,
             tagIds: event.tagIds,
           }),
         ),

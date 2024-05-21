@@ -49,12 +49,14 @@ export class AuctionEntity extends AggregateRoot {
   constructor(partial: Partial<AuctionEntity>) {
     super();
     Object.assign(this, partial);
+    this.extendedEndDate = this.originalEndDate;
   }
 
   create(tagIds: string[]) {
     this.apply(
       new AuctionCreatedEvent({
         id: this.id,
+        postId: this.post.id,
         tagIds,
       }),
     );
