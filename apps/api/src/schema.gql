@@ -2,13 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-input AddBidInput {
-  auctionId: String!
-  id: ID!
-  price: Int!
-  priceCurrency: String!
-}
-
 type AuctionPreviewResponse {
   content: String
   createdAt: DateTime!
@@ -334,7 +327,6 @@ input LinkSocialProfileInput {
 }
 
 type Mutation {
-  addBid(input: AddBidInput!): String!
   bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
   cancelBid(input: CancelBidInput!): String!
   cancelReaction(input: CancelReactionInput!): String!
@@ -357,6 +349,7 @@ type Mutation {
   deleteUserReview(id: ID!): String!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
+  placeBid(input: PlaceBidInput!): String!
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
   updateAuction(input: UpdateAuctionInput!): String!
@@ -473,6 +466,13 @@ type PaginatedUserReviewPreviewsResponse {
 type PaginatedUsersResponse {
   edges: [UserResponseEdge!]!
   pageInfo: PageInfo!
+}
+
+input PlaceBidInput {
+  auctionId: String!
+  id: ID!
+  price: Int!
+  priceCurrency: String!
 }
 
 type PostPreviewWithAuthorResponse {
