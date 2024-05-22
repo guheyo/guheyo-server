@@ -48,23 +48,8 @@ export class FindAuctionHandler extends PrismaQueryHandler<FindAuctionQuery, Auc
           },
         },
         bids: {
-          orderBy: {
-            createdAt: 'desc',
-          },
-          include: {
-            user: {
-              include: {
-                roles: {
-                  include: {
-                    group: true,
-                  },
-                  orderBy: {
-                    position: 'asc',
-                  },
-                },
-                socialAccounts: true,
-              },
-            },
+          select: {
+            id: true,
           },
         },
       },
@@ -87,6 +72,7 @@ export class FindAuctionHandler extends PrismaQueryHandler<FindAuctionQuery, Auc
         images,
         reportCount: auction.post.reports.length,
       },
+      bidCount: auction.bids.length,
     });
   }
 }

@@ -1,6 +1,5 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { PostResponse } from '@lib/domains/post/application/dtos/post.response';
-import { BidResponse } from './bid.response';
 import { AuctionPreviewResponse } from './auction-preview.response';
 
 @ObjectType()
@@ -8,8 +7,8 @@ export class AuctionResponse extends AuctionPreviewResponse {
   @Field(() => PostResponse)
   declare post: PostResponse;
 
-  @Field(() => [BidResponse])
-  bids: BidResponse[];
+  @Field(() => Int)
+  bidCount: number;
 
   constructor(partial: Partial<AuctionResponse>) {
     super(partial);
