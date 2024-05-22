@@ -60,13 +60,18 @@ type AuthorResponse {
 
 type BidResponse {
   auctionId: ID!
-  bidder: AuthorResponse!
   canceledAt: DateTime!
   createdAt: DateTime!
   id: ID!
   price: Int!
   priceCurrency: String!
   status: String!
+  user: AuthorResponse!
+}
+
+type BidResponseEdge {
+  cursor: String!
+  node: BidResponse!
 }
 
 input BumpOfferInput {
@@ -430,6 +435,11 @@ type PaginatedAuctionPreviewsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedBidsResponse {
+  edges: [BidResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedCommentsResponse {
   edges: [CommentWithAuthorResponseEdge!]!
   pageInfo: PageInfo!
@@ -540,6 +550,7 @@ type Query {
   findAuction(id: ID, slug: String): AuctionResponse
   findAuctionPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionPreviewsResponse!
   findAuthor(id: ID, username: String): AuthorResponse
+  findBids(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedBidsResponse!
   findComment(id: ID, postId: ID): CommentResponse
   findComments(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedCommentsResponse!
   findEmojis(groupId: ID): [EmojiResponse!]!

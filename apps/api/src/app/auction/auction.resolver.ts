@@ -23,6 +23,9 @@ import { FindAuctionPreviewsQuery } from '@lib/domains/auction/application/queri
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
 import { FindAuctionQuery } from '@lib/domains/auction/application/queries/find-auction/find-auction.query';
 import { FindAuctionArgs } from '@lib/domains/auction/application/queries/find-auction/find-auction.args';
+import { PaginatedBidsResponse } from '@lib/domains/auction/application/queries/find-bids/paginated-bids.response';
+import { FindBidsArgs } from '@lib/domains/auction/application/queries/find-bids/find-bids.args';
+import { FindBidsQuery } from '@lib/domains/auction/application/queries/find-bids/find-bids.query';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -50,6 +53,16 @@ export class AuctionResolver {
     @ExtractedUser() user: MyUserResponse,
   ): Promise<PaginatedAuctionPreviewsResponse> {
     const query = new FindAuctionPreviewsQuery({ args, userId: user.id });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
+  @Query(() => PaginatedBidsResponse)
+  async findBids(@Args() args: FindBidsArgs, @ExtractedUser() user: MyUserResponse) {
+    const query = new FindBidsQuery({
+      args,
+      userId: user.id,
+    });
     return this.queryBus.execute(query);
   }
 

@@ -22,7 +22,7 @@ export class BidResponse {
   auctionId: string;
 
   @Field(() => AuthorResponse)
-  bidder: AuthorResponse;
+  user: AuthorResponse;
 
   @Field()
   status: string;
