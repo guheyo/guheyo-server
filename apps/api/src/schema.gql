@@ -24,7 +24,7 @@ type AuctionPreviewResponseEdge {
 }
 
 type AuctionResponse {
-  bids: [BidResponse!]!
+  bidCount: Int!
   content: String
   createdAt: DateTime!
   currentBidPrice: Int!
@@ -53,7 +53,7 @@ type AuthorResponse {
 
 type BidResponse {
   auctionId: ID!
-  canceledAt: DateTime!
+  canceledAt: DateTime
   createdAt: DateTime!
   id: ID!
   price: Int!
