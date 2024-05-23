@@ -4,7 +4,7 @@ import { UpdateAuctionCommand } from '@lib/domains/auction/application/commands/
 import { UpdateAuctionInput } from '@lib/domains/auction/application/commands/update-auction/update-auction.input';
 import { AuctionResponse } from '@lib/domains/auction/application/dtos/auction.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { CancelBidInput } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.input';
 import { CancelBidCommand } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.command';
 import { UseGuards } from '@nestjs/common';
@@ -26,9 +26,13 @@ import { FindBidsArgs } from '@lib/domains/auction/application/queries/find-bids
 import { FindBidsQuery } from '@lib/domains/auction/application/queries/find-bids/find-bids.query';
 import { PlaceBidInput } from '@lib/domains/auction/application/commands/place-bid/place-bid.input';
 import { PlaceBidCommand } from '@lib/domains/auction/application/commands/place-bid/place-bid.command';
+import { BidResponse } from '@lib/domains/auction/application/dtos/bid.response';
+import { BidPlacedArgs } from '@lib/domains/auction/application/subscriptions/bid-placed/bid-placed.args';
+import { parseBidPlacedTriggerName } from '@lib/domains/auction/application/subscriptions/bid-placed/parse-bid-placed-trigger-name';
+import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
-@UseGuards(GqlThrottlerBehindProxyGuard)
+@UseGuards()
 @Resolver()
 export class AuctionResolver {
   constructor(
@@ -36,7 +40,7 @@ export class AuctionResolver {
     private readonly commandBus: CommandBus,
   ) {}
 
-  @UseGuards(OptionalJwtUserGuard)
+  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
   @Query(() => AuctionResponse, { nullable: true })
   async findAuction(
     @Args() args: FindAuctionArgs,
@@ -46,7 +50,7 @@ export class AuctionResolver {
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(OptionalJwtUserGuard)
+  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
   @Query(() => PaginatedAuctionPreviewsResponse)
   async findAuctionPreviews(
     @Args() args: FindAuctionPreviewsArgs,
@@ -68,7 +72,7 @@ export class AuctionResolver {
 
   @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
   @AllowlistRoleNames([])
-  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
+  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
   async createAuction(
     @Args('input') input: CreateAuctionInput,
@@ -80,7 +84,7 @@ export class AuctionResolver {
 
   @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
   @AllowlistRoleNames([])
-  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
+  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
   async updateAuction(
     @Args('input') input: UpdateAuctionInput,
@@ -92,7 +96,7 @@ export class AuctionResolver {
 
   @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
   @AllowlistRoleNames([])
-  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
+  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
   async placeBid(
     @Args('input') input: PlaceBidInput,
@@ -104,7 +108,7 @@ export class AuctionResolver {
 
   @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
   @AllowlistRoleNames([])
-  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
+  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
   async cancelBid(
     @Args('input') input: CancelBidInput,
@@ -112,5 +116,10 @@ export class AuctionResolver {
   ): Promise<string> {
     await this.commandBus.execute(new CancelBidCommand({ input, user }));
     return input.auctionId;
+  }
+
+  @Subscription(() => BidResponse)
+  async bidPlaced(@Args() args: BidPlacedArgs) {
+    return GraphqlPubSub.asyncIterator(parseBidPlacedTriggerName(args.auctionId));
   }
 }

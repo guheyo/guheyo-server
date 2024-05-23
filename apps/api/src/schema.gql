@@ -679,6 +679,7 @@ type SocialUserResponse {
 }
 
 type Subscription {
+  bidPlaced(auctionId: ID!): BidResponse!
   commentCreated(postId: ID!): CommentWithAuthorResponse!
   commentDeleted(postId: ID!): DeletedCommentResponse!
   commentUpdated(postId: ID!): UpdatedCommentResponse!
