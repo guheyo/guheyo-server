@@ -86,16 +86,18 @@ export class AuctionEntity extends AggregateRoot {
     return bid;
   }
 
-  cancelBid(command: CancelBidCommand): BidEntity {
+  cancelBid({ userId, bidId }: { userId: string; bidId: string }): BidEntity {
     if (this.hasEnded()) throw new Error(AuctionErrorMessage.AUCTION_HAS_ENDED);
 
-    const userBids = this.bids.filter((bid) => bid.userId === command.user.id);
+    const userBids = this.bids.filter((bid) => bid.userId === userId);
     if (userBids.length === 0) throw new Error(AuctionErrorMessage.BID_NOT_FOUND);
 
     const lastBid = userBids[userBids.length - 1];
 
     if (this.cancellationTimeout(lastBid.createdAt))
       throw new Error(AuctionErrorMessage.BID_CANCELLATION_TIMEOUT);
+    if (lastBid.id !== bidId)
+      throw new Error(AuctionErrorMessage.BID_CANCELLATION_TARGET_IS_NOT_A_RECENT_BID);
 
     lastBid.canceledAt = new Date();
     return lastBid;
