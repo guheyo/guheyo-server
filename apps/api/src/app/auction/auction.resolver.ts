@@ -30,6 +30,9 @@ import { BidResponse } from '@lib/domains/auction/application/dtos/bid.response'
 import { BidPlacedArgs } from '@lib/domains/auction/application/subscriptions/bid-placed/bid-placed.args';
 import { parseBidPlacedTriggerName } from '@lib/domains/auction/application/subscriptions/bid-placed/parse-bid-placed-trigger-name';
 import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
+import { CancelBidResponse } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.response';
+import { BidCanceledArgs } from '@lib/domains/auction/application/subscriptions/bid-canceled/bid-canceled.args';
+import { parseBidCanceledTriggerName } from '@lib/domains/auction/application/subscriptions/bid-canceled/parse-bid-canceled-trigger-name';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
@@ -121,5 +124,10 @@ export class AuctionResolver {
   @Subscription(() => BidResponse)
   async bidPlaced(@Args() args: BidPlacedArgs) {
     return GraphqlPubSub.asyncIterator(parseBidPlacedTriggerName(args.auctionId));
+  }
+
+  @Subscription(() => CancelBidResponse)
+  async bidCanceled(@Args() args: BidCanceledArgs) {
+    return GraphqlPubSub.asyncIterator(parseBidCanceledTriggerName(args.auctionId));
   }
 }
