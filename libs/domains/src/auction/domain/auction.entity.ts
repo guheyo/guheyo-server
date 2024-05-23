@@ -72,7 +72,7 @@ export class AuctionEntity extends AggregateRoot {
     );
   }
 
-  placeBid(command: PlaceBidCommand) {
+  placeBid(command: PlaceBidCommand): BidEntity | null {
     const bid = new BidEntity({
       ...pick(command, ['id', 'auctionId', 'price', 'priceCurrency']),
       userId: command.user.id,
@@ -83,6 +83,7 @@ export class AuctionEntity extends AggregateRoot {
     if (this.isCanceler(bid.userId))
       throw new Error(AuctionErrorMessage.CANCELLERS_ATTEMPT_TO_RE_BID);
     this.bids.push(bid);
+    return bid;
   }
 
   cancelBid(command: CancelBidCommand): BidEntity {

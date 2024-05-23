@@ -61,7 +61,7 @@ export class AuctionRepository
             },
           },
           orderBy: {
-            createdAt: 'desc',
+            createdAt: 'asc',
           },
         },
       },
