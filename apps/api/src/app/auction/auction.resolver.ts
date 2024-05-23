@@ -1,12 +1,10 @@
 import { CreateAuctionCommand } from '@lib/domains/auction/application/commands/create-auction/create-auction.command';
 import { CreateAuctionInput } from '@lib/domains/auction/application/commands/create-auction/create-auction.input';
-import { AddBidInput } from '@lib/domains/auction/application/commands/add-bid/add-bid.input';
 import { UpdateAuctionCommand } from '@lib/domains/auction/application/commands/update-auction/update-auction.command';
 import { UpdateAuctionInput } from '@lib/domains/auction/application/commands/update-auction/update-auction.input';
 import { AuctionResponse } from '@lib/domains/auction/application/dtos/auction.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AddBidCommand } from '@lib/domains/auction/application/commands/add-bid/add-bid.command';
 import { CancelBidInput } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.input';
 import { CancelBidCommand } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.command';
 import { UseGuards } from '@nestjs/common';
@@ -23,6 +21,11 @@ import { FindAuctionPreviewsQuery } from '@lib/domains/auction/application/queri
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
 import { FindAuctionQuery } from '@lib/domains/auction/application/queries/find-auction/find-auction.query';
 import { FindAuctionArgs } from '@lib/domains/auction/application/queries/find-auction/find-auction.args';
+import { PaginatedBidsResponse } from '@lib/domains/auction/application/queries/find-bids/paginated-bids.response';
+import { FindBidsArgs } from '@lib/domains/auction/application/queries/find-bids/find-bids.args';
+import { FindBidsQuery } from '@lib/domains/auction/application/queries/find-bids/find-bids.query';
+import { PlaceBidInput } from '@lib/domains/auction/application/commands/place-bid/place-bid.input';
+import { PlaceBidCommand } from '@lib/domains/auction/application/commands/place-bid/place-bid.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -33,6 +36,7 @@ export class AuctionResolver {
     private readonly commandBus: CommandBus,
   ) {}
 
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => AuctionResponse, { nullable: true })
   async findAuction(
     @Args() args: FindAuctionArgs,
@@ -49,6 +53,16 @@ export class AuctionResolver {
     @ExtractedUser() user: MyUserResponse,
   ): Promise<PaginatedAuctionPreviewsResponse> {
     const query = new FindAuctionPreviewsQuery({ args, userId: user.id });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
+  @Query(() => PaginatedBidsResponse)
+  async findBids(@Args() args: FindBidsArgs, @ExtractedUser() user: MyUserResponse) {
+    const query = new FindBidsQuery({
+      args,
+      userId: user.id,
+    });
     return this.queryBus.execute(query);
   }
 
@@ -80,11 +94,11 @@ export class AuctionResolver {
   @AllowlistRoleNames([])
   @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
   @Mutation(() => String)
-  async addBid(
-    @Args('input') input: AddBidInput,
+  async placeBid(
+    @Args('input') input: PlaceBidInput,
     @ExtractedUser() user: MyUserResponse,
   ): Promise<string> {
-    await this.commandBus.execute(new AddBidCommand({ input, user }));
+    await this.commandBus.execute(new PlaceBidCommand({ input, user }));
     return input.auctionId;
   }
 

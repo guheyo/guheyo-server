@@ -11,7 +11,7 @@ import { AuctionErrorMessage } from './auction.error.message';
 import { CancelBidCommand } from '../application/commands/cancel-bid/cancel-bid.command';
 import { AUCTION_CLOSED } from './auction.constants';
 import { BID } from './bid.constants';
-import { AddBidCommand } from '../application/commands/add-bid/add-bid.command';
+import { PlaceBidCommand } from '../application/commands/place-bid/place-bid.command';
 
 export class AuctionEntity extends AggregateRoot {
   id: string;
@@ -64,10 +64,15 @@ export class AuctionEntity extends AggregateRoot {
 
   update(props: UpdateAuctionProps) {
     Object.assign(this, omitBy(props, isUndefined));
-    this.apply(new AuctionUpdatedEvent(this.id));
+    this.apply(
+      new AuctionUpdatedEvent({
+        auctionId: this.id,
+        postId: this.post.id,
+      }),
+    );
   }
 
-  addBid(command: AddBidCommand) {
+  placeBid(command: PlaceBidCommand) {
     const bid = new BidEntity({
       ...pick(command, ['id', 'auctionId', 'price', 'priceCurrency']),
       userId: command.user.id,

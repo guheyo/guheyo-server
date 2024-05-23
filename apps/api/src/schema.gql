@@ -2,13 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-input AddBidInput {
-  auctionId: String!
-  id: ID!
-  price: Int!
-  priceCurrency: String!
-}
-
 type AuctionPreviewResponse {
   content: String
   createdAt: DateTime!
@@ -31,7 +24,7 @@ type AuctionPreviewResponseEdge {
 }
 
 type AuctionResponse {
-  bids: [BidResponse!]!
+  bidCount: Int!
   content: String
   createdAt: DateTime!
   currentBidPrice: Int!
@@ -60,13 +53,18 @@ type AuthorResponse {
 
 type BidResponse {
   auctionId: ID!
-  bidder: AuthorResponse!
-  canceledAt: DateTime!
+  canceledAt: DateTime
   createdAt: DateTime!
   id: ID!
   price: Int!
   priceCurrency: String!
   status: String!
+  user: AuthorResponse!
+}
+
+type BidResponseEdge {
+  cursor: String!
+  node: BidResponse!
 }
 
 input BumpOfferInput {
@@ -329,7 +327,6 @@ input LinkSocialProfileInput {
 }
 
 type Mutation {
-  addBid(input: AddBidInput!): String!
   bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
   cancelBid(input: CancelBidInput!): String!
   cancelReaction(input: CancelReactionInput!): String!
@@ -352,6 +349,7 @@ type Mutation {
   deleteUserReview(id: ID!): String!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
+  placeBid(input: PlaceBidInput!): String!
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
   updateAuction(input: UpdateAuctionInput!): String!
@@ -430,6 +428,11 @@ type PaginatedAuctionPreviewsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedBidsResponse {
+  edges: [BidResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedCommentsResponse {
   edges: [CommentWithAuthorResponseEdge!]!
   pageInfo: PageInfo!
@@ -463,6 +466,13 @@ type PaginatedUserReviewPreviewsResponse {
 type PaginatedUsersResponse {
   edges: [UserResponseEdge!]!
   pageInfo: PageInfo!
+}
+
+input PlaceBidInput {
+  auctionId: String!
+  id: ID!
+  price: Int!
+  priceCurrency: String!
 }
 
 type PostPreviewWithAuthorResponse {
@@ -540,6 +550,7 @@ type Query {
   findAuction(id: ID, slug: String): AuctionResponse
   findAuctionPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionPreviewsResponse!
   findAuthor(id: ID, username: String): AuthorResponse
+  findBids(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedBidsResponse!
   findComment(id: ID, postId: ID): CommentResponse
   findComments(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedCommentsResponse!
   findEmojis(groupId: ID): [EmojiResponse!]!
