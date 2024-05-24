@@ -8,4 +8,6 @@ export enum AuctionErrorMessage {
   AUCTION_CREATION_FAILED = 'Auction creation failed',
   AUCTION_UPDATE_REQUEST_FROM_UNAUTHORIZED_USER = 'Auction update request from unauthorized user',
   BID_NOT_ADDED = 'Bid not added',
+  BID_CREATION_FAILED = 'Bid creation failed',
+  BID_CANCELLATION_TARGET_IS_NOT_A_RECENT_BID = 'Bid cancellation target is not a recent bid',
 }

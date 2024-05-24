@@ -72,7 +72,7 @@ export class AuctionEntity extends AggregateRoot {
     );
   }
 
-  placeBid(command: PlaceBidCommand) {
+  placeBid(command: PlaceBidCommand): BidEntity | null {
     const bid = new BidEntity({
       ...pick(command, ['id', 'auctionId', 'price', 'priceCurrency']),
       userId: command.user.id,
@@ -83,18 +83,21 @@ export class AuctionEntity extends AggregateRoot {
     if (this.isCanceler(bid.userId))
       throw new Error(AuctionErrorMessage.CANCELLERS_ATTEMPT_TO_RE_BID);
     this.bids.push(bid);
+    return bid;
   }
 
-  cancelBid(command: CancelBidCommand): BidEntity {
+  cancelBid({ userId, bidId }: { userId: string; bidId: string }): BidEntity {
     if (this.hasEnded()) throw new Error(AuctionErrorMessage.AUCTION_HAS_ENDED);
 
-    const userBids = this.bids.filter((bid) => bid.userId === command.user.id);
+    const userBids = this.bids.filter((bid) => bid.userId === userId);
     if (userBids.length === 0) throw new Error(AuctionErrorMessage.BID_NOT_FOUND);
 
     const lastBid = userBids[userBids.length - 1];
 
     if (this.cancellationTimeout(lastBid.createdAt))
       throw new Error(AuctionErrorMessage.BID_CANCELLATION_TIMEOUT);
+    if (lastBid.id !== bidId)
+      throw new Error(AuctionErrorMessage.BID_CANCELLATION_TARGET_IS_NOT_A_RECENT_BID);
 
     lastBid.canceledAt = new Date();
     return lastBid;

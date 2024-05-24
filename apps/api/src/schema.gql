@@ -75,6 +75,12 @@ input BumpOfferInput {
 
 input CancelBidInput {
   auctionId: String!
+  bidId: String!
+}
+
+type CancelBidResponse {
+  canceledAt: DateTime!
+  id: ID!
 }
 
 input CancelReactionInput {
@@ -679,6 +685,8 @@ type SocialUserResponse {
 }
 
 type Subscription {
+  bidCanceled(auctionId: ID!): CancelBidResponse!
+  bidPlaced(auctionId: ID!): BidResponse!
   commentCreated(postId: ID!): CommentWithAuthorResponse!
   commentDeleted(postId: ID!): DeletedCommentResponse!
   commentUpdated(postId: ID!): UpdatedCommentResponse!
