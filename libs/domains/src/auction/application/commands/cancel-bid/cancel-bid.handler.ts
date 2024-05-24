@@ -27,6 +27,7 @@ export class CancelBidHandler implements ICommandHandler<CancelBidCommand> {
     await GraphqlPubSub.publish(parseBidCanceledTriggerName(auction.id), {
       bidCanceled: {
         id: bid.id,
+        canceledAt: bid.canceledAt,
       },
     });
   }

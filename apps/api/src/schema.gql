@@ -79,6 +79,7 @@ input CancelBidInput {
 }
 
 type CancelBidResponse {
+  canceledAt: DateTime!
   id: ID!
 }
 
