@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "monorepo for guheyo-server",
   "author": "keypport",
-  "license": "BUSL-1.1",
+  "license": "Guheyo Community License (GCL)",
   "private": true,
   "workspaces": [
     "apps/*",
