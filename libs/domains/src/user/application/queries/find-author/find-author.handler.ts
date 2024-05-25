@@ -1,14 +1,11 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
+import { plainToClass } from 'class-transformer';
 import { FindAuthorQuery } from './find-author.query';
 import { AuthorResponse } from '../../dtos/author.response';
 
 @QueryHandler(FindAuthorQuery)
-export class FindAuthorHandler extends PrismaQueryHandler<FindAuthorQuery, AuthorResponse> {
-  constructor() {
-    super(AuthorResponse);
-  }
-
+export class FindAuthorHandler extends PrismaQueryHandler {
   async execute(query: FindAuthorQuery): Promise<AuthorResponse | null> {
     if (!query.id && !query.username) return null;
 
@@ -29,6 +26,6 @@ export class FindAuthorHandler extends PrismaQueryHandler<FindAuthorQuery, Autho
         socialAccounts: true,
       },
     });
-    return this.parseResponse(user);
+    return plainToClass(AuthorResponse, user);
   }
 }

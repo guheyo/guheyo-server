@@ -3,11 +3,7 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { CheckPostsNotExistQuery } from './check-posts-not-exist.query';
 
 @QueryHandler(CheckPostsNotExistQuery)
-export class CheckPostsNotExistHandler extends PrismaQueryHandler<CheckPostsNotExistQuery, String> {
-  constructor() {
-    super(String);
-  }
-
+export class CheckPostsNotExistHandler extends PrismaQueryHandler {
   async execute(query: CheckPostsNotExistQuery): Promise<string[]> {
     const existingPosts = await this.prismaService.post.findMany({
       where: {

@@ -2,18 +2,12 @@ import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { NotFoundException } from '@nestjs/common';
 import { VersionErrorMessage } from '@lib/domains/version/domain/version.error.message';
+import { plainToClass } from 'class-transformer';
 import { FindVersionPreviewQuery } from './find-version-preview.query';
 import { VersionPreviewResponse } from '../../dtos/version-preview.response';
 
 @QueryHandler(FindVersionPreviewQuery)
-export class FindVersionPreviewHandler extends PrismaQueryHandler<
-  FindVersionPreviewQuery,
-  VersionPreviewResponse
-> {
-  constructor() {
-    super(VersionPreviewResponse);
-  }
-
+export class FindVersionPreviewHandler extends PrismaQueryHandler {
   async execute(query: FindVersionPreviewQuery): Promise<VersionPreviewResponse | null> {
     const where = query.id
       ? {
@@ -32,6 +26,6 @@ export class FindVersionPreviewHandler extends PrismaQueryHandler<
         createdAt: 'desc',
       },
     });
-    return this.parseResponse(version);
+    return plainToClass(VersionPreviewResponse, version);
   }
 }

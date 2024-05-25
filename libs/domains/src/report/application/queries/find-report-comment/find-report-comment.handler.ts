@@ -1,17 +1,11 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
+import { plainToClass } from 'class-transformer';
 import { FindReportCommentQuery } from './find-report-comment.query';
 import { ReportCommentResponse } from '../../dtos/report-comment.response';
 
 @QueryHandler(FindReportCommentQuery)
-export class FindReportCommentHandler extends PrismaQueryHandler<
-  FindReportCommentQuery,
-  ReportCommentResponse
-> {
-  constructor() {
-    super(ReportCommentResponse);
-  }
-
+export class FindReportCommentHandler extends PrismaQueryHandler {
   async execute(query: FindReportCommentQuery): Promise<ReportCommentResponse | null> {
     const report = await this.prismaService.reportComment.findFirst({
       where: {
@@ -33,6 +27,6 @@ export class FindReportCommentHandler extends PrismaQueryHandler<
         },
       },
     });
-    return this.parseResponse(report);
+    return plainToClass(ReportCommentResponse, report);
   }
 }

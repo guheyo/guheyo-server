@@ -4,13 +4,10 @@ import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { FindUsersQuery } from './find-users.query';
 import { PaginatedUsersResponse } from './paginated-users.response';
 import { UserResponse } from '../../dtos/user.response';
+import { plainToClass } from 'class-transformer';
 
 @QueryHandler(FindUsersQuery)
-export class FindUsersHandler extends PrismaQueryHandler<FindUsersQuery, UserResponse> {
-  constructor() {
-    super(UserResponse);
-  }
-
+export class FindUsersHandler extends PrismaQueryHandler {
   async execute(query: FindUsersQuery): Promise<PaginatedUsersResponse> {
     const cursor = query.cursor
       ? {
@@ -34,6 +31,10 @@ export class FindUsersHandler extends PrismaQueryHandler<FindUsersQuery, UserRes
         },
       ],
     });
-    return paginate<UserResponse>(this.parseResponses(users), 'id', query.take);
+    return paginate<UserResponse>(
+      users.map((user) => plainToClass(UserResponse, user)),
+      'id',
+      query.take,
+    );
   }
 }
