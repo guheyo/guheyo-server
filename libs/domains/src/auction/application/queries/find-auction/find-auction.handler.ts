@@ -2,15 +2,12 @@ import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { NotFoundException } from '@nestjs/common';
 import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
+import { plainToClass } from 'class-transformer';
 import { AuctionResponse } from '../../dtos/auction.response';
 import { FindAuctionQuery } from './find-auction.query';
 
 @QueryHandler(FindAuctionQuery)
-export class FindAuctionHandler extends PrismaQueryHandler<FindAuctionQuery, AuctionResponse> {
-  constructor() {
-    super(AuctionResponse);
-  }
-
+export class FindAuctionHandler extends PrismaQueryHandler {
   async execute(query: FindAuctionQuery): Promise<any> {
     if (!query.id && !query.slug) return null;
 
@@ -65,7 +62,7 @@ export class FindAuctionHandler extends PrismaQueryHandler<FindAuctionQuery, Auc
         position: 'asc',
       },
     });
-    return this.parseResponse({
+    return plainToClass(AuctionResponse, {
       ...auction,
       post: {
         ...auction.post,

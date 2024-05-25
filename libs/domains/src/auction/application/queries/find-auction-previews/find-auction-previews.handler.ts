@@ -3,19 +3,13 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
+import { plainToClass } from 'class-transformer';
 import { FindAuctionPreviewsQuery } from './find-auction-previews.query';
 import { AuctionPreviewResponse } from '../../dtos/auction-preview.response';
 import { PaginatedAuctionPreviewsResponse } from './paginated-auction-previews.response';
 
 @QueryHandler(FindAuctionPreviewsQuery)
-export class FindAuctionPreviewsHandler extends PrismaQueryHandler<
-  FindAuctionPreviewsQuery,
-  AuctionPreviewResponse
-> {
-  constructor() {
-    super(AuctionPreviewResponse);
-  }
-
+export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
   async execute(query: FindAuctionPreviewsQuery): Promise<PaginatedAuctionPreviewsResponse> {
     const where: Prisma.AuctionWhereInput = query.where
       ? {
@@ -75,6 +69,10 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler<
       ],
     });
 
-    return paginate<AuctionPreviewResponse>(this.parseResponses(auctions), 'id', query.take);
+    return paginate<AuctionPreviewResponse>(
+      auctions.map((auction) => plainToClass(AuctionPreviewResponse, auction)),
+      'id',
+      query.take,
+    );
   }
 }
