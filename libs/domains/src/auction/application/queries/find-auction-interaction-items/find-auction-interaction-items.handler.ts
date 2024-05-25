@@ -13,22 +13,28 @@ export class FindAuctionInteractionItemsHandler extends PrismaQueryHandler {
   async execute(
     query: FindAuctionInteractionItemsQuery,
   ): Promise<PaginatedAuctionInteractionItemsResponse> {
-    const cursor = query.cursor
+    const where = query.cursor
       ? {
-          id: undefined,
-          createdAt: new Date(query.cursor),
+          createdAt:
+            query.orderBy?.createdAt === 'asc'
+              ? {
+                  gt: new Date(parseInt(query.cursor, 10)),
+                }
+              : {
+                  lt: new Date(parseInt(query.cursor, 10)),
+                },
         }
-      : undefined;
+      : {};
 
     const bids =
       query.where?.type === 'all' || query.where?.type === 'bid'
         ? await this.prismaService.bid.findMany({
             where: {
+              ...where,
               auctionId: query.where?.auctionId,
               userId: query.where?.userId,
               status: query.where?.status,
             },
-            cursor,
             take: query.take + 1,
             skip: query.skip,
             include: {
@@ -58,10 +64,10 @@ export class FindAuctionInteractionItemsHandler extends PrismaQueryHandler {
       query.where?.type === 'all' || query.where?.type === 'comment'
         ? await this.prismaService.comment.findMany({
             where: {
+              ...where,
               postId: query.where?.postId,
               userId: query.where?.userId,
             },
-            cursor,
             take: query.take + 1,
             skip: query.skip,
             orderBy: [
