@@ -33,6 +33,9 @@ import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
 import { CancelBidResponse } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.response';
 import { BidCanceledArgs } from '@lib/domains/auction/application/subscriptions/bid-canceled/bid-canceled.args';
 import { parseBidCanceledTriggerName } from '@lib/domains/auction/application/subscriptions/bid-canceled/parse-bid-canceled-trigger-name';
+import { PaginatedAuctionInteractionItemsResponse } from '@lib/domains/auction/application/queries/find-auction-interaction-items/paginated-auction-interaction-items.response';
+import { FindAuctionInteractionItemsQuery } from '@lib/domains/auction/application/queries/find-auction-interaction-items/find-auction-interaction-items.query';
+import { FindAuctionInteractionItemsArgs } from '@lib/domains/auction/application/queries/find-auction-interaction-items/find-auction-interaction-items.args';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
@@ -67,6 +70,19 @@ export class AuctionResolver {
   @Query(() => PaginatedBidsResponse)
   async findBids(@Args() args: FindBidsArgs, @ExtractedUser() user: MyUserResponse) {
     const query = new FindBidsQuery({
+      args,
+      userId: user.id,
+    });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
+  @Query(() => PaginatedAuctionInteractionItemsResponse)
+  async findAuctionInteractionItems(
+    @Args() args: FindAuctionInteractionItemsArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ) {
+    const query = new FindAuctionInteractionItemsQuery({
       args,
       userId: user.id,
     });
