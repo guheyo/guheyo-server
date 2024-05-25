@@ -20,74 +20,80 @@ export class FindAuctionInteractionItemsHandler extends PrismaQueryHandler {
         }
       : undefined;
 
-    const bids = await this.prismaService.bid.findMany({
-      where: {
-        auctionId: query.where?.auctionId,
-        userId: query.where?.userId,
-        status: query.where?.status,
-      },
-      cursor,
-      take: query.take + 1,
-      skip: query.skip,
-      include: {
-        user: {
-          include: {
-            roles: {
-              include: {
-                group: true,
-              },
-              orderBy: {
-                position: 'asc',
+    const bids =
+      query.where?.type === 'all' || query.where?.type === 'bid'
+        ? await this.prismaService.bid.findMany({
+            where: {
+              auctionId: query.where?.auctionId,
+              userId: query.where?.userId,
+              status: query.where?.status,
+            },
+            cursor,
+            take: query.take + 1,
+            skip: query.skip,
+            include: {
+              user: {
+                include: {
+                  roles: {
+                    include: {
+                      group: true,
+                    },
+                    orderBy: {
+                      position: 'asc',
+                    },
+                  },
+                  socialAccounts: true,
+                },
               },
             },
-            socialAccounts: true,
-          },
-        },
-      },
-      orderBy: [
-        {
-          createdAt: query.orderBy?.createdAt,
-        },
-      ],
-    });
+            orderBy: [
+              {
+                createdAt: query.orderBy?.createdAt,
+              },
+            ],
+          })
+        : [];
 
-    const comments = await this.prismaService.comment.findMany({
-      where: {
-        postId: query.where?.postId,
-        userId: query.where?.userId,
-      },
-      cursor,
-      take: query.take + 1,
-      skip: query.skip,
-      orderBy: [
-        {
-          createdAt: query.orderBy?.createdAt,
-        },
-      ],
-      include: {
-        user: {
-          include: {
-            roles: {
-              include: {
-                group: true,
+    const comments =
+      query.where?.type === 'all' || query.where?.type === 'comment'
+        ? await this.prismaService.comment.findMany({
+            where: {
+              postId: query.where?.postId,
+              userId: query.where?.userId,
+            },
+            cursor,
+            take: query.take + 1,
+            skip: query.skip,
+            orderBy: [
+              {
+                createdAt: query.orderBy?.createdAt,
               },
-              orderBy: {
-                position: 'asc',
+            ],
+            include: {
+              user: {
+                include: {
+                  roles: {
+                    include: {
+                      group: true,
+                    },
+                    orderBy: {
+                      position: 'asc',
+                    },
+                  },
+                  socialAccounts: true,
+                },
+              },
+              reactions: {
+                where: {
+                  canceledAt: null,
+                },
+                include: {
+                  emoji: true,
+                },
               },
             },
-            socialAccounts: true,
-          },
-        },
-        reactions: {
-          where: {
-            canceledAt: null,
-          },
-          include: {
-            emoji: true,
-          },
-        },
-      },
-    });
+          })
+        : [];
 
     const auctionInteractionItems = [
       ...bids.map((bid) => plainToClass(BidResponse, bid)),

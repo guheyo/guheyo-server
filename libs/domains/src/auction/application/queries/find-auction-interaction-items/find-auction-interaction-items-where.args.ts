@@ -18,4 +18,8 @@ export class FindAuctionInteractionItemsWhereArgs {
   @IsOptional()
   @Field(() => String, { nullable: true })
   status?: string;
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  type?: string;
 }
