@@ -3,11 +3,7 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { FindOfferCountQuery } from './find-offer-count.query';
 
 @QueryHandler(FindOfferCountQuery)
-export class FindOfferCountHandler extends PrismaQueryHandler<FindOfferCountQuery, Number> {
-  constructor() {
-    super(Number);
-  }
-
+export class FindOfferCountHandler extends PrismaQueryHandler {
   async execute(query: FindOfferCountQuery): Promise<Number> {
     const count = await this.prismaService.offer.countOffer({
       ...query,

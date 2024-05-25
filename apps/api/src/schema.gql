@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+union AuctionInteractionItemResponse = BidResponse | CommentWithAuthorResponse
+
+type AuctionInteractionItemResponseEdge {
+  cursor: String!
+  node: AuctionInteractionItemResponse!
+}
+
 type AuctionPreviewResponse {
   content: String
   createdAt: DateTime!
@@ -429,6 +436,11 @@ type PageInfo {
   hasNextPage: Boolean!
 }
 
+type PaginatedAuctionInteractionItemsResponse {
+  edges: [AuctionInteractionItemResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedAuctionPreviewsResponse {
   edges: [AuctionPreviewResponseEdge!]!
   pageInfo: PageInfo!
@@ -554,6 +566,7 @@ type PostResponse {
 
 type Query {
   findAuction(id: ID, slug: String): AuctionResponse
+  findAuctionInteractionItems(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionInteractionItemsResponse!
   findAuctionPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionPreviewsResponse!
   findAuthor(id: ID, username: String): AuthorResponse
   findBids(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedBidsResponse!

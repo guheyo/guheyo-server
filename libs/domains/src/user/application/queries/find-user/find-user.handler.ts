@@ -1,14 +1,11 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
+import { plainToClass } from 'class-transformer';
 import { FindUserQuery } from './find-user.query';
 import { UserResponse } from '../../dtos/user.response';
 
 @QueryHandler(FindUserQuery)
-export class FindUserHandler extends PrismaQueryHandler<FindUserQuery, UserResponse> {
-  constructor() {
-    super(UserResponse);
-  }
-
+export class FindUserHandler extends PrismaQueryHandler {
   async execute(query: FindUserQuery): Promise<UserResponse | null> {
     if (query.provider && query.socialId) {
       const user = await this.prismaService.user.findFirst({
@@ -21,7 +18,7 @@ export class FindUserHandler extends PrismaQueryHandler<FindUserQuery, UserRespo
           },
         },
       });
-      return this.parseResponse(user);
+      return plainToClass(UserResponse, user);
     }
     if (query.username) {
       const user = await this.prismaService.user.findUnique({
@@ -29,7 +26,7 @@ export class FindUserHandler extends PrismaQueryHandler<FindUserQuery, UserRespo
           username: query.username,
         },
       });
-      return this.parseResponse(user);
+      return plainToClass(UserResponse, user);
     }
     return null;
   }

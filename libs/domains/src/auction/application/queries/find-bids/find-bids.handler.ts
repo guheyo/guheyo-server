@@ -2,16 +2,13 @@ import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { Prisma } from '@prisma/client';
+import { plainToClass } from 'class-transformer';
 import { FindBidsQuery } from './find-bids.query';
 import { PaginatedBidsResponse } from './paginated-bids.response';
 import { BidResponse } from '../../dtos/bid.response';
 
 @QueryHandler(FindBidsQuery)
-export class FindBidsHandler extends PrismaQueryHandler<FindBidsQuery, BidResponse> {
-  constructor() {
-    super(BidResponse);
-  }
-
+export class FindBidsHandler extends PrismaQueryHandler {
   async execute(query: FindBidsQuery): Promise<PaginatedBidsResponse> {
     const where: Prisma.BidWhereInput = query.where
       ? {
@@ -54,6 +51,10 @@ export class FindBidsHandler extends PrismaQueryHandler<FindBidsQuery, BidRespon
       ],
     });
 
-    return paginate<BidResponse>(this.parseResponses(bids), 'id', query.take);
+    return paginate<BidResponse>(
+      bids.map((bid) => plainToClass(BidResponse, bid)),
+      'id',
+      query.take,
+    );
   }
 }

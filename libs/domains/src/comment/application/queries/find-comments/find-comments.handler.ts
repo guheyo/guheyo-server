@@ -3,19 +3,13 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
+import { plainToClass } from 'class-transformer';
 import { FindCommentsQuery } from './find-comments.query';
 import { PaginatedCommentsResponse } from './paginated-comments.response';
 import { CommentWithAuthorResponse } from '../../dtos/comment-with-author.response';
 
 @QueryHandler(FindCommentsQuery)
-export class FindCommentsHandler extends PrismaQueryHandler<
-  FindCommentsQuery,
-  CommentWithAuthorResponse
-> {
-  constructor() {
-    super(CommentWithAuthorResponse);
-  }
-
+export class FindCommentsHandler extends PrismaQueryHandler {
   async execute(query: FindCommentsQuery): Promise<PaginatedCommentsResponse> {
     const where: Prisma.CommentWhereInput = query.where
       ? {
@@ -68,6 +62,10 @@ export class FindCommentsHandler extends PrismaQueryHandler<
       },
     });
 
-    return paginate<CommentWithAuthorResponse>(this.parseResponses(comments), 'id', query.take);
+    return paginate<CommentWithAuthorResponse>(
+      comments.map((comment) => plainToClass(CommentWithAuthorResponse, comment)),
+      'id',
+      query.take,
+    );
   }
 }

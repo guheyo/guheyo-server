@@ -1,14 +1,11 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
+import { plainToClass } from 'class-transformer';
 import { ReactionResponse } from '../../dtos/reaction.response';
 import { FindReactionsQuery } from './find-reactions.query';
 
 @QueryHandler(FindReactionsQuery)
-export class FindReactionsHandler extends PrismaQueryHandler<FindReactionsQuery, ReactionResponse> {
-  constructor() {
-    super(ReactionResponse);
-  }
-
+export class FindReactionsHandler extends PrismaQueryHandler {
   async execute(query: FindReactionsQuery): Promise<ReactionResponse[]> {
     const reactions = await this.prismaService.reaction.findMany({
       where: {
@@ -28,6 +25,6 @@ export class FindReactionsHandler extends PrismaQueryHandler<FindReactionsQuery,
       },
     });
 
-    return this.parseResponses(reactions);
+    return reactions.map((reaction) => plainToClass(ReactionResponse, reaction));
   }
 }

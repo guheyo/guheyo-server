@@ -1,14 +1,11 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
+import { plainToClass } from 'class-transformer';
 import { FindGroupQuery } from './find-group.query';
 import { GroupResponse } from '../../dtos/group.response';
 
 @QueryHandler(FindGroupQuery)
-export class FindGroupHandler extends PrismaQueryHandler<FindGroupQuery, GroupResponse> {
-  constructor() {
-    super(GroupResponse);
-  }
-
+export class FindGroupHandler extends PrismaQueryHandler {
   async execute(query: FindGroupQuery): Promise<GroupResponse | null> {
     const group = await this.prismaService.group.findFirst({
       where: {
@@ -28,6 +25,6 @@ export class FindGroupHandler extends PrismaQueryHandler<FindGroupQuery, GroupRe
         },
       },
     });
-    return this.parseResponse(group);
+    return plainToClass(GroupResponse, group);
   }
 }

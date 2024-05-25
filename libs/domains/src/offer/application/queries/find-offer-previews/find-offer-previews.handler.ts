@@ -6,19 +6,13 @@ import { Prisma } from '@prisma/client';
 import { ForbiddenException } from '@nestjs/common';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
 import { OFFER_CLOSED } from '@lib/domains/offer/domain/offer.constants';
+import { plainToClass } from 'class-transformer';
 import { FindOfferPreviewsQuery } from './find-offer-previews.query';
 import { PaginatedOfferPreviewsResponse } from './paginated-offer-previews.response';
 import { OfferPreviewResponse } from '../../dtos/offer-preview.response';
 
 @QueryHandler(FindOfferPreviewsQuery)
-export class FindOfferPreviewsHandler extends PrismaQueryHandler<
-  FindOfferPreviewsQuery,
-  OfferPreviewResponse
-> {
-  constructor() {
-    super(OfferPreviewResponse);
-  }
-
+export class FindOfferPreviewsHandler extends PrismaQueryHandler {
   async execute(query: FindOfferPreviewsQuery): Promise<PaginatedOfferPreviewsResponse> {
     if (!!query.where?.userId && query.where.userId !== query.userId && query.where.isArchived)
       throw new ForbiddenException(OfferErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
@@ -104,6 +98,10 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler<
           hasSubmittedReview: offer.userReviews.length > 0,
         }))
       : offers;
-    return paginate<OfferPreviewResponse>(this.parseResponses(offerPreviews), 'id', query.take);
+    return paginate<OfferPreviewResponse>(
+      offerPreviews.map((offerPreview) => plainToClass(OfferPreviewResponse, offerPreview)),
+      'id',
+      query.take,
+    );
   }
 }
