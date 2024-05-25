@@ -21,5 +21,5 @@ export class FindAuctionInteractionItemsWhereArgs {
 
   @IsOptional()
   @Field(() => String, { nullable: true })
-  type?: string;
+  view?: string;
 }

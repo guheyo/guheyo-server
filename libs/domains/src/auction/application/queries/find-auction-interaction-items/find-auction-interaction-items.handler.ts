@@ -27,7 +27,7 @@ export class FindAuctionInteractionItemsHandler extends PrismaQueryHandler {
       : {};
 
     const bids =
-      query.where?.type === 'all' || query.where?.type === 'bid'
+      query.where?.view === 'newest' || query.where?.view === 'bid'
         ? await this.prismaService.bid.findMany({
             where: {
               ...where,
@@ -61,7 +61,7 @@ export class FindAuctionInteractionItemsHandler extends PrismaQueryHandler {
         : [];
 
     const comments =
-      query.where?.type === 'all' || query.where?.type === 'comment'
+      query.where?.view === 'newest' || query.where?.view === 'comment'
         ? await this.prismaService.comment.findMany({
             where: {
               ...where,
