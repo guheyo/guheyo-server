@@ -9,6 +9,10 @@ export class FindAuctionInteractionItemsWhereArgs {
 
   @IsOptional()
   @Field(() => ID, { nullable: true })
+  postId?: string;
+
+  @IsOptional()
+  @Field(() => ID, { nullable: true })
   userId?: string;
 
   @IsOptional()
