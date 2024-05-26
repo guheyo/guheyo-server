@@ -10,6 +10,9 @@ import { ConfigService } from '@nestjs/config';
 import { SocialProfile } from '@lib/shared/jwt/jwt.interfaces';
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
+import { CreateSocialAccountCommand } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.command';
+import { MultiPlatformGuard } from '@lib/domains/auth/guards/multi-platform/multi-platform.guard';
+import { get } from 'lodash';
 import { ThrottlerBehindProxyGuard } from '../throttler/throttler-behind-proxy.guard';
 
 @UseGuards(ThrottlerBehindProxyGuard)
@@ -102,8 +105,20 @@ export class AuthController {
   }
 
   @Get('naver/callback')
-  @UseGuards(AuthGuard('naver'))
+  @UseGuards(new MultiPlatformGuard('naver'))
   async naverLoginCallback(@Req() req: any, @Res() res: Response) {
-    // TODO
+    await this.commandBus.execute(
+      new CreateSocialAccountCommand({
+        id: uuid4(),
+        provider: get(req.user, 'socialData.naver.provider'),
+        socialId: get(req.user, 'socialData.naver.socialId'),
+        userId: req.user.id,
+      }),
+    );
+    return res.redirect(
+      `${this.configService.get(`frontend.host`)!}:${this.configService.get(
+        'frontend.port',
+      )}/setting/profile/naver`,
+    );
   }
 }
