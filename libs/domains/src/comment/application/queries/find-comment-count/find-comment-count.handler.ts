@@ -7,19 +7,16 @@ import { CommentCountResponse } from '../../dtos/comment-count.response';
 @QueryHandler(FindCommentCountQuery)
 export class FindCommentCountHandler extends PrismaQueryHandler {
   async execute(query: FindCommentCountQuery): Promise<CommentCountResponse> {
-    const comments = await this.prismaService.comment.findMany({
+    const count = await this.prismaService.comment.count({
       where: {
         postId: query.postId,
-      },
-      select: {
-        id: true,
-        postId: true,
+        deletedAt: null,
       },
     });
 
     return plainToClass(CommentCountResponse, {
       postId: query.postId,
-      count: comments.length,
+      count,
     });
   }
 }

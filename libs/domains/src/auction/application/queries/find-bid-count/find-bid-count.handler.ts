@@ -7,18 +7,15 @@ import { BidCountResponse } from '../../dtos/bid-count.response';
 @QueryHandler(FindBidCountQuery)
 export class FindBidCountHandler extends PrismaQueryHandler {
   async execute(query: FindBidCountQuery): Promise<BidCountResponse> {
-    const bids = await this.prismaService.bid.findMany({
+    const count = await this.prismaService.bid.count({
       where: {
         auctionId: query.auctionId,
-      },
-      select: {
-        id: true,
       },
     });
 
     return plainToClass(BidCountResponse, {
       auctionId: query.auctionId,
-      count: bids.length,
+      count,
     });
   }
 }
