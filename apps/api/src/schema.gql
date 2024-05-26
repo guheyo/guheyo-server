@@ -31,7 +31,6 @@ type AuctionPreviewResponseEdge {
 }
 
 type AuctionResponse {
-  bidCount: Int!
   content: String
   createdAt: DateTime!
   currentBidPrice: Int!

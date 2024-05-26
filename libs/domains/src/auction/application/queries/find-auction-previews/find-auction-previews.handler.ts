@@ -58,9 +58,6 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
       },
       orderBy: [
         {
-          currentBidPrice: query.orderBy?.currentBidPrice,
-        },
-        {
           createdAt: query.orderBy?.createdAt,
         },
         {
