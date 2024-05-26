@@ -44,11 +44,6 @@ export class FindAuctionHandler extends PrismaQueryHandler {
             },
           },
         },
-        bids: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
     if (!auction) throw new NotFoundException(AuctionErrorMessage.AUCTION_NOT_FOUND);
@@ -69,7 +64,6 @@ export class FindAuctionHandler extends PrismaQueryHandler {
         images,
         reportCount: auction.post.reports.length,
       },
-      bidCount: auction.bids.length,
     });
   }
 }
