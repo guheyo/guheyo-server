@@ -36,6 +36,9 @@ import { parseBidCanceledTriggerName } from '@lib/domains/auction/application/su
 import { PaginatedAuctionInteractionItemsResponse } from '@lib/domains/auction/application/queries/find-auction-interaction-items/paginated-auction-interaction-items.response';
 import { FindAuctionInteractionItemsQuery } from '@lib/domains/auction/application/queries/find-auction-interaction-items/find-auction-interaction-items.query';
 import { FindAuctionInteractionItemsArgs } from '@lib/domains/auction/application/queries/find-auction-interaction-items/find-auction-interaction-items.args';
+import { BidCountResponse } from '@lib/domains/auction/application/dtos/bid-count.response';
+import { FindBidCountArgs } from '@lib/domains/auction/application/queries/find-bid-count/find-bid-count.args';
+import { FindBidCountQuery } from '@lib/domains/auction/application/queries/find-bid-count/find-bid-count.query';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
@@ -86,6 +89,13 @@ export class AuctionResolver {
       args,
       userId: user.id,
     });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(GqlThrottlerBehindProxyGuard)
+  @Query(() => BidCountResponse)
+  async findBidCount(@Args() args: FindBidCountArgs) {
+    const query = new FindBidCountQuery(args);
     return this.queryBus.execute(query);
   }
 
