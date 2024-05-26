@@ -8,7 +8,6 @@ import { AuctionCreatedEvent } from '../application/events/auction-created/aucti
 import { AuctionUpdatedEvent } from '../application/events/auction-updated/auction-updated.event';
 import { BidEntity } from './bid.entity';
 import { AuctionErrorMessage } from './auction.error.message';
-import { CancelBidCommand } from '../application/commands/cancel-bid/cancel-bid.command';
 import { AUCTION_CLOSED } from './auction.constants';
 import { BID } from './bid.constants';
 import { PlaceBidCommand } from '../application/commands/place-bid/place-bid.command';
