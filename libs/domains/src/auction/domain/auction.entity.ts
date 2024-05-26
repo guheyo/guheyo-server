@@ -32,8 +32,6 @@ export class AuctionEntity extends AggregateRoot {
 
   content: string | null;
 
-  currentBidPrice: number;
-
   hammerPrice: number;
 
   shippingCost: number;

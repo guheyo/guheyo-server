@@ -122,7 +122,6 @@ export class AuctionRepository
           'extendedEndDate',
           'extensionCount',
           'content',
-          'currentBidPrice',
           'hammerPrice',
           'status',
         ]),
