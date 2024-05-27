@@ -1741,6 +1741,7 @@ __metadata:
     "@types/passport": ^1.0.16
     "@types/passport-discord": ^0.1.13
     "@types/passport-jwt": ^4.0.1
+    "@types/passport-kakao": ^1.0.3
     "@types/passport-naver": ^1.0.4
     "@types/uuid": ^9.0.8
     bcrypt: ^5.1.1
@@ -1754,6 +1755,7 @@ __metadata:
     passport: ^0.7.0
     passport-discord: ^0.1.4
     passport-jwt: ^4.0.1
+    passport-kakao: ^1.0.1
     passport-naver: ^1.0.6
     reflect-metadata: ^0.1.13
     rxjs: ^7.8.1
@@ -4104,6 +4106,16 @@ __metadata:
     "@types/jsonwebtoken": "*"
     "@types/passport-strategy": "*"
   checksum: 778f88eaefe39d845ba4824760f9b149c1e408249357514ea9b3d302c180af1faadc164af3fbf41596a23ad01f0a1c95501e193693f4db804f34713853fdc727
+  languageName: node
+  linkType: hard
+
+"@types/passport-kakao@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@types/passport-kakao@npm:1.0.3"
+  dependencies:
+    "@types/express": "*"
+    "@types/passport": "*"
+  checksum: 4ce5097327454abffac708ddfaff93e58c0cb7be1c331a9f07c37dfff597c2c6ab20fd91f2f9efe8f457ac79b00e57a32cb900f8ba9d8ef1c1fc8a2aef8bb3ea
   languageName: node
   linkType: hard
 
@@ -11221,6 +11233,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"passport-kakao@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "passport-kakao@npm:1.0.1"
+  dependencies:
+    passport-oauth2: ~1.1.2
+    pkginfo: ~0.3.0
+  checksum: ba78fde445efd3118ea64a2364de306e952b16cddc38bb61cc27cadbaf1511c3d819dcf74388cd438745fc5d13bc5708922672ef90388ebd53ae308d9ad0c0c5
+  languageName: node
+  linkType: hard
+
 "passport-naver@npm:^1.0.6":
   version: 1.0.6
   resolution: "passport-naver@npm:1.0.6"
@@ -11252,6 +11274,17 @@ __metadata:
     uid2: 0.0.x
     utils-merge: 1.x.x
   checksum: a9a80b968343c9c1906f74ef613b346ec2d6a6acfe17af81e673fd774779b436729252485755c3ce182f2cdba2434d75067418952d722404d65b93c0360ca02b
+  languageName: node
+  linkType: hard
+
+"passport-oauth2@npm:~1.1.2":
+  version: 1.1.2
+  resolution: "passport-oauth2@npm:1.1.2"
+  dependencies:
+    oauth: 0.9.x
+    passport-strategy: 1.x.x
+    uid2: 0.0.x
+  checksum: f59e80a0753fc9516346f1857c2e43333d186ede8aef9d047450c54b83e0f655f0ad47f68376147273750cbd983247e651e679a7d13a978c32ca80d2e4ee9dd9
   languageName: node
   linkType: hard
 
@@ -11435,6 +11468,13 @@ __metadata:
   dependencies:
     find-up: ^4.0.0
   checksum: 9863e3f35132bf99ae1636d31ff1e1e3501251d480336edb1c211133c8d58906bed80f154a1d723652df1fda91e01c7442c2eeaf9dc83157c7ae89087e43c8d6
+  languageName: node
+  linkType: hard
+
+"pkginfo@npm:~0.3.0":
+  version: 0.3.1
+  resolution: "pkginfo@npm:0.3.1"
+  checksum: b59f7878ed169301930f5eab767d6b82a1c1e0831c3d1381c8dd04ef8a883fc895c067d06ce6d6111eff06130ad94bd8a518c7a227cc5e9914eedab2ee8512a7
   languageName: node
   linkType: hard
 
