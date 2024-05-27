@@ -121,4 +121,28 @@ export class AuthController {
       )}/setting/profile/naver`,
     );
   }
+
+  @Get('kakao')
+  @UseGuards(AuthGuard('kakao'))
+  kakaodLogin(@Res() res: Response) {
+    return res.status(HttpStatus.OK).send();
+  }
+
+  @Get('kakao/callback')
+  @UseGuards(new MultiPlatformGuard('kakao'))
+  async kakaoLoginCallback(@Req() req: any, @Res() res: Response) {
+    await this.commandBus.execute(
+      new CreateSocialAccountCommand({
+        id: uuid4(),
+        provider: get(req.user, 'socialData.kakao.provider'),
+        socialId: get(req.user, 'socialData.kakao.socialId'),
+        userId: req.user.id,
+      }),
+    );
+    return res.redirect(
+      `${this.configService.get(`frontend.host`)!}:${this.configService.get(
+        'frontend.port',
+      )}/setting/profile/kakao`,
+    );
+  }
 }
