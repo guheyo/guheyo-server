@@ -3,15 +3,12 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { NotFoundException } from '@nestjs/common';
 import { ReportErrorMessage } from '@lib/domains/report/domain/report.error.message';
 import { toPascalCase } from '@lib/shared/pascal-case/to-pascal-case';
+import { plainToClass } from 'class-transformer';
 import { ReportResponse } from '../../dtos/report.response';
 import { FindReportQuery } from './find-report.query';
 
 @QueryHandler(FindReportQuery)
-export class FindReportHandler extends PrismaQueryHandler<FindReportQuery, ReportResponse> {
-  constructor() {
-    super(ReportResponse);
-  }
-
+export class FindReportHandler extends PrismaQueryHandler {
   async execute(query: FindReportQuery): Promise<ReportResponse | null> {
     const report = await this.prismaService.report.findFirst({
       where: {
@@ -92,7 +89,7 @@ export class FindReportHandler extends PrismaQueryHandler<FindReportQuery, Repor
           createdAt: 'asc',
         },
       });
-      return this.parseResponse({
+      return plainToClass(ReportResponse, {
         ...report,
         version: {
           ...version,
@@ -115,7 +112,7 @@ export class FindReportHandler extends PrismaQueryHandler<FindReportQuery, Repor
       });
       if (!version) throw new NotFoundException(ReportErrorMessage.REPORT_REF_VERSION_NOT_FOUND);
 
-      return this.parseResponse({
+      return plainToClass(ReportResponse, {
         ...report,
         version: {
           ...version,

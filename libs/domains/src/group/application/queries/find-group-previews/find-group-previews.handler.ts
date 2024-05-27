@@ -1,18 +1,12 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
+import { plainToClass } from 'class-transformer';
 import { FindGroupPreviewsQuery } from './find-group-previews.query';
 import { GroupPreviewResponse } from '../../dtos/group-preview.response';
 
 @QueryHandler(FindGroupPreviewsQuery)
-export class FindGroupPreviewsHandler extends PrismaQueryHandler<
-  FindGroupPreviewsQuery,
-  GroupPreviewResponse
-> {
-  constructor() {
-    super(GroupPreviewResponse);
-  }
-
+export class FindGroupPreviewsHandler extends PrismaQueryHandler {
   async execute(query: FindGroupPreviewsQuery): Promise<GroupPreviewResponse[]> {
     const groups = await this.prismaService.group.findMany({
       where: {
@@ -96,6 +90,6 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler<
         buys,
       };
     });
-    return this.parseResponses(groupPreviews);
+    return groupPreviews.map((groupPreview) => plainToClass(GroupPreviewResponse, groupPreview));
   }
 }

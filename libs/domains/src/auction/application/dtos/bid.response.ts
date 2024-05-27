@@ -9,8 +9,8 @@ export class BidResponse {
   @Field()
   createdAt: Date;
 
-  @Field()
-  canceledAt: Date;
+  @Field(() => Date, { nullable: true })
+  canceledAt: Date | null;
 
   @Field(() => Int)
   price: number;
@@ -22,11 +22,8 @@ export class BidResponse {
   auctionId: string;
 
   @Field(() => AuthorResponse)
-  bidder: AuthorResponse;
+  user: AuthorResponse;
 
   @Field()
   status: string;
-
-  @Field()
-  source: string;
 }

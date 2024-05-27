@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
-import { Observable, concatMap, map, of } from 'rxjs';
+import { Observable, concatMap, of } from 'rxjs';
 import { TrackUserImagesCommand } from '@lib/domains/user-image/application/commands/track-user-images/track-user-images.command';
 import { ConnectTagsCommand } from '@lib/domains/post/application/commands/connect-tags/connect-tags.command';
+import { UpdateThumbnailCommand } from '@lib/domains/post/application/commands/update-thumbnail/update-thumbnail.command';
 import { AuctionCreatedEvent } from '../events/auction-created/auction-created.event';
 import { AuctionUpdatedEvent } from '../events/auction-updated/auction-updated.event';
+import { AUCTION } from '../../domain/auction.constants';
 
 @Injectable()
 export class AuctionSagas {
@@ -15,11 +17,16 @@ export class AuctionSagas {
       concatMap((event) =>
         of(
           new TrackUserImagesCommand({
-            type: 'auction',
+            type: AUCTION,
+            refId: event.id,
+          }),
+          new UpdateThumbnailCommand({
+            postId: event.postId,
+            type: AUCTION,
             refId: event.id,
           }),
           new ConnectTagsCommand({
-            postId: event.id,
+            postId: event.postId,
             tagIds: event.tagIds,
           }),
         ),
@@ -30,12 +37,18 @@ export class AuctionSagas {
   auctionUpdated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
       ofType(AuctionUpdatedEvent),
-      map(
-        (event) =>
+      concatMap((event) =>
+        of(
           new TrackUserImagesCommand({
-            type: 'auction',
-            refId: event.id,
+            type: AUCTION,
+            refId: event.auctionId,
           }),
+          new UpdateThumbnailCommand({
+            postId: event.postId,
+            type: AUCTION,
+            refId: event.auctionId,
+          }),
+        ),
       ),
     );
 }

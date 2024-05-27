@@ -5,10 +5,13 @@ import { CancelBidInput } from './cancel-bid.input';
 export class CancelBidCommand implements ICommand {
   auctionId: string;
 
+  bidId: string;
+
   user: MyUserResponse;
 
   constructor({ input, user }: { input: CancelBidInput; user: MyUserResponse }) {
     this.auctionId = input.auctionId;
+    this.bidId = input.bidId;
     this.user = user;
   }
 }

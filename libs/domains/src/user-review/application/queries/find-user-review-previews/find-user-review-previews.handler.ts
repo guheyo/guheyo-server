@@ -3,19 +3,13 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
+import { plainToClass } from 'class-transformer';
 import { PaginatedUserReviewPreviewsResponse } from './paginated-user-review-previews.response';
 import { UserReviewPreviewResponse } from '../../dtos/user-review-preview.response';
 import { FindUserReviewPreviewsQuery } from './find-user-review-previews.query';
 
 @QueryHandler(FindUserReviewPreviewsQuery)
-export class FindUserReviewPreviewsHandler extends PrismaQueryHandler<
-  FindUserReviewPreviewsQuery,
-  UserReviewPreviewResponse
-> {
-  constructor() {
-    super(UserReviewPreviewResponse);
-  }
-
+export class FindUserReviewPreviewsHandler extends PrismaQueryHandler {
   async execute(query: FindUserReviewPreviewsQuery): Promise<PaginatedUserReviewPreviewsResponse> {
     const where: Prisma.UserReviewWhereInput = query.where
       ? {
@@ -96,14 +90,14 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler<
     });
 
     return paginate<UserReviewPreviewResponse>(
-      this.parseResponses(
-        userReviews.map((userReview) => ({
+      userReviews.map((userReview) =>
+        plainToClass(UserReviewPreviewResponse, {
           ...userReview,
           post: {
             ...userReview.post,
             commentCount: userReview.post.comments.length,
           },
-        })),
+        }),
       ),
       'id',
       query.take,

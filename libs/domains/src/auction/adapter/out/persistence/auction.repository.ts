@@ -61,7 +61,7 @@ export class AuctionRepository
             },
           },
           orderBy: {
-            createdAt: 'desc',
+            createdAt: 'asc',
           },
         },
       },
@@ -122,7 +122,6 @@ export class AuctionRepository
           'extendedEndDate',
           'extensionCount',
           'content',
-          'currentBidPrice',
           'hammerPrice',
           'status',
         ]),

@@ -5,10 +5,6 @@ import { IsOptional } from 'class-validator';
 export class FindAuctionOrderByArgs {
   @IsOptional()
   @Field(() => String, { nullable: true })
-  currentBidPrice?: 'asc' | 'desc';
-
-  @IsOptional()
-  @Field(() => String, { nullable: true })
   createdAt?: 'asc' | 'desc';
 
   @IsOptional()

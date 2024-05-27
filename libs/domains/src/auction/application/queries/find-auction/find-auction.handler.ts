@@ -1,23 +1,23 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { NotFoundException } from '@nestjs/common';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
-import { FindAuctionByIdQuery } from './find-auction-by-id.query';
+import { plainToClass } from 'class-transformer';
 import { AuctionResponse } from '../../dtos/auction.response';
+import { FindAuctionQuery } from './find-auction.query';
 
-@QueryHandler(FindAuctionByIdQuery)
-export class FindAuctionByIdHandler extends PrismaQueryHandler<
-  FindAuctionByIdQuery,
-  AuctionResponse
-> {
-  constructor() {
-    super(AuctionResponse);
-  }
+@QueryHandler(FindAuctionQuery)
+export class FindAuctionHandler extends PrismaQueryHandler {
+  async execute(query: FindAuctionQuery): Promise<AuctionResponse> {
+    if (!query.id && !query.slug)
+      throw new ForbiddenException(AuctionErrorMessage.INVALID_FIND_AUCTION_ARGS);
 
-  async execute(query: FindAuctionByIdQuery): Promise<any> {
-    const auction = await this.prismaService.auction.findUnique({
+    const auction = await this.prismaService.auction.findFirst({
       where: {
         id: query.id,
+        post: {
+          slug: query.slug,
+        },
       },
       include: {
         post: {
@@ -45,26 +45,6 @@ export class FindAuctionByIdHandler extends PrismaQueryHandler<
             },
           },
         },
-        bids: {
-          orderBy: {
-            createdAt: 'desc',
-          },
-          include: {
-            user: {
-              include: {
-                roles: {
-                  include: {
-                    group: true,
-                  },
-                  orderBy: {
-                    position: 'asc',
-                  },
-                },
-                socialAccounts: true,
-              },
-            },
-          },
-        },
       },
     });
     if (!auction) throw new NotFoundException(AuctionErrorMessage.AUCTION_NOT_FOUND);
@@ -78,7 +58,7 @@ export class FindAuctionByIdHandler extends PrismaQueryHandler<
         position: 'asc',
       },
     });
-    return this.parseResponse({
+    return plainToClass(AuctionResponse, {
       ...auction,
       post: {
         ...auction.post,

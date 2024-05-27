@@ -5,19 +5,13 @@ import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { ForbiddenException } from '@nestjs/common';
 import { ReportErrorMessage } from '@lib/domains/report/domain/report.error.message';
 import { Prisma } from '@prisma/client';
+import { plainToClass } from 'class-transformer';
 import { FindReportPreviewsQuery } from './find-report-previews.query';
 import { PaginatedReportPreviewsResponse } from './paginated-report-previews.response';
 import { ReportPreviewResponse } from '../../dtos/report-preview.response';
 
 @QueryHandler(FindReportPreviewsQuery)
-export class FindReportPreviewsHandler extends PrismaQueryHandler<
-  FindReportPreviewsQuery,
-  ReportPreviewResponse
-> {
-  constructor() {
-    super(ReportPreviewResponse);
-  }
-
+export class FindReportPreviewsHandler extends PrismaQueryHandler {
   async execute(query: FindReportPreviewsQuery): Promise<PaginatedReportPreviewsResponse> {
     if (!!query.where?.userId && query.where.userId !== query.userId)
       throw new ForbiddenException(ReportErrorMessage.FIND_REPORTS_REQUEST_FROM_UNAUTHORIZED_USER);
@@ -73,6 +67,10 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler<
       ],
     });
 
-    return paginate<ReportPreviewResponse>(this.parseResponses(reports), 'id', query.take);
+    return paginate<ReportPreviewResponse>(
+      reports.map((report) => plainToClass(ReportPreviewResponse, report)),
+      'id',
+      query.take,
+    );
   }
 }

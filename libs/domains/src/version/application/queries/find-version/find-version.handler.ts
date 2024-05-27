@@ -1,14 +1,11 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
+import { plainToClass } from 'class-transformer';
 import { FindVersionQuery } from './find-version.query';
 import { VersionResponse } from '../../dtos/version.response';
 
 @QueryHandler(FindVersionQuery)
-export class FindVersionHandler extends PrismaQueryHandler<FindVersionQuery, VersionResponse> {
-  constructor() {
-    super(VersionResponse);
-  }
-
+export class FindVersionHandler extends PrismaQueryHandler {
   async execute(query: FindVersionQuery): Promise<VersionResponse | null> {
     const version = await this.prismaService.version.findUnique({
       where: {
@@ -40,7 +37,7 @@ export class FindVersionHandler extends PrismaQueryHandler<FindVersionQuery, Ver
         createdAt: 'desc',
       },
     });
-    return this.parseResponse({
+    return plainToClass(VersionResponse, {
       ...version,
       images,
     });

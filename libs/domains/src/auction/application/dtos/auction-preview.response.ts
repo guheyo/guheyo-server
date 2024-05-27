@@ -13,6 +13,9 @@ export class AuctionPreviewResponse {
   createdAt: Date;
 
   @Field(() => Date)
+  updatedAt: Date;
+
+  @Field(() => Date)
   originalEndDate: Date;
 
   @Field(() => Date)
@@ -24,8 +27,8 @@ export class AuctionPreviewResponse {
   @Field(() => String, { nullable: true })
   content: string | null;
 
-  @Field(() => Int)
-  currentBidPrice: Number;
+  @Field(() => Int, { nullable: true })
+  currentBidPrice?: Number;
 
   @Field(() => Int)
   hammerPrice: Number;
