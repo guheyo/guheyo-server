@@ -27,6 +27,9 @@ import { parseCommentDeletedTriggerName } from '@lib/domains/comment/application
 import { UpdatedCommentResponse } from '@lib/domains/comment/application/commands/update-comment/updated-comment.response';
 import { CommentUpdatedArgs } from '@lib/domains/comment/application/subscriptions/comment-updated/comment-updated.args';
 import { parseCommentUpdatedTriggerName } from '@lib/domains/comment/application/subscriptions/comment-updated/parse-comment-updated-trigger-name';
+import { FindCommentCountQuery } from '@lib/domains/comment/application/queries/find-comment-count/find-comment-count.query';
+import { CommentCountResponse } from '@lib/domains/comment/application/dtos/comment-count.response';
+import { FindCommentCountArgs } from '@lib/domains/comment/application/queries/find-comment-count/find-comment-count.args';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @Resolver()
@@ -50,6 +53,13 @@ export class CommentResolver {
       args,
       userId: user.id,
     });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(GqlThrottlerBehindProxyGuard)
+  @Query(() => CommentCountResponse)
+  async findCommentCount(@Args() args: FindCommentCountArgs) {
+    const query = new FindCommentCountQuery(args);
     return this.queryBus.execute(query);
   }
 

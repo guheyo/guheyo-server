@@ -367,7 +367,6 @@ model Auction {
   postId            String            @unique()
   post              Post              @relation(fields: [postId], references: [id])
   content           String?
-  currentBidPrice   Int               @default(0)
   hammerPrice       Int               @default(0)
   shippingCost      Int               @default(0)
   shippingType      String            @default("free")

@@ -55,11 +55,21 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
             tags: true,
           },
         },
+        bids: {
+          select: {
+            id: true,
+            price: true,
+          },
+          where: {
+            canceledAt: null,
+          },
+          orderBy: {
+            price: 'desc',
+          },
+          take: 1,
+        },
       },
       orderBy: [
-        {
-          currentBidPrice: query.orderBy?.currentBidPrice,
-        },
         {
           createdAt: query.orderBy?.createdAt,
         },
@@ -70,7 +80,12 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
     });
 
     return paginate<AuctionPreviewResponse>(
-      auctions.map((auction) => plainToClass(AuctionPreviewResponse, auction)),
+      auctions.map((auction) =>
+        plainToClass(AuctionPreviewResponse, {
+          ...auction,
+          currentBidPrice: auction.bids[0]?.price || 0,
+        }),
+      ),
       'id',
       query.take,
     );

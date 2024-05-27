@@ -12,7 +12,7 @@ type AuctionInteractionItemResponseEdge {
 type AuctionPreviewResponse {
   content: String
   createdAt: DateTime!
-  currentBidPrice: Int!
+  currentBidPrice: Int
   extendedEndDate: DateTime!
   extensionCount: Int!
   hammerPrice: Int!
@@ -31,10 +31,9 @@ type AuctionPreviewResponseEdge {
 }
 
 type AuctionResponse {
-  bidCount: Int!
   content: String
   createdAt: DateTime!
-  currentBidPrice: Int!
+  currentBidPrice: Int
   extendedEndDate: DateTime!
   extensionCount: Int!
   hammerPrice: Int!
@@ -56,6 +55,11 @@ type AuthorResponse {
   roles: [RoleResponse!]!
   socialAccounts: [SocialAccountWithoutAuthResponse!]!
   username: String!
+}
+
+type BidCountResponse {
+  auctionId: ID!
+  count: Int!
 }
 
 type BidResponse {
@@ -109,6 +113,11 @@ type CategoryResponse {
   position: Int
   slug: String
   type: String!
+}
+
+type CommentCountResponse {
+  count: Int!
+  postId: ID!
 }
 
 input CommentReportInput {
@@ -569,8 +578,10 @@ type Query {
   findAuctionInteractionItems(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionInteractionItemsResponse!
   findAuctionPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionPreviewsResponse!
   findAuthor(id: ID, username: String): AuthorResponse
+  findBidCount(auctionId: ID!): BidCountResponse!
   findBids(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedBidsResponse!
   findComment(id: ID, postId: ID): CommentResponse
+  findCommentCount(postId: ID!): CommentCountResponse!
   findComments(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedCommentsResponse!
   findEmojis(groupId: ID): [EmojiResponse!]!
   findGroup(id: ID, slug: String): GroupResponse
