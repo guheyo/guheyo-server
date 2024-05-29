@@ -60,3 +60,6 @@ lerna-debug.log*
 # prisma client
 **/prisma/client
 **/generated
+
+# serverless
+.serverless
