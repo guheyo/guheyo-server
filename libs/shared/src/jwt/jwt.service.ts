@@ -37,7 +37,7 @@ export class JwtService {
 
   getAccessTokenCookieOption(): CookieOptions {
     return {
-      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'none',
+      sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none', // Allow cookies to be sent with top-level navigations (oauth2 callback)
       httpOnly: false,
       secure: true, // https, except for localhost
       maxAge: this.configService.get('jwt.access.expiresIn') * 1000, // millisecond
