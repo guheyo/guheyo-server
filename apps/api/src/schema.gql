@@ -14,7 +14,6 @@ type AuctionPreviewResponse {
   createdAt: DateTime!
   currentBidPrice: Int
   extendedEndDate: DateTime!
-  extensionCount: Int!
   hammerPrice: Int!
   id: ID!
   originalEndDate: DateTime!
@@ -23,6 +22,7 @@ type AuctionPreviewResponse {
   shippingType: String!
   status: String!
   updatedAt: DateTime!
+  version: Int!
 }
 
 type AuctionPreviewResponseEdge {
@@ -35,7 +35,6 @@ type AuctionResponse {
   createdAt: DateTime!
   currentBidPrice: Int
   extendedEndDate: DateTime!
-  extensionCount: Int!
   hammerPrice: Int!
   id: ID!
   originalEndDate: DateTime!
@@ -44,6 +43,7 @@ type AuctionResponse {
   shippingType: String!
   status: String!
   updatedAt: DateTime!
+  version: Int!
 }
 
 type AuthorResponse {

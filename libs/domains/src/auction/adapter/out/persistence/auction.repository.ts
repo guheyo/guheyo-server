@@ -120,7 +120,7 @@ export class AuctionRepository
         ..._.pick(auction, [
           'id',
           'extendedEndDate',
-          'extensionCount',
+          'version',
           'content',
           'hammerPrice',
           'status',

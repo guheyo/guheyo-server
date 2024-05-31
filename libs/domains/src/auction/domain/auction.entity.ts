@@ -23,7 +23,7 @@ export class AuctionEntity extends AggregateRoot {
 
   extendedEndDate: Date;
 
-  extensionCount: number;
+  version: number;
 
   postId: string;
 
