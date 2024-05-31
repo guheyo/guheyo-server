@@ -150,4 +150,24 @@ export class UserClient extends UserImageClient {
     await this.connectRoles(userId, roleNames);
     return roleNames;
   }
+
+  async bulkConnectUserRoles(userWithMembers: MyUserWithMember[]): Promise<number> {
+    const limit = pLimit(5);
+
+    const connectedRoleCountPromises = userWithMembers.map((userWithMember) =>
+      limit(async () => {
+        try {
+          const roleNames = await this.connectUserRoles(
+            userWithMember.user.id,
+            userWithMember.member,
+          );
+          return roleNames.length;
+        } catch (e) {
+          return null;
+        }
+      }),
+    );
+    const connectedRoleCounts = await Promise.all(connectedRoleCountPromises);
+    return connectedRoleCounts.filter((count): count is number => count !== null).length;
+  }
 }
