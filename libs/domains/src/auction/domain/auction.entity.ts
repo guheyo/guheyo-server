@@ -113,6 +113,10 @@ export class AuctionEntity extends AggregateRoot {
     return price <= (this.getLastBid()?.price || 0);
   }
 
+  isSeller(userId: string) {
+    return this.post.userId === userId;
+  }
+
   isCanceler(bidderId: string) {
     return this.bids.some((bid) => bid.canceledAt && bid.userId === bidderId);
   }
