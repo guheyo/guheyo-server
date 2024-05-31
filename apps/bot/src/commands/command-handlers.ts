@@ -7,6 +7,8 @@ import { BulkSaveBuysSlashCommandHandler } from './bulk-save/bulk-save-buys.slas
 import { BulkSaveSwapsSlashCommandHandler } from './bulk-save/bulk-save-swaps.slash-command.handler';
 import { BulkSaveUserReviewsSlashCommandHandler } from './bulk-save/bulk-save-user-reviews.slash-command.handler';
 import { BulkSaveUserReviewCommentsSlashCommandHandler } from './bulk-save/bulk-save-user-review-comments.slash-command.handler';
+import { ConnectUserRolesSlashCommandHandler } from './connect-user-roles/connect-user-roles.slash-command-handler';
+import { BulkConnectUserRolesSlashCommandHandler } from './bulk-connect-user-roles/bulk-connect-user-roles.slash-command-handler';
 
 export const COMMAND_HANDLERS = [
   PingSlashCommandHandler,
@@ -18,4 +20,6 @@ export const COMMAND_HANDLERS = [
   BulkSaveSwapsSlashCommandHandler,
   BulkSaveUserReviewsSlashCommandHandler,
   BulkSaveUserReviewCommentsSlashCommandHandler,
+  ConnectUserRolesSlashCommandHandler,
+  BulkConnectUserRolesSlashCommandHandler,
 ];

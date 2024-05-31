@@ -3,6 +3,7 @@ import { Inject } from '@nestjs/common';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { ImageService } from '@lib/shared';
 import { v4 as uuid4 } from 'uuid';
+import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { SignInUserCommand } from './sign-in-user.command';
 import { UserSavePort } from '../../ports/out/user.save.port';
 import { UserLoadPort } from '../../ports/out/user.load.port';
@@ -48,14 +49,16 @@ export class SignInUserHandler implements ICommandHandler<SignInUserCommand> {
       });
     }
 
-    await this.userSavePort.create(newUser);
-    newUser.linkSocialAccount({
-      socialAccountId: uuid4(),
-      provider: command.provider,
-      socialId: command.socialId,
-      accessToken: command.accessToken,
-      refreshToken: command.refreshToken,
-    });
+    await this.userSavePort.signInUser(
+      newUser,
+      new SocialAccountEntity({
+        id: uuid4(),
+        provider: command.provider,
+        socialId: command.socialId,
+        accessToken: command.accessToken,
+        refreshToken: command.refreshToken,
+      }),
+    );
     newUser.commit();
   }
 }
