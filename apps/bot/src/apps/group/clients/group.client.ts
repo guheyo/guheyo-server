@@ -5,6 +5,7 @@ import { RpcException } from '@nestjs/microservices';
 import { QueryBus } from '@nestjs/cqrs';
 import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
 import { FindTagsQuery } from '@lib/domains/tag/application/queries/find-tags/find-tags.query';
+import { Client, GuildMember } from 'discord.js';
 import { GroupParser } from '../parsers/group.parser';
 import { GroupErrorMessage } from '../parsers/group.error-message';
 
@@ -13,7 +14,10 @@ export class GroupClient {
   @Inject()
   private readonly groupParser: GroupParser;
 
-  constructor(readonly queryBus: QueryBus) {}
+  constructor(
+    readonly queryBus: QueryBus,
+    private readonly client: Client,
+  ) {}
 
   async fetchGroup(channelId: string) {
     const slug = this.groupParser.parseGroupSlug(channelId);
@@ -30,5 +34,11 @@ export class GroupClient {
 
   async fetchTags(): Promise<TagResponse[]> {
     return this.queryBus.execute(new FindTagsQuery());
+  }
+
+  async fetchMembers(guildId: string): Promise<GuildMember[]> {
+    const guild = await this.client.guilds.fetch(guildId);
+    const members = await guild.members.fetch();
+    return members.map((m) => m);
   }
 }
