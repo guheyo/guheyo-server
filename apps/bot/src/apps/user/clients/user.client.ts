@@ -14,6 +14,7 @@ import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { UserParser } from '../parsers/user.parser';
 import { UserErrorMessage } from '../parsers/user.error-message';
 import { MyUserWithMember } from '../interfaces/user.interfaces';
+import { FindUserWithoutSocialAccountsCountQuery } from '@lib/domains/user/application/queries/find-user-without-social-accounts-count/find-user-without-social-accounts-count.query';
 
 @Injectable()
 export class UserClient extends UserImageClient {
@@ -169,5 +170,15 @@ export class UserClient extends UserImageClient {
     );
     const connectedRoleCounts = await Promise.all(connectedRoleCountPromises);
     return connectedRoleCounts.filter((count): count is number => count !== null).length;
+  }
+
+  async findUserWithoutSocialAccountsCount(providers: string[]): Promise<number> {
+    return this.queryBus.execute(
+      new FindUserWithoutSocialAccountsCountQuery({
+        args: {
+          providers,
+        },
+      }),
+    );
   }
 }
