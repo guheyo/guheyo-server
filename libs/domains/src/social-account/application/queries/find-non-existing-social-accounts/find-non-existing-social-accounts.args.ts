@@ -1,5 +1,5 @@
-export class FindNonExistingSocialAccountsArgs {
-  provider: string;
+import { SocialUserArgs } from './social-user.args';
 
-  socialIds: string[];
+export class FindNonExistingSocialAccountsArgs {
+  socialUsers: SocialUserArgs[];
 }

@@ -1,13 +1,11 @@
 import { IQuery } from '@nestjs/cqrs';
+import { SocialUserArgs } from './social-user.args';
 import { FindNonExistingSocialAccountsArgs } from './find-non-existing-social-accounts.args';
 
 export class FindNonExistingSocialAccountsQuery implements IQuery {
-  provider: string;
-
-  socialIds: string[];
+  socialUsers: SocialUserArgs[];
 
   constructor(args: FindNonExistingSocialAccountsArgs) {
-    this.provider = args.provider;
-    this.socialIds = args.socialIds;
+    this.socialUsers = args.socialUsers;
   }
 }

@@ -10,11 +10,14 @@ import { FindMyUserQuery } from '@lib/domains/user/application/queries/find-my-u
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { ConnectRolesCommand } from '@lib/domains/user/application/commands/connect-roles/connect-roles.command';
 import { DisconnectRolesCommand } from '@lib/domains/user/application/commands/disconnect-roles/disconnect-roles.command';
+import { FindUserWithoutSocialAccountsCountQuery } from '@lib/domains/user/application/queries/find-user-without-social-accounts-count/find-user-without-social-accounts-count.query';
+import { NonExistingSocialAccountsResponse } from '@lib/domains/social-account/application/dtos/non-existing-social-accounts.response';
+import { FindNonExistingSocialAccountsQuery } from '@lib/domains/social-account/application/queries/find-non-existing-social-accounts/find-non-existing-social-accounts.query';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { UserParser } from '../parsers/user.parser';
 import { UserErrorMessage } from '../parsers/user.error-message';
 import { MyUserWithMember } from '../interfaces/user.interfaces';
-import { FindUserWithoutSocialAccountsCountQuery } from '@lib/domains/user/application/queries/find-user-without-social-accounts-count/find-user-without-social-accounts-count.query';
+import { SocialUserArgs } from '@lib/domains/social-account/application/queries/find-non-existing-social-accounts/social-user.args';
 
 @Injectable()
 export class UserClient extends UserImageClient {
@@ -180,5 +183,11 @@ export class UserClient extends UserImageClient {
         },
       }),
     );
+  }
+
+  async findNonExistingSocialAccounts(
+    socialUsers: SocialUserArgs[],
+  ): Promise<NonExistingSocialAccountsResponse> {
+    return this.queryBus.execute(new FindNonExistingSocialAccountsQuery({ socialUsers }));
   }
 }
