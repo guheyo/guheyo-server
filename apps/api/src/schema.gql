@@ -668,7 +668,7 @@ type ReportResponse {
 }
 
 type RoleResponse {
-  groupId: ID!
+  groupId: ID
   hexColor: String!
   id: ID!
   name: String!
