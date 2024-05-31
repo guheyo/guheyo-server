@@ -1,6 +1,7 @@
 import { GuildMember, PartialUser, RoleManager, User } from 'discord.js';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuid4 } from 'uuid';
+import pLimit from 'p-limit';
 import { UpsertRolesCommand } from '@lib/domains/role/application/commands/upsert-roles/upsert-roles.command';
 import { SignInUserCommand } from '@lib/domains/user/application/commands/sign-in-user/sign-in-user.command';
 import { UpdateUserCommand } from '@lib/domains/user/application/commands/update-user/update-user.command';
@@ -12,6 +13,7 @@ import { DisconnectRolesCommand } from '@lib/domains/user/application/commands/d
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { UserParser } from '../parsers/user.parser';
 import { UserErrorMessage } from '../parsers/user.error-message';
+import { MyUserWithMember } from '../interfaces/user.interfaces';
 
 @Injectable()
 export class UserClient extends UserImageClient {
@@ -39,6 +41,31 @@ export class UserClient extends UserImageClient {
       await this.connectRoles(newUser.id, roleNames);
     }
     return newUser;
+  }
+
+  async fetchMyUserWithMembers(
+    provider: string,
+    members: GuildMember[],
+  ): Promise<MyUserWithMember[]> {
+    const limit = pLimit(5);
+
+    const userWithMemberPromises = members.map((member) =>
+      limit(async () => {
+        try {
+          const user = await this.fetchMyUser(provider, member);
+          return {
+            user,
+            member,
+          };
+        } catch (e) {
+          return null;
+        }
+      }),
+    );
+    const userWithMembers = await Promise.all(userWithMemberPromises);
+    return userWithMembers.filter(
+      (userWithMember): userWithMember is MyUserWithMember => userWithMember !== null,
+    );
   }
 
   async findMyUser(provider: string, socialId: string): Promise<MyUserResponse | null> {
