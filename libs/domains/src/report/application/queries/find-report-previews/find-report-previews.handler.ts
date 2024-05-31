@@ -46,9 +46,6 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler {
         reportedUser: {
           include: {
             roles: {
-              include: {
-                group: true,
-              },
               orderBy: {
                 position: 'asc',
               },

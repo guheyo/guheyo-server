@@ -23,9 +23,6 @@ export class FindReportHandler extends PrismaQueryHandler {
         reportedUser: {
           include: {
             roles: {
-              include: {
-                group: true,
-              },
               orderBy: {
                 position: 'asc',
               },

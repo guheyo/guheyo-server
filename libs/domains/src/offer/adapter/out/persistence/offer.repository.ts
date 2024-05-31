@@ -26,9 +26,6 @@ export class OfferRepository
               include: {
                 socialAccounts: true,
                 roles: {
-                  include: {
-                    group: true,
-                  },
                   orderBy: {
                     position: 'asc',
                   },

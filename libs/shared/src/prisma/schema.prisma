@@ -363,7 +363,7 @@ model Auction {
   deletedAt         DateTime?
   originalEndDate   DateTime
   extendedEndDate   DateTime
-  extensionCount    Int               @default(0)
+  version           Int               @default(0)
   postId            String            @unique()
   post              Post              @relation(fields: [postId], references: [id])
   content           String?

@@ -24,9 +24,6 @@ export class PostRepository
           include: {
             socialAccounts: true,
             roles: {
-              include: {
-                group: true,
-              },
               orderBy: {
                 position: 'asc',
               },

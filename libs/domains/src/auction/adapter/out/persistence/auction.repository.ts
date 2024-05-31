@@ -28,9 +28,6 @@ export class AuctionRepository
               include: {
                 socialAccounts: true,
                 roles: {
-                  include: {
-                    group: true,
-                  },
                   orderBy: {
                     position: 'asc',
                   },
@@ -50,9 +47,6 @@ export class AuctionRepository
               include: {
                 socialAccounts: true,
                 roles: {
-                  include: {
-                    group: true,
-                  },
                   orderBy: {
                     position: 'asc',
                   },
@@ -120,7 +114,7 @@ export class AuctionRepository
         ..._.pick(auction, [
           'id',
           'extendedEndDate',
-          'extensionCount',
+          'version',
           'content',
           'hammerPrice',
           'status',

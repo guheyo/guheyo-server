@@ -41,9 +41,6 @@ export class CreateCommentHandler extends PrismaCommandHandler<
         user: {
           include: {
             roles: {
-              include: {
-                group: true,
-              },
               orderBy: {
                 position: 'asc',
               },

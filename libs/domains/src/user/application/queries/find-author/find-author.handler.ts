@@ -16,9 +16,6 @@ export class FindAuthorHandler extends PrismaQueryHandler {
       },
       include: {
         roles: {
-          include: {
-            group: true,
-          },
           orderBy: {
             position: 'asc',
           },

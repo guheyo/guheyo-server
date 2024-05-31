@@ -11,4 +11,5 @@ export enum AuctionErrorMessage {
   BID_NOT_ADDED = 'Bid not added',
   BID_CREATION_FAILED = 'Bid creation failed',
   BID_CANCELLATION_TARGET_IS_NOT_A_RECENT_BID = 'Bid cancellation target is not a recent bid',
+  PLACE_BID_RETRY_LIMIT_EXCEEDED = 'Failed to place bid after multiple attempts due to version conflict',
 }
