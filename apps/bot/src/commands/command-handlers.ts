@@ -9,6 +9,7 @@ import { BulkSaveUserReviewsSlashCommandHandler } from './bulk-save/bulk-save-us
 import { BulkSaveUserReviewCommentsSlashCommandHandler } from './bulk-save/bulk-save-user-review-comments.slash-command.handler';
 import { ConnectUserRolesSlashCommandHandler } from './connect-user-roles/connect-user-roles.slash-command-handler';
 import { BulkConnectUserRolesSlashCommandHandler } from './bulk-connect-user-roles/bulk-connect-user-roles.slash-command-handler';
+import { FindUserWithoutSocialAccountsCountHandler } from './find-user-without-social-accounts-count/find-user-without-social-accounts-count-command-handler';
 
 export const COMMAND_HANDLERS = [
   PingSlashCommandHandler,
@@ -22,4 +23,5 @@ export const COMMAND_HANDLERS = [
   BulkSaveUserReviewCommentsSlashCommandHandler,
   ConnectUserRolesSlashCommandHandler,
   BulkConnectUserRolesSlashCommandHandler,
+  FindUserWithoutSocialAccountsCountHandler,
 ];
