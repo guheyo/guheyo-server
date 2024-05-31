@@ -41,9 +41,6 @@ export class FindCommentsHandler extends PrismaQueryHandler {
         user: {
           include: {
             roles: {
-              include: {
-                group: true,
-              },
               orderBy: {
                 position: 'asc',
               },

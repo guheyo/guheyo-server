@@ -30,9 +30,6 @@ export class ReportRepository
         reportedUser: {
           include: {
             roles: {
-              include: {
-                group: true,
-              },
               orderBy: {
                 position: 'asc',
               },
@@ -68,9 +65,6 @@ export class ReportRepository
         reportedUser: {
           include: {
             roles: {
-              include: {
-                group: true,
-              },
               orderBy: {
                 position: 'asc',
               },

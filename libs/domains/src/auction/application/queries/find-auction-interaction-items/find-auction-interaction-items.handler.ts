@@ -41,9 +41,6 @@ export class FindAuctionInteractionItemsHandler extends PrismaQueryHandler {
               user: {
                 include: {
                   roles: {
-                    include: {
-                      group: true,
-                    },
                     orderBy: {
                       position: 'asc',
                     },
@@ -79,9 +76,6 @@ export class FindAuctionInteractionItemsHandler extends PrismaQueryHandler {
               user: {
                 include: {
                   roles: {
-                    include: {
-                      group: true,
-                    },
                     orderBy: {
                       position: 'asc',
                     },

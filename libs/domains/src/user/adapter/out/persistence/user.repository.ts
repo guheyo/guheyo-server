@@ -20,9 +20,6 @@ export class UserRepository
       include: {
         socialAccounts: true,
         roles: {
-          include: {
-            group: true,
-          },
           orderBy: {
             position: 'asc',
           },
@@ -46,9 +43,6 @@ export class UserRepository
       include: {
         socialAccounts: true,
         roles: {
-          include: {
-            group: true,
-          },
           orderBy: {
             position: 'asc',
           },
