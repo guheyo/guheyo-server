@@ -235,35 +235,40 @@ export class UserClient extends UserImageClient {
     return members.filter((member): member is GuildMember => !!member);
   }
 
-  async applySocialAuthRole(
+  findSocialRole(roles: Collection<string, Role>, provider: string): Role | undefined {
+    let socialRole: Role | undefined;
+    if (provider === 'kakao') {
+      socialRole = roles.find((role) => role.name === '카카오 인증');
+    }
+    return socialRole;
+  }
+
+  filterMembersNeedingRole(
     userWithMembers: MyUserWithMember[],
     provider: string,
-    roles: Collection<string, Role>,
-  ): Promise<GuildMember[]> {
-    let socialAuthRole: Role | undefined;
-    if (provider === 'kakao') {
-      socialAuthRole = roles.find((role) => role.name === '카카오 인증');
-    }
-
-    const userWithMembersToApplySocialAuthRole = userWithMembers
+    role: Role,
+  ): GuildMember[] {
+    return userWithMembers
       .filter((userWithMember) =>
         userWithMember.user.socialAccounts.find(
           (socialAccount) => socialAccount.provider === provider,
         ),
       )
-      .filter(
-        (userWithMember) =>
-          !!socialAuthRole && !userWithMember.member.roles.cache.has(socialAuthRole.id),
-      );
+      .filter((userWithMember) => !userWithMember.member.roles.cache.has(role.id))
+      .map((userWithMember) => userWithMember.member);
+  }
 
-    const memberPromises = userWithMembersToApplySocialAuthRole.map(async (userWithMember) =>
+  async applyRole(
+    userWithMembers: MyUserWithMember[],
+    provider: string,
+    role: Role,
+  ): Promise<GuildMember[]> {
+    const membersNeedingRole = this.filterMembersNeedingRole(userWithMembers, provider, role);
+
+    const memberPromises = membersNeedingRole.map(async (member) =>
       this.concurrencyLimit(async () => {
         try {
-          if (socialAuthRole) {
-            const { member } = userWithMember;
-            return await member.roles.add(socialAuthRole);
-          }
-          return null;
+          return await member.roles.add(role);
         } catch (e) {
           return null;
         }

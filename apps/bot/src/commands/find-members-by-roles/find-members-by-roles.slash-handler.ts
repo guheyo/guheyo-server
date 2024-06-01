@@ -30,9 +30,10 @@ export class FindMembersByRolesSlashHandler {
 
     const roles = [role0, role1, role2].filter((role) => !!role);
     const members = await this.groupClient.fetchMembers(guildId, limit);
-    const mebersHasRoles = await this.userClient.filterMembersByRoles(members, roles);
-    const memberMentionsMessage = mebersHasRoles.map((member) => `<@${member.id}>`).join(' ');
-    const roleNamesMessage = roles.map((role) => role.name).join(', ');
+    const membersHasRoles = await this.userClient.filterMembersByRoles(members, roles);
+    const memberMentionsMessage =
+      this.userClient.userParser.parseMemberMensionsMessage(membersHasRoles);
+    const roleNamesMessage = this.userClient.userParser.parseRoleNamesMessage(roles);
 
     const logMessage = `[${roleNamesMessage}] ${memberMentionsMessage}`;
     interaction.reply(logMessage);
