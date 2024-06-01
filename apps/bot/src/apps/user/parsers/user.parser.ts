@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { GuildMember, RoleManager, User } from 'discord.js';
+import { GuildMember, Role, RoleManager, User } from 'discord.js';
 import { CreateRoleInput } from '@lib/domains/role/application/commands/create-role/create-role.input';
 import { SignInUserInput } from '@lib/domains/user/application/commands/sign-in-user/sing-in-user.input';
 import { DEFAULT_ROLE_COLOR } from '@lib/domains/role/domain/role.constants';
@@ -30,5 +30,13 @@ export class UserParser extends GroupParser {
 
   parseRoleNames(discordMember: GuildMember): string[] {
     return discordMember.roles.cache.map((role) => role.name);
+  }
+
+  parseMemberMensionsMessage(members: GuildMember[]): string {
+    return members.map((member) => `<@${member.id}>`).join(' ');
+  }
+
+  parseRoleNamesMessage(roles: Role[]): string {
+    return roles.map((role) => role.name).join(', ');
   }
 }

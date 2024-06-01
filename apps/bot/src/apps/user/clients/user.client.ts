@@ -223,7 +223,8 @@ export class UserClient extends UserImageClient {
         try {
           const { user, member } = userWithMember;
           const userRoleNames = user.roles.map((role) => role.name);
-          const rolesToApply = roles.filter((role) => userRoleNames.includes(role.name));
+          const userRoles = roles.filter((role) => userRoleNames.includes(role.name));
+          const rolesToApply = userRoles.subtract(member.roles.cache);
           return await member.roles.add(rolesToApply);
         } catch (e) {
           return null;
@@ -234,31 +235,40 @@ export class UserClient extends UserImageClient {
     return members.filter((member): member is GuildMember => !!member);
   }
 
-  async applySocialAuthRole(
+  findSocialRole(roles: Collection<string, Role>, provider: string): Role | undefined {
+    let socialRole: Role | undefined;
+    if (provider === 'kakao') {
+      socialRole = roles.find((role) => role.name === '카카오 인증');
+    }
+    return socialRole;
+  }
+
+  filterMembersNeedingRole(
     userWithMembers: MyUserWithMember[],
     provider: string,
-    roles: Collection<string, Role>,
+    role: Role,
+  ): GuildMember[] {
+    return userWithMembers
+      .filter((userWithMember) =>
+        userWithMember.user.socialAccounts.find(
+          (socialAccount) => socialAccount.provider === provider,
+        ),
+      )
+      .filter((userWithMember) => !userWithMember.member.roles.cache.has(role.id))
+      .map((userWithMember) => userWithMember.member);
+  }
+
+  async applyRole(
+    userWithMembers: MyUserWithMember[],
+    provider: string,
+    role: Role,
   ): Promise<GuildMember[]> {
-    let socialAuthRole: Role | undefined;
+    const membersNeedingRole = this.filterMembersNeedingRole(userWithMembers, provider, role);
 
-    if (provider === 'kakao') {
-      socialAuthRole = roles.find((role) => role.name === '카카오 인증');
-    }
-
-    const socialLinkedUserWithMembers = userWithMembers.filter((userWithMember) =>
-      userWithMember.user.socialAccounts.find(
-        (socialAccount) => socialAccount.provider === provider,
-      ),
-    );
-
-    const memberPromises = socialLinkedUserWithMembers.map(async (userWithMember) =>
+    const memberPromises = membersNeedingRole.map(async (member) =>
       this.concurrencyLimit(async () => {
         try {
-          if (socialAuthRole) {
-            const { member } = userWithMember;
-            return await member.roles.add(socialAuthRole);
-          }
-          return null;
+          return await member.roles.add(role);
         } catch (e) {
           return null;
         }
@@ -266,5 +276,11 @@ export class UserClient extends UserImageClient {
     );
     const members = await Promise.all(memberPromises);
     return members.filter((member): member is GuildMember => !!member);
+  }
+
+  filterMembersByRoles(members: GuildMember[], roles: Role[]): GuildMember[] {
+    return members.filter((member) =>
+      roles.map((role) => role.id).every((roleId) => member.roles.cache.has(roleId)),
+    );
   }
 }
