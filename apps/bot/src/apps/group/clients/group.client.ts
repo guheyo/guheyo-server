@@ -36,9 +36,11 @@ export class GroupClient {
     return this.queryBus.execute(new FindTagsQuery());
   }
 
-  async fetchMembers(guildId: string): Promise<GuildMember[]> {
+  async fetchMembers(guildId: string, limit: number): Promise<GuildMember[]> {
     const guild = await this.client.guilds.fetch(guildId);
-    const members = await guild.members.fetch();
+    const members = await guild.members.fetch({
+      limit,
+    });
     return members.map((m) => m);
   }
 }
