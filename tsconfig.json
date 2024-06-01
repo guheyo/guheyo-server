@@ -18,6 +18,9 @@
       "@app/bot/*": [
         "apps/bot/src/*"
       ],
+      "@app/lambda/*": [
+        "apps/lambda/src/*"
+      ],
       "@lib/shared": [
         "libs/shared/src"
       ],

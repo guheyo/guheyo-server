@@ -3,6 +3,7 @@ export enum AuctionErrorMessage {
   AUCTION_HAS_ENDED = 'Auction has ended',
   INVALID_FIND_AUCTION_ARGS = 'Invalid find auction args',
   BID_NOT_FOUND = 'Bid not found',
+  BID_FROM_SELLER_ERROR = 'Bid from seller not allowed',
   BID_BELOW_THE_CURRENT_PRICE = 'Bid below the current price',
   CANCELLERS_ATTEMPT_TO_RE_BID = 'Cancellers attempt to re-bid',
   BID_CANCELLATION_TIMEOUT = 'Bid cancellation Timeout',
@@ -11,4 +12,5 @@ export enum AuctionErrorMessage {
   BID_NOT_ADDED = 'Bid not added',
   BID_CREATION_FAILED = 'Bid creation failed',
   BID_CANCELLATION_TARGET_IS_NOT_A_RECENT_BID = 'Bid cancellation target is not a recent bid',
+  PLACE_BID_RETRY_LIMIT_EXCEEDED = 'Failed to place bid after multiple attempts due to version conflict',
 }

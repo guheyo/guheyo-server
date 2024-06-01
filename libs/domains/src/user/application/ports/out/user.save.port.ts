@@ -1,3 +1,4 @@
+import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { SavePort } from '@lib/shared/cqrs/ports/save.port';
 
@@ -20,4 +21,5 @@ export interface UserSavePort extends SavePort<UserEntity> {
     roleIds: string[];
     roleNames: string[];
   }) => void;
+  signInUser: (user: UserEntity, socialAccount: SocialAccountEntity) => void;
 }

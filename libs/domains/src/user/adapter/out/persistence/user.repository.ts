@@ -4,6 +4,7 @@ import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { UserLoadPort } from '@lib/domains/user/application/ports/out/user.load.port';
 import { UserSavePort } from '@lib/domains/user/application/ports/out/user.save.port';
+import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-account.entity';
 
 @Injectable()
 export class UserRepository
@@ -20,9 +21,6 @@ export class UserRepository
       include: {
         socialAccounts: true,
         roles: {
-          include: {
-            group: true,
-          },
           orderBy: {
             position: 'asc',
           },
@@ -46,9 +44,6 @@ export class UserRepository
       include: {
         socialAccounts: true,
         roles: {
-          include: {
-            group: true,
-          },
           orderBy: {
             position: 'asc',
           },
@@ -137,6 +132,28 @@ export class UserRepository
               : roleNames.map((roleName) => ({
                   name: roleName,
                 })),
+        },
+      },
+    });
+  }
+
+  async signInUser(user: UserEntity, socialAccount: SocialAccountEntity): Promise<void> {
+    await this.prismaService.user.create({
+      data: {
+        id: user.id,
+        username: user.username,
+        name: user.name,
+        about: user.about,
+        phoneNumber: user.phoneNumber,
+        avatarURL: user.avatarURL,
+        socialAccounts: {
+          create: {
+            id: socialAccount.id,
+            provider: socialAccount.provider,
+            socialId: socialAccount.socialId,
+            accessToken: socialAccount.accessToken,
+            refreshToken: socialAccount.refreshToken,
+          },
         },
       },
     });

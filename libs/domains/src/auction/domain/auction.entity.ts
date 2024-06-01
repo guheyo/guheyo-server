@@ -23,7 +23,7 @@ export class AuctionEntity extends AggregateRoot {
 
   extendedEndDate: Date;
 
-  extensionCount: number;
+  version: number;
 
   postId: string;
 
@@ -111,6 +111,10 @@ export class AuctionEntity extends AggregateRoot {
 
   isBidBelowTheCurrentPrice(price: number) {
     return price <= (this.getLastBid()?.price || 0);
+  }
+
+  isSeller(userId: string) {
+    return this.post.userId === userId;
   }
 
   isCanceler(bidderId: string) {

@@ -33,9 +33,6 @@ export class FindBidsHandler extends PrismaQueryHandler {
         user: {
           include: {
             roles: {
-              include: {
-                group: true,
-              },
               orderBy: {
                 position: 'asc',
               },

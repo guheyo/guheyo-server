@@ -26,9 +26,6 @@ export class UserReviewRepository
               include: {
                 socialAccounts: true,
                 roles: {
-                  include: {
-                    group: true,
-                  },
                   orderBy: {
                     position: 'asc',
                   },
@@ -74,9 +71,6 @@ export class UserReviewRepository
               include: {
                 socialAccounts: true,
                 roles: {
-                  include: {
-                    group: true,
-                  },
                   orderBy: {
                     position: 'asc',
                   },

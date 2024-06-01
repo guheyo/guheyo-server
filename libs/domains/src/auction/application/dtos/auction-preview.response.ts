@@ -22,7 +22,7 @@ export class AuctionPreviewResponse {
   extendedEndDate: Date;
 
   @Field(() => Int)
-  extensionCount: number;
+  version: number;
 
   @Field(() => String, { nullable: true })
   content: string | null;

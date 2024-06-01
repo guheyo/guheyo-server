@@ -47,9 +47,6 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler {
             user: {
               include: {
                 roles: {
-                  include: {
-                    group: true,
-                  },
                   orderBy: {
                     position: 'asc',
                   },
@@ -71,9 +68,6 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler {
         reviewedUser: {
           include: {
             roles: {
-              include: {
-                group: true,
-              },
               orderBy: {
                 position: 'asc',
               },

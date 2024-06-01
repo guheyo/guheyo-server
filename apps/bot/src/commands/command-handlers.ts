@@ -7,6 +7,12 @@ import { BulkSaveBuysSlashCommandHandler } from './bulk-save/bulk-save-buys.slas
 import { BulkSaveSwapsSlashCommandHandler } from './bulk-save/bulk-save-swaps.slash-command.handler';
 import { BulkSaveUserReviewsSlashCommandHandler } from './bulk-save/bulk-save-user-reviews.slash-command.handler';
 import { BulkSaveUserReviewCommentsSlashCommandHandler } from './bulk-save/bulk-save-user-review-comments.slash-command.handler';
+import { ConnectUserRolesSlashCommandHandler } from './connect-user-roles/connect-user-roles.slash-command-handler';
+import { FindUserWithoutSocialAccountsCountHandler } from './find-user-without-social-accounts-count/find-user-without-social-accounts-count-command-handler';
+import { BulkConnectUserRolesSlashHandler } from './bulk-connect-user-roles/bulk-connect-user-roles.slash-handler';
+import { LinkNonExistingDiscordAccountsSlashHandler } from './link-non-existing-discord-accounts/link-non-existing-discord-accounts.slash-handler';
+import { ApplyUserRolesSlashHandler } from './apply-user-roles/apply-user-roles.slash-handler';
+import { ApplySocialAuthRoleSlashHandler } from './apply-social-auth-role/apply-social-auth-role.slash-handler';
 
 export const COMMAND_HANDLERS = [
   PingSlashCommandHandler,
@@ -18,4 +24,10 @@ export const COMMAND_HANDLERS = [
   BulkSaveSwapsSlashCommandHandler,
   BulkSaveUserReviewsSlashCommandHandler,
   BulkSaveUserReviewCommentsSlashCommandHandler,
+  ConnectUserRolesSlashCommandHandler,
+  FindUserWithoutSocialAccountsCountHandler,
+  BulkConnectUserRolesSlashHandler,
+  LinkNonExistingDiscordAccountsSlashHandler,
+  ApplyUserRolesSlashHandler,
+  ApplySocialAuthRoleSlashHandler,
 ];
