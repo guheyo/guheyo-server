@@ -12,8 +12,9 @@ import { FindUserWithoutSocialAccountsCountHandler } from './find-user-without-s
 import { BulkConnectUserRolesSlashHandler } from './bulk-connect-user-roles/bulk-connect-user-roles.slash-handler';
 import { LinkNonExistingDiscordAccountsSlashHandler } from './link-non-existing-discord-accounts/link-non-existing-discord-accounts.slash-handler';
 import { ApplyUserRolesSlashHandler } from './apply-user-roles/apply-user-roles.slash-handler';
-import { ApplySocialAuthRoleSlashHandler } from './apply-social-auth-role/apply-social-auth-role.slash-handler';
 import { FindMembersByRolesSlashHandler } from './find-members-by-roles/find-members-by-roles.slash-handler';
+import { FindMembersNeedingSocialRoleSlashHandler } from './find-members-needing-social-role/find-members-needing-social-role.slash-handler';
+import { ApplySocialRoleSlashHandler } from './apply-social-role/apply-social-role.slash-handler';
 
 export const COMMAND_HANDLERS = [
   PingSlashCommandHandler,
@@ -30,6 +31,7 @@ export const COMMAND_HANDLERS = [
   BulkConnectUserRolesSlashHandler,
   LinkNonExistingDiscordAccountsSlashHandler,
   ApplyUserRolesSlashHandler,
-  ApplySocialAuthRoleSlashHandler,
+  ApplySocialRoleSlashHandler,
   FindMembersByRolesSlashHandler,
+  FindMembersNeedingSocialRoleSlashHandler,
 ];
