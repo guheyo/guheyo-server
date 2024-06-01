@@ -223,7 +223,8 @@ export class UserClient extends UserImageClient {
         try {
           const { user, member } = userWithMember;
           const userRoleNames = user.roles.map((role) => role.name);
-          const rolesToApply = roles.filter((role) => userRoleNames.includes(role.name));
+          const userRoles = roles.filter((role) => userRoleNames.includes(role.name));
+          const rolesToApply = userRoles.subtract(member.roles.cache);
           return await member.roles.add(rolesToApply);
         } catch (e) {
           return null;
@@ -256,6 +257,8 @@ export class UserClient extends UserImageClient {
         try {
           if (socialAuthRole) {
             const { member } = userWithMember;
+            if (member.roles.cache.has(socialAuthRole.id)) return null;
+
             return await member.roles.add(socialAuthRole);
           }
           return null;
