@@ -13,6 +13,7 @@ import { BulkConnectUserRolesSlashHandler } from './bulk-connect-user-roles/bulk
 import { LinkNonExistingDiscordAccountsSlashHandler } from './link-non-existing-discord-accounts/link-non-existing-discord-accounts.slash-handler';
 import { ApplyUserRolesSlashHandler } from './apply-user-roles/apply-user-roles.slash-handler';
 import { ApplySocialAuthRoleSlashHandler } from './apply-social-auth-role/apply-social-auth-role.slash-handler';
+import { FindMembersByRolesSlashHandler } from './find-members-by-roles/find-members-by-roles.slash-handler';
 
 export const COMMAND_HANDLERS = [
   PingSlashCommandHandler,
@@ -30,4 +31,5 @@ export const COMMAND_HANDLERS = [
   LinkNonExistingDiscordAccountsSlashHandler,
   ApplyUserRolesSlashHandler,
   ApplySocialAuthRoleSlashHandler,
+  FindMembersByRolesSlashHandler,
 ];

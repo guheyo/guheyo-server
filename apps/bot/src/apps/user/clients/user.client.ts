@@ -267,4 +267,10 @@ export class UserClient extends UserImageClient {
     const members = await Promise.all(memberPromises);
     return members.filter((member): member is GuildMember => !!member);
   }
+
+  filterMembersByRoles(members: GuildMember[], roles: Role[]): GuildMember[] {
+    return members.filter((member) =>
+      roles.map((role) => role.id).every((roleId) => member.roles.cache.has(roleId)),
+    );
+  }
 }
