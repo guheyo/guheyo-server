@@ -241,24 +241,26 @@ export class UserClient extends UserImageClient {
     roles: Collection<string, Role>,
   ): Promise<GuildMember[]> {
     let socialAuthRole: Role | undefined;
-
     if (provider === 'kakao') {
       socialAuthRole = roles.find((role) => role.name === '카카오 인증');
     }
 
-    const socialLinkedUserWithMembers = userWithMembers.filter((userWithMember) =>
-      userWithMember.user.socialAccounts.find(
-        (socialAccount) => socialAccount.provider === provider,
-      ),
-    );
+    const userWithMembersToApplySocialAuthRole = userWithMembers
+      .filter((userWithMember) =>
+        userWithMember.user.socialAccounts.find(
+          (socialAccount) => socialAccount.provider === provider,
+        ),
+      )
+      .filter(
+        (userWithMember) =>
+          !!socialAuthRole && !userWithMember.member.roles.cache.has(socialAuthRole.id),
+      );
 
-    const memberPromises = socialLinkedUserWithMembers.map(async (userWithMember) =>
+    const memberPromises = userWithMembersToApplySocialAuthRole.map(async (userWithMember) =>
       this.concurrencyLimit(async () => {
         try {
           if (socialAuthRole) {
             const { member } = userWithMember;
-            if (member.roles.cache.has(socialAuthRole.id)) return null;
-
             return await member.roles.add(socialAuthRole);
           }
           return null;
