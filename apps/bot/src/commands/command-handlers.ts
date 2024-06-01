@@ -11,6 +11,7 @@ import { ConnectUserRolesSlashCommandHandler } from './connect-user-roles/connec
 import { FindUserWithoutSocialAccountsCountHandler } from './find-user-without-social-accounts-count/find-user-without-social-accounts-count-command-handler';
 import { BulkConnectUserRolesSlashHandler } from './bulk-connect-user-roles/bulk-connect-user-roles.slash-handler';
 import { LinkNonExistingDiscordAccountsSlashHandler } from './link-non-existing-discord-accounts/link-non-existing-discord-accounts.slash-handler';
+import { ApplyUserRolesSlashHandler } from './apply-user-roles/apply-user-roles.slash-handler';
 
 export const COMMAND_HANDLERS = [
   PingSlashCommandHandler,
@@ -26,4 +27,5 @@ export const COMMAND_HANDLERS = [
   FindUserWithoutSocialAccountsCountHandler,
   BulkConnectUserRolesSlashHandler,
   LinkNonExistingDiscordAccountsSlashHandler,
+  ApplyUserRolesSlashHandler,
 ];

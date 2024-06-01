@@ -1,4 +1,4 @@
-import { GuildMember, PartialUser, RoleManager, User } from 'discord.js';
+import { Collection, GuildMember, PartialUser, Role, RoleManager, User } from 'discord.js';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuid4 } from 'uuid';
 import pLimit from 'p-limit';
@@ -215,5 +215,27 @@ export class UserClient extends UserImageClient {
     return socialAccountIds.filter(
       (socialAccountId): socialAccountId is string => socialAccountId !== null,
     );
+  }
+
+  async applyUserRoles(
+    userWithMembers: MyUserWithMember[],
+    roles: Collection<string, Role>,
+  ): Promise<GuildMember[]> {
+    const limit = pLimit(5);
+
+    const memberPromises = userWithMembers.map(async (userWithMember) =>
+      limit(async () => {
+        try {
+          const { user, member } = userWithMember;
+          const userRoleNames = user.roles.map((role) => role.name);
+          const rolesToApply = roles.filter((role) => userRoleNames.includes(role.name));
+          return await member.roles.add(rolesToApply);
+        } catch (e) {
+          return null;
+        }
+      }),
+    );
+    const members = await Promise.all(memberPromises);
+    return members.filter((member): member is GuildMember => !!member);
   }
 }
