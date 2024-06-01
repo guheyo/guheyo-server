@@ -13,11 +13,13 @@ import { DisconnectRolesCommand } from '@lib/domains/user/application/commands/d
 import { FindUserWithoutSocialAccountsCountQuery } from '@lib/domains/user/application/queries/find-user-without-social-accounts-count/find-user-without-social-accounts-count.query';
 import { NonExistingSocialAccountsResponse } from '@lib/domains/social-account/application/dtos/non-existing-social-accounts.response';
 import { FindNonExistingSocialAccountsQuery } from '@lib/domains/social-account/application/queries/find-non-existing-social-accounts/find-non-existing-social-accounts.query';
+import { SocialUserArgs } from '@lib/domains/social-account/application/queries/find-non-existing-social-accounts/social-user.args';
+import { CreateNonExistingSocialAccountCommand } from '@lib/domains/social-account/application/commands/create-non-existing-social-account/create-non-existing-social-account.command';
+import { CreateNonExistingSocialAccountInput } from '@lib/domains/social-account/application/commands/create-non-existing-social-account/create-non-existing-social-account.input';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { UserParser } from '../parsers/user.parser';
 import { UserErrorMessage } from '../parsers/user.error-message';
 import { MyUserWithMember } from '../interfaces/user.interfaces';
-import { SocialUserArgs } from '@lib/domains/social-account/application/queries/find-non-existing-social-accounts/social-user.args';
 
 @Injectable()
 export class UserClient extends UserImageClient {
@@ -189,5 +191,29 @@ export class UserClient extends UserImageClient {
     socialUsers: SocialUserArgs[],
   ): Promise<NonExistingSocialAccountsResponse> {
     return this.queryBus.execute(new FindNonExistingSocialAccountsQuery({ socialUsers }));
+  }
+
+  async createNonExistingSocialAccounts(
+    socialAccountInputs: CreateNonExistingSocialAccountInput[],
+  ): Promise<string[]> {
+    const limit = pLimit(5);
+
+    const socialAccountIdPromises = socialAccountInputs.map((socialAccountInput) =>
+      limit(async () => {
+        try {
+          const socialAccount = await this.commandBus.execute(
+            new CreateNonExistingSocialAccountCommand(socialAccountInput),
+          );
+          if (!socialAccount) return null;
+          return socialAccount.id;
+        } catch (e) {
+          return null;
+        }
+      }),
+    );
+    const socialAccountIds = await Promise.all(socialAccountIdPromises);
+    return socialAccountIds.filter(
+      (socialAccountId): socialAccountId is string => socialAccountId !== null,
+    );
   }
 }
