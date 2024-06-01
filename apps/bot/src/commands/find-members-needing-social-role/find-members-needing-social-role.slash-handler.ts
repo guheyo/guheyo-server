@@ -20,7 +20,7 @@ export class FindMembersNeedingSocialRoleSlashHandler {
     name: 'find-members-needing-social-role',
     description: 'Find members needing social role',
   })
-  public async onFindMissingSocialRoleUsers(
+  public async onFindMembersNeedingSocialRole(
     @Context() [interaction]: SlashCommandContext,
     @Options()
     { limit, provider }: FindMembersNeedingSocialRoleRequest,
@@ -33,6 +33,8 @@ export class FindMembersNeedingSocialRoleSlashHandler {
     if (!socialRole) return interaction.reply(`${provider} role not exists in guild`);
 
     const members = await this.groupClient.fetchMembers(guild.id, limit);
+    interaction.reply(`Checking ${members.length} members for ${provider} role needs`);
+
     const userWithMembers = await this.userClient.fetchMyUserWithMembers('discord', members);
     const membersNeedingRole = this.userClient.filterMembersNeedingRole(
       userWithMembers,
@@ -44,7 +46,6 @@ export class FindMembersNeedingSocialRoleSlashHandler {
       this.userClient.userParser.parseMemberMensionsMessage(membersNeedingRole);
     const roleNamesMessage = this.userClient.userParser.parseRoleNamesMessage([socialRole]);
     const logMessage = `[${roleNamesMessage}] ${memberMensionsMessage}`;
-    interaction.reply(logMessage);
     return this.logger.log(logMessage);
   }
 }
