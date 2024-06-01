@@ -223,7 +223,8 @@ export class UserClient extends UserImageClient {
         try {
           const { user, member } = userWithMember;
           const userRoleNames = user.roles.map((role) => role.name);
-          const rolesToApply = roles.filter((role) => userRoleNames.includes(role.name));
+          const userRoles = roles.filter((role) => userRoleNames.includes(role.name));
+          const rolesToApply = userRoles.subtract(member.roles.cache);
           return await member.roles.add(rolesToApply);
         } catch (e) {
           return null;
@@ -240,18 +241,22 @@ export class UserClient extends UserImageClient {
     roles: Collection<string, Role>,
   ): Promise<GuildMember[]> {
     let socialAuthRole: Role | undefined;
-
     if (provider === 'kakao') {
       socialAuthRole = roles.find((role) => role.name === '카카오 인증');
     }
 
-    const socialLinkedUserWithMembers = userWithMembers.filter((userWithMember) =>
-      userWithMember.user.socialAccounts.find(
-        (socialAccount) => socialAccount.provider === provider,
-      ),
-    );
+    const userWithMembersToApplySocialAuthRole = userWithMembers
+      .filter((userWithMember) =>
+        userWithMember.user.socialAccounts.find(
+          (socialAccount) => socialAccount.provider === provider,
+        ),
+      )
+      .filter(
+        (userWithMember) =>
+          !!socialAuthRole && !userWithMember.member.roles.cache.has(socialAuthRole.id),
+      );
 
-    const memberPromises = socialLinkedUserWithMembers.map(async (userWithMember) =>
+    const memberPromises = userWithMembersToApplySocialAuthRole.map(async (userWithMember) =>
       this.concurrencyLimit(async () => {
         try {
           if (socialAuthRole) {
@@ -266,5 +271,11 @@ export class UserClient extends UserImageClient {
     );
     const members = await Promise.all(memberPromises);
     return members.filter((member): member is GuildMember => !!member);
+  }
+
+  filterMembersByRoles(members: GuildMember[], roles: Role[]): GuildMember[] {
+    return members.filter((member) =>
+      roles.map((role) => role.id).every((roleId) => member.roles.cache.has(roleId)),
+    );
   }
 }
