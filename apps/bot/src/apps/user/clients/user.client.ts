@@ -157,7 +157,7 @@ export class UserClient extends UserImageClient {
     return roleNames;
   }
 
-  async bulkConnectUserRoles(userWithMembers: MyUserWithMember[]): Promise<number> {
+  async bulkConnectUserRoles(userWithMembers: MyUserWithMember[]): Promise<number[]> {
     const limit = pLimit(5);
 
     const connectedRoleCountPromises = userWithMembers.map((userWithMember) =>
@@ -174,7 +174,7 @@ export class UserClient extends UserImageClient {
       }),
     );
     const connectedRoleCounts = await Promise.all(connectedRoleCountPromises);
-    return connectedRoleCounts.filter((count): count is number => count !== null).length;
+    return connectedRoleCounts.filter((count): count is number => count !== null);
   }
 
   async findUserWithoutSocialAccountsCount(providers: string[]): Promise<number> {
