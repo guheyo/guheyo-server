@@ -23,8 +23,11 @@ import { MyUserWithMember } from '../interfaces/user.interfaces';
 
 @Injectable()
 export class UserClient extends UserImageClient {
+  private concurrencyLimit: pLimit.Limit;
+
   constructor(public readonly userParser: UserParser) {
     super();
+    this.concurrencyLimit = pLimit(25);
   }
 
   async fetchMyUser(provider: string, memberOrUser: GuildMember | User): Promise<MyUserResponse> {
@@ -53,10 +56,8 @@ export class UserClient extends UserImageClient {
     provider: string,
     members: GuildMember[],
   ): Promise<MyUserWithMember[]> {
-    const limit = pLimit(5);
-
     const userWithMemberPromises = members.map((member) =>
-      limit(async () => {
+      this.concurrencyLimit(async () => {
         try {
           const user = await this.fetchMyUser(provider, member);
           return {
@@ -158,10 +159,8 @@ export class UserClient extends UserImageClient {
   }
 
   async bulkConnectUserRoles(userWithMembers: MyUserWithMember[]): Promise<number[]> {
-    const limit = pLimit(5);
-
     const connectedRoleCountPromises = userWithMembers.map((userWithMember) =>
-      limit(async () => {
+      this.concurrencyLimit(async () => {
         try {
           const roleNames = await this.connectUserRoles(
             userWithMember.user.id,
@@ -196,10 +195,8 @@ export class UserClient extends UserImageClient {
   async createNonExistingSocialAccounts(
     socialAccountInputs: CreateNonExistingSocialAccountInput[],
   ): Promise<string[]> {
-    const limit = pLimit(5);
-
     const socialAccountIdPromises = socialAccountInputs.map((socialAccountInput) =>
-      limit(async () => {
+      this.concurrencyLimit(async () => {
         try {
           const socialAccount = await this.commandBus.execute(
             new CreateNonExistingSocialAccountCommand(socialAccountInput),
@@ -221,15 +218,47 @@ export class UserClient extends UserImageClient {
     userWithMembers: MyUserWithMember[],
     roles: Collection<string, Role>,
   ): Promise<GuildMember[]> {
-    const limit = pLimit(5);
-
     const memberPromises = userWithMembers.map(async (userWithMember) =>
-      limit(async () => {
+      this.concurrencyLimit(async () => {
         try {
           const { user, member } = userWithMember;
           const userRoleNames = user.roles.map((role) => role.name);
           const rolesToApply = roles.filter((role) => userRoleNames.includes(role.name));
           return await member.roles.add(rolesToApply);
+        } catch (e) {
+          return null;
+        }
+      }),
+    );
+    const members = await Promise.all(memberPromises);
+    return members.filter((member): member is GuildMember => !!member);
+  }
+
+  async applySocialAuthRole(
+    userWithMembers: MyUserWithMember[],
+    provider: string,
+    roles: Collection<string, Role>,
+  ): Promise<GuildMember[]> {
+    let socialAuthRole: Role | undefined;
+
+    if (provider === 'kakao') {
+      socialAuthRole = roles.find((role) => role.name === '카카오 인증');
+    }
+
+    const socialLinkedUserWithMembers = userWithMembers.filter((userWithMember) =>
+      userWithMember.user.socialAccounts.find(
+        (socialAccount) => socialAccount.provider === provider,
+      ),
+    );
+
+    const memberPromises = socialLinkedUserWithMembers.map(async (userWithMember) =>
+      this.concurrencyLimit(async () => {
+        try {
+          if (socialAuthRole) {
+            const { member } = userWithMember;
+            return await member.roles.add(socialAuthRole);
+          }
+          return null;
         } catch (e) {
           return null;
         }
