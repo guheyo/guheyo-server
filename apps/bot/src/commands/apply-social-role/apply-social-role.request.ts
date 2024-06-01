@@ -1,6 +1,6 @@
 import { NumberOption, StringOption } from 'necord';
 
-export class ApplySocialAuthRoleRequest {
+export class ApplySocialRoleRequest {
   @StringOption({
     name: 'provider',
     description: 'provider',
