@@ -14,7 +14,7 @@ export class CommentClient extends UserImageClient {
     super();
   }
 
-  public readonly logger = new Logger(CommentClient.name);
+  private readonly logger = new Logger(CommentClient.name);
 
   async createComment({ input, user }: { input: CreateCommentInput; user: MyUserResponse }) {
     await this.commandBus.execute(new CreateCommentCommand({ input, user }));

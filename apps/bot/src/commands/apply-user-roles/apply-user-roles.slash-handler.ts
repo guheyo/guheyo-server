@@ -14,7 +14,7 @@ export class ApplyUserRolesSlashHandler {
     private readonly userClient: UserClient,
   ) {}
 
-  public readonly logger = new Logger(ApplyUserRolesSlashHandler.name);
+  private readonly logger = new Logger(ApplyUserRolesSlashHandler.name);
 
   @SlashCommand({
     name: 'apply-user-roles',

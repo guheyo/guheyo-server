@@ -24,7 +24,7 @@ export abstract class OfferClient extends UserImageClient {
     super();
   }
 
-  public readonly logger = new Logger(OfferClient.name);
+  private readonly logger = new Logger(OfferClient.name);
 
   async createOffer({ input, user }: { input: CreateOfferInput; user: MyUserResponse }) {
     await this.commandBus.execute(new CreateOfferCommand({ input, user }));
