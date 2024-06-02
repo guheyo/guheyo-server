@@ -1,5 +1,6 @@
 import { BOT_COMMENT_PROVIDERS } from './comment/comment.providers';
 import { BOT_GROUP_PROVIDERS } from './group/group.providers';
+import { BOT_KAKAO_PROVIDERS } from './kakao/kakao.providers';
 import { BOT_OFFER_PROVIDERS } from './offer/offer.proviers';
 import { BOT_POST_PROVIDERS } from './post/post.proviers';
 import { BOT_USER_IMAGE_PROVIDERS } from './user-image/user-image.providers';
@@ -14,4 +15,5 @@ export const BOT_PROVIDERS = [
   ...BOT_USER_REVIEW_PROVIDERS,
   ...BOT_COMMENT_PROVIDERS,
   ...BOT_POST_PROVIDERS,
+  ...BOT_KAKAO_PROVIDERS,
 ];
