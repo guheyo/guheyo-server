@@ -4,7 +4,7 @@ import { Type } from '@app/bot/decorators/type.decorator';
 import { MarketChannelType } from '@app/bot/shared/types/market-channel.type';
 import { Message } from 'discord.js';
 import { Observable } from 'rxjs';
-import { ChannelGuard } from '../../../shared/guards/channel.guard';
+import { ChannelGuard } from '../../channel/guards/channel.guard';
 
 @Injectable()
 export class OfferChannelGuard extends ChannelGuard implements CanActivate {

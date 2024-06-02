@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { GuildMemberRoleManager } from 'discord.js';
-import { DiscordConfigService } from '../discord/discord.config.service';
+import { DiscordConfigService } from '../../../shared/discord/discord.config.service';
 
 @Injectable()
 export abstract class ChannelGuard {
