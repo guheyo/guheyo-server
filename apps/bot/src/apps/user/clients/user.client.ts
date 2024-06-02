@@ -288,6 +288,11 @@ export class UserClient extends UserImageClient {
     return members.filter((member): member is GuildMember => !!member);
   }
 
+  async applyRole(member: GuildMember, role: Role): Promise<GuildMember> {
+    if (member.roles.cache.has(role.id)) return member;
+    return member.roles.add(role);
+  }
+
   filterMembersByRoles(members: GuildMember[], roles: Role[]): GuildMember[] {
     return members.filter((member) =>
       roles.map((role) => role.id).every((roleId) => member.roles.cache.has(roleId)),
