@@ -3,6 +3,8 @@ import { GuildMember, Role, RoleManager, User } from 'discord.js';
 import { CreateRoleInput } from '@lib/domains/role/application/commands/create-role/create-role.input';
 import { SignInUserInput } from '@lib/domains/user/application/commands/sign-in-user/sing-in-user.input';
 import { DEFAULT_ROLE_COLOR } from '@lib/domains/role/domain/role.constants';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { difference } from 'lodash';
 import { GroupParser } from '../../group/parsers/group.parser';
 
 @Injectable()
@@ -28,8 +30,20 @@ export class UserParser extends GroupParser {
     }));
   }
 
-  parseRoleNames(discordMember: GuildMember): string[] {
-    return discordMember.roles.cache.map((role) => role.name);
+  parseRoleNamesOfMember(member: GuildMember): string[] {
+    return member.roles.cache.map((role) => role.name);
+  }
+
+  parseRoleNamesOfUser(user: MyUserResponse): string[] {
+    return user.roles.map((role) => role.name);
+  }
+
+  parseMemberRolesNotInUser(member: GuildMember, user: MyUserResponse) {
+    return difference(this.parseRoleNamesOfMember(member), this.parseRoleNamesOfUser(user));
+  }
+
+  parseUserRolesNotInMember(member: GuildMember, user: MyUserResponse) {
+    return difference(this.parseRoleNamesOfUser(user), this.parseRoleNamesOfMember(member));
   }
 
   parseMemberMensionsMessage(members: GuildMember[]): string {

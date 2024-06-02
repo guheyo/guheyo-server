@@ -46,7 +46,7 @@ export class UserClient extends UserImageClient {
     if (!newUser) throw new NotFoundException(UserErrorMessage.USER_NOT_FOUND);
 
     if (memberOrUser instanceof GuildMember) {
-      const roleNames = this.userParser.parseRoleNames(memberOrUser);
+      const roleNames = this.userParser.parseRoleNamesOfMember(memberOrUser);
       await this.connectRoles(newUser.id, roleNames);
     }
     return newUser;
@@ -152,20 +152,23 @@ export class UserClient extends UserImageClient {
     );
   }
 
-  async connectUserRoles(userId: string, discordMember: GuildMember): Promise<string[]> {
-    const roleNames = this.userParser.parseRoleNames(discordMember);
-    await this.connectRoles(userId, roleNames);
+  async connectUserRoles(user: MyUserResponse, member: GuildMember): Promise<string[]> {
+    const roleNames = this.userParser.parseMemberRolesNotInUser(member, user);
+    if (roleNames.length > 0) {
+      await this.connectRoles(user.id, roleNames);
+    }
     return roleNames;
   }
 
   async bulkConnectUserRoles(userWithMembers: MyUserWithMember[]): Promise<number[]> {
-    const connectedRoleCountPromises = userWithMembers.map((userWithMember) =>
+    const userWithMembersWithDifferentRoles = userWithMembers.filter(
+      ({ user, member }) => this.userParser.parseMemberRolesNotInUser(member, user).length > 0,
+    );
+
+    const connectedRoleCountPromises = userWithMembersWithDifferentRoles.map(({ user, member }) =>
       this.concurrencyLimit(async () => {
         try {
-          const roleNames = await this.connectUserRoles(
-            userWithMember.user.id,
-            userWithMember.member,
-          );
+          const roleNames = await this.connectUserRoles(user, member);
           return roleNames.length;
         } catch (e) {
           return null;
@@ -218,13 +221,11 @@ export class UserClient extends UserImageClient {
     userWithMembers: MyUserWithMember[],
     roles: Collection<string, Role>,
   ): Promise<GuildMember[]> {
-    const memberPromises = userWithMembers.map(async (userWithMember) =>
+    const memberPromises = userWithMembers.map(async ({ user, member }) =>
       this.concurrencyLimit(async () => {
         try {
-          const { user, member } = userWithMember;
-          const userRoleNames = user.roles.map((role) => role.name);
-          const userRoles = roles.filter((role) => userRoleNames.includes(role.name));
-          const rolesToApply = userRoles.subtract(member.roles.cache);
+          const userRoleNames = this.userParser.parseUserRolesNotInMember(member, user);
+          const rolesToApply = roles.filter((role) => userRoleNames.includes(role.name));
           return await member.roles.add(rolesToApply);
         } catch (e) {
           return null;

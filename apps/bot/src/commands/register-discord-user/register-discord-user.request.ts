@@ -7,5 +7,5 @@ export class RegisterDiscordUserRequest {
     description: 'Member',
     required: true,
   })
-  discordMember: GuildMember;
+  member: GuildMember;
 }

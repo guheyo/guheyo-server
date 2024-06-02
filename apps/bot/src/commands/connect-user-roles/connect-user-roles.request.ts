@@ -7,5 +7,5 @@ export class ConnectUserRolesRequest {
     description: 'Member',
     required: true,
   })
-  discordMember: GuildMember;
+  member: GuildMember;
 }
