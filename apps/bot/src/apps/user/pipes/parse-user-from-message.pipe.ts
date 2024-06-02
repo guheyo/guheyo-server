@@ -18,8 +18,8 @@ export class ParseUserFromMessagePipe implements PipeTransform {
     if (newMessage) message = await newMessage.fetch();
     else message = await createdOrOldmessage.fetch();
 
-    const discordMember = message.member;
-    if (!discordMember) throw new RpcException(UserErrorMessage.DISOCRD_MEMBER_NOT_FOUND);
-    return this.userClient.fetchMyUser('discord', discordMember);
+    const { member } = message;
+    if (!member) throw new RpcException(UserErrorMessage.DISOCRD_MEMBER_NOT_FOUND);
+    return this.userClient.fetchMyUser('discord', member);
   }
 }

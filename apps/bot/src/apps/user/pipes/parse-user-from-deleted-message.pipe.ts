@@ -13,9 +13,9 @@ export class ParseUserFromDeletedMessagePipe implements PipeTransform {
     [message]: ContextOf<'messageDelete'>,
     metadata: ArgumentMetadata,
   ): Promise<MyUserResponse> {
-    const discordMember = message.member;
-    if (!discordMember) throw new RpcException(UserErrorMessage.DISOCRD_MEMBER_NOT_FOUND);
+    const { member } = message;
+    if (!member) throw new RpcException(UserErrorMessage.DISOCRD_MEMBER_NOT_FOUND);
 
-    return this.userClient.fetchMyUser('discord', discordMember);
+    return this.userClient.fetchMyUser('discord', member);
   }
 }
