@@ -1,14 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { GuildMemberRoleManager, Message } from 'discord.js';
-import { MarketChannelType } from '../types/market-channel.type';
+import { GuildMemberRoleManager } from 'discord.js';
 import { DiscordConfigService } from '../discord/discord.config.service';
 
 @Injectable()
 export abstract class ChannelGuard {
   @Inject()
-  private readonly discordConfigService: DiscordConfigService;
+  protected readonly discordConfigService: DiscordConfigService;
 
-  private hasValidRoles(
+  protected hasValidRoles(
     allowedRoleIds: string[],
     disallowedRoleIds: string[],
     roleManager: GuildMemberRoleManager,
@@ -18,15 +17,5 @@ export abstract class ChannelGuard {
     if (allowedRoleIds.length === 0) return true;
     const hasAllowedRole = roleManager.cache.some((role) => allowedRoleIds.includes(role.id));
     return !!hasAllowedRole;
-  }
-
-  validate(type: MarketChannelType, message: Message): boolean {
-    const market = this.discordConfigService.findDiscordMarket(type, message);
-
-    if (!market) return false;
-    if (!message.member) return false;
-    if (!this.hasValidRoles(market.allowedRoleIds, market.disallowedRoleIds, message.member.roles))
-      return false;
-    return true;
   }
 }

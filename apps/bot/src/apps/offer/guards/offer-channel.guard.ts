@@ -17,4 +17,14 @@ export class OfferChannelGuard extends ChannelGuard implements CanActivate {
     const [message]: [Message] = context.getArgByIndex(0);
     return this.validate(type, message);
   }
+
+  validate(type: MarketChannelType, message: Message): boolean {
+    const market = this.discordConfigService.findDiscordMarket(type, message);
+
+    if (!market) return false;
+    if (!message.member) return false;
+    if (!this.hasValidRoles(market.allowedRoleIds, market.disallowedRoleIds, message.member.roles))
+      return false;
+    return true;
+  }
 }
