@@ -259,6 +259,15 @@ export class UserClient extends UserImageClient {
       .map((userWithMember) => userWithMember.member);
   }
 
+  memberHasRoles(member: GuildMember, roles: Role[]): boolean {
+    const membersHasRole = this.filterMembersByRoles([member], roles);
+    return membersHasRole.length > 0;
+  }
+
+  findSocialAccount(user: MyUserResponse, provider: string) {
+    return user.socialAccounts.find((socialAccount) => socialAccount.provider === provider);
+  }
+
   async applyRole(
     userWithMembers: MyUserWithMember[],
     provider: string,
