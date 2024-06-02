@@ -24,7 +24,7 @@ export class KakaoRoleRequestedHandler {
     @Context(ParseUserFromMessagePipe) user: MyUserResponse,
     @Context() [message]: ContextOf<'messageCreate'>,
   ) {
-    await message.delete();
+    message.delete();
 
     const { member } = message;
     if (!member || !message.guild) return;
