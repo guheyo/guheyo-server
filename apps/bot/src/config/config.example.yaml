@@ -10,6 +10,10 @@ s3:
   bucket:
   domain:
 discord:
+  webhookURL:
+    kakaoLink:
+    kakaoError:
+    kakaoComplete:
   bot:
     name:
     clientId:
