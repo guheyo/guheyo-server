@@ -7,15 +7,15 @@ import { RegisterDiscordUserRequest } from './register-discord-user.request';
 
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
-export class RegisterDiscordUserSlashCommandHandler {
+export class RegisterDiscordUserSlashHandler {
   constructor(private readonly userClient: UserClient) {}
 
   @SlashCommand({ name: 'register-user', description: 'Register user in DB' })
   public async onCreateUser(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { discordMember }: RegisterDiscordUserRequest,
+    @Options() { member }: RegisterDiscordUserRequest,
   ) {
-    const user = await this.userClient.fetchMyUser('discord', discordMember);
+    const user = await this.userClient.fetchMyUser('discord', member);
     interaction.reply(`${user.username}<@${user.id}> registered`);
   }
 }

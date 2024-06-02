@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Message } from 'discord.js';
 import { MarketChannelType } from '../types/market-channel.type';
-import { DiscordMarket, DiscordServer } from '../interfaces/discord-server.interface';
+import {
+  DiscordChannel,
+  DiscordMarket,
+  DiscordServer,
+} from '../interfaces/discord-server.interface';
 
 @Injectable()
 export class DiscordConfigService {
@@ -30,6 +34,10 @@ export class DiscordConfigService {
 
   getDiscordServerIds(): string[] {
     return this.getDiscordServers().map((server) => server.id);
+  }
+
+  getBotIconURL(): string {
+    return this.configService.get('discord.bot.iconURL')!;
   }
 
   findDiscordMarket(type: MarketChannelType, message: Message): DiscordMarket | null {
@@ -81,5 +89,12 @@ export class DiscordConfigService {
     const server = this.findDiscordServer(guildName);
     const channel = server?.community.channels.find((c) => c.name === channelName);
     return channel?.id || null;
+  }
+
+  findCommandChannel(guildName: string, name: string): DiscordChannel | null {
+    const servers = this.getDiscordServers();
+    const server = servers.find((s) => s.name === guildName);
+    const channel = server?.command.channels.find((c) => c.name === name);
+    return channel || null;
   }
 }

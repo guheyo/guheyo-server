@@ -3,12 +3,12 @@ import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
 import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { SellClient } from '@app/bot/apps/offer/sell/clients/sell.client';
-import { BulkSaveOffersSlashCommandHandler } from './bulk-save-offers.slash-command.handler';
+import { BulkSaveOffersSlashHandler } from './bulk-save-offers.slash-handler';
 import { BulkSaveRequest } from './bulk-save.request';
 
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
-export class BulkSaveSellsSlashCommandHandler extends BulkSaveOffersSlashCommandHandler {
+export class BulkSaveSellsSlashHandler extends BulkSaveOffersSlashHandler {
   constructor(protected readonly offerClient: SellClient) {
     super(offerClient);
   }

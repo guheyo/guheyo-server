@@ -16,8 +16,9 @@ import { POST_PROVIDERS } from '@lib/domains/post/post.providers';
 import { TAG_PROVIDERS } from '@lib/domains/tag/tag.providers';
 import { USER_REVIEW_PROVIDERS } from '@lib/domains/user-review/user-review.providers';
 import { COMMENT_PROVIDERS } from '@lib/domains/comment/comment.providers';
+import { DISCORD_WEBHOOK_PROVIDERS } from '@lib/domains/discord-webhook/discord-webhook.providers';
 import { NecordConfigService } from './necord/necord.config.service';
-import { COMMAND_HANDLERS } from './commands/command-handlers';
+import { SLASH_HANDLERS } from './commands/slash-handlers';
 import { EVENT_HANDLERS } from './events/event-handlers';
 import { DiscordIdConverter } from './shared/converters/discord-id-converter';
 import { BotExceptionFilter } from './filters/bot-exception.filter';
@@ -56,8 +57,9 @@ import { DiscordConfigService } from './shared/discord/discord.config.service';
     ...TAG_PROVIDERS,
     ...USER_REVIEW_PROVIDERS,
     ...COMMENT_PROVIDERS,
-    ...COMMAND_HANDLERS,
+    ...SLASH_HANDLERS,
     ...EVENT_HANDLERS,
+    ...DISCORD_WEBHOOK_PROVIDERS,
     DiscordConfigService,
     DiscordIdConverter,
     {

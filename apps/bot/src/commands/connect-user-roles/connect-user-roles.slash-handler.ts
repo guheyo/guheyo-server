@@ -7,16 +7,16 @@ import { ConnectUserRolesRequest } from './connect-user-roles.request';
 
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
-export class ConnectUserRolesSlashCommandHandler {
+export class ConnectUserRolesSlashHandler {
   constructor(private readonly userClient: UserClient) {}
 
   @SlashCommand({ name: 'connect-user-roles', description: 'Connect user roles' })
   public async onConnectUserRoles(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { discordMember }: ConnectUserRolesRequest,
+    @Options() { member }: ConnectUserRolesRequest,
   ) {
-    const user = await this.userClient.fetchMyUser('discord', discordMember);
-    const roleNames = await this.userClient.connectUserRoles(user.id, discordMember);
+    const user = await this.userClient.fetchMyUser('discord', member);
+    const roleNames = await this.userClient.connectUserRoles(user, member);
     interaction.reply(`${user.username}<@${roleNames}> roles connected`);
   }
 }

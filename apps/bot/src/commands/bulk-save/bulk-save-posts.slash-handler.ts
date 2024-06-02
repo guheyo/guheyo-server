@@ -8,7 +8,7 @@ import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { PostClient } from '@app/bot/apps/post/clients/post.client';
 
 @Injectable()
-export abstract class BulkSavePostsSlashCommandHandler {
+export abstract class BulkSavePostsSlashHandler {
   @Inject()
   protected readonly groupParser: GroupParser;
 
