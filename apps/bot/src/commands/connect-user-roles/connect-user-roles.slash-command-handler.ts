@@ -16,7 +16,7 @@ export class ConnectUserRolesSlashCommandHandler {
     @Options() { discordMember }: ConnectUserRolesRequest,
   ) {
     const user = await this.userClient.fetchMyUser('discord', discordMember);
-    const roleNames = await this.userClient.connectUserRoles(user.id, discordMember);
+    const roleNames = await this.userClient.connectUserRoles(user, discordMember);
     interaction.reply(`${user.username}<@${roleNames}> roles connected`);
   }
 }
