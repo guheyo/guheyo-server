@@ -46,6 +46,12 @@ discord:
             name:
         allowedRoleIds:
         disallowedRoleIds:
+      command:
+        channels:
+          - id:
+            name:
+            allowedRoleIds:
+            disallowedRoleIds:
 namespace:
   discord:
   group:
