@@ -31,6 +31,13 @@ export class KakaoRoleRequestedHandler {
     if (!socialRole) return;
 
     const memberHasRole = this.userClient.memberHasRoles(member, [socialRole]);
+    if (memberHasRole) {
+      // TODO: send confirm DM, log
+    }
     const socialAccount = this.userClient.findSocialAccount(user, provider);
+    if (socialAccount) {
+      // TODO: assgin role, send success DM, log
+    }
+    // TODO: send kakao-auth link DM, log
   }
 }
