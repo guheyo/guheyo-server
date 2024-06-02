@@ -6,11 +6,11 @@ import { UserReviewClient } from '@app/bot/apps/user-review/clients/user-review.
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { Guild, ThreadChannel } from 'discord.js';
 import { BulkSaveRequest } from './bulk-save.request';
-import { BulkSavePostsSlashCommandHandler } from './bulk-save-posts.slash-command.handler';
+import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
 
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
-export class BulkSaveUserReviewsSlashCommandHandler extends BulkSavePostsSlashCommandHandler {
+export class BulkSaveUserReviewsSlashHandler extends BulkSavePostsSlashHandler {
   constructor(protected readonly userReviewClient: UserReviewClient) {
     super();
   }

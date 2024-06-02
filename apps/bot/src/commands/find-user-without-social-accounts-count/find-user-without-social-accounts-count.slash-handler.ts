@@ -3,11 +3,11 @@ import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { GroupGuard } from '@app/bot/apps/group/guards/group.guard';
 import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
 import { UserClient } from '@app/bot/apps/user/clients/user.client';
-import { FindUserWithoutSocialAccountsCountRequest } from './find-user-without-social-accounts-count-command.request';
+import { FindUserWithoutSocialAccountsCountRequest } from './find-user-without-social-accounts-count.request';
 
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
-export class FindUserWithoutSocialAccountsCountHandler {
+export class FindUserWithoutSocialAccountsCountSlashHandler {
   constructor(private readonly userClient: UserClient) {}
 
   @SlashCommand({

@@ -8,7 +8,7 @@ import { CommentClient } from '@app/bot/apps/comment/clients/comment.client';
 import { MessageWithUser } from '@app/bot/apps/user/interfaces/user.interfaces';
 
 @Injectable()
-export abstract class BulkSaveCommentsSlashCommandHandler {
+export abstract class BulkSaveCommentsSlashHandler {
   @Inject()
   protected readonly groupParser: GroupParser;
 
