@@ -259,7 +259,16 @@ export class UserClient extends UserImageClient {
       .map((userWithMember) => userWithMember.member);
   }
 
-  async applyRole(
+  memberHasRoles(member: GuildMember, roles: Role[]): boolean {
+    const membersHasRole = this.filterMembersByRoles([member], roles);
+    return membersHasRole.length > 0;
+  }
+
+  findSocialAccount(user: MyUserResponse, provider: string) {
+    return user.socialAccounts.find((socialAccount) => socialAccount.provider === provider);
+  }
+
+  async applySocialRole(
     userWithMembers: MyUserWithMember[],
     provider: string,
     role: Role,
@@ -277,6 +286,11 @@ export class UserClient extends UserImageClient {
     );
     const members = await Promise.all(memberPromises);
     return members.filter((member): member is GuildMember => !!member);
+  }
+
+  async applyRole(member: GuildMember, role: Role): Promise<GuildMember> {
+    if (member.roles.cache.has(role.id)) return member;
+    return member.roles.add(role);
   }
 
   filterMembersByRoles(members: GuildMember[], roles: Role[]): GuildMember[] {

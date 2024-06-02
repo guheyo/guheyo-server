@@ -5,34 +5,41 @@ export interface DiscordServer {
   market: DiscordMarket;
   auction: DiscordAuction;
   community: DiscordCommunity;
+  command: DiscordCommand;
 }
 
-export interface DiscordMarket extends DiscordChannelRoles {
+export interface DiscordMarket extends RolePermissions {
   wts: {
-    channels: DiscordChannel[];
+    channels: DiscordBaseChannel[];
   };
   wtb: {
-    channels: DiscordChannel[];
+    channels: DiscordBaseChannel[];
   };
   wtt: {
-    channels: DiscordChannel[];
+    channels: DiscordBaseChannel[];
   };
 }
 
-export interface DiscordAuction extends DiscordChannelRoles {
+export interface DiscordAuction extends RolePermissions {
+  channels: DiscordBaseChannel[];
+}
+
+export interface DiscordCommunity extends RolePermissions {
+  channels: DiscordBaseChannel[];
+}
+
+export interface DiscordCommand {
   channels: DiscordChannel[];
 }
 
-export interface DiscordCommunity extends DiscordChannelRoles {
-  channels: DiscordChannel[];
-}
-
-export interface DiscordChannelRoles {
+export interface RolePermissions {
   allowedRoleIds: string[];
   disallowedRoleIds: string[];
 }
 
-export interface DiscordChannel {
+export interface DiscordBaseChannel {
   id: string;
   name: string;
 }
+
+export interface DiscordChannel extends DiscordBaseChannel, RolePermissions {}

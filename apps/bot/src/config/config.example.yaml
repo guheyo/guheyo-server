@@ -10,11 +10,16 @@ s3:
   bucket:
   domain:
 discord:
+  webhookURL:
+    kakaoLink:
+    kakaoError:
+    kakaoComplete:
   bot:
     name:
     clientId:
     token:
     ownerId:
+    iconURL:
   servers:
     - name:
       slug:
@@ -46,6 +51,12 @@ discord:
             name:
         allowedRoleIds:
         disallowedRoleIds:
+      command:
+        channels:
+          - id:
+            name:
+            allowedRoleIds:
+            disallowedRoleIds:
 namespace:
   discord:
   group:
