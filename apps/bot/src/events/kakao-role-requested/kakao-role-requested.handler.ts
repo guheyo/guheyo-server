@@ -1,4 +1,4 @@
-import { Injectable, UseGuards } from '@nestjs/common';
+import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { Context, ContextOf, On } from 'necord';
 import { GroupGuard } from '@app/bot/apps/group/guards/group.guard';
 import { ParseUserFromMessagePipe } from '@app/bot/apps/user/pipes/parse-user-from-message.pipe';
@@ -19,12 +19,18 @@ export class KakaoRoleRequestedHandler {
     private readonly userClient: UserClient,
   ) {}
 
+  private readonly logger = new Logger(KakaoRoleRequestedHandler.name);
+
   @On('messageCreate')
   public async onRequestedKakaoRole(
     @Context(ParseUserFromMessagePipe) user: MyUserResponse,
     @Context() [message]: ContextOf<'messageCreate'>,
   ) {
-    message.delete();
+    try {
+      await message.delete();
+    } catch (e) {
+      this.logger.log(`Failed to delete message<${message.id}>`);
+    }
 
     const { member } = message;
     if (!member || !message.guild) return;
