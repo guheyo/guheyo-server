@@ -2,23 +2,21 @@ import { GroupGuard } from '@app/bot/apps/group/guards/group.guard';
 import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
 import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
-import { BuyClient } from '@app/bot/apps/offer/buy/clients/buy.client';
-import { BulkSaveOffersSlashCommandHandler } from './bulk-save-offers.slash-command.handler';
 import { BulkSaveRequest } from './bulk-save.request';
+import { BulkSaveCommentsSlashHandler } from './bulk-save-comments.slash-handler';
 
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
-export class BulkSaveBuysSlashCommandHandler extends BulkSaveOffersSlashCommandHandler {
-  constructor(protected readonly offerClient: BuyClient) {
-    super(offerClient);
-  }
-
-  @SlashCommand({ name: 'bulk-save-buys', description: 'Bulk Save Buys' })
-  public async onBuckSaveDemands(
+export class BulkSaveUserReviewCommentsSlashHandler extends BulkSaveCommentsSlashHandler {
+  @SlashCommand({
+    name: 'bulk-save-user-reviews-comments',
+    description: 'Bulk Save UserReviews Comments',
+  })
+  public async onBuckSaveUserReviewComments(
     @Context() [interaction]: SlashCommandContext,
     @Options() { guildName, categoryName, limit }: BulkSaveRequest,
   ) {
     if (!interaction.guild) return;
-    await this.bulkSave(interaction.guild, guildName, categoryName, 'wtb', limit);
+    await this.bulkSave(interaction.guild, guildName, categoryName, limit);
   }
 }

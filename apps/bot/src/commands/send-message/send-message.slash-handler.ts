@@ -6,7 +6,7 @@ import { SendMessageRequest } from './send-message.request';
 
 @UseGuards(OwnerGuard)
 @Injectable()
-export class SendMessageSlashCommandHandler {
+export class SendMessageSlashHandler {
   @SlashCommand({ name: 'send-message', description: 'Send a message to the channel' })
   public async onSendMessage(
     @Context() [interaction]: SlashCommandContext,

@@ -9,7 +9,7 @@ import { OfferClient } from '@app/bot/apps/offer/clients/offer.client';
 import { PostClient } from '@app/bot/apps/post/clients/post.client';
 
 @Injectable()
-export abstract class BulkSaveOffersSlashCommandHandler {
+export abstract class BulkSaveOffersSlashHandler {
   @Inject()
   protected readonly groupParser: GroupParser;
 
