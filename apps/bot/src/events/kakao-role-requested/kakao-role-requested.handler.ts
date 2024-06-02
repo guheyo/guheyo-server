@@ -22,6 +22,15 @@ export class KakaoRoleRequestedHandler {
     @Context()
     [message]: ContextOf<'messageCreate'>,
   ) {
-    // TODO
+    const { member } = message;
+    if (!member) return;
+    if (!message.guild) return;
+
+    const provider = 'kakao';
+    const socialRole = this.userClient.findSocialRole(await message.guild.roles.fetch(), provider);
+    if (!socialRole) return;
+
+    const memberHasRole = this.userClient.memberHasRoles(member, [socialRole]);
+    const socialAccount = this.userClient.findSocialAccount(user, provider);
   }
 }
