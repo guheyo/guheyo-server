@@ -14,7 +14,7 @@ export class BulkConnectUserRolesSlashHandler {
     private readonly userClient: UserClient,
   ) {}
 
-  public readonly logger = new Logger(BulkConnectUserRolesSlashHandler.name);
+  private readonly logger = new Logger(BulkConnectUserRolesSlashHandler.name);
 
   @SlashCommand({
     name: 'bulk-connect-user-roles',

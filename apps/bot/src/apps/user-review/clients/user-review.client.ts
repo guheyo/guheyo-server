@@ -15,7 +15,7 @@ export class UserReviewClient extends UserImageClient {
     super();
   }
 
-  public readonly logger = new Logger(UserReviewClient.name);
+  private readonly logger = new Logger(UserReviewClient.name);
 
   async createUserReview({ input, user }: { input: CreateUserReviewInput; user: MyUserResponse }) {
     await this.commandBus.execute(new CreateUserReviewCommand({ input, user }));

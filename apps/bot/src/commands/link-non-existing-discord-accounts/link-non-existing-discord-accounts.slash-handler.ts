@@ -14,7 +14,7 @@ export class LinkNonExistingDiscordAccountsSlashHandler {
     private readonly userClient: UserClient,
   ) {}
 
-  public readonly logger = new Logger(LinkNonExistingDiscordAccountsSlashHandler.name);
+  private readonly logger = new Logger(LinkNonExistingDiscordAccountsSlashHandler.name);
 
   @SlashCommand({
     name: 'link-non-existing-discords',
