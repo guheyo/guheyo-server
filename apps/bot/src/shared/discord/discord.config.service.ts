@@ -36,6 +36,10 @@ export class DiscordConfigService {
     return this.getDiscordServers().map((server) => server.id);
   }
 
+  getBotIconURL(): string {
+    return this.configService.get('discord.bot.iconURL')!;
+  }
+
   findDiscordMarket(type: MarketChannelType, message: Message): DiscordMarket | null {
     const servers = this.getDiscordServers();
     const server = servers.find(({ market }) =>
