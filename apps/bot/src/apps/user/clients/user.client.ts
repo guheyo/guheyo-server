@@ -268,7 +268,7 @@ export class UserClient extends UserImageClient {
     return user.socialAccounts.find((socialAccount) => socialAccount.provider === provider);
   }
 
-  async applyRole(
+  async applySocialRole(
     userWithMembers: MyUserWithMember[],
     provider: string,
     role: Role,

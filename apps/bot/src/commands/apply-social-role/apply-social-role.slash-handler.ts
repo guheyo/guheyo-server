@@ -36,7 +36,11 @@ export class ApplySocialRoleSlashHandler {
     interaction.reply(`Apply ${members.length} members' ${provider} role`);
 
     const userWithMembers = await this.userClient.fetchMyUserWithMembers('discord', members);
-    const appliedmembers = await this.userClient.applyRole(userWithMembers, provider, socialRole);
+    const appliedmembers = await this.userClient.applySocialRole(
+      userWithMembers,
+      provider,
+      socialRole,
+    );
     return this.logger.log(`${appliedmembers.length} members' ${provider} role applied`);
   }
 }
