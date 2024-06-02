@@ -24,11 +24,14 @@ export class KakaoRoleRequestedHandler {
     @Context(ParseUserFromMessagePipe) user: MyUserResponse,
     @Context() [message]: ContextOf<'messageCreate'>,
   ) {
+    message.delete();
+
     const { member } = message;
     if (!member || !message.guild) return;
+    const roles = await message.guild.roles.fetch();
 
     const provider = 'kakao';
-    const socialRole = this.userClient.findSocialRole(await message.guild.roles.fetch(), provider);
+    const socialRole = this.userClient.findSocialRole(roles, provider);
     if (!socialRole) return;
 
     if (this.userClient.memberHasRoles(member, [socialRole])) {

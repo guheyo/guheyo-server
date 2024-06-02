@@ -21,11 +21,12 @@ export class CommandChannelGuard extends ChannelGuard implements CanActivate {
 
   validate(guildName: string, name: string, message: Message): boolean {
     const channel = this.discordConfigService.findCommandChannel(guildName, name);
-
     if (!channel) return false;
     if (channel.id !== message.channelId) return false;
+
     if (!message.member) return false;
     if (message.content.trim() !== `-${name}`) return false;
+
     if (
       !this.hasValidRoles(channel.allowedRoleIds, channel.disallowedRoleIds, message.member.roles)
     )
