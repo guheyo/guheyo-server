@@ -42,10 +42,10 @@ export class FindMembersNeedingSocialRoleSlashHandler {
       socialRole,
     );
 
-    const memberMensionsMessage =
-      this.userClient.userParser.parseMemberMensionsMessage(membersNeedingRole);
+    const memberMentionsMessage =
+      this.userClient.userParser.parseMemberMentionsMessage(membersNeedingRole);
     const roleNamesMessage = this.userClient.userParser.parseRoleNamesMessage([socialRole]);
-    const logMessage = `[${roleNamesMessage}] ${memberMensionsMessage}`;
+    const logMessage = `[${roleNamesMessage}] ${memberMentionsMessage}`;
     return this.logger.log(logMessage);
   }
 }

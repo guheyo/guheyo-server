@@ -46,7 +46,7 @@ export class UserParser extends GroupParser {
     return difference(this.parseRoleNamesOfUser(user), this.parseRoleNamesOfMember(member));
   }
 
-  parseMemberMensionsMessage(members: GuildMember[]): string {
+  parseMemberMentionsMessage(members: GuildMember[]): string {
     return members.map((member) => `<@${member.id}>`).join(' ');
   }
 

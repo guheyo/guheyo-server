@@ -29,14 +29,25 @@ export class FindMembersByRolesSlashHandler {
     if (!guildId) return interaction.reply('guild id not found');
 
     const roles = [role0, role1, role2].filter((role) => !!role);
-    const members = await this.groupClient.fetchMembers(guildId, limit);
-    const membersHasRoles = await this.userClient.filterMembersByRoles(members, roles);
-    const memberMentionsMessage =
-      this.userClient.userParser.parseMemberMensionsMessage(membersHasRoles);
     const roleNamesMessage = this.userClient.userParser.parseRoleNamesMessage(roles);
 
-    const logMessage = `[${roleNamesMessage}] ${memberMentionsMessage}`;
-    interaction.reply(logMessage);
+    const members = await this.groupClient.fetchMembers(guildId, limit);
+    const membersHasRoles = await this.userClient.filterMembersByRoles(members, roles);
+
+    const MAX_MEMBERS_DISPLAY = 50;
+    const displayedMembers = membersHasRoles.slice(0, MAX_MEMBERS_DISPLAY);
+    const memberMentions = this.userClient.userParser.parseMemberMentionsMessage(displayedMembers);
+
+    const totalMembers = membersHasRoles.length;
+    const remainingMembers =
+      totalMembers > MAX_MEMBERS_DISPLAY ? `, remain ${totalMembers - MAX_MEMBERS_DISPLAY}` : '';
+
+    const logMessage = `[${roleNamesMessage}] total ${totalMembers}${remainingMembers} members: ${memberMentions}`;
+    try {
+      interaction.reply(logMessage);
+    } catch (error: any) {
+      this.logger.error('Error replying to interaction:', error);
+    }
     return this.logger.log(logMessage);
   }
 }
