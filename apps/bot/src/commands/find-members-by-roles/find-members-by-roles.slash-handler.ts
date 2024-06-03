@@ -29,13 +29,18 @@ export class FindMembersByRolesSlashHandler {
     if (!guildId) return interaction.reply('guild id not found');
 
     const roles = [role0, role1, role2].filter((role) => !!role);
-    const members = await this.groupClient.fetchMembers(guildId, limit);
-    const membersHasRoles = await this.userClient.filterMembersByRoles(members, roles);
-    const memberMentionsMessage =
-      this.userClient.userParser.parseMemberMensionsMessage(membersHasRoles);
     const roleNamesMessage = this.userClient.userParser.parseRoleNamesMessage(roles);
 
-    const logMessage = `[${roleNamesMessage}] ${memberMentionsMessage}`;
+    const members = await this.groupClient.fetchMembers(guildId, limit);
+    const membersHasRoles = await this.userClient.filterMembersByRoles(members, roles);
+    // Prevent Error BASE_TYPE_MAX_LENGTH: 2000 length
+    const memberMentionsMessage = this.userClient.userParser.parseMemberMensionsMessage(
+      membersHasRoles.slice(0, 50),
+    );
+
+    const logMessage = `[${roleNamesMessage}] total ${membersHasRoles.length} ${
+      membersHasRoles.length > 50 ? `, remain ${membersHasRoles.length - 50}` : ''
+    } members: ${memberMentionsMessage}`;
     interaction.reply(logMessage);
     return this.logger.log(logMessage);
   }
