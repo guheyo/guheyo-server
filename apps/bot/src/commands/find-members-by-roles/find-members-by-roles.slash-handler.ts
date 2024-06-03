@@ -33,15 +33,21 @@ export class FindMembersByRolesSlashHandler {
 
     const members = await this.groupClient.fetchMembers(guildId, limit);
     const membersHasRoles = await this.userClient.filterMembersByRoles(members, roles);
-    // Prevent Error BASE_TYPE_MAX_LENGTH: 2000 length
-    const memberMentionsMessage = this.userClient.userParser.parseMemberMensionsMessage(
-      membersHasRoles.slice(0, 50),
-    );
 
-    const logMessage = `[${roleNamesMessage}] total ${membersHasRoles.length} ${
-      membersHasRoles.length > 50 ? `, remain ${membersHasRoles.length - 50}` : ''
-    } members: ${memberMentionsMessage}`;
-    interaction.reply(logMessage);
+    const MAX_MEMBERS_DISPLAY = 50;
+    const displayedMembers = membersHasRoles.slice(0, MAX_MEMBERS_DISPLAY);
+    const memberMentions = this.userClient.userParser.parseMemberMentionsMessage(displayedMembers);
+
+    const totalMembers = membersHasRoles.length;
+    const remainingMembers =
+      totalMembers > MAX_MEMBERS_DISPLAY ? `, remain ${totalMembers - MAX_MEMBERS_DISPLAY}` : '';
+
+    const logMessage = `[${roleNamesMessage}] total ${totalMembers}${remainingMembers} members: ${memberMentions}`;
+    try {
+      interaction.reply(logMessage);
+    } catch (error: any) {
+      this.logger.error('Error replying to interaction:', error);
+    }
     return this.logger.log(logMessage);
   }
 }
