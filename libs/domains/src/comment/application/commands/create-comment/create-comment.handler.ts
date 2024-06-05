@@ -4,6 +4,7 @@ import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
 import { CommentErrorMessage } from '@lib/domains/comment/domain/comment.error.message';
+import { COMMENT } from '@lib/domains/comment/domain/comment.constants';
 import { CreateCommentCommand } from './create-comment.command';
 import { CommentSavePort } from '../../ports/out/comment.save.port';
 import { CommentLoadPort } from '../../ports/out/comment.load.port';
@@ -31,6 +32,7 @@ export class CreateCommentHandler extends PrismaCommandHandler<
       }),
     );
     await this.savePort.create(comment);
+    comment.create();
     comment.commit();
 
     const newComment = await this.prismaService.comment.findUnique({
@@ -52,9 +54,20 @@ export class CreateCommentHandler extends PrismaCommandHandler<
     });
     if (!newComment) throw new ForbiddenException(CommentErrorMessage.COMMENT_CREATION_FAILED);
 
+    const images = await this.prismaService.userImage.findMany({
+      where: {
+        type: COMMENT,
+        refId: comment.id,
+      },
+      orderBy: {
+        position: 'asc',
+      },
+    });
+
     await GraphqlPubSub.publish(parseCommentCreatedTriggerName(newComment.postId), {
       commentCreated: {
         ...newComment,
+        images,
         reactions: [],
       },
     });

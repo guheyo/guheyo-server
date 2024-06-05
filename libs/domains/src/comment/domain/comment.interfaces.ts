@@ -1,5 +1,5 @@
 export interface UpdateCommentProps {
   id: string;
 
-  content: string;
+  content?: string;
 }

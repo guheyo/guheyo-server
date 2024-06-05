@@ -11,7 +11,7 @@ export class CreateCommentCommand implements ICommand {
 
   postId: string;
 
-  content: string;
+  content?: string;
 
   user: MyUserResponse;
 

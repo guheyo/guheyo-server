@@ -5,7 +5,7 @@ import { UpdateCommentInput } from './update-comment.input';
 export class UpdateCommentCommand implements ICommand {
   id: string;
 
-  content: string;
+  content?: string;
 
   user: MyUserResponse;
 
