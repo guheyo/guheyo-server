@@ -199,7 +199,7 @@ model Comment {
   replies           Comment[]     @relation("ChildComments")
   reports           Report[]
   reactions         Reaction[]
-  content           String
+  content           String?
   userAgent         String?
   ipAddress         String?
 
