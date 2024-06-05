@@ -21,7 +21,8 @@ export class CreateCommentInput {
   @Field(() => ID)
   postId: string;
 
+  @IsOptional()
   @IsString()
-  @Field(() => String)
-  content: string;
+  @Field(() => String, { nullable: true })
+  content?: string;
 }
