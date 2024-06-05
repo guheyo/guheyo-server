@@ -15,7 +15,7 @@ export class CommentEntity extends AggregateRoot {
 
   parentId: string | null;
 
-  content: string;
+  content: string | null;
 
   userAgent: string | null;
 
