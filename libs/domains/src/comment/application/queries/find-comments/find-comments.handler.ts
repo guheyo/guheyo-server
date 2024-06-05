@@ -4,6 +4,7 @@ import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
 import { plainToClass } from 'class-transformer';
+import { COMMENT } from '@lib/domains/comment/domain/comment.constants';
 import { FindCommentsQuery } from './find-comments.query';
 import { PaginatedCommentsResponse } from './paginated-comments.response';
 import { CommentWithAuthorResponse } from '../../dtos/comment-with-author.response';
@@ -59,8 +60,22 @@ export class FindCommentsHandler extends PrismaQueryHandler {
       },
     });
 
+    const commentWithImages = await Promise.all(
+      comments.map(async (comment) => ({
+        ...comment,
+        images: await this.prismaService.userImage.findMany({
+          where: {
+            type: COMMENT,
+            refId: comment.id,
+          },
+          orderBy: {
+            position: 'asc',
+          },
+        }),
+      })),
+    );
     return paginate<CommentWithAuthorResponse>(
-      comments.map((comment) => plainToClass(CommentWithAuthorResponse, comment)),
+      commentWithImages.map((comment) => plainToClass(CommentWithAuthorResponse, comment)),
       'id',
       query.take,
     );

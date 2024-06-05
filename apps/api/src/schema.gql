@@ -127,7 +127,7 @@ input CommentReportInput {
 }
 
 type CommentResponse {
-  content: String!
+  content: String
   createdAt: DateTime!
   id: ID!
   parentId: ID
@@ -137,9 +137,10 @@ type CommentResponse {
 }
 
 type CommentWithAuthorResponse {
-  content: String!
+  content: String
   createdAt: DateTime!
   id: ID!
+  images: [UserImageResponse!]!
   parentId: ID
   postId: ID!
   reactions: [ReactionResponse!]!
@@ -164,7 +165,7 @@ input CreateAuctionInput {
 }
 
 input CreateCommentInput {
-  content: String!
+  content: String
   createdAt: DateTime
   id: ID!
   postId: ID!
@@ -743,7 +744,7 @@ input UpdateAuctionInput {
 }
 
 input UpdateCommentInput {
-  content: String!
+  content: String
   id: ID!
 }
 
