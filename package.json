@@ -13,6 +13,7 @@
     "prebuild": "rimraf dist",
     "build:api": "nest build api",
     "build:bot": "nest build bot",
+    "build:lambda": "tsc -p apps/lambda/tsconfig.app.json",
     "start": "./node_modules/pm2/bin/pm2-runtime ./dist/apps/api/main.js",
     "poststart": "node ./node_modules/pm2/bin/pm2 logs",
     "start:api": "cross-env NODE_ENV=production node ./dist/apps/api/main.js",
