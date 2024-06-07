@@ -55,6 +55,7 @@ export class AuctionEntity extends AggregateRoot {
         id: this.id,
         postId: this.post.id,
         tagIds,
+        extendedEndDate: this.extendedEndDate,
       }),
     );
   }
@@ -123,5 +124,19 @@ export class AuctionEntity extends AggregateRoot {
 
   cancellationTimeout(createdAt: Date) {
     return dayjs().diff(createdAt, 'minutes') > 10;
+  }
+
+  calculateRemainingMilliseconds() {
+    const now = new Date();
+    return this.extendedEndDate.getTime() - now.getTime();
+  }
+
+  isEndWithinLastMinute() {
+    return this.calculateRemainingMilliseconds() < 60000;
+  }
+
+  extendEndDateByOneMinute() {
+    this.extendedEndDate = new Date(this.extendedEndDate.getTime() + 60000);
+    return this.extendedEndDate;
   }
 }
