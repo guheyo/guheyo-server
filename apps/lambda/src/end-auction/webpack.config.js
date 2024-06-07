@@ -10,7 +10,11 @@ module.exports = {
     libraryTarget: 'commonjs2'
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
+    alias: {
+      '@lib/domains': path.resolve(__dirname, '../../../../libs/domains/src'),
+      '@lib/shared': path.resolve(__dirname, '../../../../libs/shared/src'),
+    }
   },
   module: {
     rules: [
