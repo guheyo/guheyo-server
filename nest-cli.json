@@ -55,15 +55,6 @@
       "compilerOptions": {
         "tsConfigPath": "libs/domains/tsconfig.lib.json"
       }
-    },
-    "lambda-hello-world": {
-      "type": "application",
-      "root": "apps/lambda",
-      "entryFile": "hello-world",
-      "sourceRoot": "apps/lambda/src/hello-world",
-      "compilerOptions": {
-        "tsConfigPath": "apps/lambda/tsconfig.app.json"
-      }
     }
   }
 }
