@@ -25,12 +25,12 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, '../../../../node_modules/.prisma'),
-          to: path.resolve(__dirname, '../../../../dist/apps/lambda/end-auction/node_modules/.prisma')
+          from: path.resolve(__dirname, '../../../../node_modules/.prisma/client/libquery_engine-linux-arm64-openssl-3.0.x.so.node'),
+          to: path.resolve(__dirname, '../../../../dist/apps/lambda/end-auction/libquery_engine-linux-arm64-openssl-3.0.x.so.node')
         },
         {
-          from: path.resolve(__dirname, '../../../../node_modules/@prisma'),
-          to: path.resolve(__dirname, '../../../../dist/apps/lambda/end-auction/node_modules/@prisma')
+          from: path.resolve(__dirname, '../../../../node_modules/.prisma/client/schema.prisma'),
+          to: path.resolve(__dirname, '../../../../dist/apps/lambda/end-auction/schema.prisma')
         }
       ]
     })
