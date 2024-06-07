@@ -7,3 +7,5 @@ dist
 # Prisma
 **/prisma/generated/*
 **/prisma/scripts/*
+
+webpack.config.js
