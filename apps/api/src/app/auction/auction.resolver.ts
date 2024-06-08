@@ -39,6 +39,8 @@ import { FindAuctionInteractionItemsArgs } from '@lib/domains/auction/applicatio
 import { BidCountResponse } from '@lib/domains/auction/application/dtos/bid-count.response';
 import { FindBidCountArgs } from '@lib/domains/auction/application/queries/find-bid-count/find-bid-count.args';
 import { FindBidCountQuery } from '@lib/domains/auction/application/queries/find-bid-count/find-bid-count.query';
+import { AuctionUpdatedArgs } from '@lib/domains/auction/application/subscriptions/auction-updated/auction-updated.args';
+import { parseAuctionUpdatedTriggerName } from '@lib/domains/auction/application/subscriptions/auction-updated/parse-auction-updated-trigger-name';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
@@ -155,5 +157,10 @@ export class AuctionResolver {
   @Subscription(() => CancelBidResponse)
   async bidCanceled(@Args() args: BidCanceledArgs) {
     return GraphqlPubSub.asyncIterator(parseBidCanceledTriggerName(args.auctionId));
+  }
+
+  @Subscription(() => AuctionResponse)
+  async auctionUpdated(@Args() args: AuctionUpdatedArgs) {
+    return GraphqlPubSub.asyncIterator(parseAuctionUpdatedTriggerName(args.auctionId));
   }
 }
