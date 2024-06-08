@@ -5,7 +5,7 @@ export class UpdatedAuctionResponse {
   @Field(() => ID)
   id: string;
 
-  @Field()
+  @Field(() => Date)
   updatedAt: Date;
 
   @Field(() => Date)
