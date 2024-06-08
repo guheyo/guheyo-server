@@ -7,7 +7,6 @@ import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
 import { BID } from '@lib/domains/auction/domain/bid.constants';
 import { PlaceBidCommand } from './place-bid.command';
 import { AuctionLoadPort } from '../../ports/out/auction.load.port';
-import { BidSavePort } from '../../ports/out/bid.save.port';
 import { BidResponse } from '../../dtos/bid.response';
 import { parseBidPlacedTriggerName } from '../../subscriptions/bid-placed/parse-bid-placed-trigger-name';
 
@@ -15,7 +14,6 @@ import { parseBidPlacedTriggerName } from '../../subscriptions/bid-placed/parse-
 export class PlaceBidHandler extends PrismaCommandHandler<PlaceBidCommand, BidResponse> {
   constructor(
     @Inject('AuctionLoadPort') private auctionLoadPort: AuctionLoadPort,
-    @Inject('BidSavePort') private bidSavePort: BidSavePort,
     private readonly publisher: EventPublisher,
   ) {
     super(BidResponse);
@@ -30,8 +28,9 @@ export class PlaceBidHandler extends PrismaCommandHandler<PlaceBidCommand, BidRe
 
   private async retryPlaceBid(command: PlaceBidCommand, retries: number): Promise<BidResponse> {
     try {
-      return await this.prismaService.$transaction(async (prisma) => {
-        let auction = await this.auctionLoadPort.findById(command.auctionId);
+      let auction: AuctionEntity | null;
+      const bid = await this.prismaService.$transaction(async (prisma) => {
+        auction = await this.auctionLoadPort.findById(command.auctionId);
         if (!auction) throw new Error(AuctionErrorMessage.AUCTION_NOT_FOUND);
 
         auction = this.publisher.mergeObjectContext(new AuctionEntity(auction));
@@ -80,6 +79,9 @@ export class PlaceBidHandler extends PrismaCommandHandler<PlaceBidCommand, BidRe
 
         return newBid;
       });
+
+      auction!.commit();
+      return bid;
     } catch (error: any) {
       if (error.message.includes('Record to update not found')) {
         if (retries > 0) {
