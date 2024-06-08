@@ -7,7 +7,7 @@ import { UpdateThumbnailCommand } from '@lib/domains/post/application/commands/u
 import { AuctionCreatedEvent } from '../events/auction-created/auction-created.event';
 import { AuctionUpdatedEvent } from '../events/auction-updated/auction-updated.event';
 import { AUCTION } from '../../domain/auction.constants';
-import { ScheduleAuctionEndCommand } from '../commands/schedule-end/schedule-auction-end.command';
+import { InitialScheduleAuctionEndCommand } from '../commands/initial-schedule-auction-end/initial-schedule-auction-end.command';
 
 @Injectable()
 export class AuctionSagas {
@@ -30,7 +30,7 @@ export class AuctionSagas {
             postId: event.postId,
             tagIds: event.tagIds,
           }),
-          new ScheduleAuctionEndCommand({
+          new InitialScheduleAuctionEndCommand({
             input: {
               id: event.id,
               extendedEndDate: event.extendedEndDate,
