@@ -11,6 +11,9 @@ export class UpdatedAuctionResponse {
   @Field(() => Date)
   extendedEndDate: Date;
 
+  @Field()
+  status: string;
+
   constructor(partial: Partial<UpdatedAuctionResponse>) {
     Object.assign(this, partial);
   }

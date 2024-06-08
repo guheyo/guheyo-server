@@ -710,6 +710,7 @@ type SocialUserResponse {
 }
 
 type Subscription {
+  auctionUpdated(auctionId: ID!): UpdatedAuctionResponse!
   bidCanceled(auctionId: ID!): CancelBidResponse!
   bidPlaced(auctionId: ID!): BidResponse!
   commentCreated(postId: ID!): CommentWithAuthorResponse!
@@ -803,6 +804,13 @@ input UpdateUserInput {
   name: String
   phoneNumber: String
   username: String
+}
+
+type UpdatedAuctionResponse {
+  extendedEndDate: DateTime!
+  id: ID!
+  status: String!
+  updatedAt: DateTime!
 }
 
 type UpdatedCommentResponse {
