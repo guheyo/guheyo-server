@@ -39,6 +39,8 @@ s3:
   secretAccessKey:
   bucket:
   domain:
+lambda:
+  arn:
 document:
   title:
   description:
