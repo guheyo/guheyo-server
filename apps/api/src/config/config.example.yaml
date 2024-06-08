@@ -40,7 +40,10 @@ s3:
   bucket:
   domain:
 lambda:
-  arn:
+  endAuction:
+    arn:
+eventBridge:
+  region:
 document:
   title:
   description:
