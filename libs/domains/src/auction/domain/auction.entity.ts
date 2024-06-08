@@ -11,6 +11,7 @@ import { AuctionErrorMessage } from './auction.error.message';
 import { AUCTION_CLOSED } from './auction.constants';
 import { BID } from './bid.constants';
 import { PlaceBidCommand } from '../application/commands/place-bid/place-bid.command';
+import { BidPlacedEvent } from '../application/events/bid-placed/bid-placed.event';
 
 export class AuctionEntity extends AggregateRoot {
   id: string;
@@ -81,6 +82,12 @@ export class AuctionEntity extends AggregateRoot {
     if (this.isCanceler(bid.userId))
       throw new Error(AuctionErrorMessage.CANCELLERS_ATTEMPT_TO_RE_BID);
     this.bids.push(bid);
+    this.apply(
+      new BidPlacedEvent({
+        auctionId: this.id,
+        bidId: bid.id,
+      }),
+    );
     return bid;
   }
 
@@ -136,7 +143,7 @@ export class AuctionEntity extends AggregateRoot {
   }
 
   extendEndDateByOneMinute() {
-    this.extendedEndDate = new Date(this.extendedEndDate.getTime() + 60000);
+    this.extendedEndDate = new Date(new Date().getTime() + 60000);
     return this.extendedEndDate;
   }
 }
