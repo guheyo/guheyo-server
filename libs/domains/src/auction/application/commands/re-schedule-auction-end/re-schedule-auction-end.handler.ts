@@ -36,8 +36,8 @@ export class ReScheduleAuctionEndHandler extends PrismaCommandHandler<
       });
       await this.savePort.save(auction);
 
-      await this.auctionEventService.cancelAuctionEndEvent(auction.id);
-      await this.auctionEventService.scheduleAuctionEndEvent(auction.id, auction.extendedEndDate);
+      await this.auctionEventService.cancelEndAuctionEvent(auction.id);
+      await this.auctionEventService.scheduleEndAuctionEvent(auction.id, auction.extendedEndDate);
 
       await GraphqlPubSub.publish(parseAuctionUpdatedTriggerName(auction.id), {
         auctionUpdated: {
