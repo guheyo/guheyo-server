@@ -11,6 +11,7 @@ import { AuctionErrorMessage } from './auction.error.message';
 import { AUCTION_CLOSED } from './auction.constants';
 import { BID } from './bid.constants';
 import { PlaceBidCommand } from '../application/commands/place-bid/place-bid.command';
+import { BidPlacedEvent } from '../application/events/bid-placed/bid-placed.event';
 
 export class AuctionEntity extends AggregateRoot {
   id: string;
@@ -55,6 +56,7 @@ export class AuctionEntity extends AggregateRoot {
         id: this.id,
         postId: this.post.id,
         tagIds,
+        extendedEndDate: this.extendedEndDate,
       }),
     );
   }
@@ -80,6 +82,12 @@ export class AuctionEntity extends AggregateRoot {
     if (this.isCanceler(bid.userId))
       throw new Error(AuctionErrorMessage.CANCELLERS_ATTEMPT_TO_RE_BID);
     this.bids.push(bid);
+    this.apply(
+      new BidPlacedEvent({
+        auctionId: this.id,
+        bidId: bid.id,
+      }),
+    );
     return bid;
   }
 
@@ -123,5 +131,19 @@ export class AuctionEntity extends AggregateRoot {
 
   cancellationTimeout(createdAt: Date) {
     return dayjs().diff(createdAt, 'minutes') > 10;
+  }
+
+  calculateRemainingMilliseconds() {
+    const now = new Date();
+    return this.extendedEndDate.getTime() - now.getTime();
+  }
+
+  isEndWithinLastMinute() {
+    return this.calculateRemainingMilliseconds() < 60000;
+  }
+
+  extendEndDateByOneMinute() {
+    this.extendedEndDate = new Date(new Date().getTime() + 60000);
+    return this.extendedEndDate;
   }
 }

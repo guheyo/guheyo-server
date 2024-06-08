@@ -1751,6 +1751,7 @@ __metadata:
     "@types/passport-kakao": ^1.0.3
     "@types/passport-naver": ^1.0.4
     "@types/uuid": ^9.0.8
+    aws-sdk: ^2.1636.0
     bcrypt: ^5.1.1
     class-transformer: ^0.5.1
     class-validator: ^0.14.0
@@ -5415,6 +5416,24 @@ __metadata:
   bin:
     lambda: bin/lambda
   checksum: 11316e87b5c4fc36e6bd0495742a3c0ed13befc9527a7b251a58180d141d9afd68b684f37aeb3b53d117d3c2f96747eace31826b683543f1edddc03f392865fd
+  languageName: node
+  linkType: hard
+
+"aws-sdk@npm:^2.1636.0":
+  version: 2.1636.0
+  resolution: "aws-sdk@npm:2.1636.0"
+  dependencies:
+    buffer: 4.9.2
+    events: 1.1.1
+    ieee754: 1.1.13
+    jmespath: 0.16.0
+    querystring: 0.2.0
+    sax: 1.2.1
+    url: 0.10.3
+    util: ^0.12.4
+    uuid: 8.0.0
+    xml2js: 0.6.2
+  checksum: 066b55b6eb958469f24e537bed964ee43e26bdab170b8d5de10623d9e0bf5066c710c1a49e0e7304eff1d9408986234f2321d34f0d1e2ecdd0ef369b0c8bab6e
   languageName: node
   linkType: hard
 

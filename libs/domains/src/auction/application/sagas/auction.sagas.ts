@@ -7,6 +7,9 @@ import { UpdateThumbnailCommand } from '@lib/domains/post/application/commands/u
 import { AuctionCreatedEvent } from '../events/auction-created/auction-created.event';
 import { AuctionUpdatedEvent } from '../events/auction-updated/auction-updated.event';
 import { AUCTION } from '../../domain/auction.constants';
+import { InitialScheduleAuctionEndCommand } from '../commands/initial-schedule-auction-end/initial-schedule-auction-end.command';
+import { BidPlacedEvent } from '../events/bid-placed/bid-placed.event';
+import { ReScheduleAuctionEndCommand } from '../commands/re-schedule-auction-end/re-schedule-auction-end.command';
 
 @Injectable()
 export class AuctionSagas {
@@ -29,6 +32,12 @@ export class AuctionSagas {
             postId: event.postId,
             tagIds: event.tagIds,
           }),
+          new InitialScheduleAuctionEndCommand({
+            input: {
+              id: event.id,
+              extendedEndDate: event.extendedEndDate,
+            },
+          }),
         ),
       ),
     );
@@ -47,6 +56,21 @@ export class AuctionSagas {
             postId: event.postId,
             type: AUCTION,
             refId: event.auctionId,
+          }),
+        ),
+      ),
+    );
+
+  @Saga()
+  bidPlaced = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(BidPlacedEvent),
+      concatMap((event) =>
+        of(
+          new ReScheduleAuctionEndCommand({
+            input: {
+              id: event.auctionId,
+            },
           }),
         ),
       ),

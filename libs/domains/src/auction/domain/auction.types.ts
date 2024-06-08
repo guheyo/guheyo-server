@@ -2,10 +2,10 @@ import { UpdatePostProps } from '@lib/domains/post/domain/post.types';
 
 export interface UpdateAuctionProps {
   // post
-  post: UpdatePostProps;
+  post?: UpdatePostProps;
 
   // auction
   id: string;
 
-  content?: string;
+  extendedEndDate?: Date;
 }
