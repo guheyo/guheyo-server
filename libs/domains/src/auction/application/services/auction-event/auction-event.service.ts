@@ -1,57 +1,84 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as AWS from 'aws-sdk';
+import {
+  EventBridgeClient,
+  ListTargetsByRuleCommand,
+  RemoveTargetsCommand,
+  DeleteRuleCommand,
+  PutRuleCommand,
+  PutTargetsCommand,
+} from '@aws-sdk/client-eventbridge';
 
 @Injectable()
 export class AuctionEventService {
-  private readonly cloudWatchEvents: AWS.CloudWatchEvents;
+  private readonly eventBridgeClient: EventBridgeClient;
 
   constructor(private readonly configService: ConfigService) {
-    this.cloudWatchEvents = new AWS.CloudWatchEvents({ region: 'ap-northeast-2' });
+    this.eventBridgeClient = new EventBridgeClient({
+      region: this.configService.get<string>('eventBridge.region', 'ap-northeast-2'),
+    });
   }
 
-  async cancelAuctionEndEvent(auctionId: string): Promise<void> {
-    const ruleName = `AuctionEndRule_${auctionId}`;
+  async cancelEndAuctionEvent(auctionId: string): Promise<void> {
+    const ruleName = `auction-end-${auctionId}`;
 
-    // Remove all targets from the rule
-    const listTargetsParams = { Rule: ruleName };
-    const listTargetsResponse = await this.cloudWatchEvents
-      .listTargetsByRule(listTargetsParams)
-      .promise();
-    if (!!listTargetsResponse.Targets?.length && listTargetsResponse.Targets.length > 0) {
-      const removeTargetsParams = {
-        Rule: ruleName,
-        Ids: listTargetsResponse.Targets.map((target) => target.Id),
-      };
-      await this.cloudWatchEvents.removeTargets(removeTargetsParams).promise();
+    try {
+      // List all targets for the rule
+      const listTargetsByRuleCommand = new ListTargetsByRuleCommand({ Rule: ruleName });
+      const listTargetsResponse = await this.eventBridgeClient.send(listTargetsByRuleCommand);
+
+      // Remove targets if any are found
+      if (listTargetsResponse.Targets && listTargetsResponse.Targets.length > 0) {
+        const targetIds = listTargetsResponse.Targets.map((target) => target.Id).filter(
+          Boolean,
+        ) as string[];
+        const removeTargetsCommand = new RemoveTargetsCommand({
+          Rule: ruleName,
+          Ids: targetIds,
+        });
+        await this.eventBridgeClient.send(removeTargetsCommand);
+      }
+
+      // Delete the rule
+      const deleteRuleCommand = new DeleteRuleCommand({ Name: ruleName });
+      await this.eventBridgeClient.send(deleteRuleCommand);
+    } catch (error) {
+      console.error(`Error cancelling auction end event for auctionId ${auctionId}:`, error);
+      throw error;
     }
-
-    // Delete the rule
-    const deleteRuleParams = { Name: ruleName };
-    await this.cloudWatchEvents.deleteRule(deleteRuleParams).promise();
   }
 
-  async scheduleAuctionEndEvent(auctionId: string, endTime: Date): Promise<void> {
-    const ruleName = `AuctionEndRule_${auctionId}`;
-    const ruleParams = {
-      Name: ruleName,
-      ScheduleExpression: `cron(${endTime.getUTCMinutes()} ${endTime.getUTCHours()} ${endTime.getUTCDate()} ${
-        endTime.getUTCMonth() + 1
-      } ? ${endTime.getUTCFullYear()})`,
-      State: 'ENABLED',
-    };
-    await this.cloudWatchEvents.putRule(ruleParams).promise();
+  async scheduleEndAuctionEvent(auctionId: string, endTime: Date): Promise<void> {
+    const ruleName = `auction-end-${auctionId}`;
+    const scheduleExpression = `cron(${endTime.getUTCMinutes()} ${endTime.getUTCHours()} ${endTime.getUTCDate()} ${
+      endTime.getUTCMonth() + 1
+    } ? ${endTime.getUTCFullYear()})`;
 
-    const targetParams = {
-      Rule: ruleName,
-      Targets: [
-        {
-          Id: `AuctionEndTarget_${auctionId}`,
-          Arn: this.configService.get('lambda.arn'),
-          Input: JSON.stringify({ auctionId }),
-        },
-      ],
-    };
-    await this.cloudWatchEvents.putTargets(targetParams).promise();
+    try {
+      // Create or update the rule
+      const putRuleCommand = new PutRuleCommand({
+        Name: ruleName,
+        ScheduleExpression: scheduleExpression,
+        State: 'ENABLED',
+      });
+      await this.eventBridgeClient.send(putRuleCommand);
+
+      // Add the target
+      const lambdaArn = this.configService.get<string>('lambda.endAuction.arn');
+      const putTargetsCommand = new PutTargetsCommand({
+        Rule: ruleName,
+        Targets: [
+          {
+            Id: `AuctionEndTarget_${auctionId}`,
+            Arn: lambdaArn,
+            Input: JSON.stringify({ auctionId }),
+          },
+        ],
+      });
+      await this.eventBridgeClient.send(putTargetsCommand);
+    } catch (error) {
+      console.error(`Error scheduling auction end event for auctionId ${auctionId}:`, error);
+      throw error;
+    }
   }
 }
