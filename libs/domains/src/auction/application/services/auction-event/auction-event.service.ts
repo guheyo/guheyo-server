@@ -23,6 +23,8 @@ export class AuctionEventService {
 
   private readonly awsAccountId: string;
 
+  private readonly prefix: string = `${process.env.NODE_ENV}-end-auction`;
+
   constructor(private readonly configService: ConfigService) {
     this.eventBridgeRegion = this.configService.get<string>(
       'aws.eventBridge.region',
@@ -47,15 +49,15 @@ export class AuctionEventService {
   }
 
   private getRuleName(auctionId: string): string {
-    return `${process.env.NODE_ENV}-end-auction-rule-${auctionId}`;
+    return `${this.prefix}-rule-${auctionId}`;
   }
 
   private getTargetId(auctionId: string): string {
-    return `${process.env.NODE_ENV}-end-auction-target-${auctionId}`;
+    return `${this.prefix}-target-${auctionId}`;
   }
 
   private getStatementId(auctionId: string): string {
-    return `${process.env.NODE_ENV}-eventbridge-invoke-${auctionId}`;
+    return `${this.prefix}-eventbridge-invoke-${auctionId}`;
   }
 
   private getRuleArn(ruleName: string): string {
