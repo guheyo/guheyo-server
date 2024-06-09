@@ -2,7 +2,7 @@ import { CommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
-import { AuctionEventService } from '../../services/end-auction-event/end-auction-event.service';
+import { EndAuctionEventService } from '../../services/end-auction-event/end-auction-event.service';
 import { AuctionLoadPort } from '../../ports/out/auction.load.port';
 import { AuctionSavePort } from '../../ports/out/auction.save.port';
 import { ReScheduleAuctionEndCommand } from './re-schedule-auction-end.command';
@@ -15,7 +15,7 @@ export class ReScheduleAuctionEndHandler extends PrismaCommandHandler<
   UpdatedAuctionResponse
 > {
   constructor(
-    private readonly auctionEventService: AuctionEventService,
+    private readonly auctionEventService: EndAuctionEventService,
     @Inject('AuctionSavePort') private savePort: AuctionSavePort,
     @Inject('AuctionLoadPort') private loadPort: AuctionLoadPort,
   ) {
