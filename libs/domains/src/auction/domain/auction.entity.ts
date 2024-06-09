@@ -72,6 +72,8 @@ export class AuctionEntity extends AggregateRoot {
   }
 
   placeBid(command: PlaceBidCommand): BidEntity | null {
+    if (this.hasEnded()) throw new Error(AuctionErrorMessage.AUCTION_HAS_ENDED);
+
     const bid = new BidEntity({
       ...pick(command, ['id', 'auctionId', 'price', 'priceCurrency']),
       userId: command.user.id,
