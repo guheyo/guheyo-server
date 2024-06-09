@@ -19,6 +19,8 @@
     "migrate:v": "dotenv -e ./src/prisma/config/.env.v${0} ts-node --project ./tsconfig.lib.json ./src/prisma/scripts/migrate-to-v${0}.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-eventbridge": "^3.592.0",
+    "@aws-sdk/client-lambda": "^3.592.0",
     "@aws-sdk/client-s3": "^3.417.0",
     "@aws-sdk/s3-request-presigner": "^3.417.0",
     "@nestjs/common": "^10.2.4",
