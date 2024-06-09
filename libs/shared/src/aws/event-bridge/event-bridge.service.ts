@@ -19,8 +19,8 @@ export class EventBridgeService {
     this.eventBridgeClient = new EventBridgeClient({
       region: this.eventBridgeRegion,
       credentials: {
-        accessKeyId: this.configService.get<string>('aws.eventBridge.accessKeyId'),
-        secretAccessKey: this.configService.get<string>('aws.eventBridge.secretAccessKey'),
+        accessKeyId: this.configService.get<string>('aws.eventBridge.accessKeyId')!,
+        secretAccessKey: this.configService.get<string>('aws.eventBridge.secretAccessKey')!,
       },
     });
   }

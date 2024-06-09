@@ -16,8 +16,8 @@ export class LambdaService {
     this.lambdaClient = new LambdaClient({
       region: this.lambdaRegion,
       credentials: {
-        accessKeyId: this.configService.get<string>('aws.lambda.accessKeyId'),
-        secretAccessKey: this.configService.get<string>('aws.lambda.secretAccessKey'),
+        accessKeyId: this.configService.get<string>('aws.lambda.accessKeyId')!,
+        secretAccessKey: this.configService.get<string>('aws.lambda.secretAccessKey')!,
       },
     });
   }
