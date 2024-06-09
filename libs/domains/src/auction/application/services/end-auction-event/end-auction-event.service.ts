@@ -8,7 +8,11 @@ import {
   PutTargetsCommand,
   RuleState,
 } from '@aws-sdk/client-eventbridge';
-import { LambdaClient, AddPermissionCommand } from '@aws-sdk/client-lambda';
+import {
+  LambdaClient,
+  AddPermissionCommand,
+  RemovePermissionCommand,
+} from '@aws-sdk/client-lambda';
 import { EventBridgeService } from '@lib/shared/aws/event-bridge/event-bridge.service';
 import { LambdaService } from '@lib/shared/aws/lambda/lambda.service';
 
@@ -58,6 +62,15 @@ export class EndAuctionEventService {
       // Delete the rule
       const deleteRuleCommand = new DeleteRuleCommand({ Name: ruleName });
       await this.eventBridgeClient.send(deleteRuleCommand);
+
+      // Remove Lambda permission
+      const lambdaArn = this.lambdaService.getLambdaFunctionArn(this.functionName);
+      const statementId = this.lambdaService.getEventBridgeInvokeStatementId(prefixWithId);
+      const removePermissionCommand = new RemovePermissionCommand({
+        FunctionName: lambdaArn,
+        StatementId: statementId,
+      });
+      await this.lambdaClient.send(removePermissionCommand);
     } catch (error) {
       console.error(`Error cancelling auction end event for auctionId ${auctionId}:`, error);
       throw error;
@@ -82,10 +95,10 @@ export class EndAuctionEventService {
     await this.eventBridgeClient.send(putRuleCommand);
 
     const lambdaArn = this.lambdaService.getLambdaFunctionArn(this.functionName);
-    const statemendId = this.lambdaService.getEventBridgeInvokeStatementId(prefixWithId);
+    const statementId = this.lambdaService.getEventBridgeInvokeStatementId(prefixWithId);
     const addPermissionParams = {
       FunctionName: lambdaArn,
-      StatementId: statemendId,
+      StatementId: statementId,
       Action: 'lambda:InvokeFunction',
       Principal: 'events.amazonaws.com',
       SourceArn: ruleArn,
