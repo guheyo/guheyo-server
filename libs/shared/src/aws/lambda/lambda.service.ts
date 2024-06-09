@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { LambdaClient } from '@aws-sdk/client-lambda';
+import { AddPermissionCommand, LambdaClient } from '@aws-sdk/client-lambda';
 
 @Injectable()
 export class LambdaService {
@@ -36,5 +36,20 @@ export class LambdaService {
 
   getLambdaFunctionArn(functionName: string): string {
     return `arn:aws:lambda:${this.lambdaRegion}:${this.awsAccountId}:function:${functionName}`;
+  }
+
+  async addPermission(functionName: string, prefixWithId: string, ruleArn: string) {
+    const lambdaArn = this.getLambdaFunctionArn(functionName);
+    const statementId = this.getEventBridgeInvokeStatementId(prefixWithId);
+
+    const addPermissionParams = {
+      FunctionName: lambdaArn,
+      StatementId: statementId,
+      Action: 'lambda:InvokeFunction',
+      Principal: 'events.amazonaws.com',
+      SourceArn: ruleArn,
+    };
+    const addPermissionCommand = new AddPermissionCommand(addPermissionParams);
+    await this.lambdaClient.send(addPermissionCommand);
   }
 }
