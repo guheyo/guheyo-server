@@ -8,7 +8,6 @@ import { AuctionCreatedEvent } from '../application/events/auction-created/aucti
 import { AuctionUpdatedEvent } from '../application/events/auction-updated/auction-updated.event';
 import { BidEntity } from './bid.entity';
 import { AuctionErrorMessage } from './auction.error.message';
-import { AUCTION_CLOSED } from './auction.constants';
 import { BID } from './bid.constants';
 import { PlaceBidCommand } from '../application/commands/place-bid/place-bid.command';
 import { BidPlacedEvent } from '../application/events/bid-placed/bid-placed.event';
@@ -72,7 +71,7 @@ export class AuctionEntity extends AggregateRoot {
   }
 
   placeBid(command: PlaceBidCommand): BidEntity | null {
-    if (this.hasEnded()) throw new Error(AuctionErrorMessage.AUCTION_CLOSED);
+    if (this.isClosed()) throw new Error(AuctionErrorMessage.AUCTION_CLOSED);
 
     const bid = new BidEntity({
       ...pick(command, ['id', 'auctionId', 'price', 'priceCurrency']),
@@ -94,7 +93,7 @@ export class AuctionEntity extends AggregateRoot {
   }
 
   cancelBid({ userId, bidId }: { userId: string; bidId: string }): BidEntity {
-    if (this.hasEnded()) throw new Error(AuctionErrorMessage.AUCTION_CLOSED);
+    if (this.isClosed()) throw new Error(AuctionErrorMessage.AUCTION_CLOSED);
 
     const userBids = this.bids.filter((bid) => bid.userId === userId);
     if (userBids.length === 0) throw new Error(AuctionErrorMessage.BID_NOT_FOUND);
@@ -115,8 +114,9 @@ export class AuctionEntity extends AggregateRoot {
     return lastBid || null;
   }
 
-  hasEnded() {
-    return this.status === AUCTION_CLOSED;
+  isClosed() {
+    const now = dayjs();
+    return now.isAfter(dayjs(this.extendedEndDate));
   }
 
   isBidBelowTheCurrentPrice(price: number) {
