@@ -39,7 +39,7 @@ export class LambdaService {
   }
 
   getLambdaFunctionArn(functionName: string): string {
-    return `arn:aws:lambda:${this.lambdaRegion}:${this.awsAccountId}:function:${functionName}`;
+    return `arn:aws:lambda:${this.lambdaRegion}:${this.awsAccountId}:function:${process.env.NODE_ENV}-${functionName}`;
   }
 
   async addPermission(functionName: string, statementId: string, ruleArn: string) {
