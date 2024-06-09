@@ -1,3 +1,5 @@
+import { EventBridgeService } from '@lib/shared/aws/event-bridge.service';
+import { LambdaService } from '@lib/shared/aws/lambda.service';
 import { AuctionRepository } from './adapter/out/persistence/auction.repository';
 import { AUCTION_COMMAND_PROVIDERS } from './application/commands/auction.command.providers';
 import { AUCTION_QUERY_PROVIDERS } from './application/queries/auction.query.providers';
@@ -23,4 +25,6 @@ export const AUCTION_PROVIDERS = [
   ...AUCTION_EVENT_PROVIDERS,
   ...AUCTION_SERVICES,
   AuctionSagas,
+  EventBridgeService,
+  LambdaService,
 ];
