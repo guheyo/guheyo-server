@@ -2,7 +2,7 @@ import { CommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
-import { AuctionEventService } from '../../services/auction-event/auction-event.service';
+import { EndAuctionEventService } from '../../services/end-auction-event/end-auction-event.service';
 import { AuctionLoadPort } from '../../ports/out/auction.load.port';
 import { AuctionSavePort } from '../../ports/out/auction.save.port';
 import { ReScheduleAuctionEndCommand } from './re-schedule-auction-end.command';
@@ -15,7 +15,7 @@ export class ReScheduleAuctionEndHandler extends PrismaCommandHandler<
   UpdatedAuctionResponse
 > {
   constructor(
-    private readonly auctionEventService: AuctionEventService,
+    private readonly auctionEventService: EndAuctionEventService,
     @Inject('AuctionSavePort') private savePort: AuctionSavePort,
     @Inject('AuctionLoadPort') private loadPort: AuctionLoadPort,
   ) {
@@ -36,8 +36,8 @@ export class ReScheduleAuctionEndHandler extends PrismaCommandHandler<
       });
       await this.savePort.save(auction);
 
-      await this.auctionEventService.cancelAuctionEndEvent(auction.id);
-      await this.auctionEventService.scheduleAuctionEndEvent(auction.id, auction.extendedEndDate);
+      await this.auctionEventService.cancelEndAuctionEvent(auction.id);
+      await this.auctionEventService.scheduleEndAuctionEvent(auction.id, auction.extendedEndDate);
 
       await GraphqlPubSub.publish(parseAuctionUpdatedTriggerName(auction.id), {
         auctionUpdated: {

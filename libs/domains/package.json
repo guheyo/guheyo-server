@@ -13,7 +13,6 @@
     "@nestjs/passport": "^10.0.3",
     "@nestjs/swagger": "^7.1.8",
     "@prisma/client": "^5.15.0",
-    "aws-sdk": "^2.1636.0",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
