@@ -6,9 +6,12 @@ import { EventBridgeClient } from '@aws-sdk/client-eventbridge';
 export class EventBridgeService {
   private readonly eventBridgeClient: EventBridgeClient;
 
+  private readonly awsAccountId: string;
+
   private readonly eventBridgeRegion: string;
 
   constructor(private readonly configService: ConfigService) {
+    this.awsAccountId = this.configService.get<string>('aws.accountId')!;
     this.eventBridgeRegion = this.configService.get<string>(
       'aws.eventBridge.region',
       'ap-northeast-2',
@@ -28,5 +31,17 @@ export class EventBridgeService {
 
   getEventBridgeRegion(): string {
     return this.eventBridgeRegion;
+  }
+
+  getRuleName(prefix: string): string {
+    return `${prefix}-rule`;
+  }
+
+  getRuleArn(ruleName: string): string {
+    return `arn:aws:events:${this.eventBridgeRegion}:${this.awsAccountId}:rule/${ruleName}`;
+  }
+
+  getTargetId(prefix: string): string {
+    return `${prefix}-target`;
   }
 }

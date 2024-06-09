@@ -6,9 +6,12 @@ import { LambdaClient } from '@aws-sdk/client-lambda';
 export class LambdaService {
   private readonly lambdaClient: LambdaClient;
 
+  private readonly awsAccountId: string;
+
   private readonly lambdaRegion: string;
 
   constructor(private readonly configService: ConfigService) {
+    this.awsAccountId = this.configService.get<string>('aws.accountId')!;
     this.lambdaRegion = this.configService.get<string>('aws.lambda.region', 'ap-northeast-2');
     this.lambdaClient = new LambdaClient({
       region: this.lambdaRegion,
@@ -25,5 +28,13 @@ export class LambdaService {
 
   getLambdaRegion(): string {
     return this.lambdaRegion;
+  }
+
+  getEventBridgeInvokeStatementId(prefix: string): string {
+    return `${prefix}-eventbridge-invoke`;
+  }
+
+  getLambdaFunctionArn(functionName: string): string {
+    return `arn:aws:lambda:${this.lambdaRegion}:${this.awsAccountId}:function:${functionName}`;
   }
 }
