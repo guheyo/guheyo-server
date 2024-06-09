@@ -17,16 +17,28 @@ export class AuctionEventService {
 
   private readonly lambdaClient: LambdaClient;
 
+  private readonly eventBridgeRegion: string;
+
+  private readonly lambdaRegion: string;
+
+  private readonly awsAccountId: string;
+
   constructor(private readonly configService: ConfigService) {
+    this.eventBridgeRegion = this.configService.get<string>(
+      'aws.eventBridge.region',
+      'ap-northeast-2',
+    );
+    this.lambdaRegion = this.configService.get<string>('aws.lambda.region', 'ap-northeast-2');
+    this.awsAccountId = this.configService.get<string>('aws.accountId')!;
     this.eventBridgeClient = new EventBridgeClient({
-      region: this.configService.get<string>('aws.eventBridge.region', 'ap-northeast-2'),
+      region: this.eventBridgeRegion,
       credentials: {
         accessKeyId: this.configService.get<string>('aws.eventBridge.accessKeyId')!,
         secretAccessKey: this.configService.get<string>('aws.eventBridge.secretAccessKey')!,
       },
     });
     this.lambdaClient = new LambdaClient({
-      region: this.configService.get<string>('aws.lambda.region', 'ap-northeast-2'),
+      region: this.lambdaRegion,
       credentials: {
         accessKeyId: this.configService.get<string>('aws.lambda.accessKeyId')!,
         secretAccessKey: this.configService.get<string>('aws.lambda.secretAccessKey')!,
@@ -34,8 +46,28 @@ export class AuctionEventService {
     });
   }
 
+  private getRuleName(auctionId: string): string {
+    return `${process.env.NODE_ENV}-end-auction-rule-${auctionId}`;
+  }
+
+  private getTargetId(auctionId: string): string {
+    return `${process.env.NODE_ENV}-end-auction-target-${auctionId}`;
+  }
+
+  private getStatementId(auctionId: string): string {
+    return `${process.env.NODE_ENV}-eventbridge-invoke-${auctionId}`;
+  }
+
+  private getRuleArn(ruleName: string): string {
+    return `arn:aws:events:${this.eventBridgeRegion}:${this.awsAccountId}:rule/${ruleName}`;
+  }
+
+  private getLambdaFunctionArn(functionName: string): string {
+    return `arn:aws:lambda:${this.lambdaRegion}:${this.awsAccountId}:function:${functionName}`;
+  }
+
   async cancelEndAuctionEvent(auctionId: string): Promise<void> {
-    const ruleName = `end-auction-rule-${auctionId}`;
+    const ruleName = this.getRuleName(auctionId);
 
     try {
       // List all targets for the rule
@@ -64,13 +96,9 @@ export class AuctionEventService {
   }
 
   async scheduleEndAuctionEvent(auctionId: string, endTime: Date): Promise<void> {
-    const ruleName = `end-auction-rule-${auctionId}`;
-    const lambdaArn = this.configService.get<string>('aws.lambda.endAuction.arn');
-    const ruleArn = `arn:aws:events:${this.configService.get<string>(
-      'eventBridge.region',
-      'ap-northeast-2',
-    )}:${this.configService.get<string>('aws.accountId')}:rule/${ruleName}`;
-
+    const ruleName = this.getRuleName(auctionId);
+    const lambdaArn = this.getLambdaFunctionArn('end-auction');
+    const ruleArn = this.getRuleArn(ruleName);
     const ruleParams = {
       Name: ruleName,
       ScheduleExpression: `cron(${endTime.getUTCMinutes()} ${endTime.getUTCHours()} ${endTime.getUTCDate()} ${
@@ -84,7 +112,7 @@ export class AuctionEventService {
 
     const addPermissionParams = {
       FunctionName: lambdaArn,
-      StatementId: `eventbridge-invoke-${auctionId}`,
+      StatementId: this.getStatementId(auctionId),
       Action: 'lambda:InvokeFunction',
       Principal: 'events.amazonaws.com',
       SourceArn: ruleArn,
@@ -97,7 +125,7 @@ export class AuctionEventService {
       Rule: ruleName,
       Targets: [
         {
-          Id: `end-auction-target-${auctionId}`,
+          Id: this.getTargetId(auctionId),
           Arn: lambdaArn,
           Input: JSON.stringify({ auctionId }),
         },
