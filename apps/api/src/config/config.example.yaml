@@ -33,17 +33,23 @@ postgresql:
 redis:
   host:
   port:
-s3:
-  region:
-  accessKeyId:
-  secretAccessKey:
-  bucket:
-  domain:
-lambda:
-  endAuction:
-    arn:
-eventBridge:
-  region:
+aws:
+  s3:
+    region:
+    accessKeyId:
+    secretAccessKey:
+    bucket:
+    domain:
+  lambda:
+    region:
+    accessKeyId:
+    secretAccessKey:
+    endAuction:
+      arn:
+  eventBridge:
+    region:
+    accessKeyId:
+    secretAccessKey:
 document:
   title:
   description:
