@@ -77,6 +77,14 @@ export class EndAuctionEventService {
     }
   }
 
+  async updateEndAuctionEvent(auctionId: string, endTime: Date): Promise<void> {
+    const prefixWithId = this.getPrefixWithId(auctionId);
+
+    const ruleName = this.eventBridgeService.getRuleName(prefixWithId);
+    const scheuldExpression = this.eventBridgeService.generateCronExpression(endTime);
+    this.eventBridgeService.updateRuleSchedule(ruleName, scheuldExpression);
+  }
+
   async scheduleEndAuctionEvent(auctionId: string, endTime: Date): Promise<void> {
     const prefixWithId = this.getPrefixWithId(auctionId);
 

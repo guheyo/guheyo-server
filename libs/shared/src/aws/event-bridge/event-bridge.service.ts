@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { EventBridgeClient } from '@aws-sdk/client-eventbridge';
+import { EventBridgeClient, PutRuleCommand, RuleState } from '@aws-sdk/client-eventbridge';
 
 @Injectable()
 export class EventBridgeService {
@@ -25,6 +25,23 @@ export class EventBridgeService {
     });
   }
 
+  async updateRuleSchedule(ruleName: string, newScheduleExpression: string): Promise<void> {
+    const params = {
+      Name: ruleName,
+      ScheduleExpression: newScheduleExpression,
+      State: RuleState.ENABLED, // Ensure the rule remains enabled
+    };
+
+    try {
+      const command = new PutRuleCommand(params);
+      await this.eventBridgeClient.send(command);
+      console.log(`Updated cron schedule for rule ${ruleName} to ${newScheduleExpression}`);
+    } catch (error) {
+      console.error(`Error updating cron schedule for rule ${ruleName}:`, error);
+      throw error;
+    }
+  }
+
   getEventBridgeClient(): EventBridgeClient {
     return this.eventBridgeClient;
   }
@@ -43,5 +60,11 @@ export class EventBridgeService {
 
   getTargetId(prefixWithId: string): string {
     return `${prefixWithId}-target`;
+  }
+
+  generateCronExpression(endTime: Date): string {
+    return `cron(${endTime.getUTCMinutes()} ${endTime.getUTCHours()} ${endTime.getUTCDate()} ${
+      endTime.getUTCMonth() + 1
+    } ? ${endTime.getUTCFullYear()})`;
   }
 }
