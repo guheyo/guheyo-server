@@ -45,8 +45,6 @@ aws:
     region:
     accessKeyId:
     secretAccessKey:
-    endAuction:
-      arn:
   eventBridge:
     region:
     accessKeyId:
