@@ -7,20 +7,35 @@ import {
   DeleteRuleCommand,
   PutRuleCommand,
   PutTargetsCommand,
+  RuleState,
 } from '@aws-sdk/client-eventbridge';
+import { LambdaClient, AddPermissionCommand } from '@aws-sdk/client-lambda';
 
 @Injectable()
 export class AuctionEventService {
   private readonly eventBridgeClient: EventBridgeClient;
 
+  private readonly lambdaClient: LambdaClient;
+
   constructor(private readonly configService: ConfigService) {
     this.eventBridgeClient = new EventBridgeClient({
-      region: this.configService.get<string>('eventBridge.region', 'ap-northeast-2'),
+      region: this.configService.get<string>('aws.eventBridge.region', 'ap-northeast-2'),
+      credentials: {
+        accessKeyId: this.configService.get<string>('aws.eventBridge.accessKeyId')!,
+        secretAccessKey: this.configService.get<string>('aws.eventBridge.secretAccessKey')!,
+      },
+    });
+    this.lambdaClient = new LambdaClient({
+      region: this.configService.get<string>('aws.lambda.region', 'ap-northeast-2'),
+      credentials: {
+        accessKeyId: this.configService.get<string>('aws.lambda.accessKeyId')!,
+        secretAccessKey: this.configService.get<string>('aws.lambda.secretAccessKey')!,
+      },
     });
   }
 
   async cancelEndAuctionEvent(auctionId: string): Promise<void> {
-    const ruleName = `auction-end-${auctionId}`;
+    const ruleName = `end-auction-rule-${auctionId}`;
 
     try {
       // List all targets for the rule
@@ -49,36 +64,47 @@ export class AuctionEventService {
   }
 
   async scheduleEndAuctionEvent(auctionId: string, endTime: Date): Promise<void> {
-    const ruleName = `auction-end-${auctionId}`;
-    const scheduleExpression = `cron(${endTime.getUTCMinutes()} ${endTime.getUTCHours()} ${endTime.getUTCDate()} ${
-      endTime.getUTCMonth() + 1
-    } ? ${endTime.getUTCFullYear()})`;
+    const ruleName = `end-auction-rule-${auctionId}`;
+    const lambdaArn = this.configService.get<string>('aws.lambda.endAuction.arn');
+    const ruleArn = `arn:aws:events:${this.configService.get<string>(
+      'eventBridge.region',
+      'ap-northeast-2',
+    )}:${this.configService.get<string>('aws.accountId')}:rule/${ruleName}`;
 
-    try {
-      // Create or update the rule
-      const putRuleCommand = new PutRuleCommand({
-        Name: ruleName,
-        ScheduleExpression: scheduleExpression,
-        State: 'ENABLED',
-      });
-      await this.eventBridgeClient.send(putRuleCommand);
+    const ruleParams = {
+      Name: ruleName,
+      ScheduleExpression: `cron(${endTime.getUTCMinutes()} ${endTime.getUTCHours()} ${endTime.getUTCDate()} ${
+        endTime.getUTCMonth() + 1
+      } ? ${endTime.getUTCFullYear()})`,
+      State: RuleState.ENABLED,
+    };
 
-      // Add the target
-      const lambdaArn = this.configService.get<string>('lambda.endAuction.arn');
-      const putTargetsCommand = new PutTargetsCommand({
-        Rule: ruleName,
-        Targets: [
-          {
-            Id: `AuctionEndTarget_${auctionId}`,
-            Arn: lambdaArn,
-            Input: JSON.stringify({ auctionId }),
-          },
-        ],
-      });
-      await this.eventBridgeClient.send(putTargetsCommand);
-    } catch (error) {
-      console.error(`Error scheduling auction end event for auctionId ${auctionId}:`, error);
-      throw error;
-    }
+    const putRuleCommand = new PutRuleCommand(ruleParams);
+    await this.eventBridgeClient.send(putRuleCommand);
+
+    const addPermissionParams = {
+      FunctionName: lambdaArn,
+      StatementId: `eventbridge-invoke-${auctionId}`,
+      Action: 'lambda:InvokeFunction',
+      Principal: 'events.amazonaws.com',
+      SourceArn: ruleArn,
+    };
+
+    const addPermissionCommand = new AddPermissionCommand(addPermissionParams);
+    await this.lambdaClient.send(addPermissionCommand);
+
+    const targetParams = {
+      Rule: ruleName,
+      Targets: [
+        {
+          Id: `end-auction-target-${auctionId}`,
+          Arn: lambdaArn,
+          Input: JSON.stringify({ auctionId }),
+        },
+      ],
+    };
+
+    const putTargetsCommand = new PutTargetsCommand(targetParams);
+    await this.eventBridgeClient.send(putTargetsCommand);
   }
 }
