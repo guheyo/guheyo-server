@@ -32,7 +32,7 @@ export class EndAuctionEventService {
     const ruleArn = this.eventBridgeService.getRuleArn(ruleName);
     const targetId = this.eventBridgeService.getTargetId(prefixWithId);
     const lambdaArn = this.lambdaService.getLambdaFunctionArn(this.functionName);
-    const input = JSON.stringify({ auctionId });
+    const input = JSON.stringify({ auctionId, extendedEndDate: endTime });
     const statementId = this.lambdaService.getEventBridgeInvokeStatementId(prefixWithId);
 
     await this.eventBridgeService.scheduleRule(ruleName, targetId, endTime, lambdaArn, input);
