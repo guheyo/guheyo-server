@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import {
   EventBridgeClient,
   ListTargetsByRuleCommand,
@@ -10,66 +9,34 @@ import {
   RuleState,
 } from '@aws-sdk/client-eventbridge';
 import { LambdaClient, AddPermissionCommand } from '@aws-sdk/client-lambda';
+import { EventBridgeService } from '@lib/shared/aws/event-bridge/event-bridge.service';
+import { LambdaService } from '@lib/shared/aws/lambda/lambda.service';
 
 @Injectable()
-export class AuctionEventService {
+export class EndAuctionEventService {
   private readonly eventBridgeClient: EventBridgeClient;
 
   private readonly lambdaClient: LambdaClient;
 
-  private readonly eventBridgeRegion: string;
+  private readonly functionName: string = 'end-auction';
 
-  private readonly lambdaRegion: string;
+  private readonly prefix: string = `${process.env.NODE_ENV}-${this.functionName}`;
 
-  private readonly awsAccountId: string;
-
-  private readonly prefix: string = `${process.env.NODE_ENV}-end-auction`;
-
-  constructor(private readonly configService: ConfigService) {
-    this.eventBridgeRegion = this.configService.get<string>(
-      'aws.eventBridge.region',
-      'ap-northeast-2',
-    );
-    this.lambdaRegion = this.configService.get<string>('aws.lambda.region', 'ap-northeast-2');
-    this.awsAccountId = this.configService.get<string>('aws.accountId')!;
-    this.eventBridgeClient = new EventBridgeClient({
-      region: this.eventBridgeRegion,
-      credentials: {
-        accessKeyId: this.configService.get<string>('aws.eventBridge.accessKeyId')!,
-        secretAccessKey: this.configService.get<string>('aws.eventBridge.secretAccessKey')!,
-      },
-    });
-    this.lambdaClient = new LambdaClient({
-      region: this.lambdaRegion,
-      credentials: {
-        accessKeyId: this.configService.get<string>('aws.lambda.accessKeyId')!,
-        secretAccessKey: this.configService.get<string>('aws.lambda.secretAccessKey')!,
-      },
-    });
+  constructor(
+    private readonly eventBridgeService: EventBridgeService,
+    private readonly lambdaService: LambdaService,
+  ) {
+    this.eventBridgeClient = this.eventBridgeService.getEventBridgeClient();
+    this.lambdaClient = this.lambdaService.getLambdaClient();
   }
 
-  private getRuleName(auctionId: string): string {
-    return `${this.prefix}-rule-${auctionId}`;
-  }
-
-  private getTargetId(auctionId: string): string {
-    return `${this.prefix}-target-${auctionId}`;
-  }
-
-  private getStatementId(auctionId: string): string {
-    return `${this.prefix}-eventbridge-invoke-${auctionId}`;
-  }
-
-  private getRuleArn(ruleName: string): string {
-    return `arn:aws:events:${this.eventBridgeRegion}:${this.awsAccountId}:rule/${ruleName}`;
-  }
-
-  private getLambdaFunctionArn(functionName: string): string {
-    return `arn:aws:lambda:${this.lambdaRegion}:${this.awsAccountId}:function:${functionName}`;
+  private getPrefixWithId(auctionId: string): string {
+    return `${this.prefix}-${auctionId}`;
   }
 
   async cancelEndAuctionEvent(auctionId: string): Promise<void> {
-    const ruleName = this.getRuleName(auctionId);
+    const prefixWithId = this.getPrefixWithId(auctionId);
+    const ruleName = this.eventBridgeService.getRuleName(prefixWithId);
 
     try {
       // List all targets for the rule
@@ -98,9 +65,11 @@ export class AuctionEventService {
   }
 
   async scheduleEndAuctionEvent(auctionId: string, endTime: Date): Promise<void> {
-    const ruleName = this.getRuleName(auctionId);
-    const lambdaArn = this.getLambdaFunctionArn('end-auction');
-    const ruleArn = this.getRuleArn(ruleName);
+    const prefixWithId = this.getPrefixWithId(auctionId);
+
+    const ruleName = this.eventBridgeService.getRuleName(prefixWithId);
+    const ruleArn = this.eventBridgeService.getRuleArn(ruleName);
+    const targetId = this.eventBridgeService.getTargetId(prefixWithId);
     const ruleParams = {
       Name: ruleName,
       ScheduleExpression: `cron(${endTime.getUTCMinutes()} ${endTime.getUTCHours()} ${endTime.getUTCDate()} ${
@@ -112,9 +81,11 @@ export class AuctionEventService {
     const putRuleCommand = new PutRuleCommand(ruleParams);
     await this.eventBridgeClient.send(putRuleCommand);
 
+    const lambdaArn = this.lambdaService.getLambdaFunctionArn(this.functionName);
+    const statemendId = this.lambdaService.getEventBridgeInvokeStatementId(prefixWithId);
     const addPermissionParams = {
       FunctionName: lambdaArn,
-      StatementId: this.getStatementId(auctionId),
+      StatementId: statemendId,
       Action: 'lambda:InvokeFunction',
       Principal: 'events.amazonaws.com',
       SourceArn: ruleArn,
@@ -127,7 +98,7 @@ export class AuctionEventService {
       Rule: ruleName,
       Targets: [
         {
-          Id: this.getTargetId(auctionId),
+          Id: targetId,
           Arn: lambdaArn,
           Input: JSON.stringify({ auctionId }),
         },

@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { AuctionEventService } from '../../services/auction-event/auction-event.service';
+import { AuctionEventService } from '../../services/end-auction-event/end-auction-event.service';
 import { AuctionLoadPort } from '../../ports/out/auction.load.port';
 import { InitialScheduleAuctionEndCommand } from './initial-schedule-auction-end.command';
 
