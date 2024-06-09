@@ -33,15 +33,15 @@ export class EventBridgeService {
     return this.eventBridgeRegion;
   }
 
-  getRuleName(prefix: string): string {
-    return `${prefix}-rule`;
+  getRuleName(prefixWithId: string): string {
+    return `${prefixWithId}-rule`;
   }
 
   getRuleArn(ruleName: string): string {
     return `arn:aws:events:${this.eventBridgeRegion}:${this.awsAccountId}:rule/${ruleName}`;
   }
 
-  getTargetId(prefix: string): string {
-    return `${prefix}-target`;
+  getTargetId(prefixWithId: string): string {
+    return `${prefixWithId}-target`;
   }
 }

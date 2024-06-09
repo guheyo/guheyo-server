@@ -30,8 +30,8 @@ export class LambdaService {
     return this.lambdaRegion;
   }
 
-  getEventBridgeInvokeStatementId(prefix: string): string {
-    return `${prefix}-eventbridge-invoke`;
+  getEventBridgeInvokeStatementId(prefixWithId: string): string {
+    return `${prefixWithId}-eventbridge-invoke`;
   }
 
   getLambdaFunctionArn(functionName: string): string {
