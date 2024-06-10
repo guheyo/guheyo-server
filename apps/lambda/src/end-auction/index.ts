@@ -56,7 +56,7 @@ export const handler = async (event: any): Promise<void> => {
         version: {
           increment: 1,
         },
-        extendedEndDate,
+        status: AUCTION_CLOSED,
       },
     });
 
