@@ -59,7 +59,9 @@ export class FindAuctionInteractionItemsHandler extends PrismaQueryHandler {
         : [];
 
     const comments =
-      query.where?.view === 'newest' || query.where?.view === 'comment'
+      query.where?.view === 'newest' ||
+      query.where?.view === 'comment' ||
+      query.where?.view === 'sellerComment'
         ? await this.prismaService.comment.findMany({
             where: {
               ...where,
