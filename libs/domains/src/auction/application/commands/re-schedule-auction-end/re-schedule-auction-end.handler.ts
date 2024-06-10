@@ -28,24 +28,15 @@ export class ReScheduleAuctionEndHandler extends PrismaCommandHandler<
       throw new Error('Auction not found'); // Handle appropriately
     }
 
-    if (auction.isEndWithinLastMinute()) {
-      auction.extendEndDateByOneMinute();
-      auction.update({
+    await this.auctionEventService.updateEndAuctionEvent(auction.id, auction.extendedEndDate);
+
+    await GraphqlPubSub.publish(parseAuctionUpdatedTriggerName(auction.id), {
+      auctionUpdated: {
         id: auction.id,
+        updatedAt: auction.updatedAt,
         extendedEndDate: auction.extendedEndDate,
-      });
-      await this.savePort.save(auction);
-
-      await this.auctionEventService.updateEndAuctionEvent(auction.id, auction.extendedEndDate);
-
-      await GraphqlPubSub.publish(parseAuctionUpdatedTriggerName(auction.id), {
-        auctionUpdated: {
-          id: auction.id,
-          updatedAt: auction.updatedAt,
-          extendedEndDate: auction.extendedEndDate,
-          status: auction.status,
-        },
-      });
-    }
+        status: auction.status,
+      },
+    });
   }
 }
