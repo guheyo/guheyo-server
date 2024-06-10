@@ -11,6 +11,7 @@ import { AuctionErrorMessage } from './auction.error.message';
 import { BID } from './bid.constants';
 import { PlaceBidCommand } from '../application/commands/place-bid/place-bid.command';
 import { BidPlacedEvent } from '../application/events/bid-placed/bid-placed.event';
+import { AuctionExtendedEvent } from '../application/events/auction-extended/auction-extended.event';
 
 export class AuctionEntity extends AggregateRoot {
   id: string;
@@ -146,6 +147,11 @@ export class AuctionEntity extends AggregateRoot {
 
   extendEndDateByOneMinute() {
     this.extendedEndDate = new Date(new Date().getTime() + 60000);
+    this.apply(
+      new AuctionExtendedEvent({
+        auctionId: this.id,
+      }),
+    );
     return this.extendedEndDate;
   }
 }
