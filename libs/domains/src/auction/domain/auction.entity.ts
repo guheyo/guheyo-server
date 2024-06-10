@@ -47,7 +47,6 @@ export class AuctionEntity extends AggregateRoot {
   constructor(partial: Partial<AuctionEntity>) {
     super();
     Object.assign(this, partial);
-    this.extendedEndDate = this.originalEndDate;
   }
 
   create(tagIds: string[]) {
