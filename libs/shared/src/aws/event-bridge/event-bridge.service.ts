@@ -59,7 +59,18 @@ export class EventBridgeService {
     } ? ${endTime.getUTCFullYear()})`;
   }
 
-  private async putRule(ruleName: string, scheduleExpression: string): Promise<void> {
+  // default 1 minute delay
+  getDelayedEndTime(endTime: Date, ms: number = 60000): Date {
+    return new Date(endTime.getTime() + ms);
+  }
+
+  private async putRule({
+    ruleName,
+    scheduleExpression,
+  }: {
+    ruleName: string;
+    scheduleExpression: string;
+  }): Promise<void> {
     const ruleParams = {
       Name: ruleName,
       ScheduleExpression: scheduleExpression,
@@ -69,12 +80,17 @@ export class EventBridgeService {
     await this.eventBridgeClient.send(putRuleCommand);
   }
 
-  private async putTargets(
-    ruleName: string,
-    targetId: string,
-    lambdaArn: string,
-    input: string,
-  ): Promise<void> {
+  private async putTargets({
+    ruleName,
+    targetId,
+    lambdaArn,
+    input,
+  }: {
+    ruleName: string;
+    targetId: string;
+    lambdaArn: string;
+    input: string;
+  }): Promise<void> {
     const targetParams = {
       Rule: ruleName,
       Targets: [
@@ -89,20 +105,36 @@ export class EventBridgeService {
     await this.eventBridgeClient.send(putTargetsCommand);
   }
 
-  async scheduleRule(
-    ruleName: string,
-    targetId: string,
-    endTime: Date,
-    lambdaArn: string,
-    input: string,
-  ): Promise<void> {
-    const scheduleExpression = this.generateCronExpression(endTime);
-    await this.putRule(ruleName, scheduleExpression);
-    await this.putTargets(ruleName, targetId, lambdaArn, input);
+  async scheduleRule({
+    ruleName,
+    targetId,
+    scheduleExpression,
+    lambdaArn,
+    input,
+  }: {
+    ruleName: string;
+    targetId: string;
+    scheduleExpression: string;
+    lambdaArn: string;
+    input: string;
+  }): Promise<void> {
+    await this.putRule({
+      ruleName,
+      scheduleExpression,
+    });
+    await this.putTargets({
+      ruleName,
+      targetId,
+      lambdaArn,
+      input,
+    });
   }
 
   async updateRuleSchedule(ruleName: string, newScheduleExpression: string): Promise<void> {
-    await this.putRule(ruleName, newScheduleExpression);
+    await this.putRule({
+      ruleName,
+      scheduleExpression: newScheduleExpression,
+    });
   }
 
   async cancelRule(ruleName: string): Promise<void> {

@@ -156,6 +156,7 @@ type CommentWithAuthorResponseEdge {
 input CreateAuctionInput {
   content: String!
   createdAt: DateTime!
+  extendedEndDate: DateTime!
   id: ID!
   originalEndDate: DateTime!
   post: CreatePostInput!

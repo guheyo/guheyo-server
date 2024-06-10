@@ -39,10 +39,18 @@ export class LambdaService {
   }
 
   getLambdaFunctionArn(functionName: string): string {
-    return `arn:aws:lambda:${this.lambdaRegion}:${this.awsAccountId}:function:${functionName}`;
+    return `arn:aws:lambda:${this.lambdaRegion}:${this.awsAccountId}:function:${process.env.NODE_ENV}-${functionName}`;
   }
 
-  async addPermission(functionName: string, statementId: string, ruleArn: string) {
+  async addPermission({
+    functionName,
+    statementId,
+    ruleArn,
+  }: {
+    functionName: string;
+    statementId: string;
+    ruleArn: string;
+  }) {
     const lambdaArn = this.getLambdaFunctionArn(functionName);
     const addPermissionParams = {
       FunctionName: lambdaArn,
@@ -55,7 +63,13 @@ export class LambdaService {
     await this.lambdaClient.send(addPermissionCommand);
   }
 
-  async removePermission(functionName: string, statementId: string) {
+  async removePermission({
+    functionName,
+    statementId,
+  }: {
+    functionName: string;
+    statementId: string;
+  }) {
     const lambdaArn = this.getLambdaFunctionArn(functionName);
     const removePermissionCommand = new RemovePermissionCommand({
       FunctionName: lambdaArn,

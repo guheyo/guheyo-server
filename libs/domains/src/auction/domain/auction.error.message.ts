@@ -1,6 +1,6 @@
 export enum AuctionErrorMessage {
   AUCTION_NOT_FOUND = 'Auction not found',
-  AUCTION_HAS_ENDED = 'Auction has ended',
+  AUCTION_CLOSED = 'Auction closed',
   AUCTION_UPDATE_FAILED = 'Auction update failed',
   INVALID_FIND_AUCTION_ARGS = 'Invalid find auction args',
   BID_NOT_FOUND = 'Bid not found',
