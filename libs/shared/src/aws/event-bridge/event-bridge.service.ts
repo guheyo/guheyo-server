@@ -59,6 +59,11 @@ export class EventBridgeService {
     } ? ${endTime.getUTCFullYear()})`;
   }
 
+  // default 1 minute delay
+  getDelayedEndTime(endTime: Date, ms: number = 60000): Date {
+    return new Date(endTime.getTime() + ms);
+  }
+
   private async putRule(ruleName: string, scheduleExpression: string): Promise<void> {
     const ruleParams = {
       Name: ruleName,
@@ -92,11 +97,10 @@ export class EventBridgeService {
   async scheduleRule(
     ruleName: string,
     targetId: string,
-    endTime: Date,
+    scheduleExpression: string,
     lambdaArn: string,
     input: string,
   ): Promise<void> {
-    const scheduleExpression = this.generateCronExpression(endTime);
     await this.putRule(ruleName, scheduleExpression);
     await this.putTargets(ruleName, targetId, lambdaArn, input);
   }
