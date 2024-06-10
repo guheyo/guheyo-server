@@ -70,7 +70,7 @@ export class AuctionEntity extends AggregateRoot {
     );
   }
 
-  placeBid(command: PlaceBidCommand): BidEntity | null {
+  placeBid(command: PlaceBidCommand): BidEntity {
     if (this.isClosed()) throw new Error(AuctionErrorMessage.AUCTION_CLOSED);
 
     const bid = new BidEntity({
