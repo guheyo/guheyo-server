@@ -45,7 +45,11 @@ export class EndAuctionEventService {
       lambdaArn,
       input,
     );
-    await this.lambdaService.addPermission(this.functionName, statementId, ruleArn);
+    await this.lambdaService.addPermission({
+      functionName: this.functionName,
+      statementId,
+      ruleArn,
+    });
   }
 
   async updateEndAuctionEvent(auctionId: string, endTime: Date): Promise<void> {
@@ -64,6 +68,9 @@ export class EndAuctionEventService {
     const statementId = this.lambdaService.getEventBridgeInvokeStatementId(prefixWithId);
 
     await this.eventBridgeService.cancelRule(ruleName);
-    await this.lambdaService.removePermission(this.functionName, statementId);
+    await this.lambdaService.removePermission({
+      functionName: this.functionName,
+      statementId,
+    });
   }
 }
