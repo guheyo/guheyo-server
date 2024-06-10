@@ -39,7 +39,6 @@ export class PlaceBidHandler extends PrismaCommandHandler<PlaceBidCommand, BidRe
           throw new ForbiddenException(AuctionErrorMessage.BID_FROM_SELLER_ERROR);
 
         const lastBid = auction.placeBid(command);
-        if (!lastBid) throw new InternalServerErrorException(AuctionErrorMessage.BID_NOT_ADDED);
 
         // Update the auction version and extended end date if necessary
         if (auction.isEndWithinLastMinute()) {
