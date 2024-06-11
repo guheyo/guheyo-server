@@ -11,6 +11,36 @@ import { PaginatedAuctionPreviewsResponse } from './paginated-auction-previews.r
 @QueryHandler(FindAuctionPreviewsQuery)
 export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
   async execute(query: FindAuctionPreviewsQuery): Promise<PaginatedAuctionPreviewsResponse> {
+    let auctions;
+    if (query.orderBy?.extendedEndDate) {
+      auctions = await this.fetchAuctions(query, true);
+      if (auctions.length < query.take + 1) {
+        const auctionsClosed = await this.fetchAuctions(
+          {
+            ...query,
+            take: query.take - auctions.length,
+          },
+          false,
+        );
+        auctions.push(...auctionsClosed);
+      }
+    } else {
+      auctions = await this.fetchAuctions(query);
+    }
+
+    return paginate<AuctionPreviewResponse>(
+      auctions.map((auction) =>
+        plainToClass(AuctionPreviewResponse, {
+          ...auction,
+          currentBidPrice: auction.bids[0]?.price || 0,
+        }),
+      ),
+      'id',
+      query.take,
+    );
+  }
+
+  private async fetchAuctions(query: FindAuctionPreviewsQuery, isLive?: boolean) {
     const where: Prisma.AuctionWhereInput = query.where
       ? {
           post: {
@@ -26,6 +56,15 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
                 gt: new Date(query.where.createdAt.gt),
               }
             : undefined,
+          ...(isLive !== undefined && {
+            extendedEndDate: isLive
+              ? {
+                  gt: new Date(),
+                }
+              : {
+                  lte: new Date(),
+                },
+          }),
         }
       : {};
 
@@ -34,6 +73,18 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
           id: query.cursor,
         }
       : undefined;
+
+    const orderBy:
+      | Prisma.AuctionOrderByWithRelationAndSearchRelevanceInput
+      | Prisma.AuctionOrderByWithRelationAndSearchRelevanceInput[]
+      | undefined = [
+      {
+        createdAt: query.orderBy?.createdAt,
+      },
+      {
+        extendedEndDate: query.orderBy?.extendedEndDate ? (isLive ? 'asc' : 'desc') : undefined,
+      },
+    ];
 
     const auctions = await this.prismaService.auction.findMany({
       where,
@@ -69,25 +120,8 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
           take: 1,
         },
       },
-      orderBy: [
-        {
-          createdAt: query.orderBy?.createdAt,
-        },
-        {
-          extendedEndDate: query.orderBy?.extendedEndDate,
-        },
-      ],
+      orderBy,
     });
-
-    return paginate<AuctionPreviewResponse>(
-      auctions.map((auction) =>
-        plainToClass(AuctionPreviewResponse, {
-          ...auction,
-          currentBidPrice: auction.bids[0]?.price || 0,
-        }),
-      ),
-      'id',
-      query.take,
-    );
+    return auctions;
   }
 }
