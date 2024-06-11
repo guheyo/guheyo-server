@@ -1,5 +1,5 @@
 import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { ForbiddenException, Inject, InternalServerErrorException } from '@nestjs/common';
+import { ForbiddenException, Inject } from '@nestjs/common';
 import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
 import { AuctionEntity } from '@lib/domains/auction/domain/auction.entity';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
