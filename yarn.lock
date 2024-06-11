@@ -2739,18 +2739,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/cache-manager@npm:^2.2.2":
-  version: 2.2.2
-  resolution: "@nestjs/cache-manager@npm:2.2.2"
-  peerDependencies:
-    "@nestjs/common": ^9.0.0 || ^10.0.0
-    "@nestjs/core": ^9.0.0 || ^10.0.0
-    cache-manager: <=5
-    rxjs: ^7.0.0
-  checksum: 776105fae1fd446fdb66068c3d968f92615bb994a52ae6a6fcd9753eb9e68426b64a835230ef338093a989fc745335a294e81924d67f909e7bf533efdd2b2a08
-  languageName: node
-  linkType: hard
-
 "@nestjs/cli@npm:^10.3.0":
   version: 10.3.0
   resolution: "@nestjs/cli@npm:10.3.0"
@@ -2791,27 +2779,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/common@npm:^10.0.0":
-  version: 10.3.8
-  resolution: "@nestjs/common@npm:10.3.8"
-  dependencies:
-    iterare: 1.2.1
-    tslib: 2.6.2
-    uid: 2.0.2
-  peerDependencies:
-    class-transformer: "*"
-    class-validator: "*"
-    reflect-metadata: ^0.1.12 || ^0.2.0
-    rxjs: ^7.1.0
-  peerDependenciesMeta:
-    class-transformer:
-      optional: true
-    class-validator:
-      optional: true
-  checksum: 1bae37914196a5287249c26b7d381b834a4f3924c86ddb46500e66876ff8a9c92cf7e0356138af5c3a5d8b866096c7d8b69ef68dbe8770c4780794a1cc16371b
-  languageName: node
-  linkType: hard
-
 "@nestjs/common@npm:^10.2.4, @nestjs/common@npm:^10.2.5":
   version: 10.2.6
   resolution: "@nestjs/common@npm:10.2.6"
@@ -2845,34 +2812,6 @@ __metadata:
     "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
     reflect-metadata: ^0.1.13
   checksum: 95446dd12678581582c15a1c7cc4d7b560466b646085cec2aab442e977def6699526f300c18f0bbbd795d7e7675b505ace382a453b3babc650d14d0c5af9502f
-  languageName: node
-  linkType: hard
-
-"@nestjs/core@npm:^10.0.0":
-  version: 10.3.8
-  resolution: "@nestjs/core@npm:10.3.8"
-  dependencies:
-    "@nuxtjs/opencollective": 0.3.2
-    fast-safe-stringify: 2.1.1
-    iterare: 1.2.1
-    path-to-regexp: 3.2.0
-    tslib: 2.6.2
-    uid: 2.0.2
-  peerDependencies:
-    "@nestjs/common": ^10.0.0
-    "@nestjs/microservices": ^10.0.0
-    "@nestjs/platform-express": ^10.0.0
-    "@nestjs/websockets": ^10.0.0
-    reflect-metadata: ^0.1.12 || ^0.2.0
-    rxjs: ^7.1.0
-  peerDependenciesMeta:
-    "@nestjs/microservices":
-      optional: true
-    "@nestjs/platform-express":
-      optional: true
-    "@nestjs/websockets":
-      optional: true
-  checksum: f63b53b3bb576bb1054c5f81d22829ff4e393dcfeb6eb3736e66b44590dd08392be6236906d5187e5af64dbf947c2244278b05b0bdf36139ed61b6c36e28cb9c
   languageName: node
   linkType: hard
 
@@ -3051,22 +2990,6 @@ __metadata:
     "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
     passport: ^0.4.0 || ^0.5.0 || ^0.6.0 || ^0.7.0
   checksum: b57168096c0b52cf8826fb12578b83cfa947c6575138450f8b5a78b3f6909219eb174008c515650cb0ec8c01cace80487298a0cbeb9ceeaaa1c85d3fb4db2875
-  languageName: node
-  linkType: hard
-
-"@nestjs/platform-express@npm:^10.0.0":
-  version: 10.3.8
-  resolution: "@nestjs/platform-express@npm:10.3.8"
-  dependencies:
-    body-parser: 1.20.2
-    cors: 2.8.5
-    express: 4.19.2
-    multer: 1.4.4-lts.1
-    tslib: 2.6.2
-  peerDependencies:
-    "@nestjs/common": ^10.0.0
-    "@nestjs/core": ^10.0.0
-  checksum: 678384fe60f4f1255ad70926cef05f349229739a6e3b5cdf13a6c26d2f915220c41ce21e08cffc3a2fa9dfb237b275a06fa3f405f49a1056fc3f3558938b724f
   languageName: node
   linkType: hard
 
@@ -7506,13 +7429,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:0.6.0":
-  version: 0.6.0
-  resolution: "cookie@npm:0.6.0"
-  checksum: f56a7d32a07db5458e79c726b77e3c2eff655c36792f2b6c58d351fb5f61531e5b1ab7f46987150136e366c65213cbe31729e02a3eaed630c3bf7334635fb410
-  languageName: node
-  linkType: hard
-
 "cookiejar@npm:^2.1.4":
   version: 2.1.4
   resolution: "cookiejar@npm:2.1.4"
@@ -8789,45 +8705,6 @@ __metadata:
     utils-merge: 1.0.1
     vary: ~1.1.2
   checksum: 3c4b9b076879442f6b968fe53d85d9f1eeacbb4f4c41e5f16cc36d77ce39a2b0d81b3f250514982110d815b2f7173f5561367f9110fcc541f9371948e8c8b037
-  languageName: node
-  linkType: hard
-
-"express@npm:4.19.2":
-  version: 4.19.2
-  resolution: "express@npm:4.19.2"
-  dependencies:
-    accepts: ~1.3.8
-    array-flatten: 1.1.1
-    body-parser: 1.20.2
-    content-disposition: 0.5.4
-    content-type: ~1.0.4
-    cookie: 0.6.0
-    cookie-signature: 1.0.6
-    debug: 2.6.9
-    depd: 2.0.0
-    encodeurl: ~1.0.2
-    escape-html: ~1.0.3
-    etag: ~1.8.1
-    finalhandler: 1.2.0
-    fresh: 0.5.2
-    http-errors: 2.0.0
-    merge-descriptors: 1.0.1
-    methods: ~1.1.2
-    on-finished: 2.4.1
-    parseurl: ~1.3.3
-    path-to-regexp: 0.1.7
-    proxy-addr: ~2.0.7
-    qs: 6.11.0
-    range-parser: ~1.2.1
-    safe-buffer: 5.2.1
-    send: 0.18.0
-    serve-static: 1.15.0
-    setprototypeof: 1.2.0
-    statuses: 2.0.1
-    type-is: ~1.6.18
-    utils-merge: 1.0.1
-    vary: ~1.1.2
-  checksum: 212dbd6c2c222a96a61bc927639c95970a53b06257080bb9e2838adb3bffdb966856551fdad1ab5dd654a217c35db94f987d0aa88d48fb04d306340f5f34dca5
   languageName: node
   linkType: hard
 
@@ -11457,10 +11334,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "lambda@workspace:apps/lambda"
   dependencies:
-    "@nestjs/cache-manager": ^2.2.2
-    "@nestjs/common": ^10.0.0
-    "@nestjs/core": ^10.0.0
-    "@nestjs/platform-express": ^10.0.0
     "@types/aws-lambda": ^8.10.138
     "@types/cache-manager": ^4.0.6
     "@types/express": ^4.17.17
@@ -11469,8 +11342,6 @@ __metadata:
     aws-lambda: ^1.0.7
     dayjs: ^1.11.11
     discord.js: ^14.15.3
-    reflect-metadata: ^0.1.13
-    rxjs: ^7.8.1
     serverless: ^4.0.24
     source-map-support: ^0.5.21
     ts-loader: ^9.4.3
