@@ -14,10 +14,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
-      }
-    ]
+        test: /\.[jt]sx?$/,
+        loader: 'esbuild-loader',
+        options: {
+          target: 'es2015',
+        },
+      },
+    ],
   },
 };
