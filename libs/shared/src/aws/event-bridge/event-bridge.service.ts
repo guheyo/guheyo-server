@@ -41,16 +41,8 @@ export class EventBridgeService {
     return this.eventBridgeRegion;
   }
 
-  getRuleName(prefixWithId: string): string {
-    return `${prefixWithId}-rule`;
-  }
-
-  getRuleArn(ruleName: string): string {
+  getRuleArn({ ruleName }: { ruleName: string }): string {
     return `arn:aws:events:${this.eventBridgeRegion}:${this.awsAccountId}:rule/${ruleName}`;
-  }
-
-  getTargetId(prefixWithId: string): string {
-    return `${prefixWithId}-target`;
   }
 
   generateCronExpression(endTime: Date): string {
@@ -130,14 +122,20 @@ export class EventBridgeService {
     });
   }
 
-  async updateRuleSchedule(ruleName: string, newScheduleExpression: string): Promise<void> {
+  async updateRuleSchedule({
+    ruleName,
+    scheduleExpression,
+  }: {
+    ruleName: string;
+    scheduleExpression: string;
+  }): Promise<void> {
     await this.putRule({
       ruleName,
-      scheduleExpression: newScheduleExpression,
+      scheduleExpression,
     });
   }
 
-  async cancelRule(ruleName: string): Promise<void> {
+  async cancelRule({ ruleName }: { ruleName: string }): Promise<void> {
     try {
       // List all targets for the rule
       const listTargetsByRuleCommand = new ListTargetsByRuleCommand({ Rule: ruleName });

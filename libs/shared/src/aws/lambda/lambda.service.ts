@@ -34,10 +34,6 @@ export class LambdaService {
     return this.lambdaRegion;
   }
 
-  getEventBridgeInvokeStatementId(prefixWithId: string): string {
-    return `${prefixWithId}-eventbridge-invoke`;
-  }
-
   getLambdaFunctionArn(functionName: string): string {
     return `arn:aws:lambda:${this.lambdaRegion}:${this.awsAccountId}:function:${process.env.NODE_ENV}-${functionName}`;
   }

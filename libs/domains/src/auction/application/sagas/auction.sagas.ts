@@ -10,6 +10,7 @@ import { AUCTION } from '../../domain/auction.constants';
 import { InitialScheduleAuctionEndCommand } from '../commands/initial-schedule-auction-end/initial-schedule-auction-end.command';
 import { ReScheduleAuctionEndCommand } from '../commands/re-schedule-auction-end/re-schedule-auction-end.command';
 import { AuctionExtendedEvent } from '../events/auction-extended/auction-extended.event';
+import { ScheduleAuctionEndingSoonCommand } from '../commands/schedule-auction-ending-soon/schedule-auction-ending-soon.command';
 
 @Injectable()
 export class AuctionSagas {
@@ -31,6 +32,12 @@ export class AuctionSagas {
           new ConnectTagsCommand({
             postId: event.postId,
             tagIds: event.tagIds,
+          }),
+          new ScheduleAuctionEndingSoonCommand({
+            input: {
+              id: event.id,
+              extendedEndDate: event.extendedEndDate,
+            },
           }),
           new InitialScheduleAuctionEndCommand({
             input: {
