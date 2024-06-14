@@ -74,7 +74,7 @@ export const handler = async (event: any): Promise<void> => {
         )}\n${`<t:${unixTimestamp}:R> 종료`}`,
       )
       .setFooter({
-        text: `입찰가: ${String(auction.bids[0].price)}`,
+        text: `입찰가: ${String(auction.bids[0]?.price || 0)}`,
       });
 
     await webhookClient.send({ embeds: [embed] });
