@@ -19,7 +19,9 @@ export class AuctionEndingSoonEventService {
 
   async scheduleAuctionEndingSoonEvent(auctionId: string, endTime: Date): Promise<void> {
     const prefixWithId = this.getPrefixWithId(auctionId);
-    const ruleArn = this.eventBridgeService.getRuleArn(prefixWithId);
+    const ruleArn = this.eventBridgeService.getRuleArn({
+      ruleName: prefixWithId,
+    });
     // Trigger Event before 1 hour
     const oneHourBeforeEndTime = this.eventBridgeService.getDelayedEndTime(
       endTime,

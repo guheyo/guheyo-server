@@ -19,7 +19,9 @@ export class AuctionEndEventService {
 
   async scheduleAuctionEndEvent(auctionId: string, endTime: Date): Promise<void> {
     const prefixWithId = this.getPrefixWithId(auctionId);
-    const ruleArn = this.eventBridgeService.getRuleArn(prefixWithId);
+    const ruleArn = this.eventBridgeService.getRuleArn({
+      ruleName: prefixWithId,
+    });
     // Trigger Event after 1 minute
     const delayedEndTime = this.eventBridgeService.getDelayedEndTime(endTime);
     const scheduleExpression = this.eventBridgeService.generateCronExpression(delayedEndTime);
@@ -45,16 +47,21 @@ export class AuctionEndEventService {
     const prefixWithId = this.getPrefixWithId(auctionId);
     // Trigger Event after 1 minute
     const delayedEndTime = this.eventBridgeService.getDelayedEndTime(endTime);
-    const scheuldExpression = this.eventBridgeService.generateCronExpression(delayedEndTime);
+    const scheduleExpression = this.eventBridgeService.generateCronExpression(delayedEndTime);
 
-    await this.eventBridgeService.updateRuleSchedule(prefixWithId, scheuldExpression);
+    await this.eventBridgeService.updateRuleSchedule({
+      ruleName: prefixWithId,
+      scheduleExpression,
+    });
   }
 
   async cancelAuctionEndEvent(auctionId: string): Promise<void> {
     const prefixWithId = this.getPrefixWithId(auctionId);
     const statementId = this.lambdaService.getEventBridgeInvokeStatementId(prefixWithId);
 
-    await this.eventBridgeService.cancelRule(prefixWithId);
+    await this.eventBridgeService.cancelRule({
+      ruleName: prefixWithId,
+    });
     await this.lambdaService.removePermission({
       functionName: this.functionName,
       statementId,
