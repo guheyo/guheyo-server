@@ -20,6 +20,49 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler {
     });
 
     const groupPreviews = groups.map(async (group) => {
+      const auctions = await this.prismaService.auction.findMany({
+        where: {
+          post: {
+            groupId: group.id,
+            archivedAt: {
+              equals: null,
+            },
+          },
+        },
+        include: {
+          post: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  createdAt: true,
+                  username: true,
+                  avatarURL: true,
+                  bot: true,
+                },
+              },
+              tags: true,
+            },
+          },
+          bids: {
+            select: {
+              id: true,
+              price: true,
+            },
+            where: {
+              canceledAt: null,
+            },
+            orderBy: {
+              price: 'desc',
+            },
+            take: 1,
+          },
+        },
+        take: 2,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
       const sells = await this.prismaService.offer.findMany({
         where: {
           post: {
@@ -86,6 +129,7 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler {
       });
       return {
         ...group,
+        auctions,
         sells,
         buys,
       };

@@ -292,6 +292,7 @@ type EmojiResponse {
 }
 
 type GroupPreviewResponse {
+  auctions: [AuctionPreviewResponse!]!
   buys: [OfferPreviewResponse!]!
   description: String
   icon: String
