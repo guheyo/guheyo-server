@@ -54,10 +54,6 @@ export const handler = async (event: any): Promise<void> => {
 
     const webhookClient = new WebhookClient({ url: process.env.WEBHOOK_URL! });
 
-    const discordAccount = auction.post.user.socialAccounts.find(
-      (account) => account.provider === 'discord',
-    );
-
     const unixTimestamp = Math.floor(auction.extendedEndDate.getTime() / 1000);
     const embed = new EmbedBuilder()
       .setAuthor({
@@ -67,9 +63,7 @@ export const handler = async (event: any): Promise<void> => {
       .setColor('Orange')
       .setTitle(`${auction.post.title}\n${process.env.FRONTEND_HOST}/auction/${auction.post.slug}`)
       .setDescription(
-        `판매자: ${
-          discordAccount ? `<@${discordAccount.socialId}>` : auction.post.user.username
-        }\n경매 시작: ${dayjs(auction.createdAt).format(
+        `경매 시작: ${dayjs(auction.createdAt).format(
           'YYYY-MM-DD HH:mm',
         )}\n${`<t:${unixTimestamp}:R> 종료`}`,
       )
