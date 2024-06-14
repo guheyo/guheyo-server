@@ -6,6 +6,7 @@ import { OFFER_BUSINESS_FUNCTIONS } from '@lib/domains/offer/domain/offer.types'
 import { includes } from 'lodash';
 import { ReportCreatedEvent } from '@lib/domains/report/application/events/report-created/report-created.event';
 import { UserReviewCreatedEvent } from '@lib/domains/user-review/application/events/user-review-created/user-review-created.event';
+import { AuctionCreatedEvent } from '@lib/domains/auction/application/events/auction-created/auction-created.event';
 import { SendDiscordWebhookCommand } from '../commands/send-discord-webhook/send-discord-webhook.command';
 import { DiscordWebhookParser } from '../services/discord-webhook.parser';
 
@@ -33,6 +34,25 @@ export class DiscordWebhookSagas {
               price: event.price,
             }),
             url: this.discordWebhookParser.parseOfferURL({ slug: event.slug! }),
+          }),
+      ),
+    );
+
+  @Saga()
+  auctionCreated = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(AuctionCreatedEvent),
+      filter((event) => event.userAgent !== 'discord'),
+      filter((event) => !!event.slug),
+      map(
+        (event) =>
+          new SendDiscordWebhookCommand({
+            target: 'auction',
+            color: 'DarkGreen',
+            username: event.username,
+            avatarURL: event.avatarURL,
+            title: event.title,
+            url: this.discordWebhookParser.parseAuctionURL({ slug: event.slug! }),
           }),
       ),
     );
