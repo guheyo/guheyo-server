@@ -49,4 +49,8 @@ export class DiscordWebhookParser {
   parseUserReviewURL({ slug }: { slug: string }) {
     return `${this.configService.get('frontend.host')}/review/${slug}`;
   }
+
+  parseAuctionURL({ slug }: { slug: string }) {
+    return `${this.configService.get('frontend.host')}/auction/${slug}`;
+  }
 }
