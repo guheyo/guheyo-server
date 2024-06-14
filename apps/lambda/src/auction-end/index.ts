@@ -101,7 +101,9 @@ export const handler = async (event: any): Promise<void> => {
       .setDescription(
         `판매자: ${
           discordAccount ? `<@${discordAccount.socialId}>` : auction.post.user.username
-        }\n경매 종료: ${dayjs(auction.extendedEndDate).format('YYYY-MM-DD HH:mm')}`,
+        }\n경매 시작: ${dayjs(auction.createdAt).format('YYYY-MM-DD HH:mm')}\n경매 종료: ${dayjs(
+          auction.extendedEndDate,
+        ).format('YYYY-MM-DD HH:mm')}`,
       )
       .setFooter({
         text: `낙찰가: ${String(auction.bids[0]?.price || 0)}`,
