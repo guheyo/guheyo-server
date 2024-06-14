@@ -19,8 +19,6 @@
     "@types/redis": "^4.0.11",
     "serverless": "^4.0.24",
     "source-map-support": "^0.5.21",
-    "ts-loader": "^9.4.3",
-    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.5"
   }
