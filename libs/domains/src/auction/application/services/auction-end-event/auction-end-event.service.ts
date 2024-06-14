@@ -15,9 +15,9 @@ export class AuctionEndEventService extends AwsEventService {
   }
 
   async scheduleAuctionEndEvent(auctionId: string, endTime: Date): Promise<void> {
-    const prefixWithId = this.getPrefixWithId(auctionId);
+    const uniqueIdentifier = this.generateUniqueIdentifier(auctionId);
     const ruleArn = this.eventBridgeService.getRuleArn({
-      ruleName: prefixWithId,
+      ruleName: uniqueIdentifier,
     });
     // Trigger Event after 1 minute
     const delayedEndTime = this.eventBridgeService.getDelayedEndTime(endTime);
@@ -26,40 +26,40 @@ export class AuctionEndEventService extends AwsEventService {
     const input = JSON.stringify({ auctionId, extendedEndDate: endTime });
 
     await this.eventBridgeService.scheduleRule({
-      ruleName: prefixWithId,
-      targetId: prefixWithId,
+      ruleName: uniqueIdentifier,
+      targetId: uniqueIdentifier,
       scheduleExpression,
       lambdaArn,
       input,
     });
     await this.lambdaService.addPermission({
       functionName: this.functionName,
-      statementId: prefixWithId,
+      statementId: uniqueIdentifier,
       ruleArn,
     });
   }
 
   async updateAuctionEndEvent(auctionId: string, endTime: Date): Promise<void> {
-    const prefixWithId = this.getPrefixWithId(auctionId);
+    const uniqueIdentifier = this.generateUniqueIdentifier(auctionId);
     // Trigger Event after 1 minute
     const delayedEndTime = this.eventBridgeService.getDelayedEndTime(endTime);
     const scheduleExpression = this.eventBridgeService.generateCronExpression(delayedEndTime);
 
     await this.eventBridgeService.updateRuleSchedule({
-      ruleName: prefixWithId,
+      ruleName: uniqueIdentifier,
       scheduleExpression,
     });
   }
 
   async cancelAuctionEndEvent(auctionId: string): Promise<void> {
-    const prefixWithId = this.getPrefixWithId(auctionId);
+    const uniqueIdentifier = this.generateUniqueIdentifier(auctionId);
 
     await this.eventBridgeService.cancelRule({
-      ruleName: prefixWithId,
+      ruleName: uniqueIdentifier,
     });
     await this.lambdaService.removePermission({
       functionName: this.functionName,
-      statementId: prefixWithId,
+      statementId: uniqueIdentifier,
     });
   }
 }

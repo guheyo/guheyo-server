@@ -12,7 +12,7 @@ export abstract class AwsEventService {
     this.prefix = `${process.env.NODE_ENV}-${functionName}`;
   }
 
-  protected getPrefixWithId(uuid: string): string {
+  protected generateUniqueIdentifier(uuid: string): string {
     return `${this.prefix}-${uuid.slice(0, 8)}-${dayjs().format('MMDD')}`;
   }
 }
