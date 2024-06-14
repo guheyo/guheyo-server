@@ -41,16 +41,8 @@ export class EventBridgeService {
     return this.eventBridgeRegion;
   }
 
-  getRuleName(prefixWithId: string): string {
-    return `${prefixWithId}-rule`;
-  }
-
   getRuleArn(ruleName: string): string {
     return `arn:aws:events:${this.eventBridgeRegion}:${this.awsAccountId}:rule/${ruleName}`;
-  }
-
-  getTargetId(prefixWithId: string): string {
-    return `${prefixWithId}-target`;
   }
 
   generateCronExpression(endTime: Date): string {

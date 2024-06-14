@@ -19,9 +19,7 @@ export class AuctionEndEventService {
 
   async scheduleAuctionEndEvent(auctionId: string, endTime: Date): Promise<void> {
     const prefixWithId = this.getPrefixWithId(auctionId);
-    const ruleName = this.eventBridgeService.getRuleName(prefixWithId);
-    const ruleArn = this.eventBridgeService.getRuleArn(ruleName);
-    const targetId = this.eventBridgeService.getTargetId(prefixWithId);
+    const ruleArn = this.eventBridgeService.getRuleArn(prefixWithId);
     // Trigger Event after 1 minute
     const delayedEndTime = this.eventBridgeService.getDelayedEndTime(endTime);
     const scheduleExpression = this.eventBridgeService.generateCronExpression(delayedEndTime);
@@ -30,8 +28,8 @@ export class AuctionEndEventService {
     const statementId = this.lambdaService.getEventBridgeInvokeStatementId(prefixWithId);
 
     await this.eventBridgeService.scheduleRule({
-      ruleName,
-      targetId,
+      ruleName: prefixWithId,
+      targetId: prefixWithId,
       scheduleExpression,
       lambdaArn,
       input,
@@ -45,20 +43,18 @@ export class AuctionEndEventService {
 
   async updateAuctionEndEvent(auctionId: string, endTime: Date): Promise<void> {
     const prefixWithId = this.getPrefixWithId(auctionId);
-    const ruleName = this.eventBridgeService.getRuleName(prefixWithId);
     // Trigger Event after 1 minute
     const delayedEndTime = this.eventBridgeService.getDelayedEndTime(endTime);
     const scheuldExpression = this.eventBridgeService.generateCronExpression(delayedEndTime);
 
-    await this.eventBridgeService.updateRuleSchedule(ruleName, scheuldExpression);
+    await this.eventBridgeService.updateRuleSchedule(prefixWithId, scheuldExpression);
   }
 
   async cancelAuctionEndEvent(auctionId: string): Promise<void> {
     const prefixWithId = this.getPrefixWithId(auctionId);
-    const ruleName = this.eventBridgeService.getRuleName(prefixWithId);
     const statementId = this.lambdaService.getEventBridgeInvokeStatementId(prefixWithId);
 
-    await this.eventBridgeService.cancelRule(ruleName);
+    await this.eventBridgeService.cancelRule(prefixWithId);
     await this.lambdaService.removePermission({
       functionName: this.functionName,
       statementId,

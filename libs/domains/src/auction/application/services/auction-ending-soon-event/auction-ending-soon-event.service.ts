@@ -19,13 +19,12 @@ export class AuctionEndingSoonEventService {
 
   async scheduleAuctionEndingSoonEvent(auctionId: string, endTime: Date): Promise<void> {
     const prefixWithId = this.getPrefixWithId(auctionId);
-    const ruleName = this.eventBridgeService.getRuleName(prefixWithId);
-    const ruleArn = this.eventBridgeService.getRuleArn(ruleName);
-    const targetId = this.eventBridgeService.getTargetId(prefixWithId);
+    const ruleArn = this.eventBridgeService.getRuleArn(prefixWithId);
     // Trigger Event before 1 hour
     const oneHourBeforeEndTime = this.eventBridgeService.getDelayedEndTime(
       endTime,
-      -1 * 60 * 60000,
+      // -1 * 60 * 60000,
+      -1 * 1 * 60000,
     );
     const scheduleExpression = this.eventBridgeService.generateCronExpression(oneHourBeforeEndTime);
     const lambdaArn = this.lambdaService.getLambdaFunctionArn(this.functionName);
@@ -33,8 +32,8 @@ export class AuctionEndingSoonEventService {
     const statementId = this.lambdaService.getEventBridgeInvokeStatementId(prefixWithId);
 
     await this.eventBridgeService.scheduleRule({
-      ruleName,
-      targetId,
+      ruleName: prefixWithId,
+      targetId: prefixWithId,
       scheduleExpression,
       lambdaArn,
       input,
