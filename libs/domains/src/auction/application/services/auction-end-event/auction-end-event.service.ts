@@ -3,8 +3,8 @@ import { EventBridgeService } from '@lib/shared/aws/event-bridge/event-bridge.se
 import { LambdaService } from '@lib/shared/aws/lambda/lambda.service';
 
 @Injectable()
-export class EndAuctionEventService {
-  private readonly functionName: string = 'end-auction';
+export class AuctionEndEventService {
+  private readonly functionName: string = 'auction-end';
 
   private readonly prefix: string = `${process.env.NODE_ENV}-${this.functionName}`;
 
@@ -17,7 +17,7 @@ export class EndAuctionEventService {
     return `${this.prefix}-${auctionId}`;
   }
 
-  async scheduleEndAuctionEvent(auctionId: string, endTime: Date): Promise<void> {
+  async scheduleAuctionEndEvent(auctionId: string, endTime: Date): Promise<void> {
     const prefixWithId = this.getPrefixWithId(auctionId);
     const ruleName = this.eventBridgeService.getRuleName(prefixWithId);
     const ruleArn = this.eventBridgeService.getRuleArn(ruleName);
@@ -43,7 +43,7 @@ export class EndAuctionEventService {
     });
   }
 
-  async updateEndAuctionEvent(auctionId: string, endTime: Date): Promise<void> {
+  async updateAuctionEndEvent(auctionId: string, endTime: Date): Promise<void> {
     const prefixWithId = this.getPrefixWithId(auctionId);
     const ruleName = this.eventBridgeService.getRuleName(prefixWithId);
     // Trigger Event after 1 minute
@@ -53,7 +53,7 @@ export class EndAuctionEventService {
     await this.eventBridgeService.updateRuleSchedule(ruleName, scheuldExpression);
   }
 
-  async cancelEndAuctionEvent(auctionId: string): Promise<void> {
+  async cancelAuctionEndEvent(auctionId: string): Promise<void> {
     const prefixWithId = this.getPrefixWithId(auctionId);
     const ruleName = this.eventBridgeService.getRuleName(prefixWithId);
     const statementId = this.lambdaService.getEventBridgeInvokeStatementId(prefixWithId);
