@@ -10,22 +10,33 @@ module.exports = {
     libraryTarget: 'commonjs2'
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
       '@lib/domains': path.resolve(__dirname, '../../../../libs/domains/src'),
       '@lib/shared': path.resolve(__dirname, '../../../../libs/shared/src'),
-    }
+      'discord.js': path.resolve(__dirname, '../../../../node_modules/discord.js/src/index.js'),
+    },
+    fallback: {
+      "bufferutil": require.resolve('bufferutil'),
+      "utf-8-validate": require.resolve('utf-8-validate'),
+    },
   },
   module: {
     rules: [
       {
         test: /\.[jt]sx?$/,
+        exclude: /node_modules/,
         loader: 'esbuild-loader',
         options: {
-          target: 'es2015',
+          target: 'esnext',
         },
       },
-    ]
+      {
+        test: /\.node$/,
+        loader: 'node-loader',
+      },
+    ],
+    exprContextCritical: false,
   },
   plugins: [
     new CopyWebpackPlugin({
@@ -37,8 +48,8 @@ module.exports = {
         {
           from: path.resolve(__dirname, '../../../../node_modules/.prisma/client/schema.prisma'),
           to: path.resolve(__dirname, '../../../../dist/apps/lambda/end-auction/schema.prisma')
-        }
-      ]
-    })
-  ]
+        },
+      ],
+    }),
+  ],
 };
