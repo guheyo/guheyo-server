@@ -1,20 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { EventBridgeService } from '@lib/shared/aws/event-bridge/event-bridge.service';
 import { LambdaService } from '@lib/shared/aws/lambda/lambda.service';
+import { AwsEventService } from '@lib/shared/aws/aws-event-service/aws-event.service';
 
 @Injectable()
-export class AuctionEndingSoonEventService {
-  private readonly functionName: string = 'auction-ending-soon';
-
-  private readonly prefix: string = `${process.env.NODE_ENV}-${this.functionName}`;
-
+export class AuctionEndingSoonEventService extends AwsEventService {
   constructor(
     private readonly eventBridgeService: EventBridgeService,
     private readonly lambdaService: LambdaService,
-  ) {}
-
-  private getPrefixWithId(auctionId: string): string {
-    return `${this.prefix}-${auctionId}`;
+  ) {
+    super({
+      functionName: 'auction-ending-soon',
+    });
   }
 
   async scheduleAuctionEndingSoonEvent(auctionId: string, endTime: Date): Promise<void> {
@@ -30,7 +27,6 @@ export class AuctionEndingSoonEventService {
     const scheduleExpression = this.eventBridgeService.generateCronExpression(oneHourBeforeEndTime);
     const lambdaArn = this.lambdaService.getLambdaFunctionArn(this.functionName);
     const input = JSON.stringify({ auctionId, extendedEndDate: endTime });
-    const statementId = this.lambdaService.getEventBridgeInvokeStatementId(prefixWithId);
 
     await this.eventBridgeService.scheduleRule({
       ruleName: prefixWithId,
@@ -41,7 +37,7 @@ export class AuctionEndingSoonEventService {
     });
     await this.lambdaService.addPermission({
       functionName: this.functionName,
-      statementId,
+      statementId: prefixWithId,
       ruleArn,
     });
   }
