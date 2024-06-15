@@ -26,7 +26,7 @@ export class CreateUserImageCommand implements ICommand {
 
   userId: string;
 
-  constructor(input: CreateUserImageInput) {
+  constructor({ input, userId }: { input: CreateUserImageInput; userId: string }) {
     this.id = input.id;
     this.name = input.name;
     this.url = input.url;
@@ -38,6 +38,6 @@ export class CreateUserImageCommand implements ICommand {
     this.position = input.position;
     this.type = input.type;
     this.refId = input.refId;
-    this.userId = input.userId;
+    this.userId = userId;
   }
 }

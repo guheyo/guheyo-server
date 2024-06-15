@@ -6,17 +6,17 @@ export class UploadAndCreateImageCommand implements ICommand {
 
   refId: string;
 
-  userId: string;
-
   url: string;
 
   source: string;
 
-  constructor(input: UploadAndCreateImageInput) {
+  userId: string;
+
+  constructor({ input, userId }: { input: UploadAndCreateImageInput; userId: string }) {
     this.type = input.type;
     this.refId = input.refId;
-    this.userId = input.userId;
     this.url = input.url;
     this.source = input.source;
+    this.userId = userId;
   }
 }

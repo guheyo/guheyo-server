@@ -51,8 +51,4 @@ export class CreateUserImageInput {
   @IsUUID()
   @Field(() => ID)
   refId: string;
-
-  @IsUUID()
-  @Field(() => ID)
-  userId: string;
 }
