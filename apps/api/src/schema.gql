@@ -240,7 +240,6 @@ input CreateRoleInput {
 input CreateSignedUrlInput {
   filename: String!
   type: String!
-  userId: String!
 }
 
 input CreateUserImageInput {

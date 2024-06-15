@@ -73,7 +73,7 @@ export class UserImageResolver {
     @Args('input') input: CreateSignedUrlInput,
     @ExtractedUser() user: MyUserResponse,
   ): Promise<SignedUrlResponse> {
-    return this.commandBus.execute(new CreateSignedUrlCommand(input));
+    return this.commandBus.execute(new CreateSignedUrlCommand({ input, userId: user.id }));
   }
 
   @AuthenticatedSocialAccount('kakao')
@@ -82,14 +82,17 @@ export class UserImageResolver {
     @Args('input') input: UpdateUserImageInput,
     @ExtractedUser() user: MyUserResponse,
   ): Promise<string> {
-    await this.commandBus.execute(new UpdateUserImageCommand(input));
+    await this.commandBus.execute(new UpdateUserImageCommand({ input, userId: user.id }));
     return input.id;
   }
 
   @AuthenticatedSocialAccount('kakao')
   @Mutation(() => String)
-  async deleteUserImage(@Args('id', { type: () => ID }) id: string): Promise<string> {
-    await this.commandBus.execute(new DeleteUserImageCommand(id));
+  async deleteUserImage(
+    @Args('id', { type: () => ID }) id: string,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new DeleteUserImageCommand({ id, userId: user.id }));
     return id;
   }
 }
