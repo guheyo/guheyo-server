@@ -4,13 +4,13 @@ import { CreateSignedUrlInput } from './create-signed-url.input';
 export class CreateSignedUrlCommand implements ICommand {
   type: string;
 
-  userId: string;
-
   filename: string;
 
-  constructor(input: CreateSignedUrlInput) {
+  userId: string;
+
+  constructor({ input, userId }: { input: CreateSignedUrlInput; userId: string }) {
     this.type = input.type;
-    this.userId = input.userId;
     this.filename = input.filename;
+    this.userId = userId;
   }
 }

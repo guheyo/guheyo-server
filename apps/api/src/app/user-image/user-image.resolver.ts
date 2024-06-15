@@ -73,7 +73,7 @@ export class UserImageResolver {
     @Args('input') input: CreateSignedUrlInput,
     @ExtractedUser() user: MyUserResponse,
   ): Promise<SignedUrlResponse> {
-    return this.commandBus.execute(new CreateSignedUrlCommand(input));
+    return this.commandBus.execute(new CreateSignedUrlCommand({ input, userId: user.id }));
   }
 
   @AuthenticatedSocialAccount('kakao')
