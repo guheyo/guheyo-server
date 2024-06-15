@@ -82,7 +82,7 @@ export class UserImageResolver {
     @Args('input') input: UpdateUserImageInput,
     @ExtractedUser() user: MyUserResponse,
   ): Promise<string> {
-    await this.commandBus.execute(new UpdateUserImageCommand(input));
+    await this.commandBus.execute(new UpdateUserImageCommand({ input, userId: user.id }));
     return input.id;
   }
 
