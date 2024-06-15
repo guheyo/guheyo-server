@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { SocialAccountGuard } from '../social-account/social-account.guard';
+import { SocialAccountGuard } from './social-account.guard';
 
 @Injectable()
 export class MutationSocialAccountGuard implements CanActivate {
