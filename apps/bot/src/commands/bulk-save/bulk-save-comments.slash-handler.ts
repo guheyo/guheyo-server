@@ -25,17 +25,7 @@ export abstract class BulkSaveCommentsSlashHandler {
 
   async saveThread(threadChannel: ThreadChannel) {
     try {
-      const messageCollection = await threadChannel.messages.fetch();
-      const messageWithUsers = await messageCollection.reduce(
-        async (cc, message) => [
-          ...(await cc),
-          {
-            message,
-            user: await this.userClient.fetchMyUser('discord', message.author),
-          },
-        ],
-        Promise.resolve<MessageWithUser[]>([]),
-      );
+      const messageWithUsers = await this.parseMessageWithUsers(threadChannel);
       await this.commentClient.createCommentsFromMessageWithUsers(
         threadChannel,
         messageWithUsers.splice(0, messageWithUsers.length - 1),
@@ -44,6 +34,21 @@ export abstract class BulkSaveCommentsSlashHandler {
       // NOTE: do nothing
       // console.log(e);
     }
+  }
+
+  async parseMessageWithUsers(threadChannel: ThreadChannel): Promise<MessageWithUser[]> {
+    const messageCollection = await threadChannel.messages.fetch();
+    const messageWithUsers = await messageCollection.reduce(
+      async (cc, message) => [
+        ...(await cc),
+        {
+          message,
+          user: await this.userClient.fetchMyUser('discord', message.author),
+        },
+      ],
+      Promise.resolve<MessageWithUser[]>([]),
+    );
+    return messageWithUsers;
   }
 
   async bulkSave(discordGuild: Guild, guildName: string, categoryName: string, limit: number) {
