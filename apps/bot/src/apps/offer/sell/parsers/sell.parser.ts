@@ -20,6 +20,7 @@ export class SellParser extends OfferParser {
 
   parseCreateOfferInput(message: Message, group: GroupResponse): CreateOfferInput {
     const match = this.matchFormat(message.content);
+    const channelName = this.parseCategoryNameFromMessage(message);
     const post = {
       id: this.parsePostIdFromMessage(message),
       createdAt: message.createdAt,
@@ -27,7 +28,7 @@ export class SellParser extends OfferParser {
       type: OFFER,
       title: match[1].trim(),
       groupId: group.id,
-      categoryId: this.parseCategoryId(message, group),
+      categoryId: this.parseCategoryId(channelName, group),
       tagIds: [],
     };
 
