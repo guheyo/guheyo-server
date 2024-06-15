@@ -52,6 +52,13 @@ export class BulkSaveUserReviewsSlashHandler extends BulkSavePostsSlashHandler {
     @Options() { guildName, categoryName, limit }: BulkSaveRequest,
   ) {
     if (!interaction.guild) return;
-    await this.bulkSave(interaction.guild, guildName, categoryName, limit);
+
+    const channelId = this.groupParser.discordConfigService.findCommunityChannelId(
+      guildName,
+      categoryName,
+    );
+    if (!channelId) return;
+
+    await this.bulkSave(interaction.guild, channelId, limit);
   }
 }
