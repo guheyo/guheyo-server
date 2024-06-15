@@ -29,7 +29,6 @@ export class UserReviewClient extends UserImageClient {
     tags: TagResponse[],
   ) {
     const uploadUserImageInputList = this.userImageParser.parseUploadUserImageInputList(
-      user.id,
       threadPost.starterMessage,
       USER_REVIEW,
     );
@@ -40,7 +39,7 @@ export class UserReviewClient extends UserImageClient {
       tags,
     );
 
-    await this.uploadAndCreateAttachments(uploadUserImageInputList, USER_REVIEW);
+    await this.uploadAndCreateAttachments(user, uploadUserImageInputList, USER_REVIEW);
     await this.createUserReview({ input: createUserReviewInput, user });
     this.logger.log(`userReview<@${createUserReviewInput.id}> created`);
   }

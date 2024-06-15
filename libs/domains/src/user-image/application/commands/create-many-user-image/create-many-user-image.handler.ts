@@ -9,7 +9,13 @@ export class CreateManyUserImageHandler implements ICommandHandler<CreateManyUse
   constructor(@Inject('UserImageSavePort') private readonly userImageSavePort: UserImageSavePort) {}
 
   async execute(command: CreateManyUserImageCommand): Promise<any> {
-    const userImages = command.data.map((createUserInput) => new UserImageEntity(createUserInput));
+    const userImages = command.createUserImageInputs.map(
+      (createUserInput) =>
+        new UserImageEntity({
+          ...createUserInput,
+          userId: command.userId,
+        }),
+    );
     await this.userImageSavePort.createMany(userImages);
   }
 }

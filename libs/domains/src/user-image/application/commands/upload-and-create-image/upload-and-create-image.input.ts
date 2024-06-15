@@ -11,10 +11,6 @@ export class UploadAndCreateImageInput {
   @Field(() => ID)
   refId: string;
 
-  @IsUUID()
-  @Field(() => ID)
-  userId: string;
-
   @IsString()
   @Field()
   url: string;

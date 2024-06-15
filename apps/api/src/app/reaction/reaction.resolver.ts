@@ -1,10 +1,6 @@
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { UseGuards } from '@nestjs/common';
-import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
-import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
-import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
-import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { CreateReactionInput } from '@lib/domains/reaction/application/commands/create-reaction/create-reaction.input';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
 import { CancelReactionInput } from '@lib/domains/reaction/application/commands/cancel-reaction/cancel-reaction.input';
@@ -21,6 +17,7 @@ import { ReactionCreatedArgs } from '@lib/domains/reaction/application/subscript
 import { parseReactionCreatedTriggerName } from '@lib/domains/reaction/application/subscriptions/reaction-created/parse-reaction-created-trigger-name';
 import { ReactionCanceledArgs } from '@lib/domains/reaction/application/subscriptions/reaction-canceled/reaction-canceled.args';
 import { parseReactionCanceledTriggerName } from '@lib/domains/reaction/application/subscriptions/reaction-canceled/parse-reaction-canceled-trigger-name';
+import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @Resolver()
@@ -36,9 +33,11 @@ export class ReactionResolver {
     return this.queryBus.execute(new FindReactionsQuery({ args }));
   }
 
-  @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
-  @AllowlistRoleNames([])
-  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard, RootRoleGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => String)
   async createReaction(
     @Args('input') input: CreateReactionInput,
@@ -48,9 +47,12 @@ export class ReactionResolver {
     return input.id;
   }
 
-  @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
-  @AllowlistRoleNames([])
-  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard, RootRoleGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
+  @Mutation(() => String)
   @Mutation(() => String)
   async cancelReaction(
     @Args('input') input: CancelReactionInput,

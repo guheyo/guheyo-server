@@ -3,9 +3,12 @@ import { CreateUserImageInput } from '../create-user-image/create-user-image.inp
 import { CreateManyUserImageInput } from './create-many-user-image.input';
 
 export class CreateManyUserImageCommand implements ICommand {
-  data: CreateUserImageInput[];
+  createUserImageInputs: CreateUserImageInput[];
 
-  constructor(input: CreateManyUserImageInput) {
-    this.data = input.data;
+  userId: string;
+
+  constructor({ input, userId }: { input: CreateManyUserImageInput; userId: string }) {
+    this.createUserImageInputs = input.createUserImageInputs;
+    this.userId = userId;
   }
 }

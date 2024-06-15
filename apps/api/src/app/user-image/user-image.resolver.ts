@@ -15,7 +15,9 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateSignedUrlInput } from '@lib/domains/user-image/application/commands/create-signed-url/create-signed-url.input';
 import { CreateSignedUrlCommand } from '@lib/domains/user-image/application/commands/create-signed-url/create-signed-url.command';
 import { SignedUrlResponse } from '@lib/shared/image/image.response';
-import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
+import { AuthenticatedSocialAccount } from '@lib/domains/auth/decorators/authenticated-social-account/authenticated-social-account.decorator';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -40,34 +42,51 @@ export class UserImageResolver {
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(RequiredJwtUserGuard)
+  @AuthenticatedSocialAccount('kakao')
   @Mutation(() => String)
-  async createUserImage(@Args('input') input: CreateUserImageInput): Promise<string> {
-    await this.commandBus.execute(new CreateUserImageCommand(input));
+  async createUserImage(
+    @Args('input') input: CreateUserImageInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(
+      new CreateUserImageCommand({
+        input,
+        userId: user.id,
+      }),
+    );
     return input.id;
   }
 
-  @UseGuards(RequiredJwtUserGuard)
+  @AuthenticatedSocialAccount('kakao')
   @Mutation(() => String)
-  async createManyUserImage(@Args('input') input: CreateManyUserImageInput): Promise<string> {
-    await this.commandBus.execute(new CreateManyUserImageCommand(input));
+  async createManyUserImage(
+    @Args('input') input: CreateManyUserImageInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new CreateManyUserImageCommand({ input, userId: user.id }));
     return '200';
   }
 
-  @UseGuards(RequiredJwtUserGuard)
+  @AuthenticatedSocialAccount('kakao')
   @Mutation(() => SignedUrlResponse)
-  async createSignedUrl(@Args('input') input: CreateSignedUrlInput): Promise<SignedUrlResponse> {
+  async createSignedUrl(
+    @Args('input') input: CreateSignedUrlInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<SignedUrlResponse> {
     return this.commandBus.execute(new CreateSignedUrlCommand(input));
   }
 
-  @UseGuards(RequiredJwtUserGuard)
+  @AuthenticatedSocialAccount('kakao')
   @Mutation(() => String)
-  async updateUserImage(@Args('input') input: UpdateUserImageInput): Promise<string> {
+  async updateUserImage(
+    @Args('input') input: UpdateUserImageInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
     await this.commandBus.execute(new UpdateUserImageCommand(input));
     return input.id;
   }
 
-  @UseGuards(RequiredJwtUserGuard)
+  @AuthenticatedSocialAccount('kakao')
   @Mutation(() => String)
   async deleteUserImage(@Args('id', { type: () => ID }) id: string): Promise<string> {
     await this.commandBus.execute(new DeleteUserImageCommand(id));

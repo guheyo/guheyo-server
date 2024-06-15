@@ -32,15 +32,10 @@ export class UserImageParser extends Parser {
       position: 0,
       type,
       refId: userId,
-      userId,
     };
   }
 
-  parseUploadUserImageInputList(
-    userId: string,
-    message: Message,
-    type: string,
-  ): CreateUserImageInput[] {
+  parseUploadUserImageInputList(message: Message, type: string): CreateUserImageInput[] {
     if (!this.hasAttachments(message)) {
       return [];
     }
@@ -59,7 +54,6 @@ export class UserImageParser extends Parser {
         position,
         type,
         refId,
-        userId,
       };
       position += 1;
       return input;
