@@ -2,7 +2,9 @@ import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { SocialAccountErrorMessage } from '@lib/domains/social-account/domain/social-account.error.message';
 import { AllowlistSocialProviders } from '../../decorators/allowlist-social-providers/allowlist-social-providers.decorator';
+import { AuthErrorMessage } from '../../domain/auth.error.message';
 
 @Injectable()
 export class SocialAccountGuard implements CanActivate {
@@ -16,7 +18,7 @@ export class SocialAccountGuard implements CanActivate {
       context.getHandler(),
     );
     const user = req.user as MyUserResponse | null;
-    if (!user) throw new ForbiddenException('Authentication required');
+    if (!user) throw new ForbiddenException(AuthErrorMessage.AUTHENTICATION_REQUIRED);
 
     if (
       allowlistSocialProviders.length > 0 &&
@@ -24,7 +26,7 @@ export class SocialAccountGuard implements CanActivate {
         allowlistSocialProviders.includes(socialAccount.provider),
       )
     )
-      throw new ForbiddenException('Access denied: Social account provider not allowed');
+      throw new ForbiddenException(SocialAccountErrorMessage.ACCESS_DENIED_PROVIDER);
 
     return true;
   }
