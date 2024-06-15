@@ -88,8 +88,11 @@ export class UserImageResolver {
 
   @AuthenticatedSocialAccount('kakao')
   @Mutation(() => String)
-  async deleteUserImage(@Args('id', { type: () => ID }) id: string): Promise<string> {
-    await this.commandBus.execute(new DeleteUserImageCommand(id));
+  async deleteUserImage(
+    @Args('id', { type: () => ID }) id: string,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new DeleteUserImageCommand({ id, userId: user.id }));
     return id;
   }
 }
