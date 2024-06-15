@@ -11,10 +11,6 @@ import { UseGuards } from '@nestjs/common';
 import { FindAuctionPreviewsArgs } from '@lib/domains/auction/application/queries/find-auction-previews/find-auction-previews.args';
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
-import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
-import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
-import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
-import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
 import { PaginatedAuctionPreviewsResponse } from '@lib/domains/auction/application/queries/find-auction-previews/paginated-auction-previews.response';
 import { FindAuctionPreviewsQuery } from '@lib/domains/auction/application/queries/find-auction-previews/find-auction-previews.query';
@@ -42,6 +38,7 @@ import { FindBidCountQuery } from '@lib/domains/auction/application/queries/find
 import { AuctionUpdatedArgs } from '@lib/domains/auction/application/subscriptions/auction-updated/auction-updated.args';
 import { parseAuctionUpdatedTriggerName } from '@lib/domains/auction/application/subscriptions/auction-updated/parse-auction-updated-trigger-name';
 import { UpdatedAuctionResponse } from '@lib/domains/auction/application/commands/update-auction/updated-auction.response';
+import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
@@ -102,9 +99,11 @@ export class AuctionResolver {
     return this.queryBus.execute(query);
   }
 
-  @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
-  @AllowlistRoleNames([])
-  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard, RootRoleGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => String)
   async createAuction(
     @Args('input') input: CreateAuctionInput,
@@ -114,9 +113,11 @@ export class AuctionResolver {
     return input.id;
   }
 
-  @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
-  @AllowlistRoleNames([])
-  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard, RootRoleGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => String)
   async updateAuction(
     @Args('input') input: UpdateAuctionInput,
@@ -126,9 +127,11 @@ export class AuctionResolver {
     return input.id;
   }
 
-  @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
-  @AllowlistRoleNames([])
-  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard, RootRoleGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => String)
   async placeBid(
     @Args('input') input: PlaceBidInput,
@@ -138,9 +141,11 @@ export class AuctionResolver {
     return input.auctionId;
   }
 
-  @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
-  @AllowlistRoleNames([])
-  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard, RootRoleGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => String)
   async cancelBid(
     @Args('input') input: CancelBidInput,
