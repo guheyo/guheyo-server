@@ -50,7 +50,8 @@ export class UserSagas {
             input: event,
             userId: event.userId,
           }),
-          new TrackUserImagesCommand(event)),
+          new TrackUserImagesCommand(event),
+        ),
       ),
     );
 }
