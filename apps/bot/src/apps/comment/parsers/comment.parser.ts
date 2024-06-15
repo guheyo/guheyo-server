@@ -19,4 +19,11 @@ export class CommentParser extends GroupParser {
       user: messageWithUser.user,
     }));
   }
+
+  parseEmbedWithUsers(messageWithUsers: MessageWithUser[]) {
+    return messageWithUsers.map((messageWithUser) => ({
+      embed: messageWithUser.message.embeds[0],
+      user: messageWithUser.user,
+    }));
+  }
 }
