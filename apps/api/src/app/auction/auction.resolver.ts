@@ -39,6 +39,7 @@ import { AuctionUpdatedArgs } from '@lib/domains/auction/application/subscriptio
 import { parseAuctionUpdatedTriggerName } from '@lib/domains/auction/application/subscriptions/auction-updated/parse-auction-updated-trigger-name';
 import { UpdatedAuctionResponse } from '@lib/domains/auction/application/commands/update-auction/updated-auction.response';
 import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
+import { TimeGuard } from '@lib/shared/time/time.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
@@ -99,6 +100,7 @@ export class AuctionResolver {
     return this.queryBus.execute(query);
   }
 
+  @UseGuards(new TimeGuard(2, 6))
   @AuthenticatedSocialAccountAndRole({
     providers: ['kakao'],
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
