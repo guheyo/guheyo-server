@@ -183,7 +183,7 @@ input CreateGroupInput {
 }
 
 input CreateManyUserImageInput {
-  data: [CreateUserImageInput!]!
+  createUserImageInputs: [CreateUserImageInput!]!
 }
 
 input CreateOfferInput {
@@ -254,7 +254,6 @@ input CreateUserImageInput {
   size: Int
   type: String!
   url: String!
-  userId: ID!
   width: Int
 }
 
