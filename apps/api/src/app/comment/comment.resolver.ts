@@ -29,7 +29,8 @@ import { parseCommentUpdatedTriggerName } from '@lib/domains/comment/application
 import { FindCommentCountQuery } from '@lib/domains/comment/application/queries/find-comment-count/find-comment-count.query';
 import { CommentCountResponse } from '@lib/domains/comment/application/dtos/comment-count.response';
 import { FindCommentCountArgs } from '@lib/domains/comment/application/queries/find-comment-count/find-comment-count.args';
-import { AuthenticatedSocialAccount } from '@lib/domains/auth/decorators/authenticated-social-account/authenticated-social-account.decorator';
+import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
+import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @Resolver()
@@ -63,7 +64,11 @@ export class CommentResolver {
     return this.queryBus.execute(query);
   }
 
-  @AuthenticatedSocialAccount('kakao')
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => String)
   async createComment(
     @Args('input') input: CreateCommentInput,
@@ -73,7 +78,11 @@ export class CommentResolver {
     return input.id;
   }
 
-  @AuthenticatedSocialAccount('kakao')
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => String)
   async updateComment(
     @Args('input') input: UpdateCommentInput,
@@ -83,7 +92,11 @@ export class CommentResolver {
     return input.id;
   }
 
-  @AuthenticatedSocialAccount('kakao')
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => String)
   async deleteComment(
     @Args('input') input: DeleteCommentInput,
