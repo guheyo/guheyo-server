@@ -9,17 +9,17 @@ import { RootRoleGuard } from '../../guards/role/root-role.guard';
 
 export function AuthenticatedSocialAccountAndRole({
   providers,
-  allowlistRoleNames,
   blocklistRoleNames,
+  allowlistRoleNames,
 }: {
   providers: string[];
-  allowlistRoleNames: string[];
   blocklistRoleNames: string[];
+  allowlistRoleNames: string[];
 }) {
   return applyDecorators(
     AllowlistSocialProviders(providers),
-    AllowlistRoleNames(allowlistRoleNames),
     BlocklistRoleNames(blocklistRoleNames),
+    AllowlistRoleNames(allowlistRoleNames),
     UseGuards(
       GqlThrottlerBehindProxyGuard,
       RequiredJwtUserGuard,
