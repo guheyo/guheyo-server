@@ -8,7 +8,6 @@ import { FindCommentArgs } from '@lib/domains/comment/application/queries/find-c
 import { FindCommentQuery } from '@lib/domains/comment/application/queries/find-comment/find-comment.query';
 import { UpdateCommentCommand } from '@lib/domains/comment/application/commands/update-comment/update-comment.command';
 import { UpdateCommentInput } from '@lib/domains/comment/application/commands/update-comment/update-comment.input';
-import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { DeleteCommentInput } from '@lib/domains/comment/application/commands/delete-comment/delete-comment.input';
@@ -30,6 +29,7 @@ import { parseCommentUpdatedTriggerName } from '@lib/domains/comment/application
 import { FindCommentCountQuery } from '@lib/domains/comment/application/queries/find-comment-count/find-comment-count.query';
 import { CommentCountResponse } from '@lib/domains/comment/application/dtos/comment-count.response';
 import { FindCommentCountArgs } from '@lib/domains/comment/application/queries/find-comment-count/find-comment-count.args';
+import { AuthenticatedSocialAccount } from '@lib/domains/auth/decorators/authenticated-social-account/authenticated-social-account.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @Resolver()
@@ -63,7 +63,7 @@ export class CommentResolver {
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard)
+  @AuthenticatedSocialAccount('kakao')
   @Mutation(() => String)
   async createComment(
     @Args('input') input: CreateCommentInput,
@@ -73,7 +73,7 @@ export class CommentResolver {
     return input.id;
   }
 
-  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard)
+  @AuthenticatedSocialAccount('kakao')
   @Mutation(() => String)
   async updateComment(
     @Args('input') input: UpdateCommentInput,
@@ -83,7 +83,7 @@ export class CommentResolver {
     return input.id;
   }
 
-  @UseGuards(GqlThrottlerBehindProxyGuard, RequiredJwtUserGuard)
+  @AuthenticatedSocialAccount('kakao')
   @Mutation(() => String)
   async deleteComment(
     @Args('input') input: DeleteCommentInput,
