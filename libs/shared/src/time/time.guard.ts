@@ -1,4 +1,5 @@
 import { Injectable, CanActivate, ExecutionContext, BadRequestException } from '@nestjs/common';
+import { TimeErrorMessage } from './time.error.message';
 
 @Injectable()
 export class TimeGuard implements CanActivate {
@@ -13,9 +14,7 @@ export class TimeGuard implements CanActivate {
 
     // Check if the current time is within the maintenance window
     if (this.isInMaintenanceWindow(currentHour)) {
-      throw new BadRequestException(
-        'The server is currently under maintenance. Please try again later.',
-      );
+      throw new BadRequestException(TimeErrorMessage.SERVER_MAINTENANCE);
     }
 
     return true;
