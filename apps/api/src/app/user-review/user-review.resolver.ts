@@ -1,8 +1,4 @@
-import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
-import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
-import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
-import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { UseGuards } from '@nestjs/common';
@@ -17,9 +13,9 @@ import { PaginatedUserReviewPreviewsResponse } from '@lib/domains/user-review/ap
 import { UserReviewResponse } from '@lib/domains/user-review/application/dtos/user-review.response';
 import { FindUserReviewArgs } from '@lib/domains/user-review/application/queries/find-user-review/find-user-review.args';
 import { FindUserReviewQuery } from '@lib/domains/user-review/application/queries/find-user-review/find-user-review.query';
-import { REPORTED_USER_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
 import { DeleteUserReviewArgs } from '@lib/domains/user-review/application/commands/delete-user-review/delete-user-review.args';
 import { DeleteUserReviewCommand } from '@lib/domains/user-review/application/commands/delete-user-review/delete-user-review.command';
+import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -56,9 +52,11 @@ export class UserReviewResolver {
     return this.queryBus.execute(query);
   }
 
-  @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
-  @AllowlistRoleNames([])
-  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => String)
   async createUserReview(
     @Args('input') input: CreateUserReviewInput,
@@ -68,9 +66,11 @@ export class UserReviewResolver {
     return input.id;
   }
 
-  @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
-  @AllowlistRoleNames([])
-  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => String)
   async deleteUserReview(
     @Args() args: DeleteUserReviewArgs,

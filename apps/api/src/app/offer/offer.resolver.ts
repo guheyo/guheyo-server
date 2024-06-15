@@ -16,16 +16,13 @@ import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-
 import { BumpOfferInput } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.input';
 import { BumpOfferCommand } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.command';
 import { OfferPreviewResponse } from '@lib/domains/offer/application/dtos/offer-preview.response';
-import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
 import { REPORTED_USER_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
-import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
-import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
-import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { FindOfferCountArgs } from '@lib/domains/offer/application/queries/find-offer-count/find-offer-count.args';
 import { FindOfferCountQuery } from '@lib/domains/offer/application/queries/find-offer-count/find-offer-count.query';
+import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -68,9 +65,11 @@ export class OfferResolver {
     return this.queryBus.execute(query);
   }
 
-  @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
-  @AllowlistRoleNames([])
-  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [REPORTED_USER_ROLE_NAME],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => String)
   async createOffer(
     @Args('input') input: CreateOfferInput,
@@ -80,7 +79,11 @@ export class OfferResolver {
     return input.id;
   }
 
-  @UseGuards(RequiredJwtUserGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [REPORTED_USER_ROLE_NAME],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => OfferPreviewResponse)
   async updateOffer(
     @Args('input') input: UpdateOfferInput,
@@ -89,9 +92,11 @@ export class OfferResolver {
     return this.commandBus.execute(new UpdateOfferCommand({ input, user }));
   }
 
-  @BlocklistRoleNames([REPORTED_USER_ROLE_NAME])
-  @AllowlistRoleNames([])
-  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [REPORTED_USER_ROLE_NAME],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => String)
   async deleteOffer(
     @Args() args: DeleteOfferArgs,
@@ -101,7 +106,11 @@ export class OfferResolver {
     return args.id;
   }
 
-  @UseGuards(RequiredJwtUserGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [REPORTED_USER_ROLE_NAME],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => OfferPreviewResponse)
   async bumpOffer(
     @Args('input') input: BumpOfferInput,
