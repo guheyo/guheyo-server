@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { DiscordManager } from '@app/bot/shared/discord/discord.manager';
-import { Guild, ThreadChannel } from 'discord.js';
+import { ThreadChannel } from 'discord.js';
 import { BidClient } from '@app/bot/apps/auction/clients/bid.client';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import {
@@ -49,18 +48,6 @@ export class BulkSaveBidsSlashHandler extends BulkSaveCommentsSlashHandler {
     return results;
   }
 
-  async bulkSave(discordGuild: Guild, guildName: string, categoryName: string, limit: number) {
-    const channelId = this.groupParser.discordConfigService.findAuctionChannelId(
-      guildName,
-      categoryName,
-    );
-    if (!channelId) return;
-
-    this.discordManager = new DiscordManager(discordGuild);
-    const threadChannels = await this.discordManager.fetchThreadChannelsFromForum(channelId, limit);
-    await this.bulkSaveThreads(threadChannels);
-  }
-
   async bulkSaveThreads(threadChannels: ThreadChannel[]) {
     return threadChannels.map(async (threadChannel) => this.saveThread(threadChannel));
   }
@@ -75,6 +62,12 @@ export class BulkSaveBidsSlashHandler extends BulkSaveCommentsSlashHandler {
   ) {
     if (!interaction.guild) return;
 
-    await this.bulkSave(interaction.guild, guildName, categoryName, limit);
+    const channelId = this.groupParser.discordConfigService.findAuctionChannelId(
+      guildName,
+      categoryName,
+    );
+    if (!channelId) return;
+
+    await this.bulkSave(interaction.guild, channelId, limit);
   }
 }
