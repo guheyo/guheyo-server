@@ -1,6 +1,6 @@
 import { GroupGuard } from '@app/bot/apps/group/guards/group.guard';
 import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
-import { Injectable, Logger, UseGuards } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { ThreadChannel } from 'discord.js';
@@ -11,10 +11,8 @@ import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
 export class BulkSaveAuctionsSlashHandler extends BulkSavePostsSlashHandler {
-  private readonly logger = new Logger(BulkSaveAuctionsSlashHandler.name);
-
   constructor(protected readonly auctionClient: AuctionClient) {
-    super();
+    super(BulkSaveAuctionsSlashHandler.name);
   }
 
   async saveThreadPost(threadPost: ThreadPost) {

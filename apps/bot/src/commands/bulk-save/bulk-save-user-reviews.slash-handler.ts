@@ -12,7 +12,7 @@ import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
 @Injectable()
 export class BulkSaveUserReviewsSlashHandler extends BulkSavePostsSlashHandler {
   constructor(protected readonly userReviewClient: UserReviewClient) {
-    super();
+    super(BulkSaveUserReviewsSlashHandler.name);
   }
 
   async saveThreadPost(threadPost: ThreadPost) {

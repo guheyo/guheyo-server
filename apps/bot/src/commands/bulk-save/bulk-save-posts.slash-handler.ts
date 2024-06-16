@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { UserClient } from '@app/bot/apps/user/clients/user.client';
 import { GroupParser } from '@app/bot/apps/group/parsers/group.parser';
 import { DiscordManager } from '@app/bot/shared/discord/discord.manager';
@@ -9,6 +9,8 @@ import { PostClient } from '@app/bot/apps/post/clients/post.client';
 
 @Injectable()
 export abstract class BulkSavePostsSlashHandler {
+  protected readonly logger: Logger;
+
   @Inject()
   protected readonly groupParser: GroupParser;
 
@@ -23,13 +25,24 @@ export abstract class BulkSavePostsSlashHandler {
 
   protected discordManager: DiscordManager;
 
+  constructor(context: string) {
+    this.logger = new Logger(context);
+  }
+
   abstract saveThreadPost(threadPost: ThreadPost): void;
 
   async bulkSave(discordGuild: Guild, channelId: string, limit: number) {
     this.discordManager = new DiscordManager(discordGuild);
     const threadPosts = await this.discordManager.fetchThreadPostsFromForum(channelId, limit);
     const nonExistingThreadPosts = await this.postClient.findNonExistingThreadPosts(threadPosts);
+    this.logThreadPostCounts(threadPosts.length, nonExistingThreadPosts.length);
+
     await this.bulkSaveThreadPosts(nonExistingThreadPosts);
+  }
+
+  private logThreadPostCounts(totalPosts: number, nonExistingPosts: number): void {
+    this.logger.log(`Total thread posts: ${totalPosts}`);
+    this.logger.log(`Non-existing thread posts: ${nonExistingPosts}`);
   }
 
   async bulkSaveThreadPosts(threadPosts: ThreadPost[]) {
