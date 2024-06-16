@@ -84,6 +84,7 @@ export class AuctionRepository
       data: {
         ..._.pick(auction, [
           'id',
+          'createdAt',
           'originalEndDate',
           'extendedEndDate',
           'content',

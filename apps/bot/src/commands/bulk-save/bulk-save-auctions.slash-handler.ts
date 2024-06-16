@@ -3,7 +3,7 @@ import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
 import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
-import { Guild, ThreadChannel } from 'discord.js';
+import { ThreadChannel } from 'discord.js';
 import { AuctionClient } from '@app/bot/apps/auction/clients/auction.client';
 import { BulkSaveRequest } from './bulk-save.request';
 import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
@@ -12,10 +12,10 @@ import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
 @Injectable()
 export class BulkSaveAuctionsSlashHandler extends BulkSavePostsSlashHandler {
   constructor(protected readonly auctionClient: AuctionClient) {
-    super();
+    super(BulkSaveAuctionsSlashHandler.name);
   }
 
-  async saveThreadPost(threadPost: ThreadPost, discordGuild: Guild) {
+  async saveThreadPost(threadPost: ThreadPost) {
     try {
       const channelId = (threadPost.starterMessage.channel as ThreadChannel).parentId;
       if (!channelId) return;
@@ -24,9 +24,8 @@ export class BulkSaveAuctionsSlashHandler extends BulkSavePostsSlashHandler {
       const user = await this.userClient.fetchMyUser('discord', member);
       const group = await this.groupClient.fetchGroup(channelId);
       await this.auctionClient.createAuctionFromPost(user, threadPost, group);
-    } catch (e) {
-      // NOTE: do nothing
-      // console.log(e);
+    } catch (error: any) {
+      this.logger.error(`Failed to save thread post: ${error.message}`, error.stack);
     }
   }
 
