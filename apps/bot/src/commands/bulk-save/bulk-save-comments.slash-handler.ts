@@ -51,6 +51,13 @@ export abstract class BulkSaveCommentsSlashHandler {
     return messageWithUsers;
   }
 
+  async fetchMessagesWithEmbeds(threadChannel: ThreadChannel) {
+    const messageCollection = await threadChannel.messages.fetch();
+    return messageCollection.filter(
+      (message) => message.embeds.length > 0 && !!message.embeds[0].description,
+    );
+  }
+
   async bulkSave(discordGuild: Guild, guildName: string, categoryName: string, limit: number) {
     const channelId = this.groupParser.discordConfigService.findCommunityChannelId(
       guildName,
