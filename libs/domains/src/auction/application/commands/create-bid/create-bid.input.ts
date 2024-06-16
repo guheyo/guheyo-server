@@ -40,5 +40,9 @@ export class CreateBidInput {
 
   @IsString()
   @Field()
+  status: string;
+
+  @IsString()
+  @Field()
   userAgent: string;
 }

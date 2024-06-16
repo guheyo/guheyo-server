@@ -18,6 +18,8 @@ export class CreateBidCommand implements ICommand {
 
   userId: string;
 
+  status: string;
+
   userAgent: string;
 
   constructor({ input }: { input: CreateBidInput }) {
@@ -29,6 +31,7 @@ export class CreateBidCommand implements ICommand {
     this.priceCurrency = input.priceCurrency;
     this.auctionId = input.auctionId;
     this.userId = input.userId;
+    this.status = input.status;
     this.userAgent = input.userAgent;
   }
 }
