@@ -38,7 +38,10 @@ export abstract class BulkSaveCommentsSlashHandler {
 
   async fetchMessageWithUsers(threadChannel: ThreadChannel): Promise<MessageWithUser[]> {
     const messageCollection = await threadChannel.messages.fetch();
-    const messageWithUsers = await messageCollection.reduce(
+    const messages = messageCollection
+      .filter((message) => message.content)
+      .map((message) => message);
+    const messageWithUsers = await messages.reduce(
       async (cc, message) => [
         ...(await cc),
         {
