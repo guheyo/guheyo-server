@@ -5,18 +5,15 @@ import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.respo
 import { CreateBidInput } from '@lib/domains/auction/application/commands/create-bid/create-bid.input';
 import { BID } from '@lib/domains/auction/domain/bid.constants';
 import { CommentParser } from '../../comment/parsers/comment.parser';
-import {
-  MessageWithSocialIdAndPrice,
-  MessageWithSocialIdPriceAndUser,
-} from '../interfaces/bid.interfaces';
+import { BidMessageWithUser, MessageWithSocialIdAndPrice } from '../interfaces/bid.interfaces';
 
 @Injectable()
 export class BidParser extends CommentParser {
   parseCreateBidInputs(
     threadChannel: ThreadChannel,
-    messageWithSocialIdPriceAndUsers: MessageWithSocialIdPriceAndUser[],
+    bidMessageWithUsers: BidMessageWithUser[],
   ): CreateBidInput[] {
-    return messageWithSocialIdPriceAndUsers.map((messageWithSocialIdPriceAndUser) =>
+    return bidMessageWithUsers.map((messageWithSocialIdPriceAndUser) =>
       this.parseCreateBidInput({
         threadChannel,
         message: messageWithSocialIdPriceAndUser.message,

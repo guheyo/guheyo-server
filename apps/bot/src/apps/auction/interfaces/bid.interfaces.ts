@@ -7,6 +7,8 @@ export interface MessageWithSocialIdAndPrice {
   price: number;
 }
 
-export interface MessageWithSocialIdPriceAndUser extends MessageWithSocialIdAndPrice {
+export interface BidMessageWithUser {
+  message: Message;
   user: MyUserResponse;
+  price: number;
 }
