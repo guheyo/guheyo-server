@@ -20,10 +20,7 @@ export class BulkSaveAuctionsSlashHandler extends BulkSavePostsSlashHandler {
       const channelId = (threadPost.starterMessage.channel as ThreadChannel).parentId;
       if (!channelId) return;
 
-      const member = await this.discordManager.fetchMember(
-        discordGuild,
-        threadPost.starterMessage.author,
-      );
+      const member = await this.discordManager.fetchMember(threadPost.starterMessage.author);
       const user = await this.userClient.fetchMyUser('discord', member);
       const group = await this.groupClient.fetchGroup(channelId);
       await this.auctionClient.createAuctionFromPost(user, threadPost, group);

@@ -53,8 +53,8 @@ export class DiscordManager {
     return this.fetchOldMessages(oldMessages, channel, lastMessage?.id, limit);
   }
 
-  async fetchMember(guild: Guild, author: User) {
-    return guild.members.fetch(author.id);
+  async fetchMember(author: User) {
+    return this.guild.members.fetch(author.id);
   }
 
   async fetchThreadPostsFromForum(channelId: string, limit: number): Promise<ThreadPost[]> {
