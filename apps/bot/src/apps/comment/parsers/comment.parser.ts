@@ -11,10 +11,10 @@ export class CommentParser extends GroupParser {
     messageWithUsers: MessageWithUser[],
   ): CreateCommentCommand[] {
     return messageWithUsers.map((messageWithUser) => ({
-      id: this.parseIdFromMessage(messageWithUser.message),
+      id: this.parseIdFromMessageId(messageWithUser.message.id),
       createdAt: messageWithUser.message.createdAt,
       updatedAt: messageWithUser.message.editedAt || messageWithUser.message.createdAt,
-      postId: this.parseIdFromChannel(threadChannel),
+      postId: this.parseIdFromChannelId(threadChannel.id),
       content: messageWithUser.message.content,
       user: messageWithUser.user,
     }));

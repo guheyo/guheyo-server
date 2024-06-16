@@ -9,6 +9,7 @@ import {
 import { OFFER } from '@lib/domains/offer/domain/offer.constants';
 import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
 import { Injectable } from '@nestjs/common';
+import { DISCORD } from '@lib/shared/discord/discord.constants';
 
 @Injectable()
 export class UserReviewParser extends GroupParser {
@@ -19,17 +20,18 @@ export class UserReviewParser extends GroupParser {
     tags: TagResponse[],
   ): CreateUserReviewInput {
     const post = {
-      id: this.parseIdFromChannel(threadPost.threadChannel),
+      id: this.parseIdFromChannelId(threadPost.threadChannel.id),
       createdAt: threadPost.starterMessage.createdAt,
       updatedAt: threadPost.starterMessage.editedAt || threadPost.starterMessage.createdAt,
       type: USER_REVIEW,
       title: threadPost.threadChannel.name,
       groupId: group.id,
       tagIds: this.parseTagIds(threadPost.tagNames, tags),
+      userAgent: DISCORD,
     };
 
     return {
-      id: this.parseIdFromMessage(threadPost.starterMessage),
+      id: this.parseIdFromMessageId(threadPost.starterMessage.id),
       type: OFFER,
       reviewedUserId,
       rating: this.parseRating(threadPost.tagNames),

@@ -33,6 +33,6 @@ export class CommentClient extends UserImageClient {
       messageWithUsers,
     );
     await this.createComments(commentCommands);
-    this.logger.log(`comment<@${commentCommands.length}> created`);
+    this.logger.log(`comment<#${commentCommands.length}> created`);
   }
 }

@@ -6,6 +6,7 @@ import { SHIPPING_FREE } from '@lib/shared/shipping/shipping.constants';
 import { OFFER, OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
 import { CreateOfferInput } from '@lib/domains/offer/application/commands/create-offer/create-offer.input';
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
+import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { SwapErrorMessage } from './swap.error-message';
 import { OfferParser } from '../../parsers/abstracts/offer.parser';
 
@@ -22,7 +23,7 @@ export class SwapParser extends OfferParser {
     const match = this.matchFormat(message.content);
     const channelName = this.parseCategoryNameFromMessage(message);
     const post = {
-      id: this.parsePostIdFromMessage(message),
+      id: this.parsePostIdFromMessageId(message.id),
       createdAt: message.createdAt,
       updatedAt: message.editedAt || message.createdAt,
       type: OFFER,
@@ -30,11 +31,12 @@ export class SwapParser extends OfferParser {
       groupId: group.id,
       categoryId: this.parseCategoryId(channelName, group),
       tagIds: [],
+      userAgent: DISCORD,
     };
 
     return {
       post,
-      id: this.parseIdFromMessage(message),
+      id: this.parseIdFromMessageId(message.id),
       businessFunction: 'swap',
       name0: match[1].trim(),
       name1: match[2].trim(),
@@ -54,7 +56,7 @@ export class SwapParser extends OfferParser {
     };
     return {
       post,
-      id: this.parseIdFromMessage(message),
+      id: this.parseIdFromMessageId(message.id),
       name0: match[1].trim(),
       name1: match[2].trim(),
       content: match[3].trim(),

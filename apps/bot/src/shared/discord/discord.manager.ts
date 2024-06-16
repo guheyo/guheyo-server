@@ -3,7 +3,6 @@ import {
   Guild,
   Message,
   TextChannel,
-  User,
   FetchMessagesOptions,
   ThreadChannel,
   GuildForumTag,
@@ -53,8 +52,8 @@ export class DiscordManager {
     return this.fetchOldMessages(oldMessages, channel, lastMessage?.id, limit);
   }
 
-  async fetchMember(guild: Guild, author: User) {
-    return guild.members.fetch(author.id);
+  async fetchMember(socialId: string) {
+    return this.guild.members.fetch(socialId);
   }
 
   async fetchThreadPostsFromForum(channelId: string, limit: number): Promise<ThreadPost[]> {

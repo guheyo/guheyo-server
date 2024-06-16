@@ -5,13 +5,14 @@ import { Injectable } from '@nestjs/common';
 import { CreateAuctionInput } from '@lib/domains/auction/application/commands/create-auction/create-auction.input';
 import { AUCTION, AUCTION_CLOSED } from '@lib/domains/auction/domain/auction.constants';
 import { SHIPPING_FREE } from '@lib/shared/shipping/shipping.constants';
+import { DISCORD } from '@lib/shared/discord/discord.constants';
 
 @Injectable()
 export class AuctionParser extends GroupParser {
   parseCreateAuctionInput(threadPost: ThreadPost, group: GroupResponse): CreateAuctionInput {
     const channelName = threadPost.tagNames[0];
     const post = {
-      id: this.parseIdFromChannel(threadPost.threadChannel),
+      id: this.parseIdFromChannelId(threadPost.threadChannel.id),
       createdAt: threadPost.starterMessage.createdAt,
       updatedAt: threadPost.starterMessage.editedAt || threadPost.starterMessage.createdAt,
       type: AUCTION,
@@ -19,10 +20,11 @@ export class AuctionParser extends GroupParser {
       groupId: group.id,
       tagIds: [],
       categoryId: this.parseCategoryId(channelName, group),
+      userAgent: DISCORD,
     };
 
     return {
-      id: this.parseIdFromMessage(threadPost.starterMessage),
+      id: this.parseIdFromMessageId(threadPost.starterMessage.id),
       createdAt: post.createdAt,
       originalEndDate: post.createdAt,
       extendedEndDate: post.createdAt,

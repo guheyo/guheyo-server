@@ -25,17 +25,7 @@ export abstract class BulkSaveCommentsSlashHandler {
 
   async saveThread(threadChannel: ThreadChannel) {
     try {
-      const messageCollection = await threadChannel.messages.fetch();
-      const messageWithUsers = await messageCollection.reduce(
-        async (cc, message) => [
-          ...(await cc),
-          {
-            message,
-            user: await this.userClient.fetchMyUser('discord', message.author),
-          },
-        ],
-        Promise.resolve<MessageWithUser[]>([]),
-      );
+      const messageWithUsers = await this.fetchMessageWithUsers(threadChannel);
       await this.commentClient.createCommentsFromMessageWithUsers(
         threadChannel,
         messageWithUsers.splice(0, messageWithUsers.length - 1),
@@ -44,6 +34,28 @@ export abstract class BulkSaveCommentsSlashHandler {
       // NOTE: do nothing
       // console.log(e);
     }
+  }
+
+  async fetchMessageWithUsers(threadChannel: ThreadChannel): Promise<MessageWithUser[]> {
+    const messageCollection = await threadChannel.messages.fetch();
+    const messageWithUsers = await messageCollection.reduce(
+      async (cc, message) => [
+        ...(await cc),
+        {
+          message,
+          user: await this.userClient.fetchMyUser('discord', message.author),
+        },
+      ],
+      Promise.resolve<MessageWithUser[]>([]),
+    );
+    return messageWithUsers;
+  }
+
+  async fetchMessagesWithEmbeds(threadChannel: ThreadChannel) {
+    const messageCollection = await threadChannel.messages.fetch();
+    return messageCollection
+      .filter((message) => message.embeds.length > 0 && !!message.embeds[0].description)
+      .map((message) => message);
   }
 
   async bulkSave(discordGuild: Guild, guildName: string, categoryName: string, limit: number) {

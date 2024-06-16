@@ -22,7 +22,7 @@ export abstract class OfferParser extends GroupParser {
 
   parseDeleteOfferArgs(message: Message | PartialMessage): DeleteOfferArgs {
     return {
-      id: this.parseIdFromMessage(message),
+      id: this.parseIdFromMessageId(message.id),
     };
   }
 
