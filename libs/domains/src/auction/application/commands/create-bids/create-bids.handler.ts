@@ -14,7 +14,7 @@ export class CreateBidsHandler extends PrismaCommandHandler<CreateBidsCommand, B
     const existingBids = await this.prismaService.bid.findMany({
       where: {
         id: {
-          in: command.bidCommands.map((bidCommand) => bidCommand.id),
+          in: command.bidInputs.map((bidInput) => bidInput.id),
         },
       },
       select: {
@@ -22,11 +22,11 @@ export class CreateBidsHandler extends PrismaCommandHandler<CreateBidsCommand, B
       },
     });
 
-    const newBids = command.bidCommands.filter(
-      (bidCommand) => !existingBids.some((existingBid) => existingBid.id === bidCommand.id),
+    const newBids = command.bidInputs.filter(
+      (bidInput) => !existingBids.some((existingBid) => existingBid.id === bidInput.id),
     );
 
-    const bidsToCreate = newBids.map((bidCommand) => new BidEntity(bidCommand));
+    const bidsToCreate = newBids.map((bidInput) => new BidEntity(bidInput));
 
     await this.prismaService.bid.createMany({
       data: bidsToCreate,

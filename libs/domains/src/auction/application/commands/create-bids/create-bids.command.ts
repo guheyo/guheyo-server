@@ -1,6 +1,11 @@
 import { ICommand } from '@nestjs/cqrs/dist';
-import { CreateBidCommand } from '../create-bid/create-bid.command';
+import { CreateBidInput } from '../create-bid/create-bid.input';
+import { CreateBidsInput } from './create-bids.input';
 
 export class CreateBidsCommand implements ICommand {
-  constructor(public readonly bidCommands: CreateBidCommand[]) {}
+  bidInputs: CreateBidInput[];
+
+  constructor({ input }: { input: CreateBidsInput }) {
+    this.bidInputs = input.bidInputs;
+  }
 }
