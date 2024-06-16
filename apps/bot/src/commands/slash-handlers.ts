@@ -17,6 +17,7 @@ import { FindMembersNeedingSocialRoleSlashHandler } from './find-members-needing
 import { ApplySocialRoleSlashHandler } from './apply-social-role/apply-social-role.slash-handler';
 import { BulkSaveAuctionsSlashHandler } from './bulk-save/bulk-save-auctions.slash-handler';
 import { BulkSaveBidsSlashHandler } from './bulk-save/bulk-save-bids.slash-handler';
+import { BulkSaveAuctionCommentsSlashHandler } from './bulk-save/bulk-save-auction-comments.slash-handler';
 
 export const SLASH_HANDLERS = [
   PingSlashHandler,
@@ -30,6 +31,7 @@ export const SLASH_HANDLERS = [
   BulkSaveUserReviewCommentsSlashHandler,
   BulkSaveAuctionsSlashHandler,
   BulkSaveBidsSlashHandler,
+  BulkSaveAuctionCommentsSlashHandler,
   ConnectUserRolesSlashHandler,
   FindUserWithoutSocialAccountsCountSlashHandler,
   BulkConnectUserRolesSlashHandler,
