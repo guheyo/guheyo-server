@@ -5,7 +5,7 @@ import { Message, ThreadChannel } from 'discord.js';
 @Injectable()
 export class PostParser extends GroupParser {
   parsePostIdsFromThreadChannels(threadChannels: ThreadChannel[]): string[] {
-    return threadChannels.map((threadChannel) => this.parseIdFromChannel(threadChannel));
+    return threadChannels.map((threadChannel) => this.parseIdFromChannelId(threadChannel.id));
   }
 
   parsePostIdsFromMessages(messages: Message[]): string[] {

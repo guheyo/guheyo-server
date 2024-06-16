@@ -29,7 +29,9 @@ export class PostClient extends UserImageClient {
     const threadChannels = threadPosts.map((threadPost) => threadPost.threadChannel);
     const nonExistingPostIds = await this.checkPostsNotExistFromThreadChannels(threadChannels);
     return threadPosts.filter((threadPost) =>
-      nonExistingPostIds.includes(this.postParser.parseIdFromChannel(threadPost.threadChannel)),
+      nonExistingPostIds.includes(
+        this.postParser.parseIdFromChannelId(threadPost.threadChannel.id),
+      ),
     );
   }
 

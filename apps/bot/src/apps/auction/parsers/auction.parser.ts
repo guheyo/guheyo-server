@@ -12,7 +12,7 @@ export class AuctionParser extends GroupParser {
   parseCreateAuctionInput(threadPost: ThreadPost, group: GroupResponse): CreateAuctionInput {
     const channelName = threadPost.tagNames[0];
     const post = {
-      id: this.parseIdFromChannel(threadPost.threadChannel),
+      id: this.parseIdFromChannelId(threadPost.threadChannel.id),
       createdAt: threadPost.starterMessage.createdAt,
       updatedAt: threadPost.starterMessage.editedAt || threadPost.starterMessage.createdAt,
       type: AUCTION,

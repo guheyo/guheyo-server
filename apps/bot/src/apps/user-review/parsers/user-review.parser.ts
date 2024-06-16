@@ -20,7 +20,7 @@ export class UserReviewParser extends GroupParser {
     tags: TagResponse[],
   ): CreateUserReviewInput {
     const post = {
-      id: this.parseIdFromChannel(threadPost.threadChannel),
+      id: this.parseIdFromChannelId(threadPost.threadChannel.id),
       createdAt: threadPost.starterMessage.createdAt,
       updatedAt: threadPost.starterMessage.editedAt || threadPost.starterMessage.createdAt,
       type: USER_REVIEW,

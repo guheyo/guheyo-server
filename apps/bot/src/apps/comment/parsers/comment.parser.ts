@@ -14,7 +14,7 @@ export class CommentParser extends GroupParser {
       id: this.parseIdFromMessageId(messageWithUser.message.id),
       createdAt: messageWithUser.message.createdAt,
       updatedAt: messageWithUser.message.editedAt || messageWithUser.message.createdAt,
-      postId: this.parseIdFromChannel(threadChannel),
+      postId: this.parseIdFromChannelId(threadChannel.id),
       content: messageWithUser.message.content,
       user: messageWithUser.user,
     }));
