@@ -1,46 +1,51 @@
 import { Injectable } from '@nestjs/common';
-import { Collection, Message, ThreadChannel } from 'discord.js';
-import { CreateBidCommand } from '@lib/domains/auction/application/commands/create-bid/create-bid.command';
+import { Message, ThreadChannel } from 'discord.js';
 import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { CreateBidInput } from '@lib/domains/auction/application/commands/create-bid/create-bid.input';
+import { BID } from '@lib/domains/auction/domain/bid.constants';
 import { CommentParser } from '../../comment/parsers/comment.parser';
-import { MessageWithUser } from '../../user/interfaces/user.interfaces';
+import {
+  MessageWithSocialIdAndPrice,
+  MessageWithSocialIdPriceAndUser,
+} from '../interfaces/bid.interfaces';
 
 @Injectable()
 export class BidParser extends CommentParser {
-  parseCreateBidCommands(
+  parseCreateBidInputs(
     threadChannel: ThreadChannel,
-    messageWithUsers: MessageWithUser[],
-  ): CreateBidCommand[] {
-    return messageWithUsers.map((messageWithUser) =>
-      this.parseCreateBidCommand({
+    messageWithSocialIdPriceAndUsers: MessageWithSocialIdPriceAndUser[],
+  ): CreateBidInput[] {
+    return messageWithSocialIdPriceAndUsers.map((messageWithSocialIdPriceAndUser) =>
+      this.parseCreateBidInput({
         threadChannel,
-        message: messageWithUser.message,
-        user: messageWithUser.user,
+        message: messageWithSocialIdPriceAndUser.message,
+        user: messageWithSocialIdPriceAndUser.user,
+        price: messageWithSocialIdPriceAndUser.price,
       }),
     );
   }
 
-  parseCreateBidCommand({
+  parseCreateBidInput({
     threadChannel,
     message,
     user,
+    price,
   }: {
     threadChannel: ThreadChannel;
     message: Message;
     user: MyUserResponse;
+    price: number;
   }) {
-    const embed = message.embeds[0];
-    console.log(embed);
-
     return {
       id: this.parseIdFromMessageId(message.id),
       createdAt: message.createdAt,
       updatedAt: message.editedAt || message.createdAt,
-      price: 0,
+      price,
       priceCurrency: 'krw',
       auctionId: this.parseIdFromChannelId(threadChannel.id),
       userId: user.id,
+      status: BID,
       userAgent: DISCORD,
     };
   }
@@ -52,21 +57,25 @@ export class BidParser extends CommentParser {
 
     return {
       socialId: match[1],
-      price: parseInt(match[2], 10),
+      price: parseInt(match[2], 10) * 10000,
     };
   }
 
-  extractSocialIdAndPricesFromMessages(embedMessages: Collection<string, Message>) {
-    return embedMessages
-      .map((embedMessage) => {
-        const socialIdAndPrice = this.extractSocialIdAndPrice(embedMessage.embeds[0].description!);
+  extractSocialIdAndPricesFromMessages(
+    messageWithEmbeds: Message[],
+  ): MessageWithSocialIdAndPrice[] {
+    return messageWithEmbeds
+      .map((messageWithEmbed) => {
+        const socialIdAndPrice = this.extractSocialIdAndPrice(
+          messageWithEmbed.embeds[0].description!,
+        );
         if (!socialIdAndPrice) return null;
         return {
-          ...embedMessage,
+          message: messageWithEmbed,
           socialId: socialIdAndPrice.socialId,
           price: socialIdAndPrice.price,
         };
       })
-      .filter(Boolean);
+      .filter((item): item is MessageWithSocialIdAndPrice => item !== null);
   }
 }
