@@ -6,6 +6,7 @@ import { SHIPPING_FREE } from '@lib/shared/shipping/shipping.constants';
 import { OFFER, OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
 import { CreateOfferInput } from '@lib/domains/offer/application/commands/create-offer/create-offer.input';
 import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update-offer/update-offer.input';
+import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { BuyErrorMessage } from './buy.error-message';
 import { OfferParser } from '../../parsers/abstracts/offer.parser';
 
@@ -30,6 +31,7 @@ export class BuyParser extends OfferParser {
       groupId: group.id,
       categoryId: this.parseCategoryId(channelName, group),
       tagIds: [],
+      userAgent: DISCORD,
     };
 
     return {
