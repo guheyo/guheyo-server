@@ -9,6 +9,6 @@ export class PostParser extends GroupParser {
   }
 
   parsePostIdsFromMessages(messages: Message[]): string[] {
-    return messages.map((message) => this.parsePostIdFromMessage(message));
+    return messages.map((message) => this.parsePostIdFromMessageId(message.id));
   }
 }

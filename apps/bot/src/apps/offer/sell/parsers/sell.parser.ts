@@ -23,7 +23,7 @@ export class SellParser extends OfferParser {
     const match = this.matchFormat(message.content);
     const channelName = this.parseCategoryNameFromMessage(message);
     const post = {
-      id: this.parsePostIdFromMessage(message),
+      id: this.parsePostIdFromMessageId(message.id),
       createdAt: message.createdAt,
       updatedAt: message.editedAt || message.createdAt,
       type: OFFER,

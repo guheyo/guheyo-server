@@ -41,7 +41,7 @@ export class PostClient extends UserImageClient {
   async findNonExistingMessages(messages: Message[]): Promise<Message[]> {
     const nonExistingPostIds = await this.checkPostsNotExistFromMessages(messages);
     return messages.filter((message) =>
-      nonExistingPostIds.includes(this.postParser.parsePostIdFromMessage(message)),
+      nonExistingPostIds.includes(this.postParser.parsePostIdFromMessageId(message.id)),
     );
   }
 }
