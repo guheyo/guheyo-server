@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { UserClient } from '@app/bot/apps/user/clients/user.client';
 import { GroupParser } from '@app/bot/apps/group/parsers/group.parser';
 import { DiscordManager } from '@app/bot/shared/discord/discord.manager';
@@ -9,6 +9,8 @@ import { MessageWithUser } from '@app/bot/apps/user/interfaces/user.interfaces';
 
 @Injectable()
 export abstract class BulkSaveCommentsSlashHandler {
+  protected readonly logger: Logger;
+
   @Inject()
   protected readonly groupParser: GroupParser;
 
@@ -23,6 +25,10 @@ export abstract class BulkSaveCommentsSlashHandler {
 
   protected discordManager: DiscordManager;
 
+  constructor(context: string) {
+    this.logger = new Logger(context);
+  }
+
   async saveThread(threadChannel: ThreadChannel) {
     try {
       const messageWithUsers = await this.fetchMessageWithUsers(threadChannel);
@@ -30,9 +36,8 @@ export abstract class BulkSaveCommentsSlashHandler {
         threadChannel,
         messageWithUsers.splice(0, messageWithUsers.length - 1),
       );
-    } catch (e) {
-      // NOTE: do nothing
-      // console.log(e);
+    } catch (error: any) {
+      this.logger.error(`Failed to save thread: ${error.message}`, error.stack);
     }
   }
 

@@ -8,6 +8,10 @@ import { BulkSaveCommentsSlashHandler } from './bulk-save-comments.slash-handler
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
 export class BulkSaveUserReviewCommentsSlashHandler extends BulkSaveCommentsSlashHandler {
+  constructor() {
+    super(BulkSaveUserReviewCommentsSlashHandler.name);
+  }
+
   @SlashCommand({
     name: 'bulk-save-user-reviews-comments',
     description: 'Bulk Save UserReviews Comments',

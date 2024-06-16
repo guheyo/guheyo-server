@@ -14,6 +14,10 @@ export class BulkSaveBidsSlashHandler extends BulkSaveCommentsSlashHandler {
   @Inject()
   protected readonly bidClient: BidClient;
 
+  constructor() {
+    super(BulkSaveBidsSlashHandler.name);
+  }
+
   async saveThread(threadChannel: ThreadChannel) {
     try {
       const messageWithEmbeds = await this.fetchMessagesWithEmbeds(threadChannel);
