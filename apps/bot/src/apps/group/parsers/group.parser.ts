@@ -1,12 +1,14 @@
 import { Parser } from '@app/bot/shared/parsers/parser';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { GroupErrorMessage } from './group.error-message';
 
 @Injectable()
 export class GroupParser extends Parser {
+  private readonly logger = new Logger(GroupParser.name);
+
   parseGroupSlug(channelId: string): string | null {
     const server = this.discordConfigService.findDiscordServerByChannelId(channelId);
     return server?.slug || null;
@@ -28,7 +30,10 @@ export class GroupParser extends Parser {
   parseCategoryId(categoryName: string, group: GroupResponse): string {
     const category = group.categories.find((c) => c.name === categoryName);
 
-    if (!category) throw new RpcException(GroupErrorMessage.NOT_FOUND_CATEGORY);
+    if (!category) {
+      this.logger.log(`Category not found: ${categoryName}`);
+      throw new RpcException(GroupErrorMessage.NOT_FOUND_CATEGORY);
+    }
     return category.id;
   }
 }
