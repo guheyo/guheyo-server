@@ -22,7 +22,7 @@ export class CreateSocialAccountHandler implements ICommandHandler<CreateSocialA
     );
     if (existingSocialAccount) {
       this.logger.error(
-        `Social account creation failed: account already exists. User ID: ${command.userId}, Provider: ${command.provider}, Social ID: ${command.socialId}`,
+        `Social account creation failed: account already exists. Requesting User ID: ${command.userId}, Existing User ID: ${existingSocialAccount.userId}, Provider: ${command.provider}, Social ID: ${command.socialId}`,
       );
       throw new ForbiddenException(SocialAccountErrorMessage.SOCIAL_ACCOUNT_ALREADY_EXISTS);
     }
