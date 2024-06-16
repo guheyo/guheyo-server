@@ -4,7 +4,7 @@ import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { UserReviewClient } from '@app/bot/apps/user-review/clients/user-review.client';
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
-import { Guild, ThreadChannel } from 'discord.js';
+import { ThreadChannel } from 'discord.js';
 import { BulkSaveRequest } from './bulk-save.request';
 import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
 
@@ -15,7 +15,7 @@ export class BulkSaveUserReviewsSlashHandler extends BulkSavePostsSlashHandler {
     super();
   }
 
-  async saveThreadPost(threadPost: ThreadPost, discordGuild: Guild) {
+  async saveThreadPost(threadPost: ThreadPost) {
     try {
       const mentionedUser = await threadPost.starterMessage.mentions.users.first();
       if (!mentionedUser) return;

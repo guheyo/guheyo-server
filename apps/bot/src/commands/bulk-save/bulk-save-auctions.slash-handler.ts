@@ -3,7 +3,7 @@ import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
-import { Guild, ThreadChannel } from 'discord.js';
+import { ThreadChannel } from 'discord.js';
 import { AuctionClient } from '@app/bot/apps/auction/clients/auction.client';
 import { BulkSaveRequest } from './bulk-save.request';
 import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
@@ -17,7 +17,7 @@ export class BulkSaveAuctionsSlashHandler extends BulkSavePostsSlashHandler {
     super();
   }
 
-  async saveThreadPost(threadPost: ThreadPost, discordGuild: Guild) {
+  async saveThreadPost(threadPost: ThreadPost) {
     try {
       const channelId = (threadPost.starterMessage.channel as ThreadChannel).parentId;
       if (!channelId) return;
