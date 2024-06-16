@@ -38,7 +38,10 @@ export abstract class BulkSaveCommentsSlashHandler {
 
   async fetchMessageWithUsers(threadChannel: ThreadChannel): Promise<MessageWithUser[]> {
     const messageCollection = await threadChannel.messages.fetch();
-    const messageWithUsers = await messageCollection.reduce(
+    const messages = messageCollection
+      .filter((message) => message.content)
+      .map((message) => message);
+    const messageWithUsers = await messages.reduce(
       async (cc, message) => [
         ...(await cc),
         {
@@ -58,13 +61,7 @@ export abstract class BulkSaveCommentsSlashHandler {
       .map((message) => message);
   }
 
-  async bulkSave(discordGuild: Guild, guildName: string, categoryName: string, limit: number) {
-    const channelId = this.groupParser.discordConfigService.findCommunityChannelId(
-      guildName,
-      categoryName,
-    );
-    if (!channelId) return;
-
+  async bulkSave(discordGuild: Guild, channelId: string, limit: number) {
     this.discordManager = new DiscordManager(discordGuild);
     const threadChannels = await this.discordManager.fetchThreadChannelsFromForum(channelId, limit);
     await this.bulkSaveThreads(threadChannels);

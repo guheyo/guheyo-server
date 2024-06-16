@@ -7,18 +7,18 @@ import { BulkSaveCommentsSlashHandler } from './bulk-save-comments.slash-handler
 
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
-export class BulkSaveUserReviewCommentsSlashHandler extends BulkSaveCommentsSlashHandler {
+export class BulkSaveAuctionCommentsSlashHandler extends BulkSaveCommentsSlashHandler {
   @SlashCommand({
-    name: 'bulk-save-user-reviews-comments',
-    description: 'Bulk Save UserReviews Comments',
+    name: 'bulk-save-auction-comments',
+    description: 'Bulk Save Auctions Comments',
   })
-  public async onBuckSaveUserReviewComments(
+  public async onBuckSaveAuctionComments(
     @Context() [interaction]: SlashCommandContext,
     @Options() { guildName, categoryName, limit }: BulkSaveRequest,
   ) {
     if (!interaction.guild) return;
 
-    const channelId = this.groupParser.discordConfigService.findCommunityChannelId(
+    const channelId = this.groupParser.discordConfigService.findAuctionChannelId(
       guildName,
       categoryName,
     );
