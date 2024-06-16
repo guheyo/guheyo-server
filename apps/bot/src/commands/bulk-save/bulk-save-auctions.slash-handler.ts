@@ -1,6 +1,6 @@
 import { GroupGuard } from '@app/bot/apps/group/guards/group.guard';
 import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
-import { Injectable, UseGuards } from '@nestjs/common';
+import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { Guild, ThreadChannel } from 'discord.js';
@@ -11,6 +11,8 @@ import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
 export class BulkSaveAuctionsSlashHandler extends BulkSavePostsSlashHandler {
+  private readonly logger = new Logger(BulkSaveAuctionsSlashHandler.name);
+
   constructor(protected readonly auctionClient: AuctionClient) {
     super();
   }
@@ -24,9 +26,8 @@ export class BulkSaveAuctionsSlashHandler extends BulkSavePostsSlashHandler {
       const user = await this.userClient.fetchMyUser('discord', member);
       const group = await this.groupClient.fetchGroup(channelId);
       await this.auctionClient.createAuctionFromPost(user, threadPost, group);
-    } catch (e) {
-      // NOTE: do nothing
-      // console.log(e);
+    } catch (error: any) {
+      this.logger.error(`Failed to save thread post: ${error.message}`, error.stack);
     }
   }
 
