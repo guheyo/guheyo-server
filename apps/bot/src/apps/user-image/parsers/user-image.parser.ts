@@ -32,20 +32,15 @@ export class UserImageParser extends Parser {
       position: 0,
       type,
       refId: userId,
-      userId,
     };
   }
 
-  parseUploadUserImageInputList(
-    userId: string,
-    message: Message,
-    type: string,
-  ): CreateUserImageInput[] {
+  parseUploadUserImageInputList(message: Message, type: string): CreateUserImageInput[] {
     if (!this.hasAttachments(message)) {
       return [];
     }
     let position = 0;
-    const refId = this.parseIdFromMessage(message);
+    const refId = this.parseIdFromMessageId(message.id);
     const createUserImageinputs: CreateUserImageInput[] = message.attachments.map((attachment) => {
       const input = {
         id: this.generateUUID(),
@@ -59,7 +54,6 @@ export class UserImageParser extends Parser {
         position,
         type,
         refId,
-        userId,
       };
       position += 1;
       return input;

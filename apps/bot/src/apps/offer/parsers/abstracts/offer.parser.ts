@@ -22,7 +22,7 @@ export abstract class OfferParser extends GroupParser {
 
   parseDeleteOfferArgs(message: Message | PartialMessage): DeleteOfferArgs {
     return {
-      id: this.parseIdFromMessage(message),
+      id: this.parseIdFromMessageId(message.id),
     };
   }
 
@@ -36,12 +36,8 @@ export abstract class OfferParser extends GroupParser {
     return categoryName;
   }
 
-  parseCategoryId(message: Message, group: GroupResponse): string {
+  parseCategoryNameFromMessage(message: Message): string {
     const channel = message.channel as TextChannel;
-    const categoryName = this.parseCategoryName(channel.name);
-    const category = group.categories.find((c) => c.name === categoryName);
-
-    if (!category) throw new RpcException(OfferErrorMessage.NOT_FOUND_CATEGORY);
-    return category.id;
+    return this.parseCategoryName(channel.name);
   }
 }

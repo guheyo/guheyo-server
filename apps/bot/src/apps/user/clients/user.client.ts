@@ -110,7 +110,13 @@ export class UserClient extends UserImageClient {
       userId,
     });
     await this.commandBus.execute(
-      new CreateUserImageCommand(new CreateUserImageCommand(createUserImageInput)),
+      new CreateUserImageCommand({
+        input: new CreateUserImageCommand({
+          input: createUserImageInput,
+          userId,
+        }),
+        userId,
+      }),
     );
     await this.commandBus.execute(
       new UpdateUserCommand({

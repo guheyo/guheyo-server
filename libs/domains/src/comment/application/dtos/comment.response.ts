@@ -18,8 +18,8 @@ export class CommentResponse {
   @Field(() => ID)
   postId: string;
 
-  @Field(() => String)
-  content: string;
+  @Field(() => String, { nullable: true })
+  content: string | null;
 
   @Field(() => [ReactionResponse])
   reactions: ReactionResponse[];

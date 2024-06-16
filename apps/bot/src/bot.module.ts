@@ -17,6 +17,7 @@ import { TAG_PROVIDERS } from '@lib/domains/tag/tag.providers';
 import { USER_REVIEW_PROVIDERS } from '@lib/domains/user-review/user-review.providers';
 import { COMMENT_PROVIDERS } from '@lib/domains/comment/comment.providers';
 import { DISCORD_WEBHOOK_PROVIDERS } from '@lib/domains/discord-webhook/discord-webhook.providers';
+import { AUCTION_PROVIDERS } from '@lib/domains/auction/auction.providers';
 import { NecordConfigService } from './necord/necord.config.service';
 import { SLASH_HANDLERS } from './commands/slash-handlers';
 import { EVENT_HANDLERS } from './events/event-handlers';
@@ -60,6 +61,7 @@ import { DiscordConfigService } from './shared/discord/discord.config.service';
     ...SLASH_HANDLERS,
     ...EVENT_HANDLERS,
     ...DISCORD_WEBHOOK_PROVIDERS,
+    ...AUCTION_PROVIDERS,
     DiscordConfigService,
     DiscordIdConverter,
     {

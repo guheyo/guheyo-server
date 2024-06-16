@@ -1,5 +1,6 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { OfferPreviewResponse } from '@lib/domains/offer/application/dtos/offer-preview.response';
+import { AuctionPreviewResponse } from '@lib/domains/auction/application/dtos/auction-preview.response';
 
 @ObjectType()
 export class GroupPreviewResponse {
@@ -20,6 +21,9 @@ export class GroupPreviewResponse {
 
   @Field(() => Int)
   position: number;
+
+  @Field(() => [AuctionPreviewResponse])
+  auctions: AuctionPreviewResponse[];
 
   @Field(() => [OfferPreviewResponse])
   sells: OfferPreviewResponse[];

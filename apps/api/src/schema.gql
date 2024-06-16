@@ -127,7 +127,7 @@ input CommentReportInput {
 }
 
 type CommentResponse {
-  content: String!
+  content: String
   createdAt: DateTime!
   id: ID!
   parentId: ID
@@ -137,9 +137,10 @@ type CommentResponse {
 }
 
 type CommentWithAuthorResponse {
-  content: String!
+  content: String
   createdAt: DateTime!
   id: ID!
+  images: [UserImageResponse!]!
   parentId: ID
   postId: ID!
   reactions: [ReactionResponse!]!
@@ -155,6 +156,7 @@ type CommentWithAuthorResponseEdge {
 input CreateAuctionInput {
   content: String!
   createdAt: DateTime!
+  extendedEndDate: DateTime!
   id: ID!
   originalEndDate: DateTime!
   post: CreatePostInput!
@@ -164,7 +166,7 @@ input CreateAuctionInput {
 }
 
 input CreateCommentInput {
-  content: String!
+  content: String
   createdAt: DateTime
   id: ID!
   postId: ID!
@@ -181,7 +183,7 @@ input CreateGroupInput {
 }
 
 input CreateManyUserImageInput {
-  data: [CreateUserImageInput!]!
+  createUserImageInputs: [CreateUserImageInput!]!
 }
 
 input CreateOfferInput {
@@ -238,7 +240,6 @@ input CreateRoleInput {
 input CreateSignedUrlInput {
   filename: String!
   type: String!
-  userId: String!
 }
 
 input CreateUserImageInput {
@@ -252,7 +253,6 @@ input CreateUserImageInput {
   size: Int
   type: String!
   url: String!
-  userId: ID!
   width: Int
 }
 
@@ -290,6 +290,7 @@ type EmojiResponse {
 }
 
 type GroupPreviewResponse {
+  auctions: [AuctionPreviewResponse!]!
   buys: [OfferPreviewResponse!]!
   description: String
   icon: String
@@ -709,6 +710,7 @@ type SocialUserResponse {
 }
 
 type Subscription {
+  auctionUpdated(auctionId: ID!): UpdatedAuctionResponse!
   bidCanceled(auctionId: ID!): CancelBidResponse!
   bidPlaced(auctionId: ID!): BidResponse!
   commentCreated(postId: ID!): CommentWithAuthorResponse!
@@ -743,7 +745,7 @@ input UpdateAuctionInput {
 }
 
 input UpdateCommentInput {
-  content: String!
+  content: String
   id: ID!
 }
 
@@ -802,6 +804,13 @@ input UpdateUserInput {
   name: String
   phoneNumber: String
   username: String
+}
+
+type UpdatedAuctionResponse {
+  extendedEndDate: DateTime!
+  id: ID!
+  status: String!
+  updatedAt: DateTime!
 }
 
 type UpdatedCommentResponse {

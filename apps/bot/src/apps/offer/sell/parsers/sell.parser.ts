@@ -6,6 +6,7 @@ import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { OFFER, OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
 import { SHIPPING_FREE } from '@lib/shared/shipping/shipping.constants';
+import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { OfferParser } from '../../parsers/abstracts/offer.parser';
 import { SellErrorMessage } from './sell.error-message';
 
@@ -20,20 +21,22 @@ export class SellParser extends OfferParser {
 
   parseCreateOfferInput(message: Message, group: GroupResponse): CreateOfferInput {
     const match = this.matchFormat(message.content);
+    const channelName = this.parseCategoryNameFromMessage(message);
     const post = {
-      id: this.parsePostIdFromMessage(message),
+      id: this.parsePostIdFromMessageId(message.id),
       createdAt: message.createdAt,
       updatedAt: message.editedAt || message.createdAt,
       type: OFFER,
       title: match[1].trim(),
       groupId: group.id,
-      categoryId: this.parseCategoryId(message, group),
+      categoryId: this.parseCategoryId(channelName, group),
       tagIds: [],
+      userAgent: DISCORD,
     };
 
     return {
       post,
-      id: this.parseIdFromMessage(message),
+      id: this.parseIdFromMessageId(message.id),
       businessFunction: 'sell',
       name0: match[1].trim(),
       content: match[3].trim(),
@@ -52,7 +55,7 @@ export class SellParser extends OfferParser {
     };
     return {
       post,
-      id: this.parseIdFromMessage(message),
+      id: this.parseIdFromMessageId(message.id),
       name0: match[1].trim(),
       content: match[3].trim(),
       price: this.parsePrice(match[2]),

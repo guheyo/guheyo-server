@@ -13,7 +13,7 @@ export class UpdateUserImageHandler implements ICommandHandler<UpdateUserImageCo
   ) {}
 
   async execute(command: UpdateUserImageCommand): Promise<void> {
-    const userImage = await this.userImageLoadPort.findById(command.id);
+    const userImage = await this.userImageLoadPort.find({ id: command.id, userId: command.userId });
     if (!userImage) throw new NotFoundException(UserImageErrorMessage.USER_IMAGE_NOT_FOUND);
 
     userImage.updatePosition(command.position);

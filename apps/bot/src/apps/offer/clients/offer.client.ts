@@ -43,13 +43,12 @@ export abstract class OfferClient extends UserImageClient {
       throw new RpcException(OfferErrorMessage.NOT_FOUND_OFFER_ATTACHMENTS);
     }
     const uploadUserImageInputList = this.userImageParser.parseUploadUserImageInputList(
-      user.id,
       message,
       OFFER,
     );
     const createOfferInput = this.offerParser.parseCreateOfferInput(message, group);
 
-    await this.uploadAndCreateAttachments(uploadUserImageInputList, OFFER);
+    await this.uploadAndCreateAttachments(user, uploadUserImageInputList, OFFER);
     await this.createOffer({ input: createOfferInput, user });
     this.logger.log(`${this.businessFunction}<@${createOfferInput.id}> created`);
   }

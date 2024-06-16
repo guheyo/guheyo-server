@@ -91,6 +91,12 @@ export class DiscordConfigService {
     return channel?.id || null;
   }
 
+  findAuctionChannelId(guildName: string, channelName: string): string | null {
+    const server = this.findDiscordServer(guildName);
+    const channel = server?.auction.channels.find((c) => c.name === channelName);
+    return channel?.id || null;
+  }
+
   findCommandChannel(guildName: string, name: string): DiscordChannel | null {
     const servers = this.getDiscordServers();
     const server = servers.find((s) => s.name === guildName);

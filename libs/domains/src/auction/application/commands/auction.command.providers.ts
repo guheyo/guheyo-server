@@ -3,6 +3,10 @@ import { UpdateAuctionHandler } from './update-auction/update-auction.handler';
 import { DeleteAuctionHandler } from './delete-auction/delete-auction.handler';
 import { PlaceBidHandler } from './place-bid/place-bid.handler';
 import { CancelBidHandler } from './cancel-bid/cancel-bid.handler';
+import { InitialScheduleAuctionEndHandler } from './initial-schedule-auction-end/initial-schedule-auction-end.handler';
+import { ReScheduleAuctionEndHandler } from './re-schedule-auction-end/re-schedule-auction-end.handler';
+import { ScheduleAuctionEndingSoonHandler } from './schedule-auction-ending-soon/schedule-auction-ending-soon.handler';
+import { CreateBidsHandler } from './create-bids/create-bids.handler';
 
 export const AUCTION_COMMAND_PROVIDERS = [
   CreateAuctionHandler,
@@ -10,4 +14,8 @@ export const AUCTION_COMMAND_PROVIDERS = [
   DeleteAuctionHandler,
   PlaceBidHandler,
   CancelBidHandler,
+  InitialScheduleAuctionEndHandler,
+  ReScheduleAuctionEndHandler,
+  ScheduleAuctionEndingSoonHandler,
+  CreateBidsHandler,
 ];

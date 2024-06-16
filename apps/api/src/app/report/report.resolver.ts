@@ -11,10 +11,7 @@ import { FindReportPreviewsArgs } from '@lib/domains/report/application/queries/
 import { FindReportPreviewsQuery } from '@lib/domains/report/application/queries/find-report-previews/find-report-previews.query';
 import { CommentReportInput } from '@lib/domains/report/application/commands/comment-report/comment-report.input';
 import { CommentReportCommand } from '@lib/domains/report/application/commands/comment-report/comment-report.command';
-import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
-import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
-import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
@@ -26,6 +23,7 @@ import { FindReportCommentQuery } from '@lib/domains/report/application/queries/
 import { UpdateReportCommentInput } from '@lib/domains/report/application/commands/update-report-comment/update-report-comment.input';
 import { UpdateReportCommentCommand } from '@lib/domains/report/application/commands/update-report-comment/update-report-comment.command';
 import { LastReportResponse } from '@lib/domains/report/application/dtos/last-report.response';
+import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -70,9 +68,11 @@ export class ReportResolver {
     return this.queryBus.execute(query);
   }
 
-  @BlocklistRoleNames([...ROOT_BLOCKLIST_ROLE_NAMES])
-  @AllowlistRoleNames([])
-  @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => String)
   async createReport(
     @Args('input') input: CreateReportInput,
@@ -82,7 +82,11 @@ export class ReportResolver {
     return input.id;
   }
 
-  @UseGuards(RequiredJwtUserGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => ReportCommentResponse)
   async commentReport(
     @Args('input') input: CommentReportInput,
@@ -91,7 +95,11 @@ export class ReportResolver {
     return this.commandBus.execute(new CommentReportCommand({ input, user }));
   }
 
-  @UseGuards(RequiredJwtUserGuard)
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [],
+    allowlistRoleNames: [],
+  })
   @Mutation(() => ReportCommentResponse)
   async updateReportComment(
     @Args('input') input: UpdateReportCommentInput,

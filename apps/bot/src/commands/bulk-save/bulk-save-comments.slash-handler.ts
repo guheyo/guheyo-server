@@ -25,17 +25,7 @@ export abstract class BulkSaveCommentsSlashHandler {
 
   async saveThread(threadChannel: ThreadChannel) {
     try {
-      const messageCollection = await threadChannel.messages.fetch();
-      const messageWithUsers = await messageCollection.reduce(
-        async (cc, message) => [
-          ...(await cc),
-          {
-            message,
-            user: await this.userClient.fetchMyUser('discord', message.author),
-          },
-        ],
-        Promise.resolve<MessageWithUser[]>([]),
-      );
+      const messageWithUsers = await this.fetchMessageWithUsers(threadChannel);
       await this.commentClient.createCommentsFromMessageWithUsers(
         threadChannel,
         messageWithUsers.splice(0, messageWithUsers.length - 1),
@@ -46,13 +36,32 @@ export abstract class BulkSaveCommentsSlashHandler {
     }
   }
 
-  async bulkSave(discordGuild: Guild, guildName: string, categoryName: string, limit: number) {
-    const channelId = this.groupParser.discordConfigService.findCommunityChannelId(
-      guildName,
-      categoryName,
+  async fetchMessageWithUsers(threadChannel: ThreadChannel): Promise<MessageWithUser[]> {
+    const messageCollection = await threadChannel.messages.fetch();
+    const messages = messageCollection
+      .filter((message) => message.content)
+      .map((message) => message);
+    const messageWithUsers = await messages.reduce(
+      async (cc, message) => [
+        ...(await cc),
+        {
+          message,
+          user: await this.userClient.fetchMyUser('discord', message.author),
+        },
+      ],
+      Promise.resolve<MessageWithUser[]>([]),
     );
-    if (!channelId) return;
+    return messageWithUsers;
+  }
 
+  async fetchMessagesWithEmbeds(threadChannel: ThreadChannel) {
+    const messageCollection = await threadChannel.messages.fetch();
+    return messageCollection
+      .filter((message) => message.embeds.length > 0 && !!message.embeds[0].description)
+      .map((message) => message);
+  }
+
+  async bulkSave(discordGuild: Guild, channelId: string, limit: number) {
     this.discordManager = new DiscordManager(discordGuild);
     const threadChannels = await this.discordManager.fetchThreadChannelsFromForum(channelId, limit);
     await this.bulkSaveThreads(threadChannels);

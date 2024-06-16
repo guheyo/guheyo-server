@@ -8,5 +8,5 @@ export class CreateManyUserImageInput {
   @ValidateNested()
   @Type(() => CreateUserImageInput)
   @Field(() => [CreateUserImageInput])
-  data: CreateUserImageInput[];
+  createUserImageInputs: CreateUserImageInput[];
 }

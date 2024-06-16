@@ -23,10 +23,7 @@ export class BulkSaveUserReviewsSlashHandler extends BulkSavePostsSlashHandler {
       const channelId = (threadPost.starterMessage.channel as ThreadChannel).parentId;
       if (!channelId) return;
 
-      const member = await this.discordManager.fetchMember(
-        discordGuild,
-        threadPost.starterMessage.author,
-      );
+      const member = await this.discordManager.fetchMember(threadPost.starterMessage.author.id);
       const user = await this.userClient.fetchMyUser('discord', member);
       const group = await this.groupClient.fetchGroup(channelId);
       const tags = await this.groupClient.fetchTags();
@@ -52,6 +49,13 @@ export class BulkSaveUserReviewsSlashHandler extends BulkSavePostsSlashHandler {
     @Options() { guildName, categoryName, limit }: BulkSaveRequest,
   ) {
     if (!interaction.guild) return;
-    await this.bulkSave(interaction.guild, guildName, categoryName, limit);
+
+    const channelId = this.groupParser.discordConfigService.findCommunityChannelId(
+      guildName,
+      categoryName,
+    );
+    if (!channelId) return;
+
+    await this.bulkSave(interaction.guild, channelId, limit);
   }
 }

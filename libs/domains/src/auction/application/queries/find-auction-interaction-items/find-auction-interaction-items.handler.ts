@@ -3,6 +3,7 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { plainToClass } from 'class-transformer';
 import { CommentWithAuthorResponse } from '@lib/domains/comment/application/dtos/comment-with-author.response';
+import { COMMENT } from '@lib/domains/comment/domain/comment.constants';
 import { FindAuctionInteractionItemsQuery } from './find-auction-interaction-items.query';
 import { AuctionInteractionItemUnion } from '../../dtos/auction-interaction-item.response';
 import { PaginatedAuctionInteractionItemsResponse } from './paginated-auction-interaction-items.response';
@@ -58,7 +59,9 @@ export class FindAuctionInteractionItemsHandler extends PrismaQueryHandler {
         : [];
 
     const comments =
-      query.where?.view === 'newest' || query.where?.view === 'comment'
+      query.where?.view === 'newest' ||
+      query.where?.view === 'comment' ||
+      query.where?.view === 'sellerComment'
         ? await this.prismaService.comment.findMany({
             where: {
               ...where,
@@ -95,9 +98,24 @@ export class FindAuctionInteractionItemsHandler extends PrismaQueryHandler {
           })
         : [];
 
+    const commentWithImages = await Promise.all(
+      comments.map(async (comment) => ({
+        ...comment,
+        images: await this.prismaService.userImage.findMany({
+          where: {
+            type: COMMENT,
+            refId: comment.id,
+          },
+          orderBy: {
+            position: 'asc',
+          },
+        }),
+      })),
+    );
+
     const auctionInteractionItems = [
       ...bids.map((bid) => plainToClass(BidResponse, bid)),
-      ...comments.map((comment) => plainToClass(CommentWithAuthorResponse, comment)),
+      ...commentWithImages.map((comment) => plainToClass(CommentWithAuthorResponse, comment)),
     ]
       .sort((a, b) =>
         query.orderBy?.createdAt === 'asc'

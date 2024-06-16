@@ -12,6 +12,8 @@ export class CreateAuctionCommand implements ICommand {
 
   originalEndDate: Date;
 
+  extendedEndDate: Date;
+
   content: string;
 
   shippingCost: number;
@@ -27,6 +29,7 @@ export class CreateAuctionCommand implements ICommand {
     this.id = input.id;
     this.createdAt = input.createdAt;
     this.originalEndDate = input.originalEndDate;
+    this.extendedEndDate = input.extendedEndDate;
     this.content = input.content;
     this.shippingCost = input.shippingCost;
     this.shippingType = input.shippingType;

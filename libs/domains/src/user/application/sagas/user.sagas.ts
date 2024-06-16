@@ -45,7 +45,13 @@ export class UserSagas {
     events$.pipe(
       ofType(AvatarCreatedEvent),
       concatMap((event) =>
-        of(new CreateUserImageCommand(event), new TrackUserImagesCommand(event)),
+        of(
+          new CreateUserImageCommand({
+            input: event,
+            userId: event.userId,
+          }),
+          new TrackUserImagesCommand(event),
+        ),
       ),
     );
 }

@@ -23,6 +23,10 @@ export class CreateAuctionInput {
   @Field(() => Date)
   originalEndDate: Date;
 
+  @IsDate()
+  @Field(() => Date)
+  extendedEndDate: Date;
+
   @IsString()
   @Field(() => String)
   content: string;

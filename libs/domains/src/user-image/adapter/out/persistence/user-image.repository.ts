@@ -1,3 +1,4 @@
+import { UserImageLoadPort } from '@lib/domains/user-image/application/ports/user-image.load.port';
 import { UserImageSavePort } from '@lib/domains/user-image/application/ports/user-image.save.port';
 import { UserImageEntity } from '@lib/domains/user-image/domain/user-image.entity';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
@@ -7,7 +8,7 @@ import _ from 'lodash';
 @Injectable()
 export class UserImageRepository
   extends PrismaRepository<UserImageEntity>
-  implements UserImageSavePort
+  implements UserImageLoadPort, UserImageSavePort
 {
   constructor() {
     super(UserImageEntity);
@@ -17,6 +18,17 @@ export class UserImageRepository
     const userImage = await this.prismaService.userImage.findUnique({
       where: {
         id,
+      },
+    });
+
+    return this.toEntity(userImage);
+  }
+
+  async find({ id, userId }: { id: string; userId: string }): Promise<UserImageEntity | null> {
+    const userImage = await this.prismaService.userImage.findUnique({
+      where: {
+        id,
+        userId,
       },
     });
 

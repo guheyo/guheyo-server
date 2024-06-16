@@ -1,3 +1,12 @@
-import { ByIdCommand } from '@lib/shared/cqrs/commands/by-id/by-id.command';
+import { ICommand } from '@nestjs/cqrs';
 
-export class DeleteUserImageCommand extends ByIdCommand {}
+export class DeleteUserImageCommand implements ICommand {
+  id: string;
+
+  userId: string;
+
+  constructor({ id, userId }: { id: string; userId: string }) {
+    this.id = id;
+    this.userId = userId;
+  }
+}

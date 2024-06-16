@@ -14,10 +14,10 @@ export class ImageService {
 
   constructor(private readonly configService: ConfigService) {
     this.client = new S3Client({
-      region: this.configService.get('s3.region')!,
+      region: this.configService.get('aws.s3.region')!,
       credentials: {
-        accessKeyId: this.configService.get('s3.accessKeyId')!,
-        secretAccessKey: this.configService.get('s3.secretAccessKey')!,
+        accessKeyId: this.configService.get('aws.s3.accessKeyId')!,
+        secretAccessKey: this.configService.get('aws.s3.secretAccessKey')!,
       },
     });
   }
@@ -35,7 +35,7 @@ export class ImageService {
     const key = this.createFileKey(path, filename);
 
     const command = new PutObjectCommand({
-      Bucket: this.configService.get('s3.bucket'),
+      Bucket: this.configService.get('aws.s3.bucket'),
       Key: key,
       ContentType: 'image/*',
     });
@@ -64,7 +64,7 @@ export class ImageService {
     const mimeType = this.parseMimeType(key);
 
     const command = new PutObjectCommand({
-      Bucket: this.configService.get('s3.bucket'),
+      Bucket: this.configService.get('aws.s3.bucket'),
       Key: key,
       ContentType: mimeType,
       Body: file,
@@ -111,7 +111,7 @@ export class ImageService {
   }
 
   private createFileUrl(key: string) {
-    return `${this.configService.get('s3.domain')}/${key}`;
+    return `${this.configService.get('aws.s3.domain')}/${key}`;
   }
 
   private generateUploadPath(type: string, userId: string) {

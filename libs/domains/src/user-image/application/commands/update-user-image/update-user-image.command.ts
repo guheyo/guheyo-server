@@ -6,8 +6,11 @@ export class UpdateUserImageCommand implements ICommand {
 
   position: number;
 
-  constructor(input: UpdateUserImageInput) {
+  userId: string;
+
+  constructor({ input, userId }: { input: UpdateUserImageInput; userId: string }) {
     this.id = input.id;
     this.position = input.position;
+    this.userId = userId;
   }
 }
