@@ -24,7 +24,7 @@ export class AuctionParser extends GroupParser {
     };
 
     return {
-      id: this.parseIdFromMessage(threadPost.starterMessage),
+      id: this.parseIdFromMessageId(threadPost.starterMessage.id),
       createdAt: post.createdAt,
       originalEndDate: post.createdAt,
       extendedEndDate: post.createdAt,

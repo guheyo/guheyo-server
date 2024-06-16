@@ -36,7 +36,7 @@ export class SwapParser extends OfferParser {
 
     return {
       post,
-      id: this.parseIdFromMessage(message),
+      id: this.parseIdFromMessageId(message.id),
       businessFunction: 'swap',
       name0: match[1].trim(),
       name1: match[2].trim(),
@@ -56,7 +56,7 @@ export class SwapParser extends OfferParser {
     };
     return {
       post,
-      id: this.parseIdFromMessage(message),
+      id: this.parseIdFromMessageId(message.id),
       name0: match[1].trim(),
       name1: match[2].trim(),
       content: match[3].trim(),

@@ -40,7 +40,7 @@ export class UserImageParser extends Parser {
       return [];
     }
     let position = 0;
-    const refId = this.parseIdFromMessage(message);
+    const refId = this.parseIdFromMessageId(message.id);
     const createUserImageinputs: CreateUserImageInput[] = message.attachments.map((attachment) => {
       const input = {
         id: this.generateUUID(),

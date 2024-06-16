@@ -36,7 +36,7 @@ export class SellParser extends OfferParser {
 
     return {
       post,
-      id: this.parseIdFromMessage(message),
+      id: this.parseIdFromMessageId(message.id),
       businessFunction: 'sell',
       name0: match[1].trim(),
       content: match[3].trim(),
@@ -55,7 +55,7 @@ export class SellParser extends OfferParser {
     };
     return {
       post,
-      id: this.parseIdFromMessage(message),
+      id: this.parseIdFromMessageId(message.id),
       name0: match[1].trim(),
       content: match[3].trim(),
       price: this.parsePrice(match[2]),

@@ -31,7 +31,7 @@ export class UserReviewParser extends GroupParser {
     };
 
     return {
-      id: this.parseIdFromMessage(threadPost.starterMessage),
+      id: this.parseIdFromMessageId(threadPost.starterMessage.id),
       type: OFFER,
       reviewedUserId,
       rating: this.parseRating(threadPost.tagNames),
