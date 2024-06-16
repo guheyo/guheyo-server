@@ -25,7 +25,7 @@ export abstract class BulkSaveCommentsSlashHandler {
 
   async saveThread(threadChannel: ThreadChannel) {
     try {
-      const messageWithUsers = await this.parseMessageWithUsers(threadChannel);
+      const messageWithUsers = await this.fetchMessageWithUsers(threadChannel);
       await this.commentClient.createCommentsFromMessageWithUsers(
         threadChannel,
         messageWithUsers.splice(0, messageWithUsers.length - 1),
@@ -36,7 +36,7 @@ export abstract class BulkSaveCommentsSlashHandler {
     }
   }
 
-  async parseMessageWithUsers(threadChannel: ThreadChannel): Promise<MessageWithUser[]> {
+  async fetchMessageWithUsers(threadChannel: ThreadChannel): Promise<MessageWithUser[]> {
     const messageCollection = await threadChannel.messages.fetch();
     const messageWithUsers = await messageCollection.reduce(
       async (cc, message) => [
