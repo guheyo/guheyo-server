@@ -9,6 +9,7 @@ import { UserReviewCreatedEvent } from '@lib/domains/user-review/application/eve
 import { AuctionCreatedEvent } from '@lib/domains/auction/application/events/auction-created/auction-created.event';
 import { EmbedBuilder } from 'discord.js';
 import dayjs from 'dayjs';
+import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { SendDiscordWebhookCommand } from '../commands/send-discord-webhook/send-discord-webhook.command';
 import { DiscordWebhookParser } from '../services/discord-webhook.parser';
 
@@ -20,7 +21,7 @@ export class DiscordWebhookSagas {
   offerCreated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
       ofType(OfferCreatedEvent),
-      filter((event) => event.userAgent !== 'discord'),
+      filter((event) => event.userAgent !== DISCORD),
       filter((event) => !!event.slug),
       filter((event) => includes(OFFER_BUSINESS_FUNCTIONS, event.businessFunction)),
       map((event) => {
@@ -49,7 +50,7 @@ export class DiscordWebhookSagas {
   auctionCreated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
       ofType(AuctionCreatedEvent),
-      filter((event) => event.userAgent !== 'discord'),
+      filter((event) => event.userAgent !== DISCORD),
       filter((event) => !!event.slug),
       map((event) => {
         const unixTimestamp = Math.floor(event.extendedEndDate.getTime() / 1000);
