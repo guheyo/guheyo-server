@@ -25,6 +25,6 @@ export class BidClient extends UserImageClient {
     const bidInputs = this.bidParser.parseCreateBidInputs(threadChannel, bidMessageWithUsers);
     await this.createBids({ bidInputs });
 
-    this.logger.log(`bid<@${bidInputs.length}> created`);
+    this.logger.log(`bid<#${bidInputs.length}> created`);
   }
 }
