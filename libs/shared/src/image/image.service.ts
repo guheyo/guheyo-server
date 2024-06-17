@@ -2,7 +2,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import dayjs from 'dayjs';
+import dayjs from '@lib/shared/dayjs/dayjs-config';
 import axios from 'axios';
 import mimeTypes from 'mime-types';
 import { ImageErrorMessage } from './image.error.message';
