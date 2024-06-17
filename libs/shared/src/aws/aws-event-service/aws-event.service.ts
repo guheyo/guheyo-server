@@ -13,6 +13,6 @@ export abstract class AwsEventService {
   }
 
   protected generateUniqueIdentifier(uuid: string): string {
-    return `${this.prefix}-${uuid.slice(0, 8)}-${dayjs().format('MMDD')}`;
+    return `${this.prefix}-${uuid.slice(0, 8)}-${dayjs().format('YYMMDD')}`;
   }
 }
