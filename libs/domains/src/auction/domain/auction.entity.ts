@@ -138,7 +138,7 @@ export class AuctionEntity extends AggregateRoot {
   }
 
   cancellationTimeout(createdAt: Date) {
-    return dayjs().diff(createdAt, 'minutes') > 10;
+    return dayjs().diff(createdAt, 'seconds') > 30;
   }
 
   calculateRemainingMilliseconds() {
