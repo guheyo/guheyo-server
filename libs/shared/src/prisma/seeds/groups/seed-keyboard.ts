@@ -7,6 +7,7 @@ const CUSTOM_NAME = '커스텀';
 const NORMAL_KEYBOARD_NAME = '기성품';
 const KEYCAP_NAME = '키캡';
 const ARTISAN_NAME = '아티산';
+const SWITCH_NAME = '스위치';
 const ETC_NAME = '기타';
 const REQUEST_NAME = '공임';
 
@@ -15,6 +16,7 @@ const CUSTOM_SLUG = 'custom-keyboard';
 const NORMAL_KEYBOARD_SLUG = 'mechanical-keyboard';
 const KEYCAP_SLUG = 'keycap';
 const ARTISAN_SLUG = 'artisan';
+const SWITCH_SLUG = 'switch';
 const ETC_SLUG = 'etc';
 const REQUEST_SLUG = 'request';
 
@@ -63,15 +65,21 @@ export async function seedKeyboard(prisma: PrismaClient) {
           },
           {
             type: PRODUCT_CATEGORY_TYPE,
+            name: SWITCH_NAME,
+            slug: SWITCH_SLUG,
+            position: 4,
+          },
+          {
+            type: PRODUCT_CATEGORY_TYPE,
             name: ETC_NAME,
             slug: ETC_SLUG,
-            position: 4,
+            position: 5,
           },
           {
             type: PRODUCT_CATEGORY_TYPE,
             name: REQUEST_NAME,
             slug: REQUEST_SLUG,
-            position: 5,
+            position: 6,
           },
         ],
       },
