@@ -19,6 +19,7 @@ export class GroupClient {
     private readonly client: Client,
   ) {}
 
+  // NOTE: This approach is not suitable as multiple guilds may share the same server.
   async fetchGroupByGuildId(guildId: string) {
     const slug = this.groupParser.parseGroupSlugByGuildId(guildId);
     if (!slug) throw new RpcException(GroupErrorMessage.NOT_FOUND_GROUP_SLUG);
