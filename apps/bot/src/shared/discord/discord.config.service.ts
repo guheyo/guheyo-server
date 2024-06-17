@@ -53,7 +53,7 @@ export class DiscordConfigService {
     return servers.find((server) => this.findAllChannelIds(server).includes(channelId)) || null;
   }
 
-  findDiscordServer(guildName: string): DiscordServer | null {
+  findDiscordServerByName(guildName: string): DiscordServer | null {
     const servers = this.getDiscordServers();
     return servers.find((server) => server.name === guildName) || null;
   }
@@ -75,7 +75,7 @@ export class DiscordConfigService {
   }
 
   findMarketChannelIds(guildName: string, marketChannelType: MarketChannelType): string[] {
-    const server = this.findDiscordServer(guildName);
+    const server = this.findDiscordServerByName(guildName);
     const channels = server?.market[marketChannelType].channels || [];
     return channels.map((c) => c.id);
   }
@@ -85,19 +85,19 @@ export class DiscordConfigService {
     marketChannelType: MarketChannelType,
     categoryName: string,
   ): string | null {
-    const server = this.findDiscordServer(guildName);
+    const server = this.findDiscordServerByName(guildName);
     const channel = server?.market[marketChannelType].channels.find((c) => c.name === categoryName);
     return channel ? channel.id : null;
   }
 
   findCommunityChannelId(guildName: string, channelName: string): string | null {
-    const server = this.findDiscordServer(guildName);
+    const server = this.findDiscordServerByName(guildName);
     const channel = server?.community.channels.find((c) => c.name === channelName);
     return channel?.id || null;
   }
 
   findAuctionChannelId(guildName: string, channelName: string): string | null {
-    const server = this.findDiscordServer(guildName);
+    const server = this.findDiscordServerByName(guildName);
     const channel = server?.auction.channels.find((c) => c.name === channelName);
     return channel?.id || null;
   }
