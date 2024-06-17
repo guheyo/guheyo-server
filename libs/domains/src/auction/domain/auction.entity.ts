@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import dayjs from 'dayjs';
+import dayjs from '@lib/shared/dayjs/dayjs-config';
 import { isUndefined, omitBy, pick } from 'lodash';
 import { Type } from 'class-transformer';
 import { PostEntity } from '@lib/domains/post/domain/post.entity';

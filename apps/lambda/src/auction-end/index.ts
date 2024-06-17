@@ -1,7 +1,7 @@
 import { EmbedBuilder, WebhookClient } from 'discord.js';
 import { AUCTION_CLOSED } from '@lib/domains/auction/domain/auction.constants';
 import { PrismaClient } from '@prisma/client';
-import dayjs from 'dayjs';
+import dayjs from '@lib/shared/dayjs/dayjs-config'
 
 export const handler = async (event: any): Promise<void> => {
   const { auctionId, extendedEndDate } = event;
