@@ -14,6 +14,10 @@ export class BulkSaveBidsSlashHandler extends BulkSaveCommentsSlashHandler {
   @Inject()
   protected readonly bidClient: BidClient;
 
+  constructor() {
+    super(BulkSaveBidsSlashHandler.name);
+  }
+
   async saveThread(threadChannel: ThreadChannel) {
     try {
       const messageWithEmbeds = await this.fetchMessagesWithEmbeds(threadChannel);
@@ -25,9 +29,8 @@ export class BulkSaveBidsSlashHandler extends BulkSaveCommentsSlashHandler {
         threadChannel,
         bidMessageWithUsers, // No need to splice since it's all embed messages
       );
-    } catch (e) {
-      // NOTE: do nothing
-      // console.log(e);
+    } catch (e: any) {
+      this.logger.error(`Error in saveThread for threadChannel ID: ${threadChannel.id}`, e.stack);
     }
   }
 
@@ -36,8 +39,8 @@ export class BulkSaveBidsSlashHandler extends BulkSaveCommentsSlashHandler {
   ): Promise<BidMessageWithUser[]> {
     const results = await Promise.all(
       messageWithSocialIdAndPrices.map(async (messageWithSocialIdAndPrice) => {
-        const member = await this.discordManager.fetchMember(messageWithSocialIdAndPrice.socialId);
-        const user = await this.userClient.fetchMyUser('discord', member);
+        const discordUser = await this.userClient.fetchUser(messageWithSocialIdAndPrice.socialId);
+        const user = await this.userClient.fetchMyUser('discord', discordUser);
         return {
           message: messageWithSocialIdAndPrice.message,
           price: messageWithSocialIdAndPrice.price,
@@ -49,6 +52,7 @@ export class BulkSaveBidsSlashHandler extends BulkSaveCommentsSlashHandler {
   }
 
   async bulkSaveThreads(threadChannels: ThreadChannel[]) {
+    this.logger.log(`Total thread channels: ${threadChannels.length}`);
     return threadChannels.map(async (threadChannel) => this.saveThread(threadChannel));
   }
 

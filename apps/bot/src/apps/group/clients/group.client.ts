@@ -19,8 +19,8 @@ export class GroupClient {
     private readonly client: Client,
   ) {}
 
-  async fetchGroup(channelId: string) {
-    const slug = this.groupParser.parseGroupSlug(channelId);
+  async fetchGroup(guildId: string) {
+    const slug = this.groupParser.parseGroupSlugByGuildId(guildId);
     if (!slug) throw new RpcException(GroupErrorMessage.NOT_FOUND_GROUP_SLUG);
 
     const group = await this.findGroup(slug);

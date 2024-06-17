@@ -4,7 +4,8 @@ import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { UserReviewClient } from '@app/bot/apps/user-review/clients/user-review.client';
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
-import { Guild, ThreadChannel } from 'discord.js';
+import { ThreadChannel } from 'discord.js';
+import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { BulkSaveRequest } from './bulk-save.request';
 import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
 
@@ -12,10 +13,10 @@ import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
 @Injectable()
 export class BulkSaveUserReviewsSlashHandler extends BulkSavePostsSlashHandler {
   constructor(protected readonly userReviewClient: UserReviewClient) {
-    super();
+    super(BulkSaveUserReviewsSlashHandler.name);
   }
 
-  async saveThreadPost(threadPost: ThreadPost, discordGuild: Guild) {
+  async saveThreadPost(threadPost: ThreadPost, group: GroupResponse) {
     try {
       const mentionedUser = await threadPost.starterMessage.mentions.users.first();
       if (!mentionedUser) return;
@@ -23,9 +24,8 @@ export class BulkSaveUserReviewsSlashHandler extends BulkSavePostsSlashHandler {
       const channelId = (threadPost.starterMessage.channel as ThreadChannel).parentId;
       if (!channelId) return;
 
-      const member = await this.discordManager.fetchMember(threadPost.starterMessage.author.id);
-      const user = await this.userClient.fetchMyUser('discord', member);
-      const group = await this.groupClient.fetchGroup(channelId);
+      const { author } = threadPost.starterMessage;
+      const user = await this.userClient.fetchMyUser('discord', author);
       const tags = await this.groupClient.fetchTags();
       await this.userReviewClient.createUserReviewFromPost(
         user,
@@ -34,9 +34,8 @@ export class BulkSaveUserReviewsSlashHandler extends BulkSavePostsSlashHandler {
         group,
         tags,
       );
-    } catch (e) {
-      // NOTE: do nothing
-      // console.log(e);
+    } catch (error: any) {
+      this.logger.error(`Failed to save thread post: ${error.message}`, error.stack);
     }
   }
 
