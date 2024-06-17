@@ -5,6 +5,7 @@ import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { ThreadChannel } from 'discord.js';
 import { AuctionClient } from '@app/bot/apps/auction/clients/auction.client';
+import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { BulkSaveRequest } from './bulk-save.request';
 import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
 
@@ -15,14 +16,13 @@ export class BulkSaveAuctionsSlashHandler extends BulkSavePostsSlashHandler {
     super(BulkSaveAuctionsSlashHandler.name);
   }
 
-  async saveThreadPost(threadPost: ThreadPost) {
+  async saveThreadPost(threadPost: ThreadPost, group: GroupResponse) {
     try {
       const channelId = (threadPost.starterMessage.channel as ThreadChannel).parentId;
       if (!channelId) return;
 
       const { author } = threadPost.starterMessage;
       const user = await this.userClient.fetchMyUser('discord', author);
-      const group = await this.groupClient.fetchGroup(channelId);
       await this.auctionClient.createAuctionFromPost(user, threadPost, group);
     } catch (error: any) {
       this.logger.error(`Failed to save thread post: ${error.message}`, error.stack);

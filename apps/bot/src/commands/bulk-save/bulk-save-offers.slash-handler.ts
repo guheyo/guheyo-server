@@ -7,6 +7,7 @@ import { Guild, Message } from 'discord.js';
 import { MarketChannelType } from '@app/bot/shared/types/market-channel.type';
 import { OfferClient } from '@app/bot/apps/offer/clients/offer.client';
 import { PostClient } from '@app/bot/apps/post/clients/post.client';
+import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 
 @Injectable()
 export abstract class BulkSaveOffersSlashHandler {
@@ -48,19 +49,19 @@ export abstract class BulkSaveOffersSlashHandler {
       channelIds = channelId ? [channelId] : [];
     }
     this.discordManager = new DiscordManager(discordGuild);
+    const group = await this.groupClient.fetchGroup(discordGuild.id);
     const messages = await this.discordManager.fetchMessagesFromChannels(channelIds, limit);
     const nonExistingMessages = await this.postClient.findNonExistingMessages(messages);
-    await this.bulkSaveMessages(nonExistingMessages);
+    await this.bulkSaveMessages(nonExistingMessages, group);
   }
 
-  async bulkSaveMessages(messages: Message[]) {
-    return messages.map(async (message) => this.saveMessage(message));
+  async bulkSaveMessages(messages: Message[], group: GroupResponse) {
+    return messages.map(async (message) => this.saveMessage(message, group));
   }
 
-  async saveMessage(message: Message) {
+  async saveMessage(message: Message, group: GroupResponse) {
     try {
       const user = await this.userClient.fetchMyUser('discord', message.author);
-      const group = await this.groupClient.fetchGroup(message.channelId);
       await this.offerClient.createOfferFromMessage(user, message, group);
     } catch (e) {
       // NOTE: do nothing
