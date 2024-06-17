@@ -1,4 +1,4 @@
-import { Collection, GuildMember, PartialUser, Role, RoleManager, User } from 'discord.js';
+import { Client, Collection, GuildMember, PartialUser, Role, RoleManager, User } from 'discord.js';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuid4 } from 'uuid';
 import pLimit from 'p-limit';
@@ -25,9 +25,16 @@ import { MyUserWithMember } from '../interfaces/user.interfaces';
 export class UserClient extends UserImageClient {
   private concurrencyLimit: pLimit.Limit;
 
-  constructor(public readonly userParser: UserParser) {
+  constructor(
+    public readonly userParser: UserParser,
+    private readonly client: Client,
+  ) {
     super();
     this.concurrencyLimit = pLimit(25);
+  }
+
+  async fetchUser(discordUserId: string): Promise<User> {
+    return this.client.users.fetch(discordUserId);
   }
 
   async fetchMyUser(provider: string, memberOrUser: GuildMember | User): Promise<MyUserResponse> {
