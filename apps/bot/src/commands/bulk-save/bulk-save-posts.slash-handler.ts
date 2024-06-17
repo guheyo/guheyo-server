@@ -6,6 +6,7 @@ import { GroupClient } from '@app/bot/apps/group/clients/group.client';
 import { Guild } from 'discord.js';
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { PostClient } from '@app/bot/apps/post/clients/post.client';
+import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 
 @Injectable()
 export abstract class BulkSavePostsSlashHandler {
@@ -29,15 +30,16 @@ export abstract class BulkSavePostsSlashHandler {
     this.logger = new Logger(context);
   }
 
-  abstract saveThreadPost(threadPost: ThreadPost): void;
+  abstract saveThreadPost(threadPost: ThreadPost, group: GroupResponse): void;
 
   async bulkSave(discordGuild: Guild, channelId: string, limit: number) {
     this.discordManager = new DiscordManager(discordGuild);
+    const group = await this.groupClient.fetchGroup(discordGuild.id);
     const threadPosts = await this.discordManager.fetchThreadPostsFromForum(channelId, limit);
     const nonExistingThreadPosts = await this.postClient.findNonExistingThreadPosts(threadPosts);
     this.logThreadPostCounts(threadPosts.length, nonExistingThreadPosts.length);
 
-    await this.bulkSaveThreadPosts(nonExistingThreadPosts);
+    await this.bulkSaveThreadPosts(nonExistingThreadPosts, group);
   }
 
   private logThreadPostCounts(totalPosts: number, nonExistingPosts: number): void {
@@ -45,7 +47,7 @@ export abstract class BulkSavePostsSlashHandler {
     this.logger.log(`Non-existing thread posts: ${nonExistingPosts}`);
   }
 
-  async bulkSaveThreadPosts(threadPosts: ThreadPost[]) {
-    return threadPosts.map(async (threadPost) => this.saveThreadPost(threadPost));
+  async bulkSaveThreadPosts(threadPosts: ThreadPost[], group: GroupResponse) {
+    return threadPosts.map(async (threadPost) => this.saveThreadPost(threadPost, group));
   }
 }
