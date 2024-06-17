@@ -19,8 +19,27 @@ export class GroupClient {
     private readonly client: Client,
   ) {}
 
-  async fetchGroup(guildId: string) {
+  // NOTE: This approach is not suitable as multiple guilds may share the same server.
+  async fetchGroupByGuildId(guildId: string) {
     const slug = this.groupParser.parseGroupSlugByGuildId(guildId);
+    if (!slug) throw new RpcException(GroupErrorMessage.NOT_FOUND_GROUP_SLUG);
+
+    const group = await this.findGroup(slug);
+    if (!group) throw new RpcException(GroupErrorMessage.NOT_FOUND_GUILD);
+    return group;
+  }
+
+  async fetchGroupByGuildName(guildName: string) {
+    const slug = this.groupParser.parseGroupSlugByGuildName(guildName);
+    if (!slug) throw new RpcException(GroupErrorMessage.NOT_FOUND_GROUP_SLUG);
+
+    const group = await this.findGroup(slug);
+    if (!group) throw new RpcException(GroupErrorMessage.NOT_FOUND_GUILD);
+    return group;
+  }
+
+  async fetchGroupByChannelId(channelId: string) {
+    const slug = this.groupParser.parseGroupSlugByChannelId(channelId);
     if (!slug) throw new RpcException(GroupErrorMessage.NOT_FOUND_GROUP_SLUG);
 
     const group = await this.findGroup(slug);

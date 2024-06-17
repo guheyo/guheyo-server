@@ -19,6 +19,11 @@ export class GroupParser extends Parser {
     return server?.slug || null;
   }
 
+  parseGroupSlugByGuildName(guildName: string): string | null {
+    const server = this.discordConfigService.findDiscordServerByName(guildName);
+    return server?.slug || null;
+  }
+
   parseGroupId(channelId: string): string {
     const server = this.discordConfigService.findDiscordServerByChannelId(channelId);
     return this.discordIdConverter.convertIdUsingDiscordNamespace(server?.name || '');
