@@ -49,7 +49,7 @@ export abstract class BulkSaveOffersSlashHandler {
       channelIds = channelId ? [channelId] : [];
     }
     this.discordManager = new DiscordManager(discordGuild);
-    const group = await this.groupClient.fetchGroup(discordGuild.id);
+    const group = await this.groupClient.fetchGroupByGuildName(guildName);
     const messages = await this.discordManager.fetchMessagesFromChannels(channelIds, limit);
     const nonExistingMessages = await this.postClient.findNonExistingMessages(messages);
     await this.bulkSaveMessages(nonExistingMessages, group);
