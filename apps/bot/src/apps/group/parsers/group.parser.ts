@@ -41,7 +41,9 @@ export class GroupParser extends Parser {
     let category = group.categories.find((c) => c.name === categoryName);
 
     if (!category) {
-      this.logger.log(`Category not found: ${categoryName}. Defaulting to '기타'`);
+      this.logger.log(
+        `Category '${categoryName}' not found in Group '${group.name}' Defaulting to 기타`,
+      );
       category = group.categories.find((c) => c.name === '기타');
 
       if (!category) {
