@@ -29,6 +29,15 @@ export class GroupClient {
     return group;
   }
 
+  async fetchGroupByGuildName(guildName: string) {
+    const slug = this.groupParser.parseGroupSlugByGuildName(guildName);
+    if (!slug) throw new RpcException(GroupErrorMessage.NOT_FOUND_GROUP_SLUG);
+
+    const group = await this.findGroup(slug);
+    if (!group) throw new RpcException(GroupErrorMessage.NOT_FOUND_GUILD);
+    return group;
+  }
+
   async fetchGroupByChannelId(channelId: string) {
     const slug = this.groupParser.parseGroupSlugByChannelId(channelId);
     if (!slug) throw new RpcException(GroupErrorMessage.NOT_FOUND_GROUP_SLUG);
