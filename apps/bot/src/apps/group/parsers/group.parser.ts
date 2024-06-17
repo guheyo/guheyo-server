@@ -28,11 +28,15 @@ export class GroupParser extends Parser {
   }
 
   parseCategoryId(categoryName: string, group: GroupResponse): string {
-    const category = group.categories.find((c) => c.name === categoryName);
+    let category = group.categories.find((c) => c.name === categoryName);
 
     if (!category) {
-      this.logger.log(`Category not found: ${categoryName}`);
-      throw new RpcException(GroupErrorMessage.NOT_FOUND_CATEGORY);
+      this.logger.log(`Category not found: ${categoryName}. Defaulting to '기타'`);
+      category = group.categories.find((c) => c.name === '기타');
+
+      if (!category) {
+        throw new RpcException(GroupErrorMessage.NOT_FOUND_DEFAULT_CATEGORY);
+      }
     }
     return category.id;
   }
