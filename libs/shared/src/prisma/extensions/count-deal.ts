@@ -1,6 +1,6 @@
 import { FindOfferCountArgs } from '@lib/domains/offer/application/queries/find-offer-count/find-offer-count.args';
 import { Prisma, PrismaClient } from '@prisma/client';
-import dayjs from '@lib/shared/dayjs/dayjs-config';
+import dayjs from 'dayjs';
 
 export const countOffer = (prisma: PrismaClient) =>
   Prisma.defineExtension({
