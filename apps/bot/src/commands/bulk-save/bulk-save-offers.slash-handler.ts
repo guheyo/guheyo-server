@@ -50,14 +50,14 @@ export abstract class BulkSaveOffersSlashHandler {
     this.discordManager = new DiscordManager(discordGuild);
     const messages = await this.discordManager.fetchMessagesFromChannels(channelIds, limit);
     const nonExistingMessages = await this.postClient.findNonExistingMessages(messages);
-    await this.bulkSaveMessages(nonExistingMessages, discordGuild);
+    await this.bulkSaveMessages(nonExistingMessages);
   }
 
-  async bulkSaveMessages(messages: Message[], discordGuild: Guild) {
-    return messages.map(async (message) => this.saveMessage(message, discordGuild));
+  async bulkSaveMessages(messages: Message[]) {
+    return messages.map(async (message) => this.saveMessage(message));
   }
 
-  async saveMessage(message: Message, discordGuild: Guild) {
+  async saveMessage(message: Message) {
     try {
       const user = await this.userClient.fetchMyUser('discord', message.author);
       const group = await this.groupClient.fetchGroup(message.channelId);
