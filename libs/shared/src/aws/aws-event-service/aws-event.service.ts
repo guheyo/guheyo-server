@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import dayjs from '@lib/shared/dayjs/dayjs-config';
+import dayjs from 'dayjs';
 
 @Injectable()
 export abstract class AwsEventService {
