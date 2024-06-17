@@ -52,6 +52,7 @@ export class BulkSaveBidsSlashHandler extends BulkSaveCommentsSlashHandler {
   }
 
   async bulkSaveThreads(threadChannels: ThreadChannel[]) {
+    this.logger.log(`Total thread channels: ${threadChannels.length}`);
     return threadChannels.map(async (threadChannel) => this.saveThread(threadChannel));
   }
 
