@@ -9,8 +9,13 @@ import { GroupErrorMessage } from './group.error-message';
 export class GroupParser extends Parser {
   private readonly logger = new Logger(GroupParser.name);
 
-  parseGroupSlug(channelId: string): string | null {
+  parseGroupSlugByChannelId(channelId: string): string | null {
     const server = this.discordConfigService.findDiscordServerByChannelId(channelId);
+    return server?.slug || null;
+  }
+
+  parseGroupSlugByGuildId(guildId: string): string | null {
+    const server = this.discordConfigService.findDiscordServerById(guildId);
     return server?.slug || null;
   }
 
