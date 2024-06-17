@@ -23,8 +23,8 @@ export class BulkSaveUserReviewsSlashHandler extends BulkSavePostsSlashHandler {
       const channelId = (threadPost.starterMessage.channel as ThreadChannel).parentId;
       if (!channelId) return;
 
-      const member = await this.discordManager.fetchMember(threadPost.starterMessage.author.id);
-      const user = await this.userClient.fetchMyUser('discord', member);
+      const { author } = threadPost.starterMessage;
+      const user = await this.userClient.fetchMyUser('discord', author);
       const group = await this.groupClient.fetchGroup(channelId);
       const tags = await this.groupClient.fetchTags();
       await this.userReviewClient.createUserReviewFromPost(

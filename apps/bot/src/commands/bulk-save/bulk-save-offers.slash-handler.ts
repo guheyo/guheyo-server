@@ -59,8 +59,7 @@ export abstract class BulkSaveOffersSlashHandler {
 
   async saveMessage(message: Message, discordGuild: Guild) {
     try {
-      const member = await this.discordManager.fetchMember(message.author.id);
-      const user = await this.userClient.fetchMyUser('discord', member);
+      const user = await this.userClient.fetchMyUser('discord', message.author);
       const group = await this.groupClient.fetchGroup(message.channelId);
       await this.offerClient.createOfferFromMessage(user, message, group);
     } catch (e) {
