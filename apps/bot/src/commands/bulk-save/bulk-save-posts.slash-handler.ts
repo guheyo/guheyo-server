@@ -32,9 +32,9 @@ export abstract class BulkSavePostsSlashHandler {
 
   abstract saveThreadPost(threadPost: ThreadPost, group: GroupResponse): void;
 
-  async bulkSave(discordGuild: Guild, channelId: string, limit: number) {
+  async bulkSave(discordGuild: Guild, guildName: string, channelId: string, limit: number) {
     this.discordManager = new DiscordManager(discordGuild);
-    const group = await this.groupClient.fetchGroup(discordGuild.id);
+    const group = await this.groupClient.fetchGroupByGuildName(guildName);
     const threadPosts = await this.discordManager.fetchThreadPostsFromForum(channelId, limit);
     const nonExistingThreadPosts = await this.postClient.findNonExistingThreadPosts(threadPosts);
     this.logThreadPostCounts(threadPosts.length, nonExistingThreadPosts.length);

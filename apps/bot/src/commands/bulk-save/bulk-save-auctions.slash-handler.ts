@@ -45,6 +45,6 @@ export class BulkSaveAuctionsSlashHandler extends BulkSavePostsSlashHandler {
     );
     if (!channelId) return;
 
-    await this.bulkSave(interaction.guild, channelId, limit);
+    await this.bulkSave(interaction.guild, guildName, channelId, limit);
   }
 }

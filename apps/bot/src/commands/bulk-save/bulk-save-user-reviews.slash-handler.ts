@@ -55,6 +55,6 @@ export class BulkSaveUserReviewsSlashHandler extends BulkSavePostsSlashHandler {
     );
     if (!channelId) return;
 
-    await this.bulkSave(interaction.guild, channelId, limit);
+    await this.bulkSave(interaction.guild, guildName, channelId, limit);
   }
 }
