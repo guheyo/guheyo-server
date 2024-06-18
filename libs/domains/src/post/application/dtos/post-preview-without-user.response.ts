@@ -1,3 +1,4 @@
+import { GroupProfileResponse } from '@lib/domains/group/application/dtos/group-profile.response';
 import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
 
@@ -30,8 +31,8 @@ export class PostPreviewWithoutUserResponse {
   @Field(() => String, { nullable: true })
   thumbnail: string | null;
 
-  @Field()
-  groupId: string;
+  @Field(() => GroupProfileResponse)
+  group: GroupProfileResponse;
 
   @Field(() => String, { nullable: true })
   categoryId: string | null;
