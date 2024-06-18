@@ -94,6 +94,7 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
       include: {
         post: {
           include: {
+            group: true,
             user: {
               select: {
                 id: true,

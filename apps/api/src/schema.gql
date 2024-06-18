@@ -508,7 +508,7 @@ type PostPreviewWithAuthorResponse {
   categoryId: String
   commentCount: Int
   createdAt: DateTime!
-  groupId: String!
+  group: GroupProfileResponse!
   id: ID!
   pending: String
   slug: String
@@ -525,7 +525,7 @@ type PostPreviewWithUserResponse {
   categoryId: String
   commentCount: Int
   createdAt: DateTime!
-  groupId: String!
+  group: GroupProfileResponse!
   id: ID!
   pending: String
   slug: String
@@ -542,7 +542,7 @@ type PostPreviewWithoutUserResponse {
   categoryId: String
   commentCount: Int
   createdAt: DateTime!
-  groupId: String!
+  group: GroupProfileResponse!
   id: ID!
   pending: String
   slug: String
@@ -560,7 +560,6 @@ type PostResponse {
   commentCount: Int
   createdAt: DateTime!
   group: GroupProfileResponse!
-  groupId: String!
   id: ID!
   images: [UserImageResponse!]!
   pending: String
