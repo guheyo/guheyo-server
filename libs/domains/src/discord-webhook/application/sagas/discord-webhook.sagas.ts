@@ -60,17 +60,14 @@ export class DiscordWebhookSagas {
             iconURL: event.avatarURL || undefined,
           })
           .setColor('DarkGreen')
-          .setTitle(
-            `${event.title}\n${this.discordWebhookParser.parseAuctionURL({ slug: event.slug! })}`,
-          )
+          .setTitle(event.title)
           .setDescription(
             `경매 시작: ${dayjs(event.createdAt).format(
               'YYYY-MM-DD HH:mm',
-            )}\n${`<t:${unixTimestamp}:R> 종료`}`,
-          )
-          .setFooter({
-            text: `입찰가: 0`,
-          });
+            )}\n${`<t:${unixTimestamp}:R> 종료`}\n입찰가: 0\n\n${this.discordWebhookParser.parseAuctionURL(
+              { slug: event.slug! },
+            )}`,
+          );
         return new SendDiscordWebhookCommand({
           target: 'auction',
           embed,

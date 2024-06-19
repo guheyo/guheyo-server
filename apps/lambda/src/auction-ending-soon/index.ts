@@ -61,15 +61,14 @@ export const handler = async (event: any): Promise<void> => {
         iconURL: auction.post.user.avatarURL || undefined,
       })
       .setColor('Orange')
-      .setTitle(`${auction.post.title}\n${process.env.FRONTEND_HOST}/auction/${auction.post.slug}`)
+      .setTitle(`[종료 임박] ${auction.post.title}`)
       .setDescription(
         `경매 시작: ${dayjs(auction.createdAt).format(
           'YYYY-MM-DD HH:mm',
-        )}\n${`<t:${unixTimestamp}:R> 종료`}`,
-      )
-      .setFooter({
-        text: `입찰가: ${String(auction.bids[0]?.price || 0)}`,
-      });
+        )}\n${`<t:${unixTimestamp}:R> 종료`}\n입찰가: ${String(auction.bids[0]?.price || 0)}\n\n${
+          process.env.FRONTEND_HOST
+        }/auction/${auction.post.slug}`,
+      );
 
     await webhookClient.send({ embeds: [embed] });
 

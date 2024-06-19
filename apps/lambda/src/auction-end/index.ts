@@ -97,17 +97,16 @@ export const handler = async (event: any): Promise<void> => {
         iconURL: auction.post.user.avatarURL || undefined,
       })
       .setColor('Red')
-      .setTitle(`${auction.post.title}\n${process.env.FRONTEND_HOST}/auction/${auction.post.slug}`)
+      .setTitle(`${auction.post.title}`)
       .setDescription(
         `판매자: ${
           discordAccount ? `<@${discordAccount.socialId}>` : auction.post.user.username
         }\n경매 시작: ${dayjs(auction.createdAt).format('YYYY-MM-DD HH:mm')}\n경매 종료: ${dayjs(
           auction.extendedEndDate,
-        ).format('YYYY-MM-DD HH:mm')}`,
-      )
-      .setFooter({
-        text: `낙찰가: ${String(auction.bids[0]?.price || 0)}`,
-      });
+        ).format('YYYY-MM-DD HH:mm')}\n낙찰가: ${String(auction.bids[0]?.price || 0)}\n\n${
+          process.env.FRONTEND_HOST
+        }/auction/${auction.post.slug}`,
+      );
 
     await webhookClient.send({ embeds: [embed] });
 
