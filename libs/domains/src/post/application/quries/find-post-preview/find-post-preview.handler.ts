@@ -14,6 +14,7 @@ export class FindPostPreviewHandler extends PrismaQueryHandler {
         id: query.id,
       },
       include: {
+        group: true,
         user: true,
         tags: true,
       },
