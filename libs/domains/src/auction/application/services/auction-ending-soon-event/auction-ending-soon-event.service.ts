@@ -19,10 +19,10 @@ export class AuctionEndingSoonEventService extends AwsEventService {
     const ruleArn = this.eventBridgeService.getRuleArn({
       ruleName: uniqueIdentifier,
     });
-    // Trigger Event before 1 hour
+    // Trigger Event before 3 hour
     const oneHourBeforeEndTime = this.eventBridgeService.getDelayedEndTime(
       endTime,
-      -1 * 60 * 60000,
+      -3 * 60 * 60000,
     );
     const scheduleExpression = this.eventBridgeService.generateCronExpression(oneHourBeforeEndTime);
     const lambdaArn = this.lambdaService.getLambdaFunctionArn(this.functionName);
