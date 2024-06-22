@@ -116,7 +116,7 @@ export class AuctionEntity extends AggregateRoot {
   }
 
   getLastBid(): BidEntity | null {
-    const lastBid = this.bids.at(-1);
+    const lastBid = this.bids.filter((bid) => bid.canceledAt === null).at(-1);
     return lastBid || null;
   }
 
