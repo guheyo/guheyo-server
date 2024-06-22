@@ -20,11 +20,15 @@ export class CountPostsSlashHandler {
     @Context() [interaction]: SlashCommandContext,
     @Options() { channelId, limit }: CountPostsRequest,
   ) {
-    if (!interaction.guild) return;
+    const { guild } = interaction;
+    if (!guild) return;
 
-    this.discordManager = new DiscordManager(interaction.guild);
-    const threadPosts = await this.discordManager.fetchThreadPostsFromForum(channelId, limit);
+    this.discordManager = new DiscordManager(guild);
+    const { totalCount, editedCount, deletedCount } =
+      await this.discordManager.countAllStarterMessages(channelId, limit);
 
-    this.logger.log(`${threadPosts.length} posts exist`);
+    this.logger.log(`total len: ${totalCount}`);
+    this.logger.log(`edited len: ${editedCount}`);
+    this.logger.log(`deleted len: ${deletedCount}`);
   }
 }
