@@ -10,6 +10,7 @@ import {
   GuildForumThreadManager,
   FetchArchivedThreadOptions,
 } from 'discord.js';
+import { RpcException } from '@nestjs/microservices';
 import { ThreadPost } from '../interfaces/post-message.interfaces';
 
 export class DiscordManager {
@@ -57,9 +58,7 @@ export class DiscordManager {
   }
 
   async fetchThreadPostsFromForum(channelId: string, limit: number): Promise<ThreadPost[]> {
-    const channel = await this.guild.channels.fetch(channelId);
-    if (channel?.type !== ChannelType.GuildForum) return [];
-
+    const channel = await this.fetchForumChannel(channelId);
     const threadChannels = await this.fetchAllThreadChannels(channel, limit);
     return threadChannels.reduce(
       async (threadPostsPromise: Promise<ThreadPost[]>, threadChannel): Promise<ThreadPost[]> => {
@@ -69,6 +68,14 @@ export class DiscordManager {
       },
       Promise.resolve([]),
     );
+  }
+
+  async fetchForumChannel(channelId: string): Promise<ForumChannel> {
+    const channel = await this.guild.channels.fetch(channelId);
+    if (!channel || channel.type !== ChannelType.GuildForum) {
+      throw new RpcException(`Channel ID: ${channelId} is not a GuildForum`);
+    }
+    return channel;
   }
 
   async fetchThreadPost(
