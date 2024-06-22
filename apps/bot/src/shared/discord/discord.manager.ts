@@ -70,6 +70,29 @@ export class DiscordManager {
     );
   }
 
+  async countAllStarterMessages(channelId: string, limit: number) {
+    const channel = await this.fetchForumChannel(channelId);
+    const threadChannels = await this.fetchAllThreadChannels(channel, limit);
+    const starterMessages = await Promise.all(
+      threadChannels.map(async (threadChannel) => {
+        try {
+          const message = await threadChannel.fetchStarterMessage();
+          return message;
+        } catch (e) {
+          return null;
+        }
+      }),
+    );
+    const editedMessagesCount = starterMessages.filter((m) => !!m?.editedTimestamp).length;
+    const deletedMessagesCount = starterMessages.filter((m) => m === null).length;
+
+    return {
+      totalCount: starterMessages.length,
+      editedCount: editedMessagesCount,
+      deletedCount: deletedMessagesCount,
+    };
+  }
+
   async fetchForumChannel(channelId: string): Promise<ForumChannel> {
     const channel = await this.guild.channels.fetch(channelId);
     if (!channel || channel.type !== ChannelType.GuildForum) {
