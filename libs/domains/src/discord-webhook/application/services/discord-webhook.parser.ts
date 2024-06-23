@@ -27,10 +27,10 @@ export class DiscordWebhookParser {
     title: string;
     price: number;
   }) {
-    if (businessFunction === 'sell') return `[삽니다] ${title} - ${price}`;
-    if (businessFunction === 'buy') return `[삽니다] ${title} - ${price}`;
+    if (businessFunction === 'sell') return `[판매] ${title} - ${price}`;
+    if (businessFunction === 'buy') return `[구매] ${title} - ${price}`;
     // swap
-    return `[교환합니다] ${title} ${price ? `- 내 추가금 +${price}` : ''}`;
+    return `[교환] ${title} ${price ? `- 내 추가금 +${price}` : ''}`;
   }
 
   parseUserReviewTitle({ rating, title }: { rating: number; title: string }) {
