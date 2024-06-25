@@ -42,6 +42,9 @@ export class AuctionPreviewResponse {
   @Field()
   status: string;
 
+  @Field(() => Boolean, { nullable: true })
+  hasSubmittedReview?: boolean;
+
   constructor(partial: Partial<AuctionPreviewResponse>) {
     Object.assign(this, partial);
   }

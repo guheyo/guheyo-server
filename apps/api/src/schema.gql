@@ -15,6 +15,7 @@ type AuctionPreviewResponse {
   currentBidPrice: Int
   extendedEndDate: DateTime!
   hammerPrice: Int!
+  hasSubmittedReview: Boolean
   id: ID!
   originalEndDate: DateTime!
   post: PostPreviewWithUserResponse!
@@ -36,6 +37,7 @@ type AuctionResponse {
   currentBidPrice: Int
   extendedEndDate: DateTime!
   hammerPrice: Int!
+  hasSubmittedReview: Boolean
   id: ID!
   originalEndDate: DateTime!
   post: PostResponse!

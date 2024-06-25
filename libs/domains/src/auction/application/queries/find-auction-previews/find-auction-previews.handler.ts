@@ -4,6 +4,7 @@ import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseFollowedBySearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
 import { plainToClass } from 'class-transformer';
+import { AUCTION_CLOSED } from '@lib/domains/auction/domain/auction.constants';
 import { FindAuctionPreviewsQuery } from './find-auction-previews.query';
 import { AuctionPreviewResponse } from '../../dtos/auction-preview.response';
 import { PaginatedAuctionPreviewsResponse } from './paginated-auction-previews.response';
@@ -29,12 +30,7 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
     }
 
     return paginate<AuctionPreviewResponse>(
-      auctions.map((auction) =>
-        plainToClass(AuctionPreviewResponse, {
-          ...auction,
-          currentBidPrice: auction.bids[0]?.price || 0,
-        }),
-      ),
+      auctions.map((auction) => plainToClass(AuctionPreviewResponse, auction)),
       'id',
       query.take,
     );
@@ -86,6 +82,9 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
       },
     ];
 
+    const isMyClosedAuctions =
+      query.userId === query.where?.userId && query.where?.status === AUCTION_CLOSED;
+
     const auctions = await this.prismaService.auction.findMany({
       where,
       cursor,
@@ -120,9 +119,22 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
           },
           take: 1,
         },
+        userReviews: isMyClosedAuctions
+          ? {
+              where: {
+                post: {
+                  userId: query.userId,
+                },
+              },
+            }
+          : false,
       },
       orderBy,
     });
-    return auctions;
+    return auctions.map((auction) => ({
+      ...auction,
+      currentBidPrice: auction.bids[0]?.price || 0,
+      hasSubmittedReview: isMyClosedAuctions ? auction.userReviews.length > 0 : undefined,
+    }));
   }
 }
