@@ -51,8 +51,8 @@ export class EventBridgeService {
     } ? ${endTime.getUTCFullYear()})`;
   }
 
-  // default 1 minute delay
-  getDelayedEndTime(endTime: Date, ms: number = 60000): Date {
+  // default 1 minute 30 sec delay
+  getDelayedEndTime(endTime: Date, ms: number = 90000): Date {
     return new Date(endTime.getTime() + ms);
   }
 

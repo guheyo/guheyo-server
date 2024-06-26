@@ -61,6 +61,14 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
                   lte: new Date(),
                 },
           }),
+          ...(query.where.bidderId && {
+            bids: {
+              some: {
+                userId: query.where.bidderId,
+                canceledAt: null,
+              },
+            },
+          }),
         }
       : {};
 
