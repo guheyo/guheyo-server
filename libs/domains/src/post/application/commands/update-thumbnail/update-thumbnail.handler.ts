@@ -27,6 +27,9 @@ export class UpdateThumbnailHandler extends PrismaCommandHandler<
       where: {
         type: event.type,
         refId: event.refId,
+        deletedAt: {
+          equals: null,
+        },
       },
       orderBy: {
         createdAt: 'asc',
