@@ -40,6 +40,9 @@ import { parseAuctionUpdatedTriggerName } from '@lib/domains/auction/application
 import { UpdatedAuctionResponse } from '@lib/domains/auction/application/commands/update-auction/updated-auction.response';
 import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
 import { TimeGuard } from '@lib/shared/time/time.guard';
+import { FindBiddersArgs } from '@lib/domains/auction/application/queries/find-bidders/find-bidders.args';
+import { FindBiddersQuery } from '@lib/domains/auction/application/queries/find-bidders/find-bidders.query';
+import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/find-users/paginated-users.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
@@ -97,6 +100,15 @@ export class AuctionResolver {
   @Query(() => BidCountResponse)
   async findBidCount(@Args() args: FindBidCountArgs) {
     const query = new FindBidCountQuery(args);
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(GqlThrottlerBehindProxyGuard)
+  @Query(() => PaginatedUsersResponse)
+  async findBidders(@Args() args: FindBiddersArgs) {
+    const query = new FindBiddersQuery({
+      args,
+    });
     return this.queryBus.execute(query);
   }
 

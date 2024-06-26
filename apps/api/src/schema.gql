@@ -291,6 +291,14 @@ type EmojiResponse {
   url: String
 }
 
+input FindBiddersOrderByInput {
+  createdAt: String
+}
+
+input FindBiddersWhereInput {
+  auctionId: ID!
+}
+
 type GroupPreviewResponse {
   buys: [OfferPreviewResponse!]!
   description: String
@@ -580,6 +588,7 @@ type Query {
   findAuctionPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionPreviewsResponse!
   findAuthor(id: ID, username: String): AuthorResponse
   findBidCount(auctionId: ID!): BidCountResponse!
+  findBidders(cursor: ID, keyword: String, orderBy: FindBiddersOrderByInput, skip: Int! = 1, take: Int!, where: FindBiddersWhereInput!): PaginatedUsersResponse!
   findBids(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedBidsResponse!
   findComment(id: ID, postId: ID): CommentResponse
   findCommentCount(postId: ID!): CommentCountResponse!
