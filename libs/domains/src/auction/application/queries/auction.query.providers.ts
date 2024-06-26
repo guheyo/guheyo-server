@@ -2,6 +2,7 @@ import { FindAuctionInteractionItemsHandler } from './find-auction-interaction-i
 import { FindAuctionPreviewsHandler } from './find-auction-previews/find-auction-previews.handler';
 import { FindAuctionHandler } from './find-auction/find-auction.handler';
 import { FindBidCountHandler } from './find-bid-count/find-bid-count.handler';
+import { FindBiddersHandler } from './find-bidders/find-bidders.handler';
 import { FindBidsHandler } from './find-bids/find-bids.handler';
 
 export const AUCTION_QUERY_PROVIDERS = [
@@ -10,4 +11,5 @@ export const AUCTION_QUERY_PROVIDERS = [
   FindBidsHandler,
   FindAuctionInteractionItemsHandler,
   FindBidCountHandler,
+  FindBiddersHandler,
 ];
