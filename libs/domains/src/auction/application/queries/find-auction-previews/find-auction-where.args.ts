@@ -18,6 +18,10 @@ export class FindAuctionWhereArgs {
   userId?: string;
 
   @IsOptional()
+  @Field(() => ID, { nullable: true })
+  bidderId?: string;
+
+  @IsOptional()
   @Field(() => String, { nullable: true })
   pending?: string;
 
