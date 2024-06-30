@@ -1,0 +1,36 @@
+import { GroupParser } from '@app/bot/apps/group/parsers/group.parser';
+import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
+import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
+import { Injectable } from '@nestjs/common';
+import { DISCORD } from '@lib/shared/discord/discord.constants';
+import { CreateArticleInput } from '@lib/domains/article/application/commands/create-article/create-article.input';
+import { ARTICLE } from '@lib/domains/article/domain/article.constants';
+import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
+
+@Injectable()
+export class ArticleParser extends GroupParser {
+  parseCreateArticleInput(
+    threadPost: ThreadPost,
+    group: GroupResponse,
+    tags: TagResponse[],
+  ): CreateArticleInput {
+    const channelName = threadPost.tagNames[0];
+    const post = {
+      id: this.parseIdFromChannelId(threadPost.threadChannel.id),
+      createdAt: threadPost.starterMessage.createdAt,
+      updatedAt: threadPost.starterMessage.editedAt || threadPost.starterMessage.createdAt,
+      type: ARTICLE,
+      title: threadPost.threadChannel.name,
+      groupId: group.id,
+      tagIds: this.parseTagIds(threadPost.tagNames, tags),
+      categoryId: this.parseCategoryId(channelName, group),
+      userAgent: DISCORD,
+    };
+
+    return {
+      id: this.parseIdFromMessageId(threadPost.starterMessage.id),
+      post,
+      content: threadPost.starterMessage.content,
+    };
+  }
+}
