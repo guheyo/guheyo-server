@@ -1,3 +1,4 @@
+import { BOT_ARTICLE_PROVIDERS } from './article/article.providers';
 import { BOT_AUCTION_PROVIDERS } from './auction/auction.providers';
 import { BOT_COMMENT_PROVIDERS } from './comment/comment.providers';
 import { BOT_GROUP_PROVIDERS } from './group/group.providers';
@@ -18,4 +19,5 @@ export const BOT_PROVIDERS = [
   ...BOT_POST_PROVIDERS,
   ...BOT_KAKAO_PROVIDERS,
   ...BOT_AUCTION_PROVIDERS,
+  ...BOT_ARTICLE_PROVIDERS,
 ];
