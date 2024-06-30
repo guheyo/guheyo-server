@@ -3,7 +3,7 @@ import { ARTICLE_COMMAND_PROVIDERS } from './application/commands/article.comman
 import { ARTICLE_QUERY_PROVIDERS } from './application/queries/article.query.providers';
 import { ArticleSagas } from './application/sagas/article.sagas';
 
-export const ARTICLE_REVIEW_PROVIDERS = [
+export const ARTICLE_PROVIDERS = [
   {
     provide: 'ArticleLoadPort',
     useClass: ArticleRepository,
