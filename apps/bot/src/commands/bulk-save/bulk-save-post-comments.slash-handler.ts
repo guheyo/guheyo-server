@@ -7,14 +7,14 @@ import { BulkSaveCommentsSlashHandler } from './bulk-save-comments.slash-handler
 
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
-export class BulkSaveUserReviewCommentsSlashHandler extends BulkSaveCommentsSlashHandler {
+export class BulkSavePostCommentsSlashHandler extends BulkSaveCommentsSlashHandler {
   constructor() {
-    super(BulkSaveUserReviewCommentsSlashHandler.name);
+    super(BulkSavePostCommentsSlashHandler.name);
   }
 
   @SlashCommand({
-    name: 'bulk-save-user-reviews-comments',
-    description: 'Bulk Save UserReviews Comments',
+    name: 'bulk-save-post-comments',
+    description: 'Bulk Save Post Comments',
   })
   public async onBuckSaveUserReviewComments(
     @Context() [interaction]: SlashCommandContext,

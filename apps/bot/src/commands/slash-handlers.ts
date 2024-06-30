@@ -6,7 +6,7 @@ import { BulkSaveSellsSlashHandler } from './bulk-save/bulk-save-sells.slash-han
 import { BulkSaveBuysSlashHandler } from './bulk-save/bulk-save-buys.slash-handler';
 import { BulkSaveSwapsSlashHandler } from './bulk-save/bulk-save-swaps.slash-handler';
 import { BulkSaveUserReviewsSlashHandler } from './bulk-save/bulk-save-user-reviews.slash-handler';
-import { BulkSaveUserReviewCommentsSlashHandler } from './bulk-save/bulk-save-user-review-comments.slash-handler';
+import { BulkSavePostCommentsSlashHandler } from './bulk-save/bulk-save-post-comments.slash-handler';
 import { ConnectUserRolesSlashHandler } from './connect-user-roles/connect-user-roles.slash-handler';
 import { FindUserWithoutSocialAccountsCountSlashHandler } from './find-user-without-social-accounts-count/find-user-without-social-accounts-count.slash-handler';
 import { BulkConnectUserRolesSlashHandler } from './bulk-connect-user-roles/bulk-connect-user-roles.slash-handler';
@@ -30,7 +30,7 @@ export const SLASH_HANDLERS = [
   BulkSaveBuysSlashHandler,
   BulkSaveSwapsSlashHandler,
   BulkSaveUserReviewsSlashHandler,
-  BulkSaveUserReviewCommentsSlashHandler,
+  BulkSavePostCommentsSlashHandler,
   BulkSaveAuctionsSlashHandler,
   BulkSaveBidsSlashHandler,
   BulkSaveAuctionCommentsSlashHandler,
