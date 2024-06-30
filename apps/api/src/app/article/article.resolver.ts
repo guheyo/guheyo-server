@@ -6,7 +6,6 @@ import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.respo
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
 import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
-import { TimeGuard } from '@lib/shared/time/time.guard';
 import { ArticleResponse } from '@lib/domains/article/application/dtos/article.response';
 import { FindArticleArgs } from '@lib/domains/article/application/queries/find-article/find-article.args';
 import { FindArticleQuery } from '@lib/domains/article/application/queries/find-article/find-article.query';
@@ -47,7 +46,6 @@ export class ArticleResolver {
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(new TimeGuard(2, 6))
   @AuthenticatedSocialAccountAndRole({
     providers: ['kakao'],
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
