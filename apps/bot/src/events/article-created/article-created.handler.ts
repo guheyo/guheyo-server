@@ -11,8 +11,9 @@ import { ArticleClient } from '@app/bot/apps/article/clients/article.client';
 import { DiscordManager } from '@app/bot/shared/discord/discord.manager';
 import { GroupClient } from '@app/bot/apps/group/clients/group.client';
 import { ThreadChannel } from 'discord.js';
+import { PostMessageGuard } from '@app/bot/apps/post/guards/post-message.guard';
 
-@UseGuards(GroupGuard, CommunityChannelGuard)
+@UseGuards(GroupGuard, CommunityChannelGuard, PostMessageGuard)
 @Name('커스텀 키보드')
 @Injectable()
 export class ArticleCreatedHandler {
