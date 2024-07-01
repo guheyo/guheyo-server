@@ -6,8 +6,9 @@ import { ParseUserFromMessagePipe } from '@app/bot/apps/user/pipes/parse-user-fr
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { CommunityChannelGuard } from '@app/bot/apps/article/guards/community-channel.guard';
 import { CommentClient } from '@app/bot/apps/comment/clients/comment.client';
+import { CommentMessageGuard } from '@app/bot/apps/comment/guards/comment-message.guard';
 
-@UseGuards(GroupGuard, CommunityChannelGuard)
+@UseGuards(GroupGuard, CommunityChannelGuard, CommentMessageGuard)
 @Name('커스텀 키보드')
 @Injectable()
 export class PostCommentCreatedHandler {
