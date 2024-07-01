@@ -3,7 +3,7 @@ import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.respo
 import { CreateCommentCommand } from '@lib/domains/comment/application/commands/create-comment/create-comment.command';
 import { CreateCommentsCommand } from '@lib/domains/comment/application/commands/create-comments/create-comments.command';
 import { CreateCommentInput } from '@lib/domains/comment/application/commands/create-comment/create-comment.input';
-import { ThreadChannel } from 'discord.js';
+import { Message } from 'discord.js';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { CommentParser } from '../parsers/comment.parser';
 import { MessageWithUser } from '../../user/interfaces/user.interfaces';
@@ -24,15 +24,15 @@ export class CommentClient extends UserImageClient {
     await this.commandBus.execute(new CreateCommentsCommand(commentCommands));
   }
 
-  async createCommentsFromMessageWithUsers(
-    threadChannel: ThreadChannel,
-    messageWithUsers: MessageWithUser[],
-  ) {
-    const commentCommands = this.commentParser.parseCreateCommentCommands(
-      threadChannel,
-      messageWithUsers,
-    );
+  async createCommentsFromMessageWithUsers(messageWithUsers: MessageWithUser[]) {
+    const commentCommands = this.commentParser.parseCreateCommentCommands(messageWithUsers);
     await this.createComments(commentCommands);
     this.logger.log(`comment<#${commentCommands.length}> created`);
+  }
+
+  async createCommentFromMessage(message: Message, user: MyUserResponse) {
+    const input = this.commentParser.parseCreateCommentInput(message);
+    await this.createComment({ input, user });
+    this.logger.log(`comment<#${input.id}> created`);
   }
 }
