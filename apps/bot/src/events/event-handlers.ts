@@ -11,6 +11,7 @@ import { SwapMessageCreatedHandler } from './swap-message-created/swap-message-c
 import { SwapMessageUpdatedHandler } from './swap-message-updated/swap-message-updated.handler';
 import { DiscordUserUpdatedHandler } from './discord-user-updated/discord-user-updated.handler';
 import { KakaoRoleRequestedHandler } from './kakao-role-requested/kakao-role-requested.handler';
+import { ArticleCreatedHandler } from './article-created/article-created.handler';
 
 export const EVENT_HANDLERS = [
   ReadyHandler,
@@ -26,6 +27,7 @@ export const EVENT_HANDLERS = [
   SwapMessageUpdatedHandler,
   DiscordUserUpdatedHandler,
   KakaoRoleRequestedHandler,
+  ArticleCreatedHandler,
   // NOTE: Delete directly from the web
   // offer, demand, swap messages
 ];
