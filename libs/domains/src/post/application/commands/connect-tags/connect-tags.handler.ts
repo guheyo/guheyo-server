@@ -12,10 +12,10 @@ export class ConnectTagsHandler implements ICommandHandler<ConnectTagsCommand> {
     @Inject('PostSavePort') private savePort: PostSavePort,
   ) {}
 
-  async execute(event: ConnectTagsCommand) {
-    const post = await this.loadPort.findById(event.postId);
+  async execute(command: ConnectTagsCommand) {
+    const post = await this.loadPort.findById(command.postId);
     if (!post) throw new NotFoundException(PostErrorMessage.POST_NOT_FOUND);
 
-    this.savePort.connectTags(event.postId, event.tagIds);
+    this.savePort.connectTags(command.postId, command.tagIds);
   }
 }
