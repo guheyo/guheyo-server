@@ -26,6 +26,19 @@ export class CommentClient extends UserImageClient {
   }
 
   async createCommentsFromMessageWithUsers(messageWithUsers: MessageWithUser[]) {
+    const uploadPromises = messageWithUsers.map(async (messageWithUser) => {
+      const uploadUserImageInputList = this.userImageParser.parseUploadUserImageInputList(
+        messageWithUser.message,
+        COMMENT,
+      );
+      return this.uploadAndCreateAttachments(
+        messageWithUser.user,
+        uploadUserImageInputList,
+        COMMENT,
+      );
+    });
+    await Promise.all(uploadPromises);
+
     const commentCommands = this.commentParser.parseCreateCommentCommands(messageWithUsers);
     await this.createComments(commentCommands);
     this.logger.log(`comment<#${commentCommands.length}> created`);
