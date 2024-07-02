@@ -14,7 +14,7 @@ export class ArticleParser extends GroupParser {
     group: GroupResponse,
     tags: TagResponse[],
   ): CreateArticleInput {
-    const channelName = threadPost.threadChannel.parent?.name || '';
+    const channelName = this.parseChannelName(threadPost.threadChannel.parent?.name || '');
     const post = {
       id: this.parseIdFromChannelId(threadPost.threadChannel.id),
       createdAt: threadPost.starterMessage.createdAt,
