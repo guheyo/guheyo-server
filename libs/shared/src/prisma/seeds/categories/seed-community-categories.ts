@@ -3,15 +3,14 @@ import { PrismaClient } from '@prisma/client';
 const COMMUNITY = 'community';
 
 export async function seedCommunityCategories(prisma: PrismaClient) {
-  const communityCategories = await prisma.category.findMany({
+  let categories = await prisma.category.findMany({
     where: {
       type: COMMUNITY,
     },
   });
 
-  let categories;
-  if (communityCategories.length === 0) {
-    categories = await prisma.category.createMany({
+  if (categories.length === 0) {
+    await prisma.category.createMany({
       data: [
         {
           type: COMMUNITY,
@@ -39,7 +38,26 @@ export async function seedCommunityCategories(prisma: PrismaClient) {
         },
       ],
     });
+    categories = await prisma.category.findMany({
+      where: {
+        type: COMMUNITY,
+      },
+    });
   }
+
+  const groups = await prisma.group.findMany();
+  await Promise.all(
+    categories.map(async (category) => {
+      await prisma.category.update({
+        where: { id: category.id },
+        data: {
+          groups: {
+            connect: groups.map((group) => ({ id: group.id })),
+          },
+        },
+      });
+    }),
+  );
 
   // eslint-disable-next-line no-console
   console.log(categories);
