@@ -4,6 +4,7 @@ import { CreateCommentCommand } from '@lib/domains/comment/application/commands/
 import { CreateCommentsCommand } from '@lib/domains/comment/application/commands/create-comments/create-comments.command';
 import { CreateCommentInput } from '@lib/domains/comment/application/commands/create-comment/create-comment.input';
 import { Message } from 'discord.js';
+import { COMMENT } from '@lib/domains/comment/domain/comment.constants';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { CommentParser } from '../parsers/comment.parser';
 import { MessageWithUser } from '../../user/interfaces/user.interfaces';
@@ -31,8 +32,14 @@ export class CommentClient extends UserImageClient {
   }
 
   async createCommentFromMessage(message: Message, user: MyUserResponse) {
-    const input = this.commentParser.parseCreateCommentInput(message);
-    await this.createComment({ input, user });
-    this.logger.log(`comment<#${input.id}> created`);
+    const uploadUserImageInputList = this.userImageParser.parseUploadUserImageInputList(
+      message,
+      COMMENT,
+    );
+    const createCommentInput = this.commentParser.parseCreateCommentInput(message);
+
+    await this.uploadAndCreateAttachments(user, uploadUserImageInputList, COMMENT);
+    await this.createComment({ input: createCommentInput, user });
+    this.logger.log(`comment<#${createCommentInput.id}> created`);
   }
 }
