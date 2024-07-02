@@ -5,6 +5,7 @@ import { seedAudio } from './groups/seed-audio';
 import { seedRoot } from './groups/seed-root';
 import { seedTags } from './tags/seed-tags';
 import { seedEmojis } from './emojis/seed-emojis';
+import { seedCommunityCategories } from './categories/seed-community-categories';
 
 const prisma = new PrismaClient();
 
@@ -15,6 +16,7 @@ async function main() {
   await seedAudio(prisma);
   await seedTags(prisma);
   await seedEmojis(prisma);
+  await seedCommunityCategories(prisma);
 }
 
 main()
