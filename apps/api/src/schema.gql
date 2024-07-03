@@ -560,7 +560,7 @@ input PlaceBidInput {
 
 type PostPreviewWithAuthorResponse {
   archivedAt: DateTime
-  categoryId: String
+  category: CategoryResponse
   commentCount: Int
   createdAt: DateTime!
   group: GroupProfileResponse!
@@ -577,7 +577,7 @@ type PostPreviewWithAuthorResponse {
 
 type PostPreviewWithUserResponse {
   archivedAt: DateTime
-  categoryId: String
+  category: CategoryResponse
   commentCount: Int
   createdAt: DateTime!
   group: GroupProfileResponse!
@@ -594,7 +594,7 @@ type PostPreviewWithUserResponse {
 
 type PostPreviewWithoutUserResponse {
   archivedAt: DateTime
-  categoryId: String
+  category: CategoryResponse
   commentCount: Int
   createdAt: DateTime!
   group: GroupProfileResponse!
@@ -611,7 +611,6 @@ type PostPreviewWithoutUserResponse {
 type PostResponse {
   archivedAt: DateTime
   category: CategoryResponse
-  categoryId: String
   commentCount: Int
   createdAt: DateTime!
   group: GroupProfileResponse!

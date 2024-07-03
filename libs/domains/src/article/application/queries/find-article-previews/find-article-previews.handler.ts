@@ -38,6 +38,7 @@ export class FindArticlePreviewsHandler extends PrismaQueryHandler {
         post: {
           include: {
             group: true,
+            category: true,
             user: {
               include: {
                 roles: {
