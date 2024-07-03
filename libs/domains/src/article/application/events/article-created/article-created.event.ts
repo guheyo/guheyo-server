@@ -6,7 +6,7 @@ export class ArticleCreatedEvent implements IEvent {
 
   postId: string;
 
-  tagIds: string[];
+  tagNames: string[];
 
   username: string;
 
@@ -19,7 +19,7 @@ export class ArticleCreatedEvent implements IEvent {
   constructor(input: ArticleCreatedInput) {
     this.articleId = input.articleId;
     this.postId = input.postId;
-    this.tagIds = input.tagIds;
+    this.tagNames = input.tagNames;
     this.username = input.username;
     this.userAvatarURL = input.userAvatarURL;
     this.title = input.title;
