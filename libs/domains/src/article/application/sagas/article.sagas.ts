@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
 import { Observable, concatMap, of } from 'rxjs';
-import { ConnectTagsCommand } from '@lib/domains/post/application/commands/connect-tags/connect-tags.command';
+import { ConnectOrCreateTagsCommand } from '@lib/domains/post/application/commands/connect-or-create-tags/connect-or-create-tags.command';
 import { TrackUserImagesCommand } from '@lib/domains/user-image/application/commands/track-user-images/track-user-images.command';
 import { UpdateThumbnailCommand } from '@lib/domains/post/application/commands/update-thumbnail/update-thumbnail.command';
 import { ArticleCreatedEvent } from '../events/article-created/article-created.event';
@@ -24,9 +24,10 @@ export class ArticleSagas {
             type: ARTICLE,
             refId: event.articleId,
           }),
-          new ConnectTagsCommand({
+          new ConnectOrCreateTagsCommand({
             postId: event.postId,
-            tagIds: event.tagIds,
+            type: ARTICLE,
+            tagNames: event.tagNames,
           }),
         ),
       ),
