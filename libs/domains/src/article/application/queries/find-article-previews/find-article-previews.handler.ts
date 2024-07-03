@@ -15,6 +15,7 @@ export class FindArticlePreviewsHandler extends PrismaQueryHandler {
       ? {
           post: {
             groupId: query.where.groupId,
+            categoryId: query.where.categoryId,
             userId: query.where.userId,
             pending: query.where.pending,
             title: parseFollowedBySearcher(query.keyword),
