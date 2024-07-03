@@ -5,7 +5,6 @@ import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { CreateArticleInput } from '@lib/domains/article/application/commands/create-article/create-article.input';
 import { CreateArticleCommand } from '@lib/domains/article/application/commands/create-article/create-article.command';
 import { ARTICLE } from '@lib/domains/article/domain/article.constants';
-import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { ArticleParser } from '../parsers/article.parser';
 
@@ -21,17 +20,12 @@ export class ArticleClient extends UserImageClient {
     await this.commandBus.execute(new CreateArticleCommand({ input, user }));
   }
 
-  async createArticleFromPost(
-    user: MyUserResponse,
-    threadPost: ThreadPost,
-    group: GroupResponse,
-    tags: TagResponse[],
-  ) {
+  async createArticleFromPost(user: MyUserResponse, threadPost: ThreadPost, group: GroupResponse) {
     const uploadUserImageInputList = this.userImageParser.parseUploadUserImageInputList(
       threadPost.starterMessage,
       ARTICLE,
     );
-    const createArticleInput = this.articleParser.parseCreateArticleInput(threadPost, group, tags);
+    const createArticleInput = this.articleParser.parseCreateArticleInput(threadPost, group);
 
     await this.uploadAndCreateAttachments(user, uploadUserImageInputList, ARTICLE);
     await this.createArticle({ input: createArticleInput, user });

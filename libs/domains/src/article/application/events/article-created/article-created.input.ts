@@ -3,7 +3,7 @@ export class ArticleCreatedInput {
 
   postId: string;
 
-  tagIds: string[];
+  tagNames: string[];
 
   username: string;
 
@@ -16,7 +16,7 @@ export class ArticleCreatedInput {
   constructor({
     articleId,
     postId,
-    tagIds,
+    tagNames,
     username,
     userAvatarURL,
     title,
@@ -24,7 +24,7 @@ export class ArticleCreatedInput {
   }: {
     articleId: string;
     postId: string;
-    tagIds: string[];
+    tagNames: string[];
     username: string;
     userAvatarURL?: string;
     title: string;
@@ -32,7 +32,7 @@ export class ArticleCreatedInput {
   }) {
     this.articleId = articleId;
     this.postId = postId;
-    this.tagIds = tagIds;
+    this.tagNames = tagNames;
     this.username = username;
     this.userAvatarURL = userAvatarURL;
     this.title = title;

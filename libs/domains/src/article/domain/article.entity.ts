@@ -22,12 +22,12 @@ export class ArticleEntity extends AggregateRoot {
     Object.assign(this, partial);
   }
 
-  create(tagIds: string[]) {
+  create(tagNames: string[]) {
     this.apply(
       new ArticleCreatedEvent({
         articleId: this.id,
         postId: this.postId,
-        tagIds,
+        tagNames,
         username: this.post.user.username,
         userAvatarURL: this.post.user.avatarURL || undefined,
         title: this.post.title,

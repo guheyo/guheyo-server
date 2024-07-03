@@ -30,7 +30,7 @@ export class CreateArticleHandler implements ICommandHandler<CreateArticleComman
       throw new InternalServerErrorException(ArticleErrorMessage.ARTICLE_CREATION_FAILED);
 
     article = this.publisher.mergeObjectContext(article);
-    article.create(command.post.tagIds || []);
+    article.create(command.post.tagNames || []);
     article.commit();
   }
 }

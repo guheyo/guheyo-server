@@ -23,8 +23,7 @@ export class BulkSaveArticlesSlashHandler extends BulkSavePostsSlashHandler {
 
       const { author } = threadPost.starterMessage;
       const user = await this.userClient.fetchMyUser('discord', author);
-      const tags = await this.groupClient.fetchTags();
-      await this.articleClient.createArticleFromPost(user, threadPost, group, tags);
+      await this.articleClient.createArticleFromPost(user, threadPost, group);
     } catch (error: any) {
       this.logger.error(`Failed to save thread post: ${error.message}`, error.stack);
     }
