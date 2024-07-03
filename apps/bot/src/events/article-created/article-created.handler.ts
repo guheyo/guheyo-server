@@ -9,7 +9,6 @@ import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.respo
 import { CommunityChannelGuard } from '@app/bot/apps/article/guards/community-channel.guard';
 import { ArticleClient } from '@app/bot/apps/article/clients/article.client';
 import { DiscordManager } from '@app/bot/shared/discord/discord.manager';
-import { GroupClient } from '@app/bot/apps/group/clients/group.client';
 import { ThreadChannel } from 'discord.js';
 import { PostMessageGuard } from '@app/bot/apps/post/guards/post-message.guard';
 
@@ -21,10 +20,7 @@ export class ArticleCreatedHandler {
 
   protected discordManager: DiscordManager;
 
-  constructor(
-    private readonly groupClient: GroupClient,
-    private readonly articleClient: ArticleClient,
-  ) {}
+  constructor(private readonly articleClient: ArticleClient) {}
 
   @On('messageCreate')
   public async onCreateArticle(
@@ -43,7 +39,6 @@ export class ArticleCreatedHandler {
     }
     this.discordManager = new DiscordManager(message.guild);
 
-    const tags = await this.groupClient.fetchTags();
     const channel = message.channel as ThreadChannel;
     if (!channel.parentId) {
       this.logger.warn(
@@ -64,6 +59,6 @@ export class ArticleCreatedHandler {
       return;
     }
 
-    await this.articleClient.createArticleFromPost(user, threadPost, group, tags);
+    await this.articleClient.createArticleFromPost(user, threadPost, group);
   }
 }

@@ -235,6 +235,7 @@ input CreatePostInput {
   groupId: ID!
   id: ID
   tagIds: [ID!]
+  tagNames: [String!]
   title: String!
   type: String!
   updatedAt: DateTime
