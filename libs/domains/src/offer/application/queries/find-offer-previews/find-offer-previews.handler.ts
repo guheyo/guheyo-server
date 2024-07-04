@@ -63,6 +63,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
         post: {
           include: {
             group: true,
+            category: true,
             user: {
               select: {
                 id: true,

@@ -10,6 +10,10 @@ export class FindArticlePreviewsWhereInput {
 
   @IsOptional()
   @Field(() => ID, { nullable: true })
+  categoryId?: string;
+
+  @IsOptional()
+  @Field(() => ID, { nullable: true })
   userId?: string;
 
   @IsOptional()
