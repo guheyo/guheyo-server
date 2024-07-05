@@ -33,7 +33,6 @@ export abstract class BulkSaveCommentsSlashHandler {
     try {
       const messageWithUsers = await this.fetchMessageWithUsers(threadChannel);
       await this.commentClient.createCommentsFromMessageWithUsers(
-        threadChannel,
         messageWithUsers.splice(0, messageWithUsers.length - 1),
       );
     } catch (error: any) {

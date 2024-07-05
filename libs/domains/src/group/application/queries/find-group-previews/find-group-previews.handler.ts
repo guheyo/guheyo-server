@@ -35,6 +35,7 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler {
           post: {
             include: {
               group: true,
+              category: true,
               user: {
                 select: {
                   id: true,
@@ -68,6 +69,7 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler {
           post: {
             include: {
               group: true,
+              category: true,
               user: {
                 select: {
                   id: true,

@@ -33,6 +33,7 @@ export class FindReportHandler extends PrismaQueryHandler {
         reportedPost: {
           include: {
             group: true,
+            category: true,
             offer: true,
             auction: true,
             userReview: true,

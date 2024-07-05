@@ -19,14 +19,14 @@ export class UpdateThumbnailHandler extends PrismaCommandHandler<
     super(PostResponse);
   }
 
-  async execute(event: UpdateThumbnailCommand) {
-    const post = await this.loadPort.findById(event.postId);
+  async execute(command: UpdateThumbnailCommand) {
+    const post = await this.loadPort.findById(command.postId);
     if (!post) throw new NotFoundException(PostErrorMessage.POST_NOT_FOUND);
 
     const image = await this.prismaService.userImage.findFirst({
       where: {
-        type: event.type,
-        refId: event.refId,
+        type: command.type,
+        refId: command.refId,
         deletedAt: {
           equals: null,
         },

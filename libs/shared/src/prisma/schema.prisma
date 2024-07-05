@@ -173,6 +173,7 @@ model Post {
   category            Category?     @relation(fields: [categoryId], references: [id])
   userId              String
   user                User          @relation(fields: [userId], references: [id])
+  article             Article?
   offer               Offer?
   auction             Auction?
   userReview          UserReview?
@@ -239,6 +240,18 @@ model Emoji {
   group             Group?        @relation(fields: [groupId], references: [id])
   userId            String?
   user              User?         @relation(fields: [userId], references: [id])
+
+  @@schema("public")
+}
+
+model Article {
+  id                  String          @id @default(uuid())
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  deletedAt           DateTime?
+  postId              String          @unique()
+  post                Post            @relation(fields: [postId], references: [id])
+  content             String?
 
   @@schema("public")
 }

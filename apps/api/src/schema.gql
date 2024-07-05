@@ -2,6 +2,27 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type ArticlePreviewResponse {
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  post: PostPreviewWithAuthorResponse!
+  updatedAt: DateTime!
+}
+
+type ArticlePreviewResponseEdge {
+  cursor: String!
+  node: ArticlePreviewResponse!
+}
+
+type ArticleResponse {
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  post: PostResponse!
+  updatedAt: DateTime!
+}
+
 union AuctionInteractionItemResponse = BidResponse | CommentWithAuthorResponse
 
 type AuctionInteractionItemResponseEdge {
@@ -155,6 +176,12 @@ type CommentWithAuthorResponseEdge {
   node: CommentWithAuthorResponse!
 }
 
+input CreateArticleInput {
+  content: String
+  id: ID!
+  post: CreatePostInput!
+}
+
 input CreateAuctionInput {
   content: String!
   createdAt: DateTime!
@@ -208,6 +235,7 @@ input CreatePostInput {
   groupId: ID!
   id: ID
   tagIds: [ID!]
+  tagNames: [String!]
   title: String!
   type: String!
   updatedAt: DateTime
@@ -291,6 +319,17 @@ type EmojiResponse {
   url: String
 }
 
+input FindArticlePreviewsOrderByInput {
+  createdAt: String
+}
+
+input FindArticlePreviewsWhereInput {
+  categoryId: ID
+  groupId: ID
+  pending: String
+  userId: ID
+}
+
 input FindBiddersOrderByInput {
   createdAt: String
 }
@@ -363,6 +402,7 @@ type Mutation {
   cancelBid(input: CancelBidInput!): String!
   cancelReaction(input: CancelReactionInput!): String!
   commentReport(input: CommentReportInput!): ReportCommentResponse!
+  createArticle(input: CreateArticleInput!): String!
   createAuction(input: CreateAuctionInput!): String!
   createComment(input: CreateCommentInput!): String!
   createGroup(input: CreateGroupInput!): String!
@@ -374,6 +414,7 @@ type Mutation {
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
   createUserImage(input: CreateUserImageInput!): String!
   createUserReview(input: CreateUserReviewInput!): String!
+  deleteArticle(id: ID!): String!
   deleteComment(input: DeleteCommentInput!): String!
   deleteOffer(id: ID!): String!
   deleteRole(id: ID!): String!
@@ -455,6 +496,11 @@ type PageInfo {
   hasNextPage: Boolean!
 }
 
+type PaginatedArticlePreviewsResponse {
+  edges: [ArticlePreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedAuctionInteractionItemsResponse {
   edges: [AuctionInteractionItemResponseEdge!]!
   pageInfo: PageInfo!
@@ -514,7 +560,7 @@ input PlaceBidInput {
 
 type PostPreviewWithAuthorResponse {
   archivedAt: DateTime
-  categoryId: String
+  category: CategoryResponse
   commentCount: Int
   createdAt: DateTime!
   group: GroupProfileResponse!
@@ -531,7 +577,7 @@ type PostPreviewWithAuthorResponse {
 
 type PostPreviewWithUserResponse {
   archivedAt: DateTime
-  categoryId: String
+  category: CategoryResponse
   commentCount: Int
   createdAt: DateTime!
   group: GroupProfileResponse!
@@ -548,7 +594,7 @@ type PostPreviewWithUserResponse {
 
 type PostPreviewWithoutUserResponse {
   archivedAt: DateTime
-  categoryId: String
+  category: CategoryResponse
   commentCount: Int
   createdAt: DateTime!
   group: GroupProfileResponse!
@@ -565,7 +611,6 @@ type PostPreviewWithoutUserResponse {
 type PostResponse {
   archivedAt: DateTime
   category: CategoryResponse
-  categoryId: String
   commentCount: Int
   createdAt: DateTime!
   group: GroupProfileResponse!
@@ -583,6 +628,8 @@ type PostResponse {
 }
 
 type Query {
+  findArticle(id: ID, slug: String): ArticleResponse
+  findArticlePreviews(cursor: ID, keyword: String, orderBy: FindArticlePreviewsOrderByInput, skip: Int! = 1, take: Int!, where: FindArticlePreviewsWhereInput): PaginatedArticlePreviewsResponse!
   findAuction(id: ID, slug: String): AuctionResponse
   findAuctionInteractionItems(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionInteractionItemsResponse!
   findAuctionPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionPreviewsResponse!

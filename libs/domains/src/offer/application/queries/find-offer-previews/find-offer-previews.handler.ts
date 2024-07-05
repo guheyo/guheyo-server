@@ -50,7 +50,9 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
       : undefined;
 
     const isMyClosedOffers =
-      query.userId === query.where?.userId && query.where?.status === OFFER_CLOSED;
+      !!query.userId &&
+      query.userId === query.where?.userId &&
+      query.where?.status === OFFER_CLOSED;
 
     const offers = await this.prismaService.offer.findMany({
       where,
@@ -61,6 +63,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
         post: {
           include: {
             group: true,
+            category: true,
             user: {
               select: {
                 id: true,
@@ -96,7 +99,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
     const offerPreviews = isMyClosedOffers
       ? offers.map((offer) => ({
           ...offer,
-          hasSubmittedReview: offer.userReviews.length > 0,
+          hasSubmittedReview: isMyClosedOffers ? offer.userReviews.length > 0 : undefined,
         }))
       : offers;
     return paginate<OfferPreviewResponse>(

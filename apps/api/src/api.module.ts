@@ -26,6 +26,7 @@ import { PostModule } from './app/post/post.module';
 import { EmojiModule } from './app/emoji/emoji.module';
 import { ReactionModule } from './app/reaction/reaction.module';
 import { AuctionModule } from './app/auction/auction.module';
+import { ArticleModule } from './app/article/article.module';
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { AuctionModule } from './app/auction/auction.module';
     TagModule,
     EmojiModule,
     ReactionModule,
+    ArticleModule,
   ],
 })
 export class ApiModule {}

@@ -52,4 +52,8 @@ export class GroupParser extends Parser {
     }
     return category.id;
   }
+
+  parseChannelName(discordChannelName: string) {
+    return discordChannelName.split('-').join(' ');
+  }
 }

@@ -5,15 +5,21 @@ import { SocialAccountEntity } from '@lib/domains/social-account/domain/social-a
 import { SocialAccountSavePort } from '../../../ports/out/social-account.save.port';
 import { CreateSocialAccountCommand } from '../create-social-account.command';
 import { CreateSocialAccountHandler } from '../create-social-account.handler';
+import { SocialAccountLoadPort } from '../../../ports/out/social-account.load.port';
 
 describe('CreateSocialAccountCommand', () => {
   let handler: CreateSocialAccountHandler;
+  const loadPort: SocialAccountLoadPort = mock(SocialAccountRepository);
   const savePort: SocialAccountSavePort = mock(SocialAccountRepository);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         CreateSocialAccountHandler,
+        {
+          provide: 'SocialAccountLoadPort',
+          useValue: instance(loadPort),
+        },
         {
           provide: 'SocialAccountSavePort',
           useValue: instance(savePort),

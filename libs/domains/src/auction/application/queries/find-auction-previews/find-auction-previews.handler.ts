@@ -91,7 +91,9 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
     ];
 
     const isMyClosedAuctions =
-      query.userId === query.where?.userId && query.where?.status === AUCTION_CLOSED;
+      !!query.userId &&
+      query.userId === query.where?.userId &&
+      query.where?.status === AUCTION_CLOSED;
 
     const auctions = await this.prismaService.auction.findMany({
       where,
@@ -102,6 +104,7 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
         post: {
           include: {
             group: true,
+            category: true,
             user: {
               select: {
                 id: true,
