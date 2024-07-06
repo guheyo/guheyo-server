@@ -3,18 +3,18 @@ import { GroupResponse } from '@lib/domains/group/application/dtos/group.respons
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { Injectable } from '@nestjs/common';
 import { DISCORD } from '@lib/shared/discord/discord.constants';
-import { CreateArticleInput } from '@lib/domains/article/application/commands/create-article/create-article.input';
-import { ARTICLE } from '@lib/domains/article/domain/article.constants';
+import { CreateThreadInput } from '@lib/domains/thread/application/commands/create-thread/create-thread.input';
+import { THREAD } from '@lib/domains/thread/domain/thread.constants';
 
 @Injectable()
-export class ArticleParser extends GroupParser {
-  parseCreateArticleInput(threadPost: ThreadPost, group: GroupResponse): CreateArticleInput {
+export class ThreadParser extends GroupParser {
+  parseCreateThreadInput(threadPost: ThreadPost, group: GroupResponse): CreateThreadInput {
     const channelName = this.parseChannelName(threadPost.threadChannel.parent?.name || '');
     const post = {
       id: this.parseIdFromChannelId(threadPost.threadChannel.id),
       createdAt: threadPost.starterMessage.createdAt,
       updatedAt: threadPost.starterMessage.editedAt || threadPost.starterMessage.createdAt,
-      type: ARTICLE,
+      type: THREAD,
       title: threadPost.threadChannel.name,
       groupId: group.id,
       tagNames: threadPost.tagNames,
