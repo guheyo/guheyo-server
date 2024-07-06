@@ -4,11 +4,11 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { Test } from '@nestjs/testing';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { ArticleModule } from '../article.module';
+import { ThreadModule } from '../thread.module';
 
-describe('ArticleModule', () => {
+describe('ThreadModule', () => {
   let apiModule: ApiModule;
-  let articleModule: ArticleModule;
+  let threadModule: ThreadModule;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -23,12 +23,12 @@ describe('ArticleModule', () => {
             limit: 100,
           },
         ]),
-        ArticleModule,
+        ThreadModule,
       ],
     }).compile();
 
     apiModule = moduleRef;
-    articleModule = moduleRef.get<ArticleModule>(ArticleModule);
+    threadModule = moduleRef.get<ThreadModule>(ThreadModule);
   });
 
   describe('ApiModule', () => {
@@ -37,9 +37,9 @@ describe('ArticleModule', () => {
     });
   });
 
-  describe('ArticleModule', () => {
+  describe('ThreadModule', () => {
     it('should be defined', async () => {
-      expect(articleModule).toBeDefined();
+      expect(threadModule).toBeDefined();
     });
   });
 });
