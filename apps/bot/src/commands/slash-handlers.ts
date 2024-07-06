@@ -19,7 +19,7 @@ import { BulkSaveAuctionsSlashHandler } from './bulk-save/bulk-save-auctions.sla
 import { BulkSaveBidsSlashHandler } from './bulk-save/bulk-save-bids.slash-handler';
 import { BulkSaveAuctionCommentsSlashHandler } from './bulk-save/bulk-save-auction-comments.slash-handler';
 import { CountPostsSlashHandler } from './count-posts/count-posts.slash-handler';
-import { BulkSaveArticlesSlashHandler } from './bulk-save/bulk-save-articles.slash-handler';
+import { BulkSaveThreadsSlashHandler } from './bulk-save/bulk-save-threads.slash-handler';
 
 export const SLASH_HANDLERS = [
   PingSlashHandler,
@@ -43,5 +43,5 @@ export const SLASH_HANDLERS = [
   FindMembersByRolesSlashHandler,
   FindMembersNeedingSocialRoleSlashHandler,
   CountPostsSlashHandler,
-  BulkSaveArticlesSlashHandler,
+  BulkSaveThreadsSlashHandler,
 ];
