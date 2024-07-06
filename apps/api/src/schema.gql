@@ -2,27 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type ArticlePreviewResponse {
-  content: String
-  createdAt: DateTime!
-  id: ID!
-  post: PostPreviewWithAuthorResponse!
-  updatedAt: DateTime!
-}
-
-type ArticlePreviewResponseEdge {
-  cursor: String!
-  node: ArticlePreviewResponse!
-}
-
-type ArticleResponse {
-  content: String
-  createdAt: DateTime!
-  id: ID!
-  post: PostResponse!
-  updatedAt: DateTime!
-}
-
 union AuctionInteractionItemResponse = BidResponse | CommentWithAuthorResponse
 
 type AuctionInteractionItemResponseEdge {
@@ -176,12 +155,6 @@ type CommentWithAuthorResponseEdge {
   node: CommentWithAuthorResponse!
 }
 
-input CreateArticleInput {
-  content: String
-  id: ID!
-  post: CreatePostInput!
-}
-
 input CreateAuctionInput {
   content: String!
   createdAt: DateTime!
@@ -272,6 +245,12 @@ input CreateSignedUrlInput {
   type: String!
 }
 
+input CreateThreadInput {
+  content: String
+  id: ID!
+  post: CreatePostInput!
+}
+
 input CreateUserImageInput {
   contentType: String
   description: String
@@ -319,23 +298,23 @@ type EmojiResponse {
   url: String
 }
 
-input FindArticlePreviewsOrderByInput {
-  createdAt: String
-}
-
-input FindArticlePreviewsWhereInput {
-  categoryId: ID
-  groupId: ID
-  pending: String
-  userId: ID
-}
-
 input FindBiddersOrderByInput {
   createdAt: String
 }
 
 input FindBiddersWhereInput {
   auctionId: ID!
+}
+
+input FindThreadPreviewsOrderByInput {
+  createdAt: String
+}
+
+input FindThreadPreviewsWhereInput {
+  categoryId: ID
+  groupId: ID
+  pending: String
+  userId: ID
 }
 
 type GroupPreviewResponse {
@@ -402,7 +381,6 @@ type Mutation {
   cancelBid(input: CancelBidInput!): String!
   cancelReaction(input: CancelReactionInput!): String!
   commentReport(input: CommentReportInput!): ReportCommentResponse!
-  createArticle(input: CreateArticleInput!): String!
   createAuction(input: CreateAuctionInput!): String!
   createComment(input: CreateCommentInput!): String!
   createGroup(input: CreateGroupInput!): String!
@@ -412,12 +390,13 @@ type Mutation {
   createReport(input: CreateReportInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
+  createThread(input: CreateThreadInput!): String!
   createUserImage(input: CreateUserImageInput!): String!
   createUserReview(input: CreateUserReviewInput!): String!
-  deleteArticle(id: ID!): String!
   deleteComment(input: DeleteCommentInput!): String!
   deleteOffer(id: ID!): String!
   deleteRole(id: ID!): String!
+  deleteThread(id: ID!): String!
   deleteUserImage(id: ID!): String!
   deleteUserReview(id: ID!): String!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
@@ -496,11 +475,6 @@ type PageInfo {
   hasNextPage: Boolean!
 }
 
-type PaginatedArticlePreviewsResponse {
-  edges: [ArticlePreviewResponseEdge!]!
-  pageInfo: PageInfo!
-}
-
 type PaginatedAuctionInteractionItemsResponse {
   edges: [AuctionInteractionItemResponseEdge!]!
   pageInfo: PageInfo!
@@ -538,6 +512,11 @@ type PaginatedOfferPreviewsResponse {
 
 type PaginatedReportPreviewsResponse {
   edges: [ReportPreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PaginatedThreadPreviewsResponse {
+  edges: [ThreadPreviewResponseEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -628,8 +607,6 @@ type PostResponse {
 }
 
 type Query {
-  findArticle(id: ID, slug: String): ArticleResponse
-  findArticlePreviews(cursor: ID, keyword: String, orderBy: FindArticlePreviewsOrderByInput, skip: Int! = 1, take: Int!, where: FindArticlePreviewsWhereInput): PaginatedArticlePreviewsResponse!
   findAuction(id: ID, slug: String): AuctionResponse
   findAuctionInteractionItems(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionInteractionItemsResponse!
   findAuctionPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionPreviewsResponse!
@@ -658,6 +635,8 @@ type Query {
   findRoleById(id: ID!): RoleResponse
   findTags: [TagResponse!]!
   findTerm(name: String!): TermResponse
+  findThread(id: ID, slug: String): ThreadResponse
+  findThreadPreviews(cursor: ID, keyword: String, orderBy: FindThreadPreviewsOrderByInput, skip: Int! = 1, take: Int!, where: FindThreadPreviewsWhereInput): PaginatedThreadPreviewsResponse!
   findUser(provider: String, socialId: String, username: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
@@ -791,6 +770,27 @@ type TermResponse {
   meta: JSON
   name: String!
   title: String!
+  updatedAt: DateTime!
+}
+
+type ThreadPreviewResponse {
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  post: PostPreviewWithAuthorResponse!
+  updatedAt: DateTime!
+}
+
+type ThreadPreviewResponseEdge {
+  cursor: String!
+  node: ThreadPreviewResponse!
+}
+
+type ThreadResponse {
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  post: PostResponse!
   updatedAt: DateTime!
 }
 
