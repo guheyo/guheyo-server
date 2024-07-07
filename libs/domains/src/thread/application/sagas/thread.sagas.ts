@@ -6,6 +6,7 @@ import { TrackUserImagesCommand } from '@lib/domains/user-image/application/comm
 import { UpdateThumbnailCommand } from '@lib/domains/post/application/commands/update-thumbnail/update-thumbnail.command';
 import { ThreadCreatedEvent } from '../events/thread-created/thread-created.event';
 import { THREAD } from '../../domain/thread.constants';
+import { ThreadUpdatedEvent } from '../events/thread-updated/thread-updated.event';
 
 @Injectable()
 export class ThreadSagas {
@@ -28,6 +29,25 @@ export class ThreadSagas {
             postId: event.postId,
             type: THREAD,
             tagNames: event.tagNames,
+          }),
+        ),
+      ),
+    );
+
+  @Saga()
+  threadUpdated = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(ThreadUpdatedEvent),
+      concatMap((event) =>
+        of(
+          new TrackUserImagesCommand({
+            type: THREAD,
+            refId: event.threadId,
+          }),
+          new UpdateThumbnailCommand({
+            postId: event.postId,
+            type: THREAD,
+            refId: event.threadId,
           }),
         ),
       ),

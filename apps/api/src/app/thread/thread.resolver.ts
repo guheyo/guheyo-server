@@ -16,6 +16,8 @@ import { CreateThreadInput } from '@lib/domains/thread/application/commands/crea
 import { CreateThreadCommand } from '@lib/domains/thread/application/commands/create-thread/create-thread.command';
 import { DeleteThreadArgs } from '@lib/domains/thread/application/commands/delete-thread/delete-thread.args';
 import { DeleteThreadCommand } from '@lib/domains/thread/application/commands/delete-thread/delete-thread.command';
+import { UpdateThreadInput } from '@lib/domains/thread/application/commands/update-thread/update-thread.input';
+import { UpdateThreadCommand } from '@lib/domains/thread/application/commands/update-thread/update-thread.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
@@ -57,6 +59,20 @@ export class ThreadResolver {
     @ExtractedUser() user: MyUserResponse,
   ): Promise<string> {
     await this.commandBus.execute(new CreateThreadCommand({ input, user }));
+    return input.id;
+  }
+
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
+  @Mutation(() => String)
+  async updateThread(
+    @Args('input') input: UpdateThreadInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new UpdateThreadCommand({ input, user }));
     return input.id;
   }
 
