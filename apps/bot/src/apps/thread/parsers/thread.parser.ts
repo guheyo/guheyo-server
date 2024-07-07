@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { CreateThreadInput } from '@lib/domains/thread/application/commands/create-thread/create-thread.input';
 import { THREAD } from '@lib/domains/thread/domain/thread.constants';
+import { UpdateThreadInput } from '@lib/domains/thread/application/commands/update-thread/update-thread.input';
 
 @Injectable()
 export class ThreadParser extends GroupParser {
@@ -25,6 +26,17 @@ export class ThreadParser extends GroupParser {
     return {
       id: this.parseIdFromMessageId(threadPost.starterMessage.id),
       post,
+      content: threadPost.starterMessage.content,
+    };
+  }
+
+  parseUpdateThreadInput(threadPost: ThreadPost): UpdateThreadInput {
+    const post = {
+      title: threadPost.threadChannel.name,
+    };
+    return {
+      post,
+      id: this.parseIdFromMessageId(threadPost.starterMessage.id),
       content: threadPost.starterMessage.content,
     };
   }
