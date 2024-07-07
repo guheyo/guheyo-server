@@ -410,6 +410,7 @@ type Mutation {
   updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
   updateReportComment(input: UpdateReportCommentInput!): ReportCommentResponse!
   updateRole(input: UpdateRoleInput!): String!
+  updateThread(input: UpdateThreadInput!): String!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
 }
@@ -846,6 +847,12 @@ input UpdateRoleInput {
   id: ID!
   name: String
   position: Int
+}
+
+input UpdateThreadInput {
+  content: String
+  id: ID!
+  post: UpdatePostInput!
 }
 
 input UpdateUserImageInput {
