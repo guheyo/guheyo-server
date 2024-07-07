@@ -7,6 +7,8 @@ import { CommentResponse } from '../../dtos/comment.response';
 @QueryHandler(FindCommentQuery)
 export class FindCommentHandler extends PrismaQueryHandler {
   async execute(query: FindCommentQuery): Promise<CommentResponse | null> {
+    if (!query.id && !query.postId) return null;
+
     const comment = await this.prismaService.comment.findFirst({
       where: {
         id: query.id,
