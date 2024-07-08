@@ -1,7 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
-import { parseFollowedBySearcher } from '@lib/shared/search/search';
+import { parseContainsSearcher } from '@lib/shared/search/search';
 import { ForbiddenException } from '@nestjs/common';
 import { ReportErrorMessage } from '@lib/domains/report/domain/report.error.message';
 import { Prisma } from '@prisma/client';
@@ -25,7 +25,7 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler {
           reportedUserId: query.where.reportedUserId,
           groupId: query.where.groupId,
           status: query.where.status,
-          reason: parseFollowedBySearcher(query.keyword),
+          reason: parseContainsSearcher({ keyword: query.keyword }),
           createdAt: query.where.createdAt
             ? {
                 gt: new Date(query.where.createdAt.gt),

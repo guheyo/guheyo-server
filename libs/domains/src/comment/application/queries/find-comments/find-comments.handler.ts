@@ -1,7 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
-import { parseFollowedBySearcher } from '@lib/shared/search/search';
+import { parseContainsSearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
 import { plainToClass } from 'class-transformer';
 import { COMMENT } from '@lib/domains/comment/domain/comment.constants';
@@ -18,7 +18,7 @@ export class FindCommentsHandler extends PrismaQueryHandler {
             id: query.where.postId,
           },
           userId: query.where.userId,
-          content: parseFollowedBySearcher(query.keyword),
+          content: parseContainsSearcher({ keyword: query.keyword }),
         }
       : {};
 
