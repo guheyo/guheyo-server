@@ -1,10 +1,11 @@
 import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { ForbiddenException, Inject } from '@nestjs/common';
+import { ForbiddenException, Inject, NotFoundException } from '@nestjs/common';
 import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { GraphqlPubSub } from '@lib/shared/pubsub/graphql-pub-sub';
 import { CommentErrorMessage } from '@lib/domains/comment/domain/comment.error.message';
 import { COMMENT } from '@lib/domains/comment/domain/comment.constants';
+import { PostErrorMessage } from '@lib/domains/post/domain/post.error.message';
 import { CreateCommentCommand } from './create-comment.command';
 import { CommentSavePort } from '../../ports/out/comment.save.port';
 import { CommentLoadPort } from '../../ports/out/comment.load.port';
@@ -25,6 +26,16 @@ export class CreateCommentHandler extends PrismaCommandHandler<
   }
 
   async execute(command: CreateCommentCommand): Promise<void> {
+    const post = await this.prismaService.post.findUnique({
+      where: {
+        id: command.postId,
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (!post) throw new NotFoundException(PostErrorMessage.POST_NOT_FOUND);
+
     const comment = this.publisher.mergeObjectContext(
       new CommentEntity({
         ...command,
