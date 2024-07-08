@@ -21,6 +21,6 @@ export class PostCommentCreatedHandler {
     @Context()
     [message]: ContextOf<'messageCreate'>,
   ) {
-    this.commentClient.createCommentFromMessage(message, user);
+    await this.commentClient.createCommentFromMessage(message, user);
   }
 }
