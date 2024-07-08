@@ -14,6 +14,7 @@ import { KakaoRoleRequestedHandler } from './kakao-role-requested/kakao-role-req
 import { ThreadCreatedHandler } from './thread-created/thread-created.handler';
 import { ThreadUpdatedHandler } from './thread-updated/thread-updated.handler';
 import { PostCommentCreatedHandler } from './post-comment-created/post-comment-created.handler';
+import { PostCommentUpdatedHandler } from './post-comment-updated/post-comment-created.handler';
 
 export const EVENT_HANDLERS = [
   ReadyHandler,
@@ -32,6 +33,7 @@ export const EVENT_HANDLERS = [
   ThreadCreatedHandler,
   ThreadUpdatedHandler,
   PostCommentCreatedHandler,
+  PostCommentUpdatedHandler,
   // NOTE: Delete directly from the web
   // offer, demand, swap messages
 ];
