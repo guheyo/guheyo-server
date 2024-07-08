@@ -5,6 +5,8 @@ import { CreateCommentsCommand } from '@lib/domains/comment/application/commands
 import { CreateCommentInput } from '@lib/domains/comment/application/commands/create-comment/create-comment.input';
 import { Message } from 'discord.js';
 import { COMMENT } from '@lib/domains/comment/domain/comment.constants';
+import { UpdateCommentInput } from '@lib/domains/comment/application/commands/update-comment/update-comment.input';
+import { UpdateCommentCommand } from '@lib/domains/comment/application/commands/update-comment/update-comment.command';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { CommentParser } from '../parsers/comment.parser';
 import { MessageWithUser } from '../../user/interfaces/user.interfaces';
@@ -23,6 +25,10 @@ export class CommentClient extends UserImageClient {
 
   async createComments(commentCommands: CreateCommentCommand[]) {
     await this.commandBus.execute(new CreateCommentsCommand(commentCommands));
+  }
+
+  async updaetComment({ input, user }: { input: UpdateCommentInput; user: MyUserResponse }) {
+    await this.commandBus.execute(new UpdateCommentCommand({ input, user }));
   }
 
   async createCommentsFromMessageWithUsers(messageWithUsers: MessageWithUser[]) {
@@ -54,5 +60,12 @@ export class CommentClient extends UserImageClient {
     await this.uploadAndCreateAttachments(user, uploadUserImageInputList, COMMENT);
     await this.createComment({ input: createCommentInput, user });
     this.logger.log(`comment<#${createCommentInput.id}> created`);
+  }
+
+  async updateCommentFromMessage(message: Message, user: MyUserResponse) {
+    const updateCommentInput = this.commentParser.parseUpdateCommentInput(message);
+
+    await this.updaetComment({ input: updateCommentInput, user });
+    this.logger.log(`comment<#${updateCommentInput.id}> updated`);
   }
 }
