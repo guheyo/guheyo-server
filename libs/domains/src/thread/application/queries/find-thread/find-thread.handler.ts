@@ -50,9 +50,7 @@ export class FindThreadHandler extends PrismaQueryHandler {
 
     if (!thread) throw new NotFoundException(ThreadErrorMessage.THREAD_NOT_FOUND);
     if (thread.post.archivedAt && thread.post.userId !== query.userId)
-      throw new ForbiddenException(
-        ThreadErrorMessage.FIND_THREADS_REQUEST_FROM_UNAUTHORIZED_USER,
-      );
+      throw new ForbiddenException(ThreadErrorMessage.FIND_THREADS_REQUEST_FROM_UNAUTHORIZED_USER);
 
     const images = await this.prismaService.userImage.findMany({
       where: {

@@ -17,9 +17,7 @@ export class DeleteThreadHandler implements ICommandHandler<DeleteThreadCommand>
     const thread = await this.loadPort.findById(command.id);
     if (!thread) throw new NotFoundException(ThreadErrorMessage.THREAD_NOT_FOUND);
     if (!thread.isAuthorized(command.user.id))
-      throw new ForbiddenException(
-        ThreadErrorMessage.THREAD_DELETE_COMMAND_FROM_UNAUTHORIZED_USER,
-      );
+      throw new ForbiddenException(ThreadErrorMessage.THREAD_DELETE_COMMAND_FROM_UNAUTHORIZED_USER);
     await this.savePort.delete(thread);
   }
 }
