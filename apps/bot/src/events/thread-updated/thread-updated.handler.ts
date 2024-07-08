@@ -25,8 +25,9 @@ export class ThreadUpdatedHandler {
     @Context(ParseUserFromMessagePipe)
     user: MyUserResponse,
     @Context()
-    [message]: ContextOf<'messageUpdate'>,
+    [oldMessage, newMessage]: ContextOf<'messageUpdate'>,
   ) {
+    const message = await newMessage.fetch();
     if (!message.guild) {
       this.logger.warn(
         `Guild not found. messageId: ${message.id}, channelId: ${message.channelId}`,
