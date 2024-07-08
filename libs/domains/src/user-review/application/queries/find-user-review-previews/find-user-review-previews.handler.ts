@@ -1,7 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
-import { parseFollowedBySearcher } from '@lib/shared/search/search';
+import { parseContainsSearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
 import { plainToClass } from 'class-transformer';
 import { PaginatedUserReviewPreviewsResponse } from './paginated-user-review-previews.response';
@@ -17,7 +17,7 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler {
             groupId: query.where.groupId,
             userId: query.where.userId,
             pending: query.where.pending,
-            title: parseFollowedBySearcher(query.keyword),
+            title: parseContainsSearcher({ keyword: query.keyword }),
             tags: query.where.tagType
               ? {
                   some: {

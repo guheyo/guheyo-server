@@ -11,16 +11,17 @@ import { CommentMessageGuard } from '@app/bot/apps/comment/guards/comment-messag
 @UseGuards(GroupGuard, CommunityChannelGuard, CommentMessageGuard)
 @Name('커스텀 키보드')
 @Injectable()
-export class PostCommentCreatedHandler {
+export class PostCommentUpdatedHandler {
   constructor(private readonly commentClient: CommentClient) {}
 
-  @On('messageCreate')
-  public async onCreatePostComment(
+  @On('messageUpdate')
+  public async onUpdatePostComment(
     @Context(ParseUserFromMessagePipe)
     user: MyUserResponse,
     @Context()
-    [message]: ContextOf<'messageCreate'>,
+    [oldMessage, newMessage]: ContextOf<'messageUpdate'>,
   ) {
-    await this.commentClient.createCommentFromMessage(message, user);
+    const message = await newMessage.fetch();
+    await this.commentClient.updateCommentFromMessage(message, user);
   }
 }

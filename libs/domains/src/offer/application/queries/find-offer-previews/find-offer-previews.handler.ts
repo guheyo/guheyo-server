@@ -1,7 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
-import { parseFollowedBySearcher } from '@lib/shared/search/search';
+import { parseContainsSearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
 import { ForbiddenException } from '@nestjs/common';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
@@ -31,7 +31,9 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
               : {
                   equals: null,
                 },
-            title: parseFollowedBySearcher(query.keyword),
+            title: parseContainsSearcher({
+              keyword: query.keyword,
+            }),
           },
           businessFunction: query.where.businessFunction,
           status: query.where.status,

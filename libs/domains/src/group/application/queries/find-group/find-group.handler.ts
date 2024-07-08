@@ -7,6 +7,8 @@ import { GroupResponse } from '../../dtos/group.response';
 @QueryHandler(FindGroupQuery)
 export class FindGroupHandler extends PrismaQueryHandler {
   async execute(query: FindGroupQuery): Promise<GroupResponse | null> {
+    if (!query.id && !query.slug) return null;
+
     const group = await this.prismaService.group.findFirst({
       where: {
         id: query.id,
