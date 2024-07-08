@@ -26,8 +26,7 @@ export class CreateThreadHandler implements ICommandHandler<CreateThreadCommand>
       }),
     );
     let thread = await this.loadPort.findById(command.id);
-    if (!thread)
-      throw new InternalServerErrorException(ThreadErrorMessage.THREAD_CREATION_FAILED);
+    if (!thread) throw new InternalServerErrorException(ThreadErrorMessage.THREAD_CREATION_FAILED);
 
     thread = this.publisher.mergeObjectContext(thread);
     thread.create(command.post.tagNames || []);
