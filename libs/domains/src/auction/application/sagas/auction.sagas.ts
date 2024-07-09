@@ -24,11 +24,6 @@ export class AuctionSagas {
             type: AUCTION,
             refId: event.id,
           }),
-          new UpdateThumbnailCommand({
-            postId: event.postId,
-            type: AUCTION,
-            refId: event.id,
-          }),
           new ConnectTagsCommand({
             postId: event.postId,
             tagIds: event.tagIds,

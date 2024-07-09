@@ -72,6 +72,7 @@ export class AuctionRepository
           'updatedAt',
           'type',
           'title',
+          'thumbnail',
           'userAgent',
           'ipAddress',
           'groupId',
