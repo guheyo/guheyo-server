@@ -98,6 +98,7 @@ export class UserReviewRepository
           'updatedAt',
           'type',
           'title',
+          'thumbnail',
           'userAgent',
           'ipAddress',
           'groupId',
