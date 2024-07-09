@@ -41,6 +41,7 @@ export class UserReviewEntity extends AggregateRoot {
         reviewId: this.id,
         reviewStatus: this.status,
         postId: this.post.id,
+        thumbnail: this.post.thumbnail || undefined,
         tagIds,
         username: this.post.user.username,
         userAvatarURL: this.post.user.avatarURL || undefined,

@@ -38,7 +38,8 @@ export class DiscordWebhookSagas {
             name: event.username,
             iconURL: event.avatarURL,
           })
-          .setDescription(this.discordWebhookParser.parseOfferURL({ slug: event.slug! }));
+          .setDescription(this.discordWebhookParser.parseOfferURL({ slug: event.slug! }))
+          .setImage(event.thumbnail || null);
         return new SendDiscordWebhookCommand({
           target: 'offer',
           embed,
@@ -67,7 +68,8 @@ export class DiscordWebhookSagas {
             )}\n${`<t:${unixTimestamp}:R> 종료`}\n입찰가: 0\n\n${this.discordWebhookParser.parseAuctionURL(
               { slug: event.slug! },
             )}`,
-          );
+          )
+          .setImage(event.thumbnail || null);
         return new SendDiscordWebhookCommand({
           target: 'auction',
           embed,
@@ -112,7 +114,8 @@ export class DiscordWebhookSagas {
             name: event.username,
             iconURL: event.userAvatarURL,
           })
-          .setDescription(this.discordWebhookParser.parseUserReviewURL({ slug: event.slug! }));
+          .setDescription(this.discordWebhookParser.parseUserReviewURL({ slug: event.slug! }))
+          .setThumbnail(event.thumbnail || null);
         return new SendDiscordWebhookCommand({
           target: 'userReview',
           embed,

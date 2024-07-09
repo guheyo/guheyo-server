@@ -20,11 +20,6 @@ export class OfferSagas {
             type: OFFER,
             refId: event.id,
           }),
-          new UpdateThumbnailCommand({
-            postId: event.postId,
-            type: OFFER,
-            refId: event.id,
-          }),
           new ConnectTagsCommand({
             postId: event.postId,
             tagIds: event.tagIds,

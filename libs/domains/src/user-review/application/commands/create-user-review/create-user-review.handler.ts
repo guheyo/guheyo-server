@@ -1,19 +1,27 @@
-import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
+import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { ForbiddenException, Inject, InternalServerErrorException } from '@nestjs/common';
 import { UserReviewErrorMessage } from '@lib/domains/user-review/domain/user-review.error.message';
 import { UserReviewEntity } from '@lib/domains/user-review/domain/user-review.entity';
 import { PostEntity } from '@lib/domains/post/domain/post.entity';
+import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
+import { USER_REVIEW } from '@lib/domains/user-review/domain/user-review.constants';
 import { UserReviewLoadPort } from '../../ports/out/user-review.load.port';
 import { UserReviewSavePort } from '../../ports/out/user-review.save.port';
 import { CreateUserReviewCommand } from './create-user-review.command';
+import { UserReviewResponse } from '../../dtos/user-review.response';
 
 @CommandHandler(CreateUserReviewCommand)
-export class CreateUserReviewHandler implements ICommandHandler<CreateUserReviewCommand> {
+export class CreateUserReviewHandler extends PrismaCommandHandler<
+  CreateUserReviewCommand,
+  UserReviewResponse
+> {
   constructor(
     @Inject('UserReviewLoadPort') private loadPort: UserReviewLoadPort,
     @Inject('UserReviewSavePort') private savePort: UserReviewSavePort,
     private readonly publisher: EventPublisher,
-  ) {}
+  ) {
+    super(UserReviewResponse);
+  }
 
   async execute(command: CreateUserReviewCommand): Promise<void> {
     if (command.offerId || command.auctionId) {
@@ -27,12 +35,26 @@ export class CreateUserReviewHandler implements ICommandHandler<CreateUserReview
         throw new ForbiddenException(UserReviewErrorMessage.USER_REVIEW_ALREADY_EXIST);
     }
 
+    const image = await this.prismaService.userImage.findFirst({
+      where: {
+        type: USER_REVIEW,
+        refId: command.id,
+        deletedAt: {
+          equals: null,
+        },
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+
     await this.savePort.create(
       new UserReviewEntity({
         ...command,
         post: new PostEntity({
           ...command.post,
           userId: command.user.id,
+          thumbnail: image?.url,
         }),
       }),
     );

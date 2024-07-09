@@ -2,7 +2,11 @@ import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { ForbiddenException, Inject, InternalServerErrorException } from '@nestjs/common';
 import { OfferEntity } from '@lib/domains/offer/domain/offer.entity';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
-import { DAILY_OFFER_POSTING_LIMIT, DAY_HOURS } from '@lib/domains/offer/domain/offer.constants';
+import {
+  DAILY_OFFER_POSTING_LIMIT,
+  DAY_HOURS,
+  OFFER,
+} from '@lib/domains/offer/domain/offer.constants';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { PostEntity } from '@lib/domains/post/domain/post.entity';
 import { CreateOfferCommand } from './create-offer.command';
@@ -30,12 +34,26 @@ export class CreateOfferHandler extends PrismaCommandHandler<CreateOfferCommand,
     if (countDailyOfferPostingInSameCategory > DAILY_OFFER_POSTING_LIMIT)
       throw new ForbiddenException(OfferErrorMessage.DAILY_OFFER_POSTING_LIMIT_EXCEEDED);
 
+    const image = await this.prismaService.userImage.findFirst({
+      where: {
+        type: OFFER,
+        refId: command.id,
+        deletedAt: {
+          equals: null,
+        },
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+
     await this.savePort.create(
       new OfferEntity({
         ...command,
         post: new PostEntity({
           ...command.post,
           userId: command.user.id,
+          thumbnail: image?.url,
         }),
       }),
     );
