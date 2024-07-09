@@ -68,7 +68,8 @@ export const handler = async (event: any): Promise<void> => {
         )}\n${`<t:${unixTimestamp}:R> 종료`}\n입찰가: ${String(auction.bids[0]?.price || 0)}\n\n${
           process.env.FRONTEND_HOST
         }/auction/${auction.post.slug}`,
-      );
+      )
+      .setImage(auction.post.thumbnail);
 
     await webhookClient.send({ embeds: [embed] });
 
