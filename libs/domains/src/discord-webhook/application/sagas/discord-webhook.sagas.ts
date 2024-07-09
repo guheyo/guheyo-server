@@ -114,7 +114,8 @@ export class DiscordWebhookSagas {
             name: event.username,
             iconURL: event.userAvatarURL,
           })
-          .setDescription(this.discordWebhookParser.parseUserReviewURL({ slug: event.slug! }));
+          .setDescription(this.discordWebhookParser.parseUserReviewURL({ slug: event.slug! }))
+          .setThumbnail(event.thumbnail || null);
         return new SendDiscordWebhookCommand({
           target: 'userReview',
           embed,
