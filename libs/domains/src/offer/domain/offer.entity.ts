@@ -64,6 +64,7 @@ export class OfferEntity extends AggregateRoot {
         price: this.price,
         userAgent: this.post.userAgent || undefined,
         postId: this.post.id,
+        thumbnail: this.post.thumbnail || undefined,
         tagIds,
       }),
     );

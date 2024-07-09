@@ -19,6 +19,8 @@ export class OfferCreatedEvent implements IEvent {
 
   postId: string;
 
+  thumbnail?: string;
+
   tagIds: string[];
 
   constructor({
@@ -31,6 +33,7 @@ export class OfferCreatedEvent implements IEvent {
     price,
     userAgent,
     postId,
+    thumbnail,
     tagIds,
   }: {
     id: string;
@@ -42,6 +45,7 @@ export class OfferCreatedEvent implements IEvent {
     price: number;
     userAgent?: string;
     postId: string;
+    thumbnail?: string;
     tagIds: string[];
   }) {
     this.id = id;
@@ -53,6 +57,7 @@ export class OfferCreatedEvent implements IEvent {
     this.price = price;
     this.userAgent = userAgent;
     this.postId = postId;
+    this.thumbnail = thumbnail;
     this.tagIds = tagIds;
   }
 }
