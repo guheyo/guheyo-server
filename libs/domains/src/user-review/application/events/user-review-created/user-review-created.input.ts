@@ -5,6 +5,8 @@ export class UserReviewCreatedInput {
 
   postId: string;
 
+  thumbnail?: string;
+
   tagIds: string[];
 
   username: string;
@@ -21,6 +23,7 @@ export class UserReviewCreatedInput {
     reviewId,
     reviewStatus,
     postId,
+    thumbnail,
     tagIds,
     username,
     userAvatarURL,
@@ -31,6 +34,7 @@ export class UserReviewCreatedInput {
     reviewId: string;
     reviewStatus: string;
     postId: string;
+    thumbnail?: string;
     tagIds: string[];
     username: string;
     userAvatarURL?: string;
@@ -41,6 +45,7 @@ export class UserReviewCreatedInput {
     this.reviewId = reviewId;
     this.reviewStatus = reviewStatus;
     this.postId = postId;
+    this.thumbnail = thumbnail;
     this.tagIds = tagIds;
     this.username = username;
     this.userAvatarURL = userAvatarURL;
