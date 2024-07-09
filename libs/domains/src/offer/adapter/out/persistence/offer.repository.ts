@@ -54,6 +54,7 @@ export class OfferRepository
           'updatedAt',
           'type',
           'title',
+          'thumbnail',
           'userAgent',
           'ipAddress',
           'groupId',

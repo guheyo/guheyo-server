@@ -57,6 +57,7 @@ export class AuctionEntity extends AggregateRoot {
         avatarURL: this.post.user.avatarURL || undefined,
         title: this.post.title,
         postId: this.post.id,
+        thumbnail: this.post.thumbnail || undefined,
         tagIds,
         createdAt: this.createdAt,
         extendedEndDate: this.extendedEndDate,

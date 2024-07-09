@@ -8,6 +8,8 @@ export class UserReviewCreatedEvent implements IEvent {
 
   postId: string;
 
+  thumbnail?: string;
+
   tagIds: string[];
 
   username: string;
@@ -24,6 +26,7 @@ export class UserReviewCreatedEvent implements IEvent {
     this.reviewId = input.reviewId;
     this.reviewStatus = input.reviewStatus;
     this.postId = input.postId;
+    this.thumbnail = input.thumbnail;
     this.tagIds = input.tagIds;
     this.username = input.username;
     this.userAvatarURL = input.userAvatarURL;
