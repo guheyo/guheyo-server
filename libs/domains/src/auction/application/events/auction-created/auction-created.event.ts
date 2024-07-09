@@ -11,6 +11,8 @@ export class AuctionCreatedEvent implements IEvent {
 
   postId: string;
 
+  thumbnail?: string;
+
   tagIds: string[];
 
   createdAt: Date;
@@ -27,6 +29,7 @@ export class AuctionCreatedEvent implements IEvent {
     avatarURL,
     title,
     postId,
+    thumbnail,
     tagIds,
     createdAt,
     extendedEndDate,
@@ -38,6 +41,7 @@ export class AuctionCreatedEvent implements IEvent {
     avatarURL?: string;
     title: string;
     postId: string;
+    thumbnail?: string;
     tagIds: string[];
     createdAt: Date;
     extendedEndDate: Date;
@@ -49,6 +53,7 @@ export class AuctionCreatedEvent implements IEvent {
     this.avatarURL = avatarURL;
     this.title = title;
     this.postId = postId;
+    this.thumbnail = thumbnail;
     this.tagIds = tagIds;
     this.createdAt = createdAt;
     this.extendedEndDate = extendedEndDate;
