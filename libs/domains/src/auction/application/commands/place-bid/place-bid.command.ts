@@ -13,11 +13,27 @@ export class PlaceBidCommand implements ICommand {
 
   user: MyUserResponse;
 
-  constructor({ input, user }: { input: PlaceBidInput; user: MyUserResponse }) {
+  userAgent?: string;
+
+  ipAddress?: string;
+
+  constructor({
+    input,
+    user,
+    userAgent,
+    ipAddress,
+  }: {
+    input: PlaceBidInput;
+    user: MyUserResponse;
+    userAgent?: string;
+    ipAddress?: string;
+  }) {
     this.id = input.id;
     this.price = input.price;
     this.priceCurrency = input.priceCurrency;
     this.auctionId = input.auctionId;
     this.user = user;
+    this.userAgent = userAgent;
+    this.ipAddress = ipAddress;
   }
 }
