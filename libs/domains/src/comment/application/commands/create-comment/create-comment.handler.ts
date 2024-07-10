@@ -40,6 +40,7 @@ export class CreateCommentHandler extends PrismaCommandHandler<
       new CommentEntity({
         ...command,
         userId: command.user.id,
+        userAgent: command.userAgent,
       }),
     );
     await this.savePort.create(comment);

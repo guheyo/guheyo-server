@@ -21,6 +21,10 @@ export class BidEntity {
 
   status: string;
 
+  userAgent: string | null;
+
+  ipAddress: string | null;
+
   constructor(partial: Partial<BidEntity>) {
     Object.assign(this, partial);
   }

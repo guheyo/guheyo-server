@@ -47,7 +47,15 @@ export class ReactionRepository
 
   async create(reaction: ReactionEntity): Promise<void> {
     await this.prismaService.reaction.create({
-      data: _.pick(reaction, ['id', 'emojiId', 'userId', 'postId', 'commentId']),
+      data: _.pick(reaction, [
+        'id',
+        'emojiId',
+        'userId',
+        'postId',
+        'commentId',
+        'userAgent',
+        'ipAddress',
+      ]),
     });
   }
 

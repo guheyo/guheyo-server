@@ -22,6 +22,8 @@ export class CreateThreadHandler implements ICommandHandler<CreateThreadCommand>
         post: new PostEntity({
           ...command.post,
           userId: command.user.id,
+          userAgent: command.userAgent,
+          ipAddress: command.ipAddress,
         }),
       }),
     );

@@ -23,6 +23,8 @@ import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-
 import { FindOfferCountArgs } from '@lib/domains/offer/application/queries/find-offer-count/find-offer-count.args';
 import { FindOfferCountQuery } from '@lib/domains/offer/application/queries/find-offer-count/find-offer-count.query';
 import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
+import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
+import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -74,8 +76,10 @@ export class OfferResolver {
   async createOffer(
     @Args('input') input: CreateOfferInput,
     @ExtractedUser() user: MyUserResponse,
+    @UserAgent() userAgent: string,
+    @IpAddress() ipAddress: string,
   ): Promise<string> {
-    await this.commandBus.execute(new CreateOfferCommand({ input, user }));
+    await this.commandBus.execute(new CreateOfferCommand({ input, user, userAgent, ipAddress }));
     return input.id;
   }
 

@@ -81,7 +81,7 @@ export class AuctionEntity extends AggregateRoot {
     if (this.isClosed()) throw new Error(AuctionErrorMessage.AUCTION_CLOSED);
 
     const bid = new BidEntity({
-      ...pick(command, ['id', 'auctionId', 'price', 'priceCurrency']),
+      ...pick(command, ['id', 'auctionId', 'price', 'priceCurrency', 'userAgent', 'ipAddress']),
       userId: command.user.id,
       status: BID,
     });

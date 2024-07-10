@@ -66,6 +66,8 @@ export class PlaceBidHandler extends PrismaCommandHandler<PlaceBidCommand, BidRe
             priceCurrency: lastBid.priceCurrency,
             userId: command.user.id,
             status: BID,
+            userAgent: lastBid.userAgent,
+            ipAddress: lastBid.ipAddress,
           },
           include: {
             user: {
