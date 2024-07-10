@@ -44,6 +44,8 @@ import { FindBiddersArgs } from '@lib/domains/auction/application/queries/find-b
 import { FindBiddersQuery } from '@lib/domains/auction/application/queries/find-bidders/find-bidders.query';
 import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/find-users/paginated-users.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
+import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
+import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
 
 @UseGuards()
 @Resolver()
@@ -150,8 +152,10 @@ export class AuctionResolver {
   async placeBid(
     @Args('input') input: PlaceBidInput,
     @ExtractedUser() user: MyUserResponse,
+    @UserAgent() userAgent: string,
+    @IpAddress() ipAddress: string,
   ): Promise<string> {
-    await this.commandBus.execute(new PlaceBidCommand({ input, user }));
+    await this.commandBus.execute(new PlaceBidCommand({ input, user, userAgent, ipAddress }));
     return input.auctionId;
   }
 
