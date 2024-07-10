@@ -18,6 +18,8 @@ import { parseReactionCreatedTriggerName } from '@lib/domains/reaction/applicati
 import { ReactionCanceledArgs } from '@lib/domains/reaction/application/subscriptions/reaction-canceled/reaction-canceled.args';
 import { parseReactionCanceledTriggerName } from '@lib/domains/reaction/application/subscriptions/reaction-canceled/parse-reaction-canceled-trigger-name';
 import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
+import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
+import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @Resolver()
@@ -42,8 +44,10 @@ export class ReactionResolver {
   async createReaction(
     @Args('input') input: CreateReactionInput,
     @ExtractedUser() user: MyUserResponse,
+    @UserAgent() userAgent: string,
+    @IpAddress() ipAddress: string,
   ): Promise<string> {
-    await this.commandBus.execute(new CreateReactionCommand({ input, user }));
+    await this.commandBus.execute(new CreateReactionCommand({ input, user, userAgent, ipAddress }));
     return input.id;
   }
 

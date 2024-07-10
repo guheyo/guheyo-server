@@ -13,11 +13,28 @@ export class CreateReactionCommand implements ICommand {
 
   user: MyUserResponse;
 
-  constructor({ input, user }: { input: CreateReactionInput; user: MyUserResponse }) {
+  userAgent?: string;
+
+  ipAddress?: string;
+
+  constructor({
+    input,
+    user,
+    userAgent,
+    ipAddress,
+  }: {
+    input: CreateReactionInput;
+    user: MyUserResponse;
+    userAgent?: string;
+    ipAddress?: string;
+  }) {
     this.id = input.id;
     this.emojiId = input.emojiId;
     this.postId = input.postId;
     this.commentId = input.commentId;
     this.user = user;
+    this.userAgent = userAgent;
+    this.ipAddress = ipAddress;
+
   }
 }

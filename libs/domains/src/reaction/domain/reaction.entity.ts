@@ -19,6 +19,10 @@ export class ReactionEntity extends AggregateRoot {
 
   commentId: string | null;
 
+  userAgent: string | null;
+
+  ipAddress: string | null;
+
   constructor(partial: Partial<ReactionEntity>) {
     super();
     Object.assign(this, partial);
