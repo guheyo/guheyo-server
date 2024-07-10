@@ -54,6 +54,8 @@ export class CreateOfferHandler extends PrismaCommandHandler<CreateOfferCommand,
           ...command.post,
           userId: command.user.id,
           thumbnail: image?.url,
+          userAgent: command.userAgent,
+          ipAddress: command.ipAddress,
         }),
       }),
     );
