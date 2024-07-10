@@ -49,9 +49,5 @@ export class AuctionEndEventService extends AwsEventService {
     await this.eventBridgeService.cancelRule({
       ruleName: uniqueIdentifier,
     });
-    await this.lambdaService.removePermission({
-      functionName: this.functionName,
-      statementId: uniqueIdentifier,
-    });
   }
 }
