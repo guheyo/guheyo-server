@@ -44,6 +44,8 @@ export class CreateAuctionHandler extends PrismaCommandHandler<
           ...command.post,
           userId: command.user.id,
           thumbnail: image?.url,
+          userAgent: command.userAgent,
+          ipAddress: command.ipAddress,
         }),
       }),
     );
