@@ -16,6 +16,8 @@ import { FindUserReviewQuery } from '@lib/domains/user-review/application/querie
 import { DeleteUserReviewArgs } from '@lib/domains/user-review/application/commands/delete-user-review/delete-user-review.args';
 import { DeleteUserReviewCommand } from '@lib/domains/user-review/application/commands/delete-user-review/delete-user-review.command';
 import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
+import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
+import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -61,8 +63,12 @@ export class UserReviewResolver {
   async createUserReview(
     @Args('input') input: CreateUserReviewInput,
     @ExtractedUser() user: MyUserResponse,
+    @UserAgent() userAgent: string,
+    @IpAddress() ipAddress: string,
   ): Promise<string> {
-    await this.commandBus.execute(new CreateUserReviewCommand({ input, user }));
+    await this.commandBus.execute(
+      new CreateUserReviewCommand({ input, user, userAgent, ipAddress }),
+    );
     return input.id;
   }
 
