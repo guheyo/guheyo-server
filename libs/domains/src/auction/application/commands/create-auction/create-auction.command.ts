@@ -24,7 +24,21 @@ export class CreateAuctionCommand implements ICommand {
 
   user: MyUserResponse;
 
-  constructor({ input, user }: { input: CreateAuctionInput; user: MyUserResponse }) {
+  userAgent?: string;
+
+  ipAddress?: string;
+
+  constructor({
+    input,
+    user,
+    userAgent,
+    ipAddress,
+  }: {
+    input: CreateAuctionInput;
+    user: MyUserResponse;
+    userAgent?: string;
+    ipAddress?: string;
+  }) {
     this.post = input.post;
     this.id = input.id;
     this.createdAt = input.createdAt;
@@ -35,5 +49,7 @@ export class CreateAuctionCommand implements ICommand {
     this.shippingType = input.shippingType;
     this.status = input.status;
     this.user = user;
+    this.userAgent = userAgent;
+    this.ipAddress = ipAddress;
   }
 }

@@ -124,8 +124,17 @@ export class AuctionResolver {
   async createAuction(
     @Args('input') input: CreateAuctionInput,
     @ExtractedUser() user: MyUserResponse,
+    @UserAgent() userAgent: string,
+    @IpAddress() ipAddress: string,
   ): Promise<string> {
-    await this.commandBus.execute(new CreateAuctionCommand({ input, user }));
+    await this.commandBus.execute(
+      new CreateAuctionCommand({
+        input,
+        user,
+        userAgent,
+        ipAddress,
+      }),
+    );
     return input.id;
   }
 
