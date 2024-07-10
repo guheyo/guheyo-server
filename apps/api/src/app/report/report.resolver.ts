@@ -95,8 +95,10 @@ export class ReportResolver {
   async commentReport(
     @Args('input') input: CommentReportInput,
     @ExtractedUser() user: MyUserResponse,
+    @UserAgent() userAgent: string,
+    @IpAddress() ipAddress: string,
   ): Promise<ReportCommentResponse> {
-    return this.commandBus.execute(new CommentReportCommand({ input, user }));
+    return this.commandBus.execute(new CommentReportCommand({ input, user, userAgent, ipAddress }));
   }
 
   @AuthenticatedSocialAccountAndRole({
