@@ -18,6 +18,8 @@ import { DeleteThreadArgs } from '@lib/domains/thread/application/commands/delet
 import { DeleteThreadCommand } from '@lib/domains/thread/application/commands/delete-thread/delete-thread.command';
 import { UpdateThreadInput } from '@lib/domains/thread/application/commands/update-thread/update-thread.input';
 import { UpdateThreadCommand } from '@lib/domains/thread/application/commands/update-thread/update-thread.command';
+import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
+import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
@@ -57,8 +59,10 @@ export class ThreadResolver {
   async createThread(
     @Args('input') input: CreateThreadInput,
     @ExtractedUser() user: MyUserResponse,
+    @UserAgent() userAgent: string,
+    @IpAddress() ipAddress: string,
   ): Promise<string> {
-    await this.commandBus.execute(new CreateThreadCommand({ input, user }));
+    await this.commandBus.execute(new CreateThreadCommand({ input, user, userAgent, ipAddress }));
     return input.id;
   }
 

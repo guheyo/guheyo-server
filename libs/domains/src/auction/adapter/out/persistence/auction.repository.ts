@@ -78,8 +78,6 @@ export class AuctionRepository
           'groupId',
           'categoryId',
           'userId',
-          'userAgent',
-          'ipAddress',
         ]),
       },
     });

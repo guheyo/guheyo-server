@@ -29,7 +29,21 @@ export class CreateOfferCommand implements ICommand {
 
   user: MyUserResponse;
 
-  constructor({ input, user }: { input: CreateOfferInput; user: MyUserResponse }) {
+  userAgent?: string;
+
+  ipAddress?: string;
+
+  constructor({
+    input,
+    user,
+    userAgent,
+    ipAddress,
+  }: {
+    input: CreateOfferInput;
+    user: MyUserResponse;
+    userAgent?: string;
+    ipAddress?: string;
+  }) {
     this.post = input.post;
     this.id = input.id;
     this.businessFunction = input.businessFunction;
@@ -42,5 +56,7 @@ export class CreateOfferCommand implements ICommand {
     this.shippingType = input.shippingType;
     this.status = input.status as OfferStatus;
     this.user = user;
+    this.userAgent = userAgent;
+    this.ipAddress = ipAddress;
   }
 }

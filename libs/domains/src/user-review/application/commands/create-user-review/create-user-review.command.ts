@@ -25,7 +25,21 @@ export class CreateUserReviewCommand implements ICommand {
 
   user: MyUserResponse;
 
-  constructor({ input, user }: { input: CreateUserReviewInput; user: MyUserResponse }) {
+  userAgent?: string;
+
+  ipAddress?: string;
+
+  constructor({
+    input,
+    user,
+    userAgent,
+    ipAddress,
+  }: {
+    input: CreateUserReviewInput;
+    user: MyUserResponse;
+    userAgent?: string;
+    ipAddress?: string;
+  }) {
     this.post = input.post;
     this.id = input.id;
     this.type = input.type;
@@ -36,5 +50,7 @@ export class CreateUserReviewCommand implements ICommand {
     this.rating = input.rating;
     this.status = input.status as UserReviewStatus;
     this.user = user;
+    this.userAgent = userAgent;
+    this.ipAddress = ipAddress;
   }
 }

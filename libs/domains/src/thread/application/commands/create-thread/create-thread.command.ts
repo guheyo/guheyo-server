@@ -12,10 +12,26 @@ export class CreateThreadCommand implements ICommand {
 
   user: MyUserResponse;
 
-  constructor({ input, user }: { input: CreateThreadInput; user: MyUserResponse }) {
+  userAgent?: string;
+
+  ipAddress?: string;
+
+  constructor({
+    input,
+    user,
+    userAgent,
+    ipAddress,
+  }: {
+    input: CreateThreadInput;
+    user: MyUserResponse;
+    userAgent?: string;
+    ipAddress?: string;
+  }) {
     this.post = input.post;
     this.id = input.id;
     this.content = input.content;
     this.user = user;
+    this.userAgent = userAgent;
+    this.ipAddress = ipAddress;
   }
 }
