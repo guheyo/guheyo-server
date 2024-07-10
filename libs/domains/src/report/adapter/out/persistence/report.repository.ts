@@ -4,8 +4,8 @@ import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repositor
 import { ReportEntity } from '@lib/domains/report/domain/report.entity';
 import { ReportLoadPort } from '@lib/domains/report/application/ports/out/report.load.port';
 import { ReportSavePort } from '@lib/domains/report/application/ports/out/report.save.port';
-import { CreateReportCommentInput } from '@lib/domains/report/application/commands/create-report-comment/create-report-comment.input';
 import { ReportCommentEntity } from '@lib/domains/report/domain/report-comment.entity';
+import { CommentReportCommand } from '@lib/domains/report/application/commands/comment-report/comment-report.command';
 
 @Injectable()
 export class ReportRepository
@@ -102,6 +102,8 @@ export class ReportRepository
         'reason',
         'description',
         'status',
+        'userAgent',
+        'ipAddress',
       ]),
     });
   }
@@ -127,13 +129,15 @@ export class ReportRepository
     });
   }
 
-  async createComment(input: CreateReportCommentInput): Promise<ReportCommentEntity> {
+  async createComment(command: CommentReportCommand): Promise<ReportCommentEntity> {
     const comment = await this.prismaService.reportComment.create({
       data: {
-        id: input.id,
-        reportId: input.reportId,
-        userId: input.userId,
-        content: input.content,
+        id: command.id,
+        reportId: command.reportId,
+        userId: command.user.id,
+        content: command.content,
+        userAgent: command.userAgent,
+        ipAddress: command.ipAddress,
       },
     });
     return new ReportCommentEntity(comment);

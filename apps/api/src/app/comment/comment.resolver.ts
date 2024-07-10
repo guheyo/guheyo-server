@@ -31,6 +31,8 @@ import { CommentCountResponse } from '@lib/domains/comment/application/dtos/comm
 import { FindCommentCountArgs } from '@lib/domains/comment/application/queries/find-comment-count/find-comment-count.args';
 import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
+import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
+import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @Resolver()
@@ -73,8 +75,10 @@ export class CommentResolver {
   async createComment(
     @Args('input') input: CreateCommentInput,
     @ExtractedUser() user: MyUserResponse,
+    @UserAgent() userAgent: string,
+    @IpAddress() ipAddress: string,
   ): Promise<string> {
-    await this.commandBus.execute(new CreateCommentCommand({ input, user }));
+    await this.commandBus.execute(new CreateCommentCommand({ input, user, userAgent, ipAddress }));
     return input.id;
   }
 

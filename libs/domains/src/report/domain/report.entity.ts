@@ -7,11 +7,9 @@ import { PostEntity } from '@lib/domains/post/domain/post.entity';
 import { ReportCreatedEvent } from '../application/events/report-created/report-created.event';
 import { ReportStatusUpdatedEvent } from '../application/events/report-status-updated/report-status-updated.event';
 import { REPORT_COMMENTED, REPORT_OPEN } from './report.constants';
-import { CommentReportInput } from '../application/commands/comment-report/comment-report.input';
 import { ReportedUserEntity } from './reported-user.entity';
 import { ReportErrorMessage } from './report.error.message';
 import { CheckedReportedUserEvent } from '../application/events/checked-reported-user/checked-reported-user.event';
-import { CreateReportCommentInput } from '../application/commands/create-report-comment/create-report-comment.input';
 import { ReportCommentedEvent } from '../application/events/report-commented/report-commented.event';
 import { ReportCommentEntity } from './report-comment.entity';
 
@@ -52,6 +50,10 @@ export class ReportEntity extends AggregateRoot {
   @Type(() => ReportCommentEntity)
   comments: ReportCommentEntity[];
 
+  userAgent: string | null;
+
+  ipAddress: string | null;
+
   constructor(partial: Partial<ReportEntity>) {
     super();
     Object.assign(this, partial);
@@ -75,21 +77,6 @@ export class ReportEntity extends AggregateRoot {
 
   validateCommenter(userId: string) {
     return this.reportedUserId === userId;
-  }
-
-  parseCreateReportCommentInput({
-    input,
-    userId,
-  }: {
-    input: CommentReportInput;
-    userId: string;
-  }): CreateReportCommentInput {
-    return {
-      id: input.id,
-      reportId: this.id,
-      userId,
-      content: input.content,
-    };
   }
 
   commentReport() {
