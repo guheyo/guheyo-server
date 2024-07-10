@@ -35,6 +35,5 @@ export class CreateReactionCommand implements ICommand {
     this.user = user;
     this.userAgent = userAgent;
     this.ipAddress = ipAddress;
-
   }
 }

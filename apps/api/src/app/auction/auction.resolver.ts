@@ -43,9 +43,9 @@ import { TimeGuard } from '@lib/shared/time/time.guard';
 import { FindBiddersArgs } from '@lib/domains/auction/application/queries/find-bidders/find-bidders.args';
 import { FindBiddersQuery } from '@lib/domains/auction/application/queries/find-bidders/find-bidders.query';
 import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/find-users/paginated-users.response';
-import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
 import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
+import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
 @Resolver()
