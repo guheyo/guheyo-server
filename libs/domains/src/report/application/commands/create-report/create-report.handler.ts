@@ -31,6 +31,8 @@ export class CreateReportHandler implements ICommandHandler<CreateReportCommand>
           'groupId',
           'reason',
           'description',
+          'userAgent',
+          'ipAddress',
         ]),
         userId: command.user.id,
       }),

@@ -102,6 +102,8 @@ export class ReportRepository
         'reason',
         'description',
         'status',
+        'userAgent',
+        'ipAddress',
       ]),
     });
   }

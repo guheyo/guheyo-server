@@ -21,7 +21,21 @@ export class CreateReportCommand implements ICommand {
 
   user: MyUserResponse;
 
-  constructor({ input, user }: { input: CreateReportInput; user: MyUserResponse }) {
+  userAgent?: string;
+
+  ipAddress?: string;
+
+  constructor({
+    input,
+    user,
+    userAgent,
+    ipAddress,
+  }: {
+    input: CreateReportInput;
+    user: MyUserResponse;
+    userAgent?: string;
+    ipAddress?: string;
+  }) {
     this.id = input.id;
     this.type = input.type;
     this.reportedPostId = input.reportedPostId;
@@ -31,5 +45,7 @@ export class CreateReportCommand implements ICommand {
     this.reason = input.reason;
     this.description = input.description;
     this.user = user;
+    this.userAgent = userAgent;
+    this.ipAddress = ipAddress;
   }
 }
