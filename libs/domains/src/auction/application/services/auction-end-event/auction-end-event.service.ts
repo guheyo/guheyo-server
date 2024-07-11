@@ -16,8 +16,8 @@ export class AuctionEndEventService extends AwsEventService {
 
   async scheduleAuctionEndEvent(auctionId: string, endTime: Date): Promise<void> {
     const uniqueIdentifier = this.generateUniqueIdentifier(auctionId);
-    // Trigger Event after 1 minute
-    const delayedEndTime = this.eventBridgeService.getDelayedEndTime(endTime);
+    // Trigger Event after 2 minute
+    const delayedEndTime = this.eventBridgeService.getDelayedEndTime(endTime, 120);
     const scheduleExpression = this.eventBridgeService.generateCronExpression(delayedEndTime);
     const lambdaArn = this.lambdaService.getLambdaFunctionArn(this.functionName);
     const input = JSON.stringify({ auctionId, extendedEndDate: endTime });
@@ -33,8 +33,8 @@ export class AuctionEndEventService extends AwsEventService {
 
   async updateAuctionEndEvent(auctionId: string, endTime: Date): Promise<void> {
     const uniqueIdentifier = this.generateUniqueIdentifier(auctionId);
-    // Trigger Event after 1 minute
-    const delayedEndTime = this.eventBridgeService.getDelayedEndTime(endTime);
+    // Trigger Event after 2 minute
+    const delayedEndTime = this.eventBridgeService.getDelayedEndTime(endTime, 120);
     const scheduleExpression = this.eventBridgeService.generateCronExpression(delayedEndTime);
 
     await this.eventBridgeService.updateRuleSchedule({
