@@ -6,6 +6,7 @@ import { CreateUserReviewCommand } from '@lib/domains/user-review/application/co
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { USER_REVIEW } from '@lib/domains/user-review/domain/user-review.constants';
 import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
+import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { UserReviewParser } from '../parsers/user-review.parser';
 
@@ -18,7 +19,7 @@ export class UserReviewClient extends UserImageClient {
   private readonly logger = new Logger(UserReviewClient.name);
 
   async createUserReview({ input, user }: { input: CreateUserReviewInput; user: MyUserResponse }) {
-    await this.commandBus.execute(new CreateUserReviewCommand({ input, user }));
+    await this.commandBus.execute(new CreateUserReviewCommand({ input, user, userAgent: DISCORD }));
   }
 
   async createUserReviewFromPost(

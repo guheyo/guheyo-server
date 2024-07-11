@@ -7,6 +7,7 @@ import { Message } from 'discord.js';
 import { COMMENT } from '@lib/domains/comment/domain/comment.constants';
 import { UpdateCommentInput } from '@lib/domains/comment/application/commands/update-comment/update-comment.input';
 import { UpdateCommentCommand } from '@lib/domains/comment/application/commands/update-comment/update-comment.command';
+import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { CommentParser } from '../parsers/comment.parser';
 import { MessageWithUser } from '../../user/interfaces/user.interfaces';
@@ -20,7 +21,7 @@ export class CommentClient extends UserImageClient {
   private readonly logger = new Logger(CommentClient.name);
 
   async createComment({ input, user }: { input: CreateCommentInput; user: MyUserResponse }) {
-    await this.commandBus.execute(new CreateCommentCommand({ input, user }));
+    await this.commandBus.execute(new CreateCommentCommand({ input, user, userAgent: DISCORD }));
   }
 
   async createComments(commentCommands: CreateCommentCommand[]) {

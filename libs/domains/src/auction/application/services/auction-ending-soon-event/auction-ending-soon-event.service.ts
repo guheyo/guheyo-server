@@ -17,10 +17,7 @@ export class AuctionEndingSoonEventService extends AwsEventService {
   async scheduleAuctionEndingSoonEvent(auctionId: string, endTime: Date): Promise<void> {
     const uniqueIdentifier = this.generateUniqueIdentifier(auctionId);
     // Trigger Event before 3 hour
-    const oneHourBeforeEndTime = this.eventBridgeService.getDelayedEndTime(
-      endTime,
-      -3 * 60 * 60000,
-    );
+    const oneHourBeforeEndTime = this.eventBridgeService.getDelayedEndTime(endTime, -3 * 60 * 60);
     const scheduleExpression = this.eventBridgeService.generateCronExpression(oneHourBeforeEndTime);
     const lambdaArn = this.lambdaService.getLambdaFunctionArn(this.functionName);
     const input = JSON.stringify({ auctionId, extendedEndDate: endTime });
