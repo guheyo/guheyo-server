@@ -6,7 +6,6 @@ import { UpdateOfferInput } from '@lib/domains/offer/application/commands/update
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { OFFER, OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
 import { SHIPPING_FREE } from '@lib/shared/shipping/shipping.constants';
-import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { OfferParser } from '../../parsers/abstracts/offer.parser';
 import { SellErrorMessage } from './sell.error-message';
 
@@ -31,7 +30,6 @@ export class SellParser extends OfferParser {
       groupId: group.id,
       categoryId: this.parseCategoryId(channelName, group),
       tagIds: [],
-      userAgent: DISCORD,
     };
 
     return {

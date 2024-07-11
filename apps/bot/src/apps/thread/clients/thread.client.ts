@@ -7,6 +7,7 @@ import { CreateThreadCommand } from '@lib/domains/thread/application/commands/cr
 import { THREAD } from '@lib/domains/thread/domain/thread.constants';
 import { UpdateThreadInput } from '@lib/domains/thread/application/commands/update-thread/update-thread.input';
 import { UpdateThreadCommand } from '@lib/domains/thread/application/commands/update-thread/update-thread.command';
+import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { ThreadParser } from '../parsers/thread.parser';
 
@@ -19,7 +20,7 @@ export class ThreadClient extends UserImageClient {
   private readonly logger = new Logger(ThreadClient.name);
 
   async createThread({ input, user }: { input: CreateThreadInput; user: MyUserResponse }) {
-    await this.commandBus.execute(new CreateThreadCommand({ input, user }));
+    await this.commandBus.execute(new CreateThreadCommand({ input, user, userAgent: DISCORD }));
   }
 
   async updateThread({ input, user }: { input: UpdateThreadInput; user: MyUserResponse }) {

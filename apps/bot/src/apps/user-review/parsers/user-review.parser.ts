@@ -9,7 +9,6 @@ import {
 import { OFFER } from '@lib/domains/offer/domain/offer.constants';
 import { TagResponse } from '@lib/domains/tag/application/dtos/tag.response';
 import { Injectable } from '@nestjs/common';
-import { DISCORD } from '@lib/shared/discord/discord.constants';
 
 @Injectable()
 export class UserReviewParser extends GroupParser {
@@ -27,7 +26,6 @@ export class UserReviewParser extends GroupParser {
       title: threadPost.threadChannel.name,
       groupId: group.id,
       tagIds: this.parseTagIds(threadPost.tagNames, tags),
-      userAgent: DISCORD,
     };
 
     return {

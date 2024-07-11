@@ -20,7 +20,6 @@ export class ThreadParser extends GroupParser {
       groupId: group.id,
       tagNames: threadPost.tagNames,
       categoryId: this.parseCategoryId(channelName, group),
-      userAgent: DISCORD,
     };
 
     return {
