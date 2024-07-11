@@ -33,7 +33,7 @@ export class BidParser extends CommentParser {
     message: Message;
     user: MyUserResponse;
     price: number;
-  }) {
+  }): CreateBidInput {
     return {
       id: this.parseIdFromMessageId(message.id),
       createdAt: message.createdAt,
