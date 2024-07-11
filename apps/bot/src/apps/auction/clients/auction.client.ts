@@ -5,6 +5,7 @@ import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { CreateAuctionInput } from '@lib/domains/auction/application/commands/create-auction/create-auction.input';
 import { CreateAuctionCommand } from '@lib/domains/auction/application/commands/create-auction/create-auction.command';
 import { AUCTION } from '@lib/domains/auction/domain/auction.constants';
+import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { AuctionParser } from '../parsers/auction.parser';
 
@@ -17,7 +18,7 @@ export class AuctionClient extends UserImageClient {
   private readonly logger = new Logger(AuctionClient.name);
 
   async createAuction({ input, user }: { input: CreateAuctionInput; user: MyUserResponse }) {
-    await this.commandBus.execute(new CreateAuctionCommand({ input, user }));
+    await this.commandBus.execute(new CreateAuctionCommand({ input, user, userAgent: DISCORD }));
   }
 
   async createAuctionFromPost(user: MyUserResponse, threadPost: ThreadPost, group: GroupResponse) {

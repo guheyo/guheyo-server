@@ -11,6 +11,7 @@ import { UpdateOfferCommand } from '@lib/domains/offer/application/commands/upda
 import { DeleteOfferCommand } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.command';
 import { OFFER } from '@lib/domains/offer/domain/offer.constants';
 import { RpcException } from '@nestjs/microservices';
+import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { UserImageClient } from '../../user-image/clients/user-image.client';
 import { OfferParser } from '../parsers/abstracts/offer.parser';
 import { OfferErrorMessage } from '../parsers/abstracts/offer.error-message';
@@ -27,7 +28,7 @@ export abstract class OfferClient extends UserImageClient {
   private readonly logger = new Logger(OfferClient.name);
 
   async createOffer({ input, user }: { input: CreateOfferInput; user: MyUserResponse }) {
-    await this.commandBus.execute(new CreateOfferCommand({ input, user }));
+    await this.commandBus.execute(new CreateOfferCommand({ input, user, userAgent: DISCORD }));
   }
 
   async updateOffer({ input, user }: { input: UpdateOfferInput; user: MyUserResponse }) {

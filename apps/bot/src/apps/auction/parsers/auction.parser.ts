@@ -5,7 +5,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateAuctionInput } from '@lib/domains/auction/application/commands/create-auction/create-auction.input';
 import { AUCTION, AUCTION_CLOSED } from '@lib/domains/auction/domain/auction.constants';
 import { SHIPPING_FREE } from '@lib/shared/shipping/shipping.constants';
-import { DISCORD } from '@lib/shared/discord/discord.constants';
 
 @Injectable()
 export class AuctionParser extends GroupParser {
@@ -20,7 +19,6 @@ export class AuctionParser extends GroupParser {
       groupId: group.id,
       tagIds: [],
       categoryId: this.parseCategoryId(channelName, group),
-      userAgent: DISCORD,
     };
 
     return {
