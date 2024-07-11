@@ -2,7 +2,6 @@ import { GroupParser } from '@app/bot/apps/group/parsers/group.parser';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { Injectable } from '@nestjs/common';
-import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { CreateThreadInput } from '@lib/domains/thread/application/commands/create-thread/create-thread.input';
 import { THREAD } from '@lib/domains/thread/domain/thread.constants';
 import { UpdateThreadInput } from '@lib/domains/thread/application/commands/update-thread/update-thread.input';
