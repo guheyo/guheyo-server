@@ -1,6 +1,6 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
-import { ExpressAdapter } from '@nestjs/platform-express';
+import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from '@lib/shared';
 import { ApiModule } from '@app/api/api.module';
@@ -11,7 +11,10 @@ import { GlobalClassSerializerInterceptor } from '@lib/shared/serializer-interce
 
 async function bootstrap(): Promise<void> {
   const expressAdapter = new ExpressAdapter();
-  const app = await NestFactory.create(ApiModule, expressAdapter);
+  const app = await NestFactory.create<NestExpressApplication>(ApiModule, expressAdapter);
+
+  // Enable trust proxy for Express
+  app.set('trust proxy', true);
 
   const configService = app.get(ConfigService);
   const corsOptions: CorsOptions = {
