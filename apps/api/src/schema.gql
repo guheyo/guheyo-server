@@ -314,6 +314,7 @@ input FindThreadPreviewsWhereInput {
   categoryId: ID
   groupId: ID
   pending: String
+  tagNames: [String!]
   userId: ID
 }
 

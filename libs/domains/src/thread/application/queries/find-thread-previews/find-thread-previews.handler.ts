@@ -19,6 +19,13 @@ export class FindThreadPreviewsHandler extends PrismaQueryHandler {
             userId: query.where.userId,
             pending: query.where.pending,
             title: parseContainsSearcher({ keyword: query.keyword }),
+            tags: {
+              some: {
+                name: {
+                  in: query.where.tagNames,
+                },
+              },
+            },
           },
         }
       : {};

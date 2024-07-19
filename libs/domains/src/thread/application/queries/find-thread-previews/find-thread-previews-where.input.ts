@@ -19,4 +19,8 @@ export class FindThreadPreviewsWhereInput {
   @IsOptional()
   @Field(() => String, { nullable: true })
   pending?: string;
+
+  @IsOptional()
+  @Field(() => [String], { nullable: true })
+  tagNames?: string[];
 }
