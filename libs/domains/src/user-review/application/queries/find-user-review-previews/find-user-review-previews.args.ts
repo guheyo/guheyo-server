@@ -1,17 +1,21 @@
 import { PaginationSearchArgs } from '@lib/shared/cqrs/queries/pagination/pagination-search.args';
 import { ArgsType, Field } from '@nestjs/graphql';
-import { GraphQLJSON } from 'graphql-type-json';
-import { IsOptional } from 'class-validator';
-import { FindUserReviewPreviewsWhereArgs } from './find-user-review-previews-where.args';
-import { FindUserReviewPreviewsOrderByArgs } from './find-user-review-previews-order-by.args';
+import { Type } from 'class-transformer';
+import { IsOptional, ValidateNested } from 'class-validator';
+import { FindUserReviewPreviewsWhereInput } from './find-user-review-previews-where.input';
+import { FindUserReviewPreviewsOrderByInput } from './find-user-review-previews-order-by.input';
 
 @ArgsType()
 export class FindUserReviewPreviewsArgs extends PaginationSearchArgs {
   @IsOptional()
-  @Field(() => GraphQLJSON, { nullable: true })
-  where?: FindUserReviewPreviewsWhereArgs;
+  @ValidateNested()
+  @Type(() => FindUserReviewPreviewsWhereInput)
+  @Field(() => FindUserReviewPreviewsWhereInput, { nullable: true })
+  where?: FindUserReviewPreviewsWhereInput;
 
   @IsOptional()
-  @Field(() => GraphQLJSON, { nullable: true })
-  orderBy?: FindUserReviewPreviewsOrderByArgs;
+  @ValidateNested()
+  @Type(() => FindUserReviewPreviewsOrderByInput)
+  @Field(() => FindUserReviewPreviewsOrderByInput, { nullable: true })
+  orderBy?: FindUserReviewPreviewsOrderByInput;
 }

@@ -318,6 +318,19 @@ input FindThreadPreviewsWhereInput {
   userId: ID
 }
 
+input FindUserReviewPreviewsOrderByInput {
+  createdAt: String
+}
+
+input FindUserReviewPreviewsWhereInput {
+  groupId: ID
+  pending: String
+  reviewedUserId: ID
+  tagNames: [String!]
+  tagType: String
+  userId: ID
+}
+
 type GroupPreviewResponse {
   buys: [OfferPreviewResponse!]!
   description: String
@@ -643,7 +656,7 @@ type Query {
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUserReview(id: ID, slug: String): UserReviewResponse
-  findUserReviewPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedUserReviewPreviewsResponse!
+  findUserReviewPreviews(cursor: ID, keyword: String, orderBy: FindUserReviewPreviewsOrderByInput, skip: Int! = 1, take: Int!, where: FindUserReviewPreviewsWhereInput): PaginatedUserReviewPreviewsResponse!
   findUsers(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedUsersResponse!
   findVersion(id: ID!): VersionResponse
   findVersionPreview(id: ID, refId: ID): VersionPreviewResponse

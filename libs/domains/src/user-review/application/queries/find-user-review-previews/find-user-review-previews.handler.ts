@@ -22,6 +22,9 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler {
               ? {
                   some: {
                     type: query.where.tagType,
+                    name: {
+                      in: query.where.tagNames,
+                    },
                   },
                 }
               : undefined,
