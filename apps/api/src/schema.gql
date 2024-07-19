@@ -353,12 +353,12 @@ input FindCommentsWhereInput {
   userId: ID
 }
 
-input FindOffersOrderByInput {
+input FindOfferPreviewsOrderByInput {
   bumpedAt: String
   price: String
 }
 
-input FindOffersWhereInput {
+input FindOfferPreviewsWhereInput {
   bumpedAt: JSON
   businessFunction: String
   categoryId: ID
@@ -726,7 +726,7 @@ type Query {
   findMyUser: MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferCount(businessFunction: String!, categoryId: ID!, fromHours: Int!, userId: ID!): Float!
-  findOfferPreviews(cursor: ID, keyword: String, orderBy: FindOffersOrderByInput, skip: Int! = 1, take: Int!, where: FindOffersWhereInput): PaginatedOfferPreviewsResponse!
+  findOfferPreviews(cursor: ID, keyword: String, orderBy: FindOfferPreviewsOrderByInput, skip: Int! = 1, take: Int!, where: FindOfferPreviewsWhereInput): PaginatedOfferPreviewsResponse!
   findPostPreview(id: ID!): PostPreviewWithUserResponse!
   findReactions(commentId: ID, postId: ID): [ReactionResponse!]!
   findReport(id: ID!): ReportResponse!

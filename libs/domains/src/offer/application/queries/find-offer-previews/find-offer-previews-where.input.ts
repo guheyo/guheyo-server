@@ -3,7 +3,7 @@ import { IsOptional, IsString } from 'class-validator';
 import { GraphQLJSON } from 'graphql-type-json';
 
 @InputType()
-export class FindOffersWhereInput {
+export class FindOfferPreviewsWhereInput {
   // Post
   @IsOptional()
   @Field(() => ID, { nullable: true })

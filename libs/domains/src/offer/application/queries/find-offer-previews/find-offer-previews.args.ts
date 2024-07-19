@@ -2,20 +2,20 @@ import { PaginationSearchArgs } from '@lib/shared/cqrs/queries/pagination/pagina
 import { ArgsType, Field } from '@nestjs/graphql';
 import { IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { FindOffersWhereInput } from './find-offers-where.input';
-import { FindOffersOrderByInput } from './find-offers-order-by.input';
+import { FindOfferPreviewsWhereInput } from './find-offer-previews-where.input';
+import { FindOfferPreviewsOrderByInput } from './find-offer-previews-order-by.input';
 
 @ArgsType()
 export class FindOfferPreviewsArgs extends PaginationSearchArgs {
   @IsOptional()
   @ValidateNested()
-  @Type(() => FindOffersWhereInput)
-  @Field(() => FindOffersWhereInput, { nullable: true })
-  where?: FindOffersWhereInput;
+  @Type(() => FindOfferPreviewsWhereInput)
+  @Field(() => FindOfferPreviewsWhereInput, { nullable: true })
+  where?: FindOfferPreviewsWhereInput;
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => FindOffersOrderByInput)
-  @Field(() => FindOffersOrderByInput, { nullable: true })
-  orderBy?: FindOffersOrderByInput;
+  @Type(() => FindOfferPreviewsOrderByInput)
+  @Field(() => FindOfferPreviewsOrderByInput, { nullable: true })
+  orderBy?: FindOfferPreviewsOrderByInput;
 }
