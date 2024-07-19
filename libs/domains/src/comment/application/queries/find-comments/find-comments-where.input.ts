@@ -1,8 +1,8 @@
-import { ArgsType, Field, ID } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
-@ArgsType()
-export class FindCommentsWhereArgs {
+@InputType()
+export class FindCommentsWhereInput {
   @IsOptional()
   @Field(() => ID, { nullable: true })
   postId?: string;

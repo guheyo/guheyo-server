@@ -298,12 +298,89 @@ type EmojiResponse {
   url: String
 }
 
+input FindAuctionInteractionItemsOrderByInput {
+  createdAt: String
+}
+
+input FindAuctionInteractionItemsWhereInput {
+  auctionId: ID
+  postId: ID
+  status: String
+  userId: ID
+  view: String
+}
+
+input FindAuctionPreviewsOrderByInput {
+  createdAt: String
+  currentBidPrice: String
+  extendedEndDate: String
+}
+
+input FindAuctionPreviewsWhereInput {
+  bidderId: ID
+  categoryId: ID
+  createdAt: JSON
+  groupId: ID
+  pending: String
+  status: String
+  userId: ID
+}
+
 input FindBiddersOrderByInput {
   createdAt: String
 }
 
 input FindBiddersWhereInput {
   auctionId: ID!
+}
+
+input FindBidsOrderByInput {
+  createdAt: String
+}
+
+input FindBidsWhereInput {
+  auctionId: ID
+  status: String
+  userId: ID
+}
+
+input FindCommentsOrderByInput {
+  createdAt: String
+}
+
+input FindCommentsWhereInput {
+  postId: ID
+  userId: ID
+}
+
+input FindOffersOrderByInput {
+  bumpedAt: String
+  price: String
+}
+
+input FindOffersWhereInput {
+  bumpedAt: JSON
+  businessFunction: String
+  categoryId: ID
+  groupId: ID
+  isArchived: Boolean
+  pending: String
+  status: String
+  userId: ID
+}
+
+input FindReportPreviewsOrderByInput {
+  createdAt: String
+}
+
+input FindReportPreviewsWhereInput {
+  createdAt: JSON
+  groupId: ID
+  refId: ID
+  reportedUserId: ID
+  status: String
+  type: String
+  userId: ID
 }
 
 input FindThreadPreviewsOrderByInput {
@@ -328,6 +405,14 @@ input FindUserReviewPreviewsWhereInput {
   reviewedUserId: ID
   tagNames: [String!]
   tagType: String
+  userId: ID
+}
+
+input FindUsersOrderByInput {
+  createdAt: String
+}
+
+input FindUsersWhereInput {
   userId: ID
 }
 
@@ -623,15 +708,15 @@ type PostResponse {
 
 type Query {
   findAuction(id: ID, slug: String): AuctionResponse
-  findAuctionInteractionItems(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionInteractionItemsResponse!
-  findAuctionPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedAuctionPreviewsResponse!
+  findAuctionInteractionItems(cursor: ID, keyword: String, orderBy: FindAuctionInteractionItemsOrderByInput, skip: Int! = 1, take: Int!, where: FindAuctionInteractionItemsWhereInput): PaginatedAuctionInteractionItemsResponse!
+  findAuctionPreviews(cursor: ID, keyword: String, orderBy: FindAuctionPreviewsOrderByInput, skip: Int! = 1, take: Int!, where: FindAuctionPreviewsWhereInput): PaginatedAuctionPreviewsResponse!
   findAuthor(id: ID, username: String): AuthorResponse
   findBidCount(auctionId: ID!): BidCountResponse!
   findBidders(cursor: ID, keyword: String, orderBy: FindBiddersOrderByInput, skip: Int! = 1, take: Int!, where: FindBiddersWhereInput!): PaginatedUsersResponse!
-  findBids(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedBidsResponse!
+  findBids(cursor: ID, keyword: String, orderBy: FindBidsOrderByInput, skip: Int! = 1, take: Int!, where: FindBidsWhereInput): PaginatedBidsResponse!
   findComment(id: ID, postId: ID): CommentResponse
   findCommentCount(postId: ID!): CommentCountResponse!
-  findComments(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedCommentsResponse!
+  findComments(cursor: ID, keyword: String, orderBy: FindCommentsOrderByInput, skip: Int! = 1, take: Int!, where: FindCommentsWhereInput): PaginatedCommentsResponse!
   findEmojis(groupId: ID): [EmojiResponse!]!
   findGroup(id: ID, slug: String): GroupResponse
   findGroupPreviews: [GroupPreviewResponse!]!
@@ -641,12 +726,12 @@ type Query {
   findMyUser: MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferCount(businessFunction: String!, categoryId: ID!, fromHours: Int!, userId: ID!): Float!
-  findOfferPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedOfferPreviewsResponse!
+  findOfferPreviews(cursor: ID, keyword: String, orderBy: FindOffersOrderByInput, skip: Int! = 1, take: Int!, where: FindOffersWhereInput): PaginatedOfferPreviewsResponse!
   findPostPreview(id: ID!): PostPreviewWithUserResponse!
   findReactions(commentId: ID, postId: ID): [ReactionResponse!]!
   findReport(id: ID!): ReportResponse!
   findReportComment(reportId: ID!): ReportCommentResponse!
-  findReportPreviews(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedReportPreviewsResponse!
+  findReportPreviews(cursor: ID, keyword: String, orderBy: FindReportPreviewsOrderByInput, skip: Int! = 1, take: Int!, where: FindReportPreviewsWhereInput): PaginatedReportPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
   findTags: [TagResponse!]!
   findTerm(name: String!): TermResponse
@@ -657,7 +742,7 @@ type Query {
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUserReview(id: ID, slug: String): UserReviewResponse
   findUserReviewPreviews(cursor: ID, keyword: String, orderBy: FindUserReviewPreviewsOrderByInput, skip: Int! = 1, take: Int!, where: FindUserReviewPreviewsWhereInput): PaginatedUserReviewPreviewsResponse!
-  findUsers(cursor: ID, keyword: String, orderBy: JSON, skip: Int! = 1, take: Int!, where: JSON): PaginatedUsersResponse!
+  findUsers(cursor: ID, keyword: String, orderBy: FindUsersOrderByInput, skip: Int! = 1, take: Int!, where: FindUsersWhereInput): PaginatedUsersResponse!
   findVersion(id: ID!): VersionResponse
   findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
 }

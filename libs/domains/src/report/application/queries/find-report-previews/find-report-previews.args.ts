@@ -1,17 +1,21 @@
 import { PaginationSearchArgs } from '@lib/shared/cqrs/queries/pagination/pagination-search.args';
 import { ArgsType, Field } from '@nestjs/graphql';
-import { GraphQLJSON } from 'graphql-type-json';
-import { IsOptional } from 'class-validator';
-import { FindReportPreviewsWhereArgs } from './find-report-previews-where.args';
-import { FindReportPreviewsOrderByArgs } from './find-report-previews.order-by.args';
+import { IsOptional, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { FindReportPreviewsWhereInput } from './find-report-previews-where.input';
+import { FindReportPreviewsOrderByInput } from './find-report-previews-order-by.input';
 
 @ArgsType()
 export class FindReportPreviewsArgs extends PaginationSearchArgs {
   @IsOptional()
-  @Field(() => GraphQLJSON, { nullable: true })
-  where?: FindReportPreviewsWhereArgs;
+  @ValidateNested()
+  @Type(() => FindReportPreviewsWhereInput)
+  @Field(() => FindReportPreviewsWhereInput, { nullable: true })
+  where?: FindReportPreviewsWhereInput;
 
   @IsOptional()
-  @Field(() => GraphQLJSON, { nullable: true })
-  orderBy?: FindReportPreviewsOrderByArgs;
+  @ValidateNested()
+  @Type(() => FindReportPreviewsOrderByInput)
+  @Field(() => FindReportPreviewsOrderByInput, { nullable: true })
+  orderBy?: FindReportPreviewsOrderByInput;
 }

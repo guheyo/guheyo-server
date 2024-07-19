@@ -1,17 +1,21 @@
 import { PaginationSearchArgs } from '@lib/shared/cqrs/queries/pagination/pagination-search.args';
 import { ArgsType, Field } from '@nestjs/graphql';
-import { GraphQLJSON } from 'graphql-type-json';
-import { IsOptional } from 'class-validator';
-import { FindOffersWhereArgs } from './find-offers-where.args';
-import { FindOffersOrderByArgs } from './find-offers-order-by.args';
+import { IsOptional, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { FindOffersWhereInput } from './find-offers-where.input';
+import { FindOffersOrderByInput } from './find-offers-order-by.input';
 
 @ArgsType()
 export class FindOfferPreviewsArgs extends PaginationSearchArgs {
   @IsOptional()
-  @Field(() => GraphQLJSON, { nullable: true })
-  where?: FindOffersWhereArgs;
+  @ValidateNested()
+  @Type(() => FindOffersWhereInput)
+  @Field(() => FindOffersWhereInput, { nullable: true })
+  where?: FindOffersWhereInput;
 
   @IsOptional()
-  @Field(() => GraphQLJSON, { nullable: true })
-  orderBy?: FindOffersOrderByArgs;
+  @ValidateNested()
+  @Type(() => FindOffersOrderByInput)
+  @Field(() => FindOffersOrderByInput, { nullable: true })
+  orderBy?: FindOffersOrderByInput;
 }

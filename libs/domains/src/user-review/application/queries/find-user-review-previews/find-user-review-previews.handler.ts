@@ -25,7 +25,7 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler {
                   in: query.where.tagNames,
                 },
               },
-            }
+            },
           },
           reviewedUserId: query.where.reviewedUserId,
         }

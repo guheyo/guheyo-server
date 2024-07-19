@@ -1,12 +1,12 @@
 import { PaginationQuery } from '@lib/shared/cqrs/queries/pagination/pagination.query';
-import { FindBidsWhereArgs } from './find-bids-where.args';
-import { FindBidsOrderByArgs } from './find-bids-order-by.args';
+import { FindBidsWhereInput } from './find-bids-where.input';
+import { FindBidsOrderByInput } from './find-bids-order-by.input';
 import { FindBidsArgs } from './find-bids.args';
 
 export class FindBidsQuery extends PaginationQuery {
-  where?: FindBidsWhereArgs;
+  where?: FindBidsWhereInput;
 
-  orderBy?: FindBidsOrderByArgs;
+  orderBy?: FindBidsOrderByInput;
 
   keyword?: string;
 
