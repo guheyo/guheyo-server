@@ -18,13 +18,14 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler {
             userId: query.where.userId,
             pending: query.where.pending,
             title: parseContainsSearcher({ keyword: query.keyword }),
-            tags: query.where.tagType
-              ? {
-                  some: {
-                    type: query.where.tagType,
-                  },
-                }
-              : undefined,
+            tags: {
+              some: {
+                type: query.where.tagType,
+                name: {
+                  in: query.where.tagNames,
+                },
+              },
+            }
           },
           reviewedUserId: query.where.reviewedUserId,
         }
