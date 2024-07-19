@@ -1,17 +1,21 @@
 import { PaginationSearchArgs } from '@lib/shared/cqrs/queries/pagination/pagination-search.args';
 import { ArgsType, Field } from '@nestjs/graphql';
-import { GraphQLJSON } from 'graphql-type-json';
-import { IsOptional } from 'class-validator';
-import { FindUsersWhereArgs } from './find-users-where.args';
-import { FindUsersOrderByArgs } from './find-users-order-by.args';
+import { IsOptional, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { FindUsersWhereInput } from './find-users-where.input';
+import { FindUsersOrderByInput } from './find-users-order-by.input';
 
 @ArgsType()
 export class FindUsersArgs extends PaginationSearchArgs {
   @IsOptional()
-  @Field(() => GraphQLJSON, { nullable: true })
-  where?: FindUsersWhereArgs;
+  @ValidateNested()
+  @Type(() => FindUsersWhereInput)
+  @Field(() => FindUsersWhereInput, { nullable: true })
+  where?: FindUsersWhereInput;
 
   @IsOptional()
-  @Field(() => GraphQLJSON, { nullable: true })
-  orderBy?: FindUsersOrderByArgs;
+  @ValidateNested()
+  @Type(() => FindUsersOrderByInput)
+  @Field(() => FindUsersOrderByInput, { nullable: true })
+  orderBy?: FindUsersOrderByInput;
 }

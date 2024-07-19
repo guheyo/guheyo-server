@@ -1,8 +1,8 @@
-import { ArgsType, Field, ID } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
-@ArgsType()
-export class FindUsersWhereArgs {
+@InputType()
+export class FindUsersWhereInput {
   @IsOptional()
   @Field(() => ID, { nullable: true })
   userId?: string;

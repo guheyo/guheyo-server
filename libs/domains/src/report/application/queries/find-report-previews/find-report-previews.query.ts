@@ -1,12 +1,12 @@
 import { PaginationQuery } from '@lib/shared/cqrs/queries/pagination/pagination.query';
 import { FindReportPreviewsArgs } from './find-report-previews.args';
-import { FindReportPreviewsWhereArgs } from './find-report-previews-where.args';
-import { FindReportPreviewsOrderByArgs } from './find-report-previews.order-by.args';
+import { FindReportPreviewsWhereInput } from './find-report-previews-where.input';
+import { FindReportPreviewsOrderByInput } from './find-report-previews-order-by.input';
 
 export class FindReportPreviewsQuery extends PaginationQuery {
-  where?: FindReportPreviewsWhereArgs;
+  where?: FindReportPreviewsWhereInput;
 
-  orderBy?: FindReportPreviewsOrderByArgs;
+  orderBy?: FindReportPreviewsOrderByInput;
 
   keyword?: string;
 

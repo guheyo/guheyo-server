@@ -1,12 +1,12 @@
 import { PaginationQuery } from '@lib/shared/cqrs/queries/pagination/pagination.query';
 import { FindOfferPreviewsArgs } from './find-offer-previews.args';
-import { FindOffersWhereArgs } from './find-offers-where.args';
-import { FindOffersOrderByArgs } from './find-offers-order-by.args';
+import { FindOfferPreviewsWhereInput } from './find-offer-previews-where.input';
+import { FindOfferPreviewsOrderByInput } from './find-offer-previews-order-by.input';
 
 export class FindOfferPreviewsQuery extends PaginationQuery {
-  where?: FindOffersWhereArgs;
+  where?: FindOfferPreviewsWhereInput;
 
-  orderBy?: FindOffersOrderByArgs;
+  orderBy?: FindOfferPreviewsOrderByInput;
 
   keyword?: string;
 

@@ -1,9 +1,9 @@
-import { ArgsType, Field, ID } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsOptional, IsString } from 'class-validator';
 import { GraphQLJSON } from 'graphql-type-json';
 
-@ArgsType()
-export class FindOffersWhereArgs {
+@InputType()
+export class FindOfferPreviewsWhereInput {
   // Post
   @IsOptional()
   @Field(() => ID, { nullable: true })

@@ -1,8 +1,8 @@
-import { ArgsType, Field } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
-@ArgsType()
-export class FindOffersOrderByArgs {
+@InputType()
+export class FindOfferPreviewsOrderByInput {
   @IsOptional()
   @Field(() => String, { nullable: true })
   price?: 'asc' | 'desc';

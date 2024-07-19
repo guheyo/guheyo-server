@@ -8,7 +8,6 @@ import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { CancelBidInput } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.input';
 import { CancelBidCommand } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.command';
 import { UseGuards } from '@nestjs/common';
-import { FindAuctionPreviewsArgs } from '@lib/domains/auction/application/queries/find-auction-previews/find-auction-previews.args';
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
@@ -45,6 +44,7 @@ import { FindBiddersQuery } from '@lib/domains/auction/application/queries/find-
 import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/find-users/paginated-users.response';
 import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
 import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
+import { FindAuctionPreviewsArgs } from '@lib/domains/auction/application/queries/find-auction-previews/find-auction-previews.args';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()

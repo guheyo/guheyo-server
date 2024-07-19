@@ -1,12 +1,12 @@
 import { PaginationQuery } from '@lib/shared/cqrs/queries/pagination/pagination.query';
 import { FindCommentsArgs } from './find-comments.args';
-import { FindCommentsWhereArgs } from './find-comments-where.args';
-import { FindCommentsOrderByArgs } from './find-comments-order-by.args';
+import { FindCommentsOrderByInput } from './find-comments-order-by.input';
+import { FindCommentsWhereInput } from './find-comments-where.input';
 
 export class FindCommentsQuery extends PaginationQuery {
-  where?: FindCommentsWhereArgs;
+  where?: FindCommentsWhereInput;
 
-  orderBy?: FindCommentsOrderByArgs;
+  orderBy?: FindCommentsOrderByInput;
 
   keyword?: string;
 

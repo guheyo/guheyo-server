@@ -1,12 +1,12 @@
 import { PaginationQuery } from '@lib/shared/cqrs/queries/pagination/pagination.query';
-import { FindAuctionInteractionItemsWhereArgs } from './find-auction-interaction-items-where.args';
-import { FindAuctionInteractionItemsOrderByArgs } from './find-auction-interaction-items-order-by.args';
+import { FindAuctionInteractionItemsWhereInput } from './find-auction-interaction-items-where.input';
+import { FindAuctionInteractionItemsOrderByInput } from './find-auction-interaction-items-order-by.input';
 import { FindAuctionInteractionItemsArgs } from './find-auction-interaction-items.args';
 
 export class FindAuctionInteractionItemsQuery extends PaginationQuery {
-  where?: FindAuctionInteractionItemsWhereArgs;
+  where?: FindAuctionInteractionItemsWhereInput;
 
-  orderBy?: FindAuctionInteractionItemsOrderByArgs;
+  orderBy?: FindAuctionInteractionItemsOrderByInput;
 
   keyword?: string;
 
