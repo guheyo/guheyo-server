@@ -31,9 +31,6 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
               : {
                   equals: null,
                 },
-            title: parseContainsSearcher({
-              keyword: query.keyword,
-            }),
           },
           businessFunction: query.where.businessFunction,
           status: query.where.status,
@@ -42,6 +39,24 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
                 gt: new Date(query.where.bumpedAt.gt),
               }
             : undefined,
+          OR: [
+            {
+              post: {
+                title: ['title', undefined].includes(query.target)
+                  ? parseContainsSearcher({
+                      keyword: query.keyword,
+                    })
+                  : undefined,
+              },
+            },
+            {
+              content: ['content', undefined].includes(query.target)
+                ? parseContainsSearcher({
+                    keyword: query.keyword,
+                  })
+                : undefined,
+            },
+          ],
         }
       : {};
 
