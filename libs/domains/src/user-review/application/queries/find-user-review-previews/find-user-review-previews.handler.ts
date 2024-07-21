@@ -11,13 +11,39 @@ import { FindUserReviewPreviewsQuery } from './find-user-review-previews.query';
 @QueryHandler(FindUserReviewPreviewsQuery)
 export class FindUserReviewPreviewsHandler extends PrismaQueryHandler {
   async execute(query: FindUserReviewPreviewsQuery): Promise<PaginatedUserReviewPreviewsResponse> {
+    const keywordCondition = query.keyword
+      ? {
+          OR: [
+            ...(['all', 'title', undefined].includes(query.target)
+              ? [
+                  {
+                    post: {
+                      title: parseContainsSearcher({
+                        keyword: query.keyword,
+                      }),
+                    },
+                  },
+                ]
+              : []),
+            ...(['all', 'content', undefined].includes(query.target)
+              ? [
+                  {
+                    content: parseContainsSearcher({
+                      keyword: query.keyword,
+                    }),
+                  },
+                ]
+              : []),
+          ],
+        }
+      : {};
+
     const where: Prisma.UserReviewWhereInput = query.where
       ? {
           post: {
             groupId: query.where.groupId,
             userId: query.where.userId,
             pending: query.where.pending,
-            title: parseContainsSearcher({ keyword: query.keyword }),
             tags: {
               some: {
                 type: query.where.tagType,
@@ -28,6 +54,7 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler {
             },
           },
           reviewedUserId: query.where.reviewedUserId,
+          ...keywordCondition,
         }
       : {};
 
