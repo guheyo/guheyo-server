@@ -17,6 +17,33 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
     if (!!query.where?.userId && query.where.userId !== query.userId && query.where.isArchived)
       throw new ForbiddenException(OfferErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
 
+    const keywordCondition = query.keyword
+      ? {
+          OR: [
+            ...(['all', 'title', undefined].includes(query.target)
+              ? [
+                  {
+                    post: {
+                      title: parseContainsSearcher({
+                        keyword: query.keyword,
+                      }),
+                    },
+                  },
+                ]
+              : []),
+            ...(['all', 'content', undefined].includes(query.target)
+              ? [
+                  {
+                    content: parseContainsSearcher({
+                      keyword: query.keyword,
+                    }),
+                  },
+                ]
+              : []),
+          ],
+        }
+      : {};
+
     const where: Prisma.OfferWhereInput = query.where
       ? {
           post: {
@@ -31,9 +58,6 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
               : {
                   equals: null,
                 },
-            title: parseContainsSearcher({
-              keyword: query.keyword,
-            }),
           },
           businessFunction: query.where.businessFunction,
           status: query.where.status,
@@ -42,6 +66,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
                 gt: new Date(query.where.bumpedAt.gt),
               }
             : undefined,
+          ...keywordCondition,
         }
       : {};
 

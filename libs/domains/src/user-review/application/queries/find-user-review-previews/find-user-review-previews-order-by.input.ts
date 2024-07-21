@@ -1,8 +1,8 @@
-import { ArgsType, Field } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
-@ArgsType()
-export class FindCommentsOrderByArgs {
+@InputType()
+export class FindUserReviewPreviewsOrderByInput {
   @IsOptional()
   @Field(() => String, { nullable: true })
   createdAt?: 'asc' | 'desc';

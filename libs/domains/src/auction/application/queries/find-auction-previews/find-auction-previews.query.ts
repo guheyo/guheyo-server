@@ -1,14 +1,16 @@
 import { PaginationQuery } from '@lib/shared/cqrs/queries/pagination/pagination.query';
-import { FindAuctionWhereArgs } from './find-auction-where.args';
-import { FindAuctionOrderByArgs } from './find-auction-order-by.args';
+import { FindAuctionPreviewsWhereInput } from './find-auction-previews-where.input';
+import { FindAuctionPreviewsOrderByInput } from './find-auction-previews-order-by.input';
 import { FindAuctionPreviewsArgs } from './find-auction-previews.args';
 
 export class FindAuctionPreviewsQuery extends PaginationQuery {
-  where?: FindAuctionWhereArgs;
+  where?: FindAuctionPreviewsWhereInput;
 
-  orderBy?: FindAuctionOrderByArgs;
+  orderBy?: FindAuctionPreviewsOrderByInput;
 
   keyword?: string;
+
+  target?: string;
 
   userId?: string;
 
@@ -17,6 +19,7 @@ export class FindAuctionPreviewsQuery extends PaginationQuery {
     this.where = args.where;
     this.orderBy = args.orderBy;
     this.keyword = args.keyword;
+    this.target = args.target;
     this.userId = userId;
   }
 }

@@ -1,14 +1,16 @@
 import { PaginationQuery } from '@lib/shared/cqrs/queries/pagination/pagination.query';
 import { FindUserReviewPreviewsArgs } from './find-user-review-previews.args';
-import { FindUserReviewPreviewsWhereArgs } from './find-user-review-previews-where.args';
-import { FindUserReviewPreviewsOrderByArgs } from './find-user-review-previews-order-by.args';
+import { FindUserReviewPreviewsWhereInput } from './find-user-review-previews-where.input';
+import { FindUserReviewPreviewsOrderByInput } from './find-user-review-previews-order-by.input';
 
 export class FindUserReviewPreviewsQuery extends PaginationQuery {
-  where?: FindUserReviewPreviewsWhereArgs;
+  where?: FindUserReviewPreviewsWhereInput;
 
-  orderBy?: FindUserReviewPreviewsOrderByArgs;
+  orderBy?: FindUserReviewPreviewsOrderByInput;
 
   keyword?: string;
+
+  target?: string;
 
   userId?: string;
 
@@ -17,6 +19,7 @@ export class FindUserReviewPreviewsQuery extends PaginationQuery {
     this.where = args.where;
     this.orderBy = args.orderBy;
     this.keyword = args.keyword;
+    this.target = args.target;
     this.userId = userId;
   }
 }

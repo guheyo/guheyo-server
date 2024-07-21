@@ -1,17 +1,21 @@
 import { PaginationSearchArgs } from '@lib/shared/cqrs/queries/pagination/pagination-search.args';
 import { ArgsType, Field } from '@nestjs/graphql';
-import { GraphQLJSON } from 'graphql-type-json';
-import { IsOptional } from 'class-validator';
-import { FindAuctionWhereArgs } from './find-auction-where.args';
-import { FindAuctionOrderByArgs } from './find-auction-order-by.args';
+import { IsOptional, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { FindAuctionPreviewsWhereInput } from './find-auction-previews-where.input';
+import { FindAuctionPreviewsOrderByInput } from './find-auction-previews-order-by.input';
 
 @ArgsType()
 export class FindAuctionPreviewsArgs extends PaginationSearchArgs {
   @IsOptional()
-  @Field(() => GraphQLJSON, { nullable: true })
-  where?: FindAuctionWhereArgs;
+  @ValidateNested()
+  @Type(() => FindAuctionPreviewsWhereInput)
+  @Field(() => FindAuctionPreviewsWhereInput, { nullable: true })
+  where?: FindAuctionPreviewsWhereInput;
 
   @IsOptional()
-  @Field(() => GraphQLJSON, { nullable: true })
-  orderBy?: FindAuctionOrderByArgs;
+  @ValidateNested()
+  @Type(() => FindAuctionPreviewsOrderByInput)
+  @Field(() => FindAuctionPreviewsOrderByInput, { nullable: true })
+  orderBy?: FindAuctionPreviewsOrderByInput;
 }

@@ -1,8 +1,8 @@
-import { ArgsType, Field, ID } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
-@ArgsType()
-export class FindUserReviewPreviewsWhereArgs {
+@InputType()
+export class FindUserReviewPreviewsWhereInput {
   // Post
   @IsOptional()
   @Field(() => ID, { nullable: true })
@@ -15,6 +15,10 @@ export class FindUserReviewPreviewsWhereArgs {
   @IsOptional()
   @Field(() => String, { nullable: true })
   tagType?: string;
+
+  @IsOptional()
+  @Field(() => [String], { nullable: true })
+  tagNames?: string[];
 
   @IsOptional()
   @Field(() => String, { nullable: true })

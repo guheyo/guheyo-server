@@ -1,17 +1,21 @@
 import { PaginationSearchArgs } from '@lib/shared/cqrs/queries/pagination/pagination-search.args';
 import { ArgsType, Field } from '@nestjs/graphql';
-import { GraphQLJSON } from 'graphql-type-json';
-import { IsOptional } from 'class-validator';
-import { FindAuctionInteractionItemsWhereArgs } from './find-auction-interaction-items-where.args';
-import { FindAuctionInteractionItemsOrderByArgs } from './find-auction-interaction-items-order-by.args';
+import { IsOptional, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { FindAuctionInteractionItemsOrderByInput } from './find-auction-interaction-items-order-by.input';
+import { FindAuctionInteractionItemsWhereInput } from './find-auction-interaction-items-where.input';
 
 @ArgsType()
 export class FindAuctionInteractionItemsArgs extends PaginationSearchArgs {
   @IsOptional()
-  @Field(() => GraphQLJSON, { nullable: true })
-  where?: FindAuctionInteractionItemsWhereArgs;
+  @ValidateNested()
+  @Type(() => FindAuctionInteractionItemsWhereInput)
+  @Field(() => FindAuctionInteractionItemsWhereInput, { nullable: true })
+  where?: FindAuctionInteractionItemsWhereInput;
 
   @IsOptional()
-  @Field(() => GraphQLJSON, { nullable: true })
-  orderBy?: FindAuctionInteractionItemsOrderByArgs;
+  @ValidateNested()
+  @Type(() => FindAuctionInteractionItemsOrderByInput)
+  @Field(() => FindAuctionInteractionItemsOrderByInput, { nullable: true })
+  orderBy?: FindAuctionInteractionItemsOrderByInput;
 }

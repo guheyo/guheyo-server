@@ -1,17 +1,16 @@
-import { ArgsType, Field, ID } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import { GraphQLJSON } from 'graphql-type-json';
 
-@ArgsType()
-export class FindAuctionWhereArgs {
-  // Post
+@InputType()
+export class FindReportPreviewsWhereInput {
   @IsOptional()
-  @Field(() => ID, { nullable: true })
-  groupId?: string;
+  @Field(() => String, { nullable: true })
+  type?: string;
 
   @IsOptional()
   @Field(() => ID, { nullable: true })
-  categoryId?: string;
+  refId?: string;
 
   @IsOptional()
   @Field(() => ID, { nullable: true })
@@ -19,13 +18,12 @@ export class FindAuctionWhereArgs {
 
   @IsOptional()
   @Field(() => ID, { nullable: true })
-  bidderId?: string;
+  reportedUserId?: string;
 
   @IsOptional()
-  @Field(() => String, { nullable: true })
-  pending?: string;
+  @Field(() => ID, { nullable: true })
+  groupId?: string;
 
-  // Auction
   @IsOptional()
   @Field(() => String, { nullable: true })
   status?: string;

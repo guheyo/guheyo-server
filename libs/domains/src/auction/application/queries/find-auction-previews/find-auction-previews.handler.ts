@@ -37,6 +37,33 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
   }
 
   private async fetchAuctions(query: FindAuctionPreviewsQuery, isLive?: boolean) {
+    const keywordCondition = query.keyword
+      ? {
+          OR: [
+            ...(['all', 'title', undefined].includes(query.target)
+              ? [
+                  {
+                    post: {
+                      title: parseContainsSearcher({
+                        keyword: query.keyword,
+                      }),
+                    },
+                  },
+                ]
+              : []),
+            ...(['all', 'content', undefined].includes(query.target)
+              ? [
+                  {
+                    content: parseContainsSearcher({
+                      keyword: query.keyword,
+                    }),
+                  },
+                ]
+              : []),
+          ],
+        }
+      : {};
+
     const where: Prisma.AuctionWhereInput = query.where
       ? {
           post: {
@@ -44,9 +71,6 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
             categoryId: query.where.categoryId,
             userId: query.where.userId,
             pending: query.where.pending,
-            title: parseContainsSearcher({
-              keyword: query.keyword,
-            }),
           },
           status: query.where.status,
           createdAt: query.where?.createdAt
@@ -71,6 +95,7 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
               },
             },
           }),
+          ...keywordCondition,
         }
       : {};
 
