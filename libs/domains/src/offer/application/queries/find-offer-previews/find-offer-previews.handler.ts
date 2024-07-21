@@ -20,7 +20,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
     const keywordCondition = query.keyword
       ? {
           OR: [
-            ...(['title', undefined].includes(query.target)
+            ...(['all', 'title', undefined].includes(query.target)
               ? [
                   {
                     post: {
@@ -31,7 +31,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
                   },
                 ]
               : []),
-            ...(['content', undefined].includes(query.target)
+            ...(['all', 'content', undefined].includes(query.target)
               ? [
                   {
                     content: parseContainsSearcher({
