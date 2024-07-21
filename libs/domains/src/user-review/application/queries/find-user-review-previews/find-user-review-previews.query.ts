@@ -10,6 +10,8 @@ export class FindUserReviewPreviewsQuery extends PaginationQuery {
 
   keyword?: string;
 
+  target?: string;
+
   userId?: string;
 
   constructor({ args, userId }: { args: FindUserReviewPreviewsArgs; userId?: string }) {
@@ -17,6 +19,7 @@ export class FindUserReviewPreviewsQuery extends PaginationQuery {
     this.where = args.where;
     this.orderBy = args.orderBy;
     this.keyword = args.keyword;
+    this.target = args.target;
     this.userId = userId;
   }
 }

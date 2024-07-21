@@ -10,6 +10,8 @@ export class FindThreadPreviewsQuery extends PaginationQuery {
 
   keyword?: string;
 
+  target?: string;
+
   userId?: string;
 
   constructor({ args, userId }: { args: FindThreadPreviewsArgs; userId?: string }) {
@@ -17,6 +19,7 @@ export class FindThreadPreviewsQuery extends PaginationQuery {
     this.where = args.where;
     this.orderBy = args.orderBy;
     this.keyword = args.keyword;
+    this.target = args.target;
     this.userId = userId;
   }
 }

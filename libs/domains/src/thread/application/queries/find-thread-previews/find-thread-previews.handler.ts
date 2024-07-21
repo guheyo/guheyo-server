@@ -11,6 +11,33 @@ import { FindThreadPreviewsQuery } from './find-thread-previews.query';
 @QueryHandler(FindThreadPreviewsQuery)
 export class FindThreadPreviewsHandler extends PrismaQueryHandler {
   async execute(query: FindThreadPreviewsQuery): Promise<PaginatedThreadPreviewsResponse> {
+    const keywordCondition = query.keyword
+      ? {
+          OR: [
+            ...(['all', 'title', undefined].includes(query.target)
+              ? [
+                  {
+                    post: {
+                      title: parseContainsSearcher({
+                        keyword: query.keyword,
+                      }),
+                    },
+                  },
+                ]
+              : []),
+            ...(['all', 'content', undefined].includes(query.target)
+              ? [
+                  {
+                    content: parseContainsSearcher({
+                      keyword: query.keyword,
+                    }),
+                  },
+                ]
+              : []),
+          ],
+        }
+      : {};
+
     const where: Prisma.ThreadWhereInput = query.where
       ? {
           post: {
@@ -18,7 +45,6 @@ export class FindThreadPreviewsHandler extends PrismaQueryHandler {
             categoryId: query.where.categoryId,
             userId: query.where.userId,
             pending: query.where.pending,
-            title: parseContainsSearcher({ keyword: query.keyword }),
             tags: {
               some: {
                 name: {
@@ -27,6 +53,7 @@ export class FindThreadPreviewsHandler extends PrismaQueryHandler {
               },
             },
           },
+          ...keywordCondition,
         }
       : {};
 

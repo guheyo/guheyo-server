@@ -708,41 +708,41 @@ type PostResponse {
 
 type Query {
   findAuction(id: ID, slug: String): AuctionResponse
-  findAuctionInteractionItems(cursor: ID, keyword: String, orderBy: FindAuctionInteractionItemsOrderByInput, skip: Int! = 1, take: Int!, where: FindAuctionInteractionItemsWhereInput): PaginatedAuctionInteractionItemsResponse!
-  findAuctionPreviews(cursor: ID, keyword: String, orderBy: FindAuctionPreviewsOrderByInput, skip: Int! = 1, take: Int!, where: FindAuctionPreviewsWhereInput): PaginatedAuctionPreviewsResponse!
+  findAuctionInteractionItems(cursor: ID, keyword: String, orderBy: FindAuctionInteractionItemsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindAuctionInteractionItemsWhereInput): PaginatedAuctionInteractionItemsResponse!
+  findAuctionPreviews(cursor: ID, keyword: String, orderBy: FindAuctionPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindAuctionPreviewsWhereInput): PaginatedAuctionPreviewsResponse!
   findAuthor(id: ID, username: String): AuthorResponse
   findBidCount(auctionId: ID!): BidCountResponse!
-  findBidders(cursor: ID, keyword: String, orderBy: FindBiddersOrderByInput, skip: Int! = 1, take: Int!, where: FindBiddersWhereInput!): PaginatedUsersResponse!
-  findBids(cursor: ID, keyword: String, orderBy: FindBidsOrderByInput, skip: Int! = 1, take: Int!, where: FindBidsWhereInput): PaginatedBidsResponse!
+  findBidders(cursor: ID, keyword: String, orderBy: FindBiddersOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBiddersWhereInput!): PaginatedUsersResponse!
+  findBids(cursor: ID, keyword: String, orderBy: FindBidsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBidsWhereInput): PaginatedBidsResponse!
   findComment(id: ID, postId: ID): CommentResponse
   findCommentCount(postId: ID!): CommentCountResponse!
-  findComments(cursor: ID, keyword: String, orderBy: FindCommentsOrderByInput, skip: Int! = 1, take: Int!, where: FindCommentsWhereInput): PaginatedCommentsResponse!
+  findComments(cursor: ID, keyword: String, orderBy: FindCommentsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindCommentsWhereInput): PaginatedCommentsResponse!
   findEmojis(groupId: ID): [EmojiResponse!]!
   findGroup(id: ID, slug: String): GroupResponse
   findGroupPreviews: [GroupPreviewResponse!]!
-  findGroupProfiles(cursor: ID, keyword: String, skip: Int! = 1, take: Int!): PaginatedGroupProfilesResponse!
+  findGroupProfiles(cursor: ID, keyword: String, skip: Int! = 1, take: Int!, target: String): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
   findLastReport: LastReportResponse!
   findMyUser: MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferCount(businessFunction: String!, categoryId: ID!, fromHours: Int!, userId: ID!): Float!
-  findOfferPreviews(cursor: ID, keyword: String, orderBy: FindOfferPreviewsOrderByInput, skip: Int! = 1, take: Int!, where: FindOfferPreviewsWhereInput): PaginatedOfferPreviewsResponse!
+  findOfferPreviews(cursor: ID, keyword: String, orderBy: FindOfferPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindOfferPreviewsWhereInput): PaginatedOfferPreviewsResponse!
   findPostPreview(id: ID!): PostPreviewWithUserResponse!
   findReactions(commentId: ID, postId: ID): [ReactionResponse!]!
   findReport(id: ID!): ReportResponse!
   findReportComment(reportId: ID!): ReportCommentResponse!
-  findReportPreviews(cursor: ID, keyword: String, orderBy: FindReportPreviewsOrderByInput, skip: Int! = 1, take: Int!, where: FindReportPreviewsWhereInput): PaginatedReportPreviewsResponse!
+  findReportPreviews(cursor: ID, keyword: String, orderBy: FindReportPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindReportPreviewsWhereInput): PaginatedReportPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
   findTags: [TagResponse!]!
   findTerm(name: String!): TermResponse
   findThread(id: ID, slug: String): ThreadResponse
-  findThreadPreviews(cursor: ID, keyword: String, orderBy: FindThreadPreviewsOrderByInput, skip: Int! = 1, take: Int!, where: FindThreadPreviewsWhereInput): PaginatedThreadPreviewsResponse!
+  findThreadPreviews(cursor: ID, keyword: String, orderBy: FindThreadPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindThreadPreviewsWhereInput): PaginatedThreadPreviewsResponse!
   findUser(provider: String, socialId: String, username: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUserReview(id: ID, slug: String): UserReviewResponse
-  findUserReviewPreviews(cursor: ID, keyword: String, orderBy: FindUserReviewPreviewsOrderByInput, skip: Int! = 1, take: Int!, where: FindUserReviewPreviewsWhereInput): PaginatedUserReviewPreviewsResponse!
-  findUsers(cursor: ID, keyword: String, orderBy: FindUsersOrderByInput, skip: Int! = 1, take: Int!, where: FindUsersWhereInput): PaginatedUsersResponse!
+  findUserReviewPreviews(cursor: ID, keyword: String, orderBy: FindUserReviewPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindUserReviewPreviewsWhereInput): PaginatedUserReviewPreviewsResponse!
+  findUsers(cursor: ID, keyword: String, orderBy: FindUsersOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindUsersWhereInput): PaginatedUsersResponse!
   findVersion(id: ID!): VersionResponse
   findVersionPreview(id: ID, refId: ID): VersionPreviewResponse
 }
