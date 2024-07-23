@@ -12,8 +12,8 @@ export abstract class AwsEventService {
     this.prefix = `${process.env.NODE_ENV}-${functionName}`;
   }
 
-  protected generateUniqueIdentifier(uuid: string): string {
-    return `${this.prefix}-${uuid.slice(0, 8)}-${dayjs().format('YYMMDD')}`;
+  protected generateUniqueIdentifier({ uuid, date }: { uuid: string; date?: Date }): string {
+    return `${this.prefix}-${uuid.slice(0, 8)}-${dayjs(date).format('YYMMDD')}`;
   }
 
   protected generateIdentifierWithWildcard(): string {
