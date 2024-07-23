@@ -14,13 +14,26 @@ export class AuctionEndEventService extends AwsEventService {
     });
   }
 
-  async scheduleAuctionEndEvent(auctionId: string, endTime: Date): Promise<void> {
-    const uniqueIdentifier = this.generateUniqueIdentifier(auctionId);
+  async scheduleAuctionEndEvent({
+    auctionId,
+    startTime,
+    endTime,
+  }: {
+    auctionId: string;
+    startTime: Date;
+    endTime: Date;
+  }): Promise<void> {
+    const uniqueIdentifier = this.generateUniqueIdentifier({ uuid: auctionId, date: startTime });
     // Trigger Event after 2 minute
     const delayedEndTime = this.eventBridgeService.getDelayedEndTime(endTime, 120);
     const scheduleExpression = this.eventBridgeService.generateCronExpression(delayedEndTime);
     const lambdaArn = this.lambdaService.getLambdaFunctionArn(this.functionName);
-    const input = JSON.stringify({ auctionId, extendedEndDate: endTime });
+    const input = JSON.stringify({
+      ruleName: uniqueIdentifier,
+      auctionId,
+      createdAt: startTime,
+      extendedEndDate: endTime,
+    });
 
     await this.eventBridgeService.scheduleRule({
       ruleName: uniqueIdentifier,
@@ -31,8 +44,16 @@ export class AuctionEndEventService extends AwsEventService {
     });
   }
 
-  async updateAuctionEndEvent(auctionId: string, endTime: Date): Promise<void> {
-    const uniqueIdentifier = this.generateUniqueIdentifier(auctionId);
+  async updateAuctionEndEvent({
+    auctionId,
+    startTime,
+    endTime,
+  }: {
+    auctionId: string;
+    startTime: Date;
+    endTime: Date;
+  }): Promise<void> {
+    const uniqueIdentifier = this.generateUniqueIdentifier({ uuid: auctionId, date: startTime });
     // Trigger Event after 2 minute
     const delayedEndTime = this.eventBridgeService.getDelayedEndTime(endTime, 120);
     const scheduleExpression = this.eventBridgeService.generateCronExpression(delayedEndTime);
@@ -43,8 +64,14 @@ export class AuctionEndEventService extends AwsEventService {
     });
   }
 
-  async cancelAuctionEndEvent(auctionId: string): Promise<void> {
-    const uniqueIdentifier = this.generateUniqueIdentifier(auctionId);
+  async cancelAuctionEndEvent({
+    auctionId,
+    startTime,
+  }: {
+    auctionId: string;
+    startTime: Date;
+  }): Promise<void> {
+    const uniqueIdentifier = this.generateUniqueIdentifier({ uuid: auctionId, date: startTime });
 
     await this.eventBridgeService.cancelRule({
       ruleName: uniqueIdentifier,
