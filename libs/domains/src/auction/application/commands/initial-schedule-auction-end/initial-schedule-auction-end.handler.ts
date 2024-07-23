@@ -19,6 +19,10 @@ export class InitialScheduleAuctionEndHandler
       throw new Error('Auction not found'); // Handle appropriately
     }
 
-    await this.auctionEndEventService.scheduleAuctionEndEvent(auction.id, command.extendedEndDate);
+    await this.auctionEndEventService.scheduleAuctionEndEvent({
+      auctionId: auction.id,
+      startTime: auction.createdAt,
+      endTime: auction.extendedEndDate,
+    });
   }
 }
