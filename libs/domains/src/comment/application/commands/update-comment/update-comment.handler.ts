@@ -29,7 +29,7 @@ export class UpdateCommentHandler extends PrismaCommandHandler<
     if (!comment.isAuthorized(command.user.id))
       throw new ForbiddenException(CommentErrorMessage.COMMENT_CHANGES_FROM_UNAUTHORIZED_USER);
 
-    comment.update(pick(command, ['id', 'content']));
+    comment.update(pick(command, ['id', 'content', 'pinned']));
     await this.savePort.save(comment);
 
     const updatedComment = await this.loadPort.findById(comment.id);
@@ -40,6 +40,7 @@ export class UpdateCommentHandler extends PrismaCommandHandler<
         id: updatedComment.id,
         updatedAt: updatedComment.updatedAt,
         content: updatedComment.content,
+        pinned: updatedComment.pinned,
       },
     });
   }
