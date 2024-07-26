@@ -13,6 +13,8 @@ export class CreateCommentCommand implements ICommand {
 
   content?: string;
 
+  pinned: boolean;
+
   user: MyUserResponse;
 
   userAgent?: string;
@@ -35,6 +37,7 @@ export class CreateCommentCommand implements ICommand {
     this.updatedAt = input.updatedAt;
     this.postId = input.postId;
     this.content = input.content;
+    this.pinned = input.pinned;
     this.user = user;
     this.userAgent = userAgent;
     this.ipAddress = ipAddress;
