@@ -21,6 +21,9 @@ export class CommentResponse {
   @Field(() => String, { nullable: true })
   content: string | null;
 
+  @Field(() => Boolean)
+  pinned: boolean;
+
   @Field(() => [ReactionResponse])
   reactions: ReactionResponse[];
 
