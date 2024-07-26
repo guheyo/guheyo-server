@@ -18,6 +18,8 @@ export class CommentEntity extends AggregateRoot {
 
   content: string | null;
 
+  pinned: boolean;
+
   userAgent: string | null;
 
   ipAddress: string | null;
