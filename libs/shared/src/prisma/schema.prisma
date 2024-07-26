@@ -201,6 +201,7 @@ model Comment {
   reports           Report[]
   reactions         Reaction[]
   content           String?
+  pinned            Boolean       @default(false)
   userAgent         String?
   ipAddress         String?
 

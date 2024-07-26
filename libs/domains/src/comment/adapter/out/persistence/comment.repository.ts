@@ -33,6 +33,7 @@ export class CommentRepository
         'postId',
         'parentId',
         'content',
+        'pinned',
         'userAgent',
         'ipAddress',
       ]),
@@ -48,7 +49,7 @@ export class CommentRepository
       where: {
         id: comment.id,
       },
-      data: _.pick(comment, ['content']),
+      data: _.pick(comment, ['content', 'pinned']),
     });
   }
 
