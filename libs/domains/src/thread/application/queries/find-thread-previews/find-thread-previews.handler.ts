@@ -45,13 +45,17 @@ export class FindThreadPreviewsHandler extends PrismaQueryHandler {
             categoryId: query.where.categoryId,
             userId: query.where.userId,
             pending: query.where.pending,
-            tags: {
-              some: {
-                name: {
-                  in: query.where.tagNames,
-                },
-              },
-            },
+            ...(query.where.tagNames
+              ? {
+                  tags: {
+                    some: {
+                      name: {
+                        in: query.where.tagNames,
+                      },
+                    },
+                  },
+                }
+              : {}),
           },
           ...keywordCondition,
         }
