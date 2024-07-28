@@ -10,4 +10,8 @@ export class FindCommentsWhereInput {
   @IsOptional()
   @Field(() => ID, { nullable: true })
   userId?: string;
+
+  @IsOptional()
+  @Field(() => Boolean, { nullable: true })
+  pinned?: boolean;
 }

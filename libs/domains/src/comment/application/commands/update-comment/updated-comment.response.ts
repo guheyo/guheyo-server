@@ -11,6 +11,9 @@ export class UpdatedCommentResponse {
   @Field(() => String)
   content: string;
 
+  @Field(() => Boolean)
+  pinned: boolean;
+
   constructor(partial: Partial<UpdatedCommentResponse>) {
     Object.assign(this, partial);
   }

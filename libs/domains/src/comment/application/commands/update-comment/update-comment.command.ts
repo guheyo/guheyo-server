@@ -7,11 +7,14 @@ export class UpdateCommentCommand implements ICommand {
 
   content?: string;
 
+  pinned?: boolean;
+
   user: MyUserResponse;
 
   constructor({ input, user }: { input: UpdateCommentInput; user: MyUserResponse }) {
     this.id = input.id;
     this.content = input.content;
+    this.pinned = input.pinned;
     this.user = user;
   }
 }

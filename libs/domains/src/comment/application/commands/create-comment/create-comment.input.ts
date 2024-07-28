@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsBoolean, IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreateCommentInput {
@@ -25,4 +25,8 @@ export class CreateCommentInput {
   @IsString()
   @Field(() => String, { nullable: true })
   content?: string;
+
+  @IsBoolean()
+  @Field(() => Boolean)
+  pinned: boolean;
 }

@@ -133,6 +133,7 @@ type CommentResponse {
   createdAt: DateTime!
   id: ID!
   parentId: ID
+  pinned: Boolean!
   postId: ID!
   reactions: [ReactionResponse!]!
   updatedAt: DateTime!
@@ -144,6 +145,7 @@ type CommentWithAuthorResponse {
   id: ID!
   images: [UserImageResponse!]!
   parentId: ID
+  pinned: Boolean!
   postId: ID!
   reactions: [ReactionResponse!]!
   updatedAt: DateTime!
@@ -171,6 +173,7 @@ input CreateCommentInput {
   content: String
   createdAt: DateTime
   id: ID!
+  pinned: Boolean!
   postId: ID!
   updatedAt: DateTime
 }
@@ -349,6 +352,7 @@ input FindCommentsOrderByInput {
 }
 
 input FindCommentsWhereInput {
+  pinned: Boolean
   postId: ID
   userId: ID
 }
@@ -903,6 +907,7 @@ input UpdateAuctionInput {
 input UpdateCommentInput {
   content: String
   id: ID!
+  pinned: Boolean!
 }
 
 input UpdateGroupInput {
@@ -978,6 +983,7 @@ type UpdatedAuctionResponse {
 type UpdatedCommentResponse {
   content: String!
   id: ID!
+  pinned: Boolean!
   updatedAt: DateTime!
 }
 

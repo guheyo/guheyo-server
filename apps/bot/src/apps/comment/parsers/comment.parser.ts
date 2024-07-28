@@ -22,6 +22,7 @@ export class CommentParser extends GroupParser {
       updatedAt: message.editedAt || message.createdAt,
       postId: this.parseIdFromChannelId(message.channelId),
       content: message.content,
+      pinned: message.pinned,
     };
   }
 
@@ -29,6 +30,7 @@ export class CommentParser extends GroupParser {
     return {
       id: this.parseIdFromMessageId(message.id),
       content: message.content,
+      pinned: message.pinned,
     };
   }
 }
