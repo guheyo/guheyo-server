@@ -19,6 +19,7 @@ export class FindCommentsHandler extends PrismaQueryHandler {
           },
           userId: query.where.userId,
           content: parseContainsSearcher({ keyword: query.keyword }),
+          pinned: query.where.pinned,
         }
       : {};
 
