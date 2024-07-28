@@ -61,12 +61,14 @@ export class FindAuctionInteractionItemsHandler extends PrismaQueryHandler {
     const comments =
       query.where?.view === 'newest' ||
       query.where?.view === 'comment' ||
+      query.where?.view === 'pinned' ||
       query.where?.view === 'sellerComment'
         ? await this.prismaService.comment.findMany({
             where: {
               ...where,
               postId: query.where?.postId,
               userId: query.where?.userId,
+              pinned: query.where.view === 'pinned' ? true : undefined,
             },
             take: query.take + 1,
             skip: query.skip,
