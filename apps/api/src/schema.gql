@@ -352,6 +352,7 @@ input FindCommentsOrderByInput {
 }
 
 input FindCommentsWhereInput {
+  pinned: Boolean
   postId: ID
   userId: ID
 }
