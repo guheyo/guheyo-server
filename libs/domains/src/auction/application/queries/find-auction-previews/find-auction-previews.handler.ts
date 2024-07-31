@@ -5,6 +5,9 @@ import { parseContainsSearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
 import { plainToClass } from 'class-transformer';
 import { AUCTION_CLOSED } from '@lib/domains/auction/domain/auction.constants';
+import { NotFoundException } from '@nestjs/common';
+import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
+import dayjs from 'dayjs';
 import { FindAuctionPreviewsQuery } from './find-auction-previews.query';
 import { AuctionPreviewResponse } from '../../dtos/auction-preview.response';
 import { PaginatedAuctionPreviewsResponse } from './paginated-auction-previews.response';
@@ -12,18 +15,13 @@ import { PaginatedAuctionPreviewsResponse } from './paginated-auction-previews.r
 @QueryHandler(FindAuctionPreviewsQuery)
 export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
   async execute(query: FindAuctionPreviewsQuery): Promise<PaginatedAuctionPreviewsResponse> {
-    let auctions;
+    let auctions = [];
     if (query.orderBy?.extendedEndDate) {
-      auctions = await this.fetchAuctions(query, true);
-      if (auctions.length < query.take + 1) {
-        const auctionsClosed = await this.fetchAuctions(
-          {
-            ...query,
-            take: query.take - auctions.length,
-          },
-          false,
-        );
-        auctions.push(...auctionsClosed);
+      const isCursorAuctionLive = query.cursor ? await this.isAuctionLive(query.cursor) : true;
+      if (isCursorAuctionLive) {
+        auctions = await this.fetchLiveAndClosedAuctions(query);
+      } else {
+        auctions = await this.fetchAuctions(query, false);
       }
     } else {
       auctions = await this.fetchAuctions(query);
@@ -34,6 +32,41 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
       'id',
       query.take,
     );
+  }
+
+  private async isAuctionLive(id: string) {
+    const auction = await this.prismaService.auction.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        extendedEndDate: true,
+      },
+    });
+    if (!auction) throw new NotFoundException(AuctionErrorMessage.AUCTION_NOT_FOUND);
+
+    return dayjs().isBefore(auction.extendedEndDate);
+  }
+
+  private async fetchLiveAndClosedAuctions(query: FindAuctionPreviewsQuery) {
+    const liveAuctions = await this.fetchAuctions(query, true);
+    const auctions = [...liveAuctions];
+
+    if (liveAuctions.length < query.take + 1) {
+      const remainingTake = query.take - liveAuctions.length;
+      const closedAuctions = await this.fetchAuctions(
+        {
+          ...query,
+          cursor: undefined,
+          take: remainingTake,
+          skip: 0,
+        },
+        false,
+      );
+      auctions.push(...closedAuctions);
+    }
+
+    return auctions;
   }
 
   private async fetchAuctions(query: FindAuctionPreviewsQuery, isLive?: boolean) {
