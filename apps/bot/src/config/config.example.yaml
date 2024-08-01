@@ -46,10 +46,11 @@ discord:
             name:
         allowedRoleIds:
         disallowedRoleIds:
-      community:
+      thread:
         channels:
           - id:
             name:
+            categorySource:
         allowedRoleIds:
         disallowedRoleIds:
       command:
