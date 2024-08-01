@@ -22,12 +22,12 @@ export class BulkSavePostCommentsSlashHandler extends BulkSaveCommentsSlashHandl
   ) {
     if (!interaction.guild) return;
 
-    const channelId = this.groupParser.discordConfigService.findCommunityChannelId(
+    const channel = this.groupParser.discordConfigService.findThreadChannel(
       guildName,
       categoryName,
     );
-    if (!channelId) return;
+    if (!channel) return;
 
-    await this.bulkSave(interaction.guild, channelId, limit);
+    await this.bulkSave(interaction.guild, channel.id, limit);
   }
 }
