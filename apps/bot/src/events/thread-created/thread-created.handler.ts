@@ -6,13 +6,13 @@ import { ParseUserFromMessagePipe } from '@app/bot/apps/user/pipes/parse-user-fr
 import { ParseGroupPipe } from '@app/bot/apps/group/pipes/parse-group.pipe';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
-import { CommunityChannelGuard } from '@app/bot/apps/thread/guards/community-channel.guard';
+import { ThreadChannelGuard } from '@app/bot/apps/thread/guards/thread-channel.guard';
 import { ThreadClient } from '@app/bot/apps/thread/clients/thread.client';
 import { DiscordManager } from '@app/bot/shared/discord/discord.manager';
 import { ThreadChannel } from 'discord.js';
 import { PostMessageGuard } from '@app/bot/apps/post/guards/post-message.guard';
 
-@UseGuards(GroupGuard, CommunityChannelGuard, PostMessageGuard)
+@UseGuards(GroupGuard, ThreadChannelGuard, PostMessageGuard)
 @Name('커스텀 키보드')
 @Injectable()
 export class ThreadCreatedHandler {
