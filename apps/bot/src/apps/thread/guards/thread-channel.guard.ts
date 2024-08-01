@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { ChannelGuard } from '../../channel/guards/channel.guard';
 
 @Injectable()
-export class CommunityChannelGuard extends ChannelGuard implements CanActivate {
+export class ThreadChannelGuard extends ChannelGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {
     super();
   }
@@ -30,12 +30,12 @@ export class CommunityChannelGuard extends ChannelGuard implements CanActivate {
     }
 
     const server = this.discordConfigService.findDiscordServerByName(guildName);
-    const community = server?.community;
+    const thread = server?.thread;
     const member = await guild?.members.fetch(message.author.id);
 
-    if (!community?.channels.some((c) => c.id === channel.parentId)) return false;
+    if (!thread?.channels.some((c) => c.id === channel.parentId)) return false;
     if (!member) return false;
-    if (!this.hasValidRoles(community.allowedRoleIds, community.disallowedRoleIds, member.roles))
+    if (!this.hasValidRoles(thread.allowedRoleIds, thread.disallowedRoleIds, member.roles))
       return false;
     return true;
   }
