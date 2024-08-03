@@ -8,8 +8,27 @@ import { UpdateThreadInput } from '@lib/domains/thread/application/commands/upda
 
 @Injectable()
 export class ThreadParser extends GroupParser {
-  parseCreateThreadInput(threadPost: ThreadPost, group: GroupResponse): CreateThreadInput {
+  parseCreateThreadInput({
+    threadPost,
+    group,
+    categorySource,
+  }: {
+    threadPost: ThreadPost;
+    group: GroupResponse;
+    categorySource: string;
+  }): CreateThreadInput {
+    let tagNames;
+    let categoryId;
+
     const channelName = this.parseChannelName(threadPost.threadChannel.parent?.name || '');
+    if (categorySource === 'channelName') {
+      tagNames = threadPost.tagNames;
+      categoryId = this.parseCategoryId(channelName, group);
+    } else if (categorySource === 'tagName') {
+      tagNames = [];
+      categoryId = this.parseCategoryId(threadPost.tagNames[0], group);
+    }
+
     const post = {
       id: this.parseIdFromChannelId(threadPost.threadChannel.id),
       createdAt: threadPost.starterMessage.createdAt,
@@ -17,8 +36,8 @@ export class ThreadParser extends GroupParser {
       type: THREAD,
       title: threadPost.threadChannel.name,
       groupId: group.id,
-      tagNames: threadPost.tagNames,
-      categoryId: this.parseCategoryId(channelName, group),
+      tagNames,
+      categoryId,
     };
 
     return {

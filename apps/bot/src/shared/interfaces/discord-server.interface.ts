@@ -4,7 +4,7 @@ export interface DiscordServer {
   id: string;
   market: DiscordMarket;
   auction: DiscordAuction;
-  community: DiscordCommunity;
+  thread: DiscordThread;
   command: DiscordCommand;
 }
 
@@ -24,8 +24,8 @@ export interface DiscordAuction extends RolePermissions {
   channels: DiscordBaseChannel[];
 }
 
-export interface DiscordCommunity extends RolePermissions {
-  channels: DiscordBaseChannel[];
+export interface DiscordThread extends RolePermissions {
+  channels: DiscordThreadChannel[];
 }
 
 export interface DiscordCommand {
@@ -43,3 +43,7 @@ export interface DiscordBaseChannel {
 }
 
 export interface DiscordChannel extends DiscordBaseChannel, RolePermissions {}
+
+export interface DiscordThreadChannel extends DiscordBaseChannel {
+  categorySource: string;
+}

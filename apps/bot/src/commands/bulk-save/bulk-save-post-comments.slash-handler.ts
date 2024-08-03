@@ -2,7 +2,7 @@ import { GroupGuard } from '@app/bot/apps/group/guards/group.guard';
 import { OwnerGuard } from '@app/bot/apps/user/guards/owner.guard';
 import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
-import { BulkSaveRequest } from './bulk-save.request';
+import { BulkSavePostRequest } from './bulk-save-post.request';
 import { BulkSaveCommentsSlashHandler } from './bulk-save-comments.slash-handler';
 
 @UseGuards(GroupGuard, OwnerGuard)
@@ -18,16 +18,13 @@ export class BulkSavePostCommentsSlashHandler extends BulkSaveCommentsSlashHandl
   })
   public async onBuckSaveUserReviewComments(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { guildName, categoryName, limit }: BulkSaveRequest,
+    @Options() { guildName, channelName, limit }: BulkSavePostRequest,
   ) {
     if (!interaction.guild) return;
 
-    const channelId = this.groupParser.discordConfigService.findCommunityChannelId(
-      guildName,
-      categoryName,
-    );
-    if (!channelId) return;
+    const channel = this.groupParser.discordConfigService.findThreadChannel(guildName, channelName);
+    if (!channel) return;
 
-    await this.bulkSave(interaction.guild, channelId, limit);
+    await this.bulkSave(interaction.guild, channel.id, limit);
   }
 }

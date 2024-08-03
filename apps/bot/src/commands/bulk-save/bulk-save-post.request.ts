@@ -1,6 +1,6 @@
 import { NumberOption, StringOption } from 'necord';
 
-export class BulkSaveRequest {
+export class BulkSavePostRequest {
   @StringOption({
     name: 'guild-name',
     description: 'guild name',
@@ -9,11 +9,11 @@ export class BulkSaveRequest {
   guildName: string;
 
   @StringOption({
-    name: 'category-name',
-    description: 'category name',
+    name: 'channel-name',
+    description: 'channel name',
     required: true,
   })
-  categoryName: string;
+  channelName: string;
 
   @NumberOption({
     name: 'limit',
