@@ -14,19 +14,19 @@ export async function seedCommunityCategories(prisma: PrismaClient) {
       data: [
         {
           type: COMMUNITY,
-          name: '추천 요망',
+          name: '질문',
           slug: 'suggestion',
           position: 0,
         },
         {
           type: COMMUNITY,
-          name: '사진 영상',
+          name: '갤러리',
           slug: 'gallery',
           position: 1,
         },
         {
           type: COMMUNITY,
-          name: '정보 후기',
+          name: '정보',
           slug: 'info',
           position: 2,
         },
