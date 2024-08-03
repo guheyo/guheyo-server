@@ -8,7 +8,15 @@ import { UpdateThreadInput } from '@lib/domains/thread/application/commands/upda
 
 @Injectable()
 export class ThreadParser extends GroupParser {
-  parseCreateThreadInput(threadPost: ThreadPost, group: GroupResponse): CreateThreadInput {
+  parseCreateThreadInput({
+    threadPost,
+    group,
+    categorySource,
+  }: {
+    threadPost: ThreadPost;
+    group: GroupResponse;
+    categorySource: string;
+  }): CreateThreadInput {
     const channelName = this.parseChannelName(threadPost.threadChannel.parent?.name || '');
     const post = {
       id: this.parseIdFromChannelId(threadPost.threadChannel.id),
