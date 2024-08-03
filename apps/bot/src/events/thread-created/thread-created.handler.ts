@@ -1,4 +1,4 @@
-import { Injectable, Logger, UseGuards } from '@nestjs/common';
+import { Inject, Injectable, Logger, UseGuards } from '@nestjs/common';
 import { Context, ContextOf, On } from 'necord';
 import { GroupGuard } from '@app/bot/apps/group/guards/group.guard';
 import { Name } from '@app/bot/decorators/name.decorator';
@@ -11,6 +11,7 @@ import { ThreadClient } from '@app/bot/apps/thread/clients/thread.client';
 import { DiscordManager } from '@app/bot/shared/discord/discord.manager';
 import { ThreadChannel } from 'discord.js';
 import { PostMessageGuard } from '@app/bot/apps/post/guards/post-message.guard';
+import { DiscordConfigService } from '@app/bot/shared/discord/discord.config.service';
 
 @UseGuards(GroupGuard, ThreadChannelGuard, PostMessageGuard)
 @Name('커스텀 키보드')
@@ -19,6 +20,9 @@ export class ThreadCreatedHandler {
   protected readonly logger: Logger;
 
   protected discordManager: DiscordManager;
+
+  @Inject()
+  readonly discordConfigService: DiscordConfigService;
 
   constructor(private readonly threadClient: ThreadClient) {}
 
@@ -59,6 +63,18 @@ export class ThreadCreatedHandler {
       return;
     }
 
-    await this.threadClient.createThreadFromPost(user, threadPost, group);
+    if (!channel.parent) return;
+    const threadChannel = this.discordConfigService.findThreadChannel(
+      '커스텀 키보드',
+      channel.parent.name,
+    );
+    if (!threadChannel) return;
+
+    await this.threadClient.createThreadFromPost({
+      user,
+      threadPost,
+      group,
+      categorySource: threadChannel.categorySource,
+    });
   }
 }
