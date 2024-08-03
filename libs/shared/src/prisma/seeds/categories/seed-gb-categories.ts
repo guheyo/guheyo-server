@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 
-const COMMUNITY = 'community';
+const GB = 'gb';
 
-export async function seedCommunityCategories(prisma: PrismaClient) {
+export async function seedGbCategories(prisma: PrismaClient) {
   let categories = await prisma.category.findMany({
     where: {
-      type: COMMUNITY,
+      type: GB,
     },
   });
 
@@ -13,34 +13,46 @@ export async function seedCommunityCategories(prisma: PrismaClient) {
     await prisma.category.createMany({
       data: [
         {
-          type: COMMUNITY,
-          name: '질문',
-          slug: 'suggestion',
+          type: GB,
+          name: '공제',
+          slug: 'group-buy',
           position: 0,
         },
         {
-          type: COMMUNITY,
-          name: '갤러리',
-          slug: 'gallery',
+          type: GB,
+          name: '래플',
+          slug: 'raffle',
           position: 1,
         },
         {
-          type: COMMUNITY,
-          name: '정보',
-          slug: 'info',
+          type: GB,
+          name: '드랍',
+          slug: 'drop',
           position: 2,
         },
         {
-          type: COMMUNITY,
-          name: '모임',
-          slug: 'meetup',
+          type: GB,
+          name: '수요조사',
+          slug: 'ic',
           position: 3,
+        },
+        {
+          type: GB,
+          name: '수익 공구',
+          slug: 'profit',
+          position: 4,
+        },
+        {
+          type: GB,
+          name: '비수익 공구',
+          slug: 'non-profit',
+          position: 5,
         },
       ],
     });
     categories = await prisma.category.findMany({
       where: {
-        type: COMMUNITY,
+        type: GB,
       },
     });
   }
