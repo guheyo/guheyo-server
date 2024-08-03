@@ -30,16 +30,40 @@ export abstract class BulkSavePostsSlashHandler {
     this.logger = new Logger(context);
   }
 
-  abstract saveThreadPost(threadPost: ThreadPost, group: GroupResponse): void;
+  abstract saveThreadPost({
+    threadPost,
+    group,
+    categorySource,
+  }: {
+    threadPost: ThreadPost;
+    group: GroupResponse;
+    categorySource: string;
+  }): void;
 
-  async bulkSave(discordGuild: Guild, guildName: string, channelId: string, limit: number) {
+  async bulkSave({
+    discordGuild,
+    guildName,
+    channelId,
+    categorySource,
+    limit,
+  }: {
+    discordGuild: Guild;
+    guildName: string;
+    channelId: string;
+    categorySource: string;
+    limit: number;
+  }) {
     this.discordManager = new DiscordManager(discordGuild);
     const group = await this.groupClient.fetchGroupByGuildName(guildName);
     const threadPosts = await this.discordManager.fetchThreadPostsFromForum(channelId, limit);
     const nonExistingThreadPosts = await this.postClient.findNonExistingThreadPosts(threadPosts);
     this.logThreadPostCounts(threadPosts.length, nonExistingThreadPosts.length);
 
-    await this.bulkSaveThreadPosts(nonExistingThreadPosts, group);
+    await this.bulkSaveThreadPosts({
+      threadPosts: nonExistingThreadPosts,
+      group,
+      categorySource,
+    });
   }
 
   private logThreadPostCounts(totalPosts: number, nonExistingPosts: number): void {
@@ -47,7 +71,17 @@ export abstract class BulkSavePostsSlashHandler {
     this.logger.log(`Non-existing thread posts: ${nonExistingPosts}`);
   }
 
-  async bulkSaveThreadPosts(threadPosts: ThreadPost[], group: GroupResponse) {
-    return threadPosts.map(async (threadPost) => this.saveThreadPost(threadPost, group));
+  async bulkSaveThreadPosts({
+    threadPosts,
+    group,
+    categorySource,
+  }: {
+    threadPosts: ThreadPost[];
+    group: GroupResponse;
+    categorySource: string;
+  }) {
+    return threadPosts.map(async (threadPost) =>
+      this.saveThreadPost({ threadPost, group, categorySource }),
+    );
   }
 }
