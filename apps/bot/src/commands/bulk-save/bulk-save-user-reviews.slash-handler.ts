@@ -6,8 +6,8 @@ import { UserReviewClient } from '@app/bot/apps/user-review/clients/user-review.
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { ThreadChannel } from 'discord.js';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
-import { BulkSaveRequest } from './bulk-save.request';
 import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
+import { BulkSavePostRequest } from './bulk-save-post.request';
 
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
@@ -16,7 +16,15 @@ export class BulkSaveUserReviewsSlashHandler extends BulkSavePostsSlashHandler {
     super(BulkSaveUserReviewsSlashHandler.name);
   }
 
-  async saveThreadPost(threadPost: ThreadPost, group: GroupResponse) {
+  async saveThreadPost({
+    threadPost,
+    group,
+    categorySource,
+  }: {
+    threadPost: ThreadPost;
+    group: GroupResponse;
+    categorySource: string;
+  }) {
     try {
       const mentionedUser = await threadPost.starterMessage.mentions.users.first();
       if (!mentionedUser) return;
@@ -45,16 +53,19 @@ export class BulkSaveUserReviewsSlashHandler extends BulkSavePostsSlashHandler {
   })
   public async onBuckSaveUserReviews(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { guildName, categoryName, limit }: BulkSaveRequest,
+    @Options() { guildName, channelName, limit }: BulkSavePostRequest,
   ) {
     if (!interaction.guild) return;
 
-    const channel = this.groupParser.discordConfigService.findThreadChannel(
-      guildName,
-      categoryName,
-    );
+    const channel = this.groupParser.discordConfigService.findThreadChannel(guildName, channelName);
     if (!channel) return;
 
-    await this.bulkSave(interaction.guild, guildName, channel.id, limit);
+    await this.bulkSave({
+      discordGuild: interaction.guild,
+      guildName,
+      channelId: channel.id,
+      categorySource: 'none',
+      limit,
+    });
   }
 }
