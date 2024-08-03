@@ -84,10 +84,10 @@ export class DiscordConfigService {
   findMarketChannelId(
     guildName: string,
     marketChannelType: MarketChannelType,
-    categoryName: string,
+    channelName: string,
   ): string | null {
     const server = this.findDiscordServerByName(guildName);
-    const channel = server?.market[marketChannelType].channels.find((c) => c.name === categoryName);
+    const channel = server?.market[marketChannelType].channels.find((c) => c.name === channelName);
     return channel ? channel.id : null;
   }
 
