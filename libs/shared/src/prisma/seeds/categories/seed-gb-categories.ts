@@ -32,15 +32,21 @@ export async function seedGbCategories(prisma: PrismaClient) {
         },
         {
           type: GB,
+          name: '수요조사',
+          slug: 'ic',
+          position: 3,
+        },
+        {
+          type: GB,
           name: '수익 공구',
           slug: 'profit',
-          position: 3,
+          position: 4,
         },
         {
           type: GB,
           name: '비수익 공구',
           slug: 'non-profit',
-          position: 4,
+          position: 5,
         },
       ],
     });
