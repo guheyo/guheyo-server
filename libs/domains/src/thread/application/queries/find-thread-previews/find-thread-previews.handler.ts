@@ -43,6 +43,9 @@ export class FindThreadPreviewsHandler extends PrismaQueryHandler {
           post: {
             groupId: query.where.groupId,
             categoryId: query.where.categoryId,
+            category: {
+              type: query.where.categoryType,
+            },
             userId: query.where.userId,
             pending: query.where.pending,
             ...(query.where.tagNames

@@ -13,6 +13,10 @@ export class FindThreadPreviewsWhereInput {
   categoryId?: string;
 
   @IsOptional()
+  @Field(() => String, { nullable: true })
+  categoryType?: string;
+
+  @IsOptional()
   @Field(() => ID, { nullable: true })
   userId?: string;
 
