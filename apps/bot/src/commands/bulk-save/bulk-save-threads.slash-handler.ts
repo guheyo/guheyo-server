@@ -6,8 +6,8 @@ import { ThreadClient } from '@app/bot/apps/thread/clients/thread.client';
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { ThreadChannel } from 'discord.js';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
-import { BulkSaveRequest } from './bulk-save.request';
 import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
+import { BulkSavePostRequest } from './bulk-save-post.request';
 
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
@@ -16,14 +16,22 @@ export class BulkSaveThreadsSlashHandler extends BulkSavePostsSlashHandler {
     super(BulkSaveThreadsSlashHandler.name);
   }
 
-  async saveThreadPost(threadPost: ThreadPost, group: GroupResponse) {
+  async saveThreadPost({
+    threadPost,
+    group,
+    categorySource,
+  }: {
+    threadPost: ThreadPost;
+    group: GroupResponse;
+    categorySource: string;
+  }) {
     try {
       const channelId = (threadPost.starterMessage.channel as ThreadChannel).parentId;
       if (!channelId) return;
 
       const { author } = threadPost.starterMessage;
       const user = await this.userClient.fetchMyUser('discord', author);
-      await this.threadClient.createThreadFromPost(user, threadPost, group);
+      await this.threadClient.createThreadFromPost({ user, threadPost, group, categorySource });
     } catch (error: any) {
       this.logger.error(`Failed to save thread post: ${error.message}`, error.stack);
     }
@@ -35,16 +43,19 @@ export class BulkSaveThreadsSlashHandler extends BulkSavePostsSlashHandler {
   })
   public async onBuckSaveThreads(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { guildName, categoryName, limit }: BulkSaveRequest,
+    @Options() { guildName, channelName, limit }: BulkSavePostRequest,
   ) {
     if (!interaction.guild) return;
 
-    const channelId = this.groupParser.discordConfigService.findCommunityChannelId(
-      guildName,
-      categoryName,
-    );
-    if (!channelId) return;
+    const channel = this.groupParser.discordConfigService.findThreadChannel(guildName, channelName);
+    if (!channel) return;
 
-    await this.bulkSave(interaction.guild, guildName, channelId, limit);
+    await this.bulkSave({
+      discordGuild: interaction.guild,
+      guildName,
+      channelId: channel.id,
+      categorySource: channel.categorySource,
+      limit,
+    });
   }
 }

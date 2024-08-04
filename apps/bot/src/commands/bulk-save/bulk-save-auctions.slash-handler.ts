@@ -6,8 +6,8 @@ import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 import { ThreadChannel } from 'discord.js';
 import { AuctionClient } from '@app/bot/apps/auction/clients/auction.client';
 import { GroupResponse } from '@lib/domains/group/application/dtos/group.response';
-import { BulkSaveRequest } from './bulk-save.request';
 import { BulkSavePostsSlashHandler } from './bulk-save-posts.slash-handler';
+import { BulkSavePostRequest } from './bulk-save-post.request';
 
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
@@ -16,7 +16,15 @@ export class BulkSaveAuctionsSlashHandler extends BulkSavePostsSlashHandler {
     super(BulkSaveAuctionsSlashHandler.name);
   }
 
-  async saveThreadPost(threadPost: ThreadPost, group: GroupResponse) {
+  async saveThreadPost({
+    threadPost,
+    group,
+    categorySource,
+  }: {
+    threadPost: ThreadPost;
+    group: GroupResponse;
+    categorySource: string;
+  }) {
     try {
       const channelId = (threadPost.starterMessage.channel as ThreadChannel).parentId;
       if (!channelId) return;
@@ -35,16 +43,22 @@ export class BulkSaveAuctionsSlashHandler extends BulkSavePostsSlashHandler {
   })
   public async onBuckSaveAuctions(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { guildName, categoryName, limit }: BulkSaveRequest,
+    @Options() { guildName, channelName, limit }: BulkSavePostRequest,
   ) {
     if (!interaction.guild) return;
 
     const channelId = this.groupParser.discordConfigService.findAuctionChannelId(
       guildName,
-      categoryName,
+      channelName,
     );
     if (!channelId) return;
 
-    await this.bulkSave(interaction.guild, guildName, channelId, limit);
+    await this.bulkSave({
+      discordGuild: interaction.guild,
+      guildName,
+      channelId,
+      categorySource: 'tagName',
+      limit,
+    });
   }
 }

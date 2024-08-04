@@ -6,6 +6,7 @@ import {
   DiscordChannel,
   DiscordMarket,
   DiscordServer,
+  DiscordThreadChannel,
 } from '../interfaces/discord-server.interface';
 
 @Injectable()
@@ -69,7 +70,7 @@ export class DiscordConfigService {
       ...server.market.wtb.channels.map((channel) => channel.id),
       ...server.market.wtt.channels.map((channel) => channel.id),
       ...server.auction.channels.map((channel) => channel.id),
-      ...server.community.channels.map((channel) => channel.id),
+      ...server.thread.channels.map((channel) => channel.id),
     ];
     return channelIds;
   }
@@ -83,17 +84,17 @@ export class DiscordConfigService {
   findMarketChannelId(
     guildName: string,
     marketChannelType: MarketChannelType,
-    categoryName: string,
+    channelName: string,
   ): string | null {
     const server = this.findDiscordServerByName(guildName);
-    const channel = server?.market[marketChannelType].channels.find((c) => c.name === categoryName);
+    const channel = server?.market[marketChannelType].channels.find((c) => c.name === channelName);
     return channel ? channel.id : null;
   }
 
-  findCommunityChannelId(guildName: string, channelName: string): string | null {
+  findThreadChannel(guildName: string, channelName: string): DiscordThreadChannel | null {
     const server = this.findDiscordServerByName(guildName);
-    const channel = server?.community.channels.find((c) => c.name === channelName);
-    return channel?.id || null;
+    const channel = server?.thread.channels.find((c) => c.name === channelName);
+    return channel || null;
   }
 
   findAuctionChannelId(guildName: string, channelName: string): string | null {

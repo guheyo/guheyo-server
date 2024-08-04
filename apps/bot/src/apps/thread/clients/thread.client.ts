@@ -27,12 +27,26 @@ export class ThreadClient extends UserImageClient {
     await this.commandBus.execute(new UpdateThreadCommand({ input, user }));
   }
 
-  async createThreadFromPost(user: MyUserResponse, threadPost: ThreadPost, group: GroupResponse) {
+  async createThreadFromPost({
+    user,
+    threadPost,
+    group,
+    categorySource,
+  }: {
+    user: MyUserResponse;
+    threadPost: ThreadPost;
+    group: GroupResponse;
+    categorySource: string;
+  }) {
     const uploadUserImageInputList = this.userImageParser.parseUploadUserImageInputList(
       threadPost.starterMessage,
       THREAD,
     );
-    const createThreadInput = this.threadParser.parseCreateThreadInput(threadPost, group);
+    const createThreadInput = this.threadParser.parseCreateThreadInput({
+      threadPost,
+      group,
+      categorySource,
+    });
 
     await this.uploadAndCreateAttachments(user, uploadUserImageInputList, THREAD);
     await this.createThread({ input: createThreadInput, user });

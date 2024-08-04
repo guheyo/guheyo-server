@@ -6,7 +6,7 @@ import {
   BidMessageWithUser,
   MessageWithSocialIdAndPrice,
 } from '@app/bot/apps/auction/interfaces/bid.interfaces';
-import { BulkSaveRequest } from './bulk-save.request';
+import { BulkSavePostRequest } from './bulk-save-post.request';
 import { BulkSaveCommentsSlashHandler } from './bulk-save-comments.slash-handler';
 
 @Injectable()
@@ -62,13 +62,13 @@ export class BulkSaveBidsSlashHandler extends BulkSaveCommentsSlashHandler {
   })
   public async onBuckSaveBids(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { guildName, categoryName, limit }: BulkSaveRequest,
+    @Options() { guildName, channelName, limit }: BulkSavePostRequest,
   ) {
     if (!interaction.guild) return;
 
     const channelId = this.groupParser.discordConfigService.findAuctionChannelId(
       guildName,
-      categoryName,
+      channelName,
     );
     if (!channelId) return;
 

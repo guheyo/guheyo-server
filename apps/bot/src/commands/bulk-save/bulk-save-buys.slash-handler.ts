@@ -4,7 +4,7 @@ import { Injectable, UseGuards } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { BuyClient } from '@app/bot/apps/offer/buy/clients/buy.client';
 import { BulkSaveOffersSlashHandler } from './bulk-save-offers.slash-handler';
-import { BulkSaveRequest } from './bulk-save.request';
+import { BulkSavePostRequest } from './bulk-save-post.request';
 
 @UseGuards(GroupGuard, OwnerGuard)
 @Injectable()
@@ -16,9 +16,9 @@ export class BulkSaveBuysSlashHandler extends BulkSaveOffersSlashHandler {
   @SlashCommand({ name: 'bulk-save-buys', description: 'Bulk Save Buys' })
   public async onBuckSaveDemands(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { guildName, categoryName, limit }: BulkSaveRequest,
+    @Options() { guildName, channelName, limit }: BulkSavePostRequest,
   ) {
     if (!interaction.guild) return;
-    await this.bulkSave(interaction.guild, guildName, categoryName, 'wtb', limit);
+    await this.bulkSave(interaction.guild, guildName, channelName, 'wtb', limit);
   }
 }

@@ -30,12 +30,12 @@ export abstract class BulkSaveOffersSlashHandler {
   async bulkSave(
     discordGuild: Guild,
     guildName: string,
-    categoryName: string,
+    channelName: string,
     marketChannelType: MarketChannelType,
     limit: number,
   ) {
     let channelIds: string[];
-    if (categoryName === 'all') {
+    if (channelName === 'all') {
       channelIds = this.groupParser.discordConfigService.findMarketChannelIds(
         guildName,
         marketChannelType,
@@ -44,7 +44,7 @@ export abstract class BulkSaveOffersSlashHandler {
       const channelId = this.groupParser.discordConfigService.findMarketChannelId(
         guildName,
         marketChannelType,
-        categoryName,
+        channelName,
       );
       channelIds = channelId ? [channelId] : [];
     }
