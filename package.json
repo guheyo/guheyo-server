@@ -16,6 +16,7 @@
     "build:hello-world": "webpack --config apps/lambda/src/hello-world/webpack.config.js",
     "build:auction-end": "webpack --config apps/lambda/src/auction-end/webpack.config.js",
     "build:auction-ending-soon": "webpack --config apps/lambda/src/auction-ending-soon/webpack.config.js",
+    "build:auction-start": "webpack --config apps/lambda/src/auction-start/webpack.config.js",
     "start": "./node_modules/pm2/bin/pm2-runtime ./dist/apps/api/main.js",
     "poststart": "node ./node_modules/pm2/bin/pm2 logs",
     "start:api": "cross-env NODE_ENV=production node ./dist/apps/api/main.js",
