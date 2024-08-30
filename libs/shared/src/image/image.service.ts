@@ -5,6 +5,8 @@ import { ConfigService } from '@nestjs/config';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import mimeTypes from 'mime-types';
+import { v4 as uuidv4 } from 'uuid';
+import * as path from 'path';
 import { ImageErrorMessage } from './image.error.message';
 import { SignedUrlResponse } from './image.response';
 
@@ -31,8 +33,9 @@ export class ImageService {
     userId: string;
     filename: string;
   }): Promise<SignedUrlResponse> {
-    const path = this.generateUploadPath(type, userId);
-    const key = this.createFileKey(path, filename);
+    const uploadPath = this.generateUploadPath(type, userId);
+    const uniqueFilename = this.generateUniqueFilename(filename);
+    const key = this.createFileKey(uploadPath, uniqueFilename);
 
     const command = new PutObjectCommand({
       Bucket: this.configService.get('aws.s3.bucket'),
@@ -59,8 +62,8 @@ export class ImageService {
     userId: string;
     filename: string;
   }) {
-    const path = this.generateUploadPath(type, userId);
-    const key = this.createFileKey(path, filename);
+    const uploadPath = this.generateUploadPath(type, userId);
+    const key = this.createFileKey(uploadPath, filename);
     const mimeType = this.parseMimeType(key);
 
     const command = new PutObjectCommand({
@@ -106,8 +109,8 @@ export class ImageService {
     };
   }
 
-  private createFileKey(path: string, filename: string) {
-    return `${path}/${filename}`;
+  private createFileKey(uploadPath: string, filename: string) {
+    return `${uploadPath}/${filename}`;
   }
 
   private createFileUrl(key: string) {
@@ -117,5 +120,11 @@ export class ImageService {
   private generateUploadPath(type: string, userId: string) {
     const yyyymm = dayjs().format('YYYYMM');
     return `${type}/${yyyymm}/${userId}`;
+  }
+
+  private generateUniqueFilename(filename: string): string {
+    const extension = path.extname(filename); // Get the file extension
+    const uniqueName = uuidv4(); // Generate a unique identifier
+    return `${uniqueName}${extension}`; // Combine the unique ID with the original file extension
   }
 }
