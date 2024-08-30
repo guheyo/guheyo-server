@@ -9,10 +9,6 @@ export class CreateUserImageInput {
 
   @IsString()
   @Field()
-  name: string;
-
-  @IsString()
-  @Field()
   url: string;
 
   @IsOptional()

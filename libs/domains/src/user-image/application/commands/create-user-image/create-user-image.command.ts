@@ -4,8 +4,6 @@ import { CreateUserImageInput } from './create-user-image.input';
 export class CreateUserImageCommand implements ICommand {
   id: string;
 
-  name: string;
-
   url: string;
 
   contentType?: string;
@@ -28,7 +26,6 @@ export class CreateUserImageCommand implements ICommand {
 
   constructor({ input, userId }: { input: CreateUserImageInput; userId: string }) {
     this.id = input.id;
-    this.name = input.name;
     this.url = input.url;
     this.contentType = input.contentType;
     this.description = input.description;

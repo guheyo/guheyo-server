@@ -259,7 +259,6 @@ input CreateUserImageInput {
   description: String
   height: Int
   id: ID!
-  name: String!
   position: Int!
   refId: ID!
   size: Int
