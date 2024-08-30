@@ -63,7 +63,8 @@ export class ImageService {
     filename: string;
   }) {
     const uploadPath = this.generateUploadPath(type, userId);
-    const key = this.createFileKey(uploadPath, filename);
+    const uniqueFilename = this.generateUniqueFilename(filename);
+    const key = this.createFileKey(uploadPath, uniqueFilename);
     const mimeType = this.parseMimeType(key);
 
     const command = new PutObjectCommand({
@@ -80,6 +81,7 @@ export class ImageService {
   async uploadFileFromURL({ url, type, userId }: { url: string; type: string; userId: string }) {
     const { buffer } = await this.downloadFile(url);
     const filename = this.parseNameFromURL(url);
+
     return this.uploadFile({
       file: buffer,
       type,
