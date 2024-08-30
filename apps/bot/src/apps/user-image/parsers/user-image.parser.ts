@@ -12,21 +12,18 @@ export class UserImageParser extends Parser {
   parseCreateUserImageInputFromUrl({
     id,
     type,
-    name,
     url,
     contentType,
     userId,
   }: {
     id: string;
     type: string;
-    name: string;
     url: string;
     contentType: string | undefined;
     userId: string;
   }): CreateUserImageInput {
     return {
       id,
-      name,
       url,
       contentType,
       position: 0,
@@ -44,7 +41,6 @@ export class UserImageParser extends Parser {
     const createUserImageinputs: CreateUserImageInput[] = message.attachments.map((attachment) => {
       const input = {
         id: this.generateUUID(),
-        name: attachment.name,
         url: attachment.url,
         contentType: attachment.contentType ?? undefined,
         description: attachment.description ?? undefined,

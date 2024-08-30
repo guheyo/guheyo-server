@@ -111,7 +111,6 @@ export class UserClient extends UserImageClient {
     const createUserImageInput = this.userImageParser.parseCreateUserImageInputFromUrl({
       id: uuid4(),
       type: 'avatar',
-      name: this.imageService.parseNameFromURL(url),
       url,
       contentType: this.imageService.parseMimeType(url),
       userId,
