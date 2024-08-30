@@ -20,7 +20,6 @@ export class UploadAndCreateImageHandler implements ICommandHandler<UploadAndCre
     });
     const userImage = new UserImageEntity({
       id: 'new id',
-      name: this.imageService.parseNameFromURL(url),
       url,
       contentType: this.imageService.parseMimeType(url),
       type: command.type,

@@ -5,8 +5,10 @@ import { ConfigService } from '@nestjs/config';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import mimeTypes from 'mime-types';
-import { ImageErrorMessage } from './image.error.message';
+import { v4 as uuidv4 } from 'uuid';
+import * as path from 'path';
 import { SignedUrlResponse } from './image.response';
+import { parseNameFromURL } from '../file/parse-name-from-url';
 
 @Injectable()
 export class ImageService {
@@ -31,8 +33,9 @@ export class ImageService {
     userId: string;
     filename: string;
   }): Promise<SignedUrlResponse> {
-    const path = this.generateUploadPath(type, userId);
-    const key = this.createFileKey(path, filename);
+    const uploadPath = this.generateUploadPath(type, userId);
+    const uniqueFilename = this.generateUniqueFilename(filename);
+    const key = this.createFileKey(uploadPath, uniqueFilename);
 
     const command = new PutObjectCommand({
       Bucket: this.configService.get('aws.s3.bucket'),
@@ -59,8 +62,9 @@ export class ImageService {
     userId: string;
     filename: string;
   }) {
-    const path = this.generateUploadPath(type, userId);
-    const key = this.createFileKey(path, filename);
+    const uploadPath = this.generateUploadPath(type, userId);
+    const uniqueFilename = this.generateUniqueFilename(filename);
+    const key = this.createFileKey(uploadPath, uniqueFilename);
     const mimeType = this.parseMimeType(key);
 
     const command = new PutObjectCommand({
@@ -76,20 +80,14 @@ export class ImageService {
 
   async uploadFileFromURL({ url, type, userId }: { url: string; type: string; userId: string }) {
     const { buffer } = await this.downloadFile(url);
-    const filename = this.parseNameFromURL(url);
+    const filename = parseNameFromURL(url);
+
     return this.uploadFile({
       file: buffer,
       type,
       userId,
       filename,
     });
-  }
-
-  parseNameFromURL(url: string) {
-    const re = /\/([^?/]+)(?=\?|$)/;
-    const match = re.exec(url);
-    if (!match) throw new Error(ImageErrorMessage.INVALID_URL_FORMAT);
-    return match[1];
   }
 
   parseMimeType(url: string) {
@@ -106,8 +104,8 @@ export class ImageService {
     };
   }
 
-  private createFileKey(path: string, filename: string) {
-    return `${path}/${filename}`;
+  private createFileKey(uploadPath: string, filename: string) {
+    return `${uploadPath}/${filename}`;
   }
 
   private createFileUrl(key: string) {
@@ -117,5 +115,11 @@ export class ImageService {
   private generateUploadPath(type: string, userId: string) {
     const yyyymm = dayjs().format('YYYYMM');
     return `${type}/${yyyymm}/${userId}`;
+  }
+
+  private generateUniqueFilename(filename: string): string {
+    const extension = path.extname(filename); // Get the file extension
+    const uniqueName = uuidv4(); // Generate a unique identifier
+    return `${uniqueName}${extension}`; // Combine the unique ID with the original file extension
   }
 }

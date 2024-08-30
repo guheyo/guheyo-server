@@ -71,13 +71,11 @@ export class UserEntity extends AggregateRoot {
 
   createAvatar({
     imageId,
-    name,
     url,
     contentType,
     source,
   }: {
     imageId: string;
-    name: string;
     url: string;
     contentType?: string;
     source: string;
@@ -85,7 +83,6 @@ export class UserEntity extends AggregateRoot {
     this.apply(
       new AvatarCreatedEvent({
         id: imageId,
-        name,
         url,
         contentType,
         userId: this.id,

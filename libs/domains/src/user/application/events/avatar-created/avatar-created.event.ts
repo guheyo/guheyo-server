@@ -4,8 +4,6 @@ import { AvatarCreatedInput } from './avatar-created.input';
 export class AvatarCreatedEvent implements IEvent {
   id: string;
 
-  name: string;
-
   url: string;
 
   contentType?: string;
@@ -22,7 +20,6 @@ export class AvatarCreatedEvent implements IEvent {
 
   constructor(input: AvatarCreatedInput) {
     this.id = input.id;
-    this.name = input.name;
     this.url = input.url;
     this.contentType = input.contentType;
     this.position = 0;

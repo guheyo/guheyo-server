@@ -29,25 +29,21 @@ export class LinkSocialProfileHandler extends PrismaCommandHandler<
     if (!user) throw new NotFoundException(UserErrorMessage.USER_IS_NOT_FOUND);
 
     user = this.publisher.mergeObjectContext(user);
-    if (command.avatarURL) {
-      const newAvatarName = this.imageService.parseNameFromURL(command.avatarURL);
-      const oldAvatarName = this.imageService.parseNameFromURL(user.avatarURL || '');
 
-      if (newAvatarName !== oldAvatarName) {
-        const url = await this.imageService.uploadFileFromURL({
-          url: command.avatarURL,
-          type: 'avatar',
-          userId: user.id,
-        });
-        user.avatarURL = url;
-        user.createAvatar({
-          imageId: uuid4(),
-          url,
-          name: newAvatarName,
-          contentType: this.imageService.parseMimeType(url),
-          source: command.provider,
-        });
-      }
+    // TODO: seperate avatar from link-profile
+    if (command.avatarURL) {
+      const url = await this.imageService.uploadFileFromURL({
+        url: command.avatarURL,
+        type: 'avatar',
+        userId: user.id,
+      });
+      user.avatarURL = url;
+      user.createAvatar({
+        imageId: uuid4(),
+        url,
+        contentType: this.imageService.parseMimeType(url),
+        source: command.provider,
+      });
     }
 
     user.update(_.pick(command, ['username']));
