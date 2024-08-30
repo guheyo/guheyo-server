@@ -62,7 +62,7 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.5",
     "utf-8-validate": "^6.0.4",
-    "webpack": "^5.91.0",
+    "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
     "webpack-node-externals": "^3.0.0",
     "zlib-sync": "^0.1.9"
