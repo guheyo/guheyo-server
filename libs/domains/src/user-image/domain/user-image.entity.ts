@@ -1,3 +1,5 @@
+import { parseNameFromURL } from '@lib/shared/file/parse-name-from-url';
+
 export class UserImageEntity {
   id: string;
 
@@ -33,6 +35,7 @@ export class UserImageEntity {
 
   constructor(partial: Partial<UserImageEntity>) {
     Object.assign(this, partial);
+    this.name = parseNameFromURL(this.url);
     this.tracked = false;
   }
 
