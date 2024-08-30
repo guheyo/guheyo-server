@@ -3,7 +3,6 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { isUndefined, omitBy } from 'lodash';
 import { Type } from 'class-transformer';
 import { RoleEntity } from '@lib/domains/role/domain/role.entity';
-import { parseNameFromURL } from '@lib/shared/file/parse-name-from-url';
 import { UpdateUserProps } from './user.types';
 import { SocialAccountLinkedEvent } from '../application/events/social-account-linked/social-account-linked.event';
 import { UserUpdatedEvent } from '../application/events/user-updated/user-updated.event';
@@ -84,7 +83,6 @@ export class UserEntity extends AggregateRoot {
     this.apply(
       new AvatarCreatedEvent({
         id: imageId,
-        name: parseNameFromURL(url),
         url,
         contentType,
         userId: this.id,
