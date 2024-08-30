@@ -7,8 +7,8 @@ import axios from 'axios';
 import mimeTypes from 'mime-types';
 import { v4 as uuidv4 } from 'uuid';
 import * as path from 'path';
-import { ImageErrorMessage } from './image.error.message';
 import { SignedUrlResponse } from './image.response';
+import { parseNameFromURL } from '../file/parse-name-from-url';
 
 @Injectable()
 export class ImageService {
@@ -80,7 +80,7 @@ export class ImageService {
 
   async uploadFileFromURL({ url, type, userId }: { url: string; type: string; userId: string }) {
     const { buffer } = await this.downloadFile(url);
-    const filename = this.parseNameFromURL(url);
+    const filename = parseNameFromURL(url);
 
     return this.uploadFile({
       file: buffer,
@@ -88,13 +88,6 @@ export class ImageService {
       userId,
       filename,
     });
-  }
-
-  parseNameFromURL(url: string) {
-    const re = /\/([^?/]+)(?=\?|$)/;
-    const match = re.exec(url);
-    if (!match) throw new Error(ImageErrorMessage.INVALID_URL_FORMAT);
-    return match[1];
   }
 
   parseMimeType(url: string) {
