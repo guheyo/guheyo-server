@@ -1,5 +1,6 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
+import { GraphQLJSON } from 'graphql-type-json';
 
 @InputType()
 export class FindUserReviewPreviewsWhereInput {
@@ -28,4 +29,10 @@ export class FindUserReviewPreviewsWhereInput {
   @IsOptional()
   @Field(() => ID, { nullable: true })
   reviewedUserId?: string;
+
+  @IsOptional()
+  @Field(() => GraphQLJSON, { nullable: true })
+  createdAt?: {
+    gt: string;
+  };
 }
