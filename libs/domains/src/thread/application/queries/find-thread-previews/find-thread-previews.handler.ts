@@ -59,6 +59,11 @@ export class FindThreadPreviewsHandler extends PrismaQueryHandler {
                   },
                 }
               : {}),
+            createdAt: query.where.createdAt
+              ? {
+                  gt: new Date(query.where.createdAt.gt),
+                }
+              : undefined,
           },
           ...keywordCondition,
         }

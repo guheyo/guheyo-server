@@ -393,6 +393,7 @@ input FindThreadPreviewsOrderByInput {
 input FindThreadPreviewsWhereInput {
   categoryId: ID
   categoryType: String
+  createdAt: JSON
   groupId: ID
   pending: String
   tagNames: [String!]
