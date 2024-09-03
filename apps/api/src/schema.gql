@@ -405,6 +405,7 @@ input FindUserReviewPreviewsOrderByInput {
 }
 
 input FindUserReviewPreviewsWhereInput {
+  createdAt: JSON
   groupId: ID
   pending: String
   reviewedUserId: ID
