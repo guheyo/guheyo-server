@@ -54,6 +54,11 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler {
             },
           },
           reviewedUserId: query.where.reviewedUserId,
+          createdAt: query.where.createdAt
+            ? {
+                gt: new Date(query.where.createdAt.gt),
+              }
+            : undefined,
           ...keywordCondition,
         }
       : {};
