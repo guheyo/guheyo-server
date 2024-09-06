@@ -80,6 +80,18 @@ type BidResponseEdge {
   node: BidResponse!
 }
 
+type BrandResponse {
+  createdAt: DateTime!
+  description: String
+  groups: [GroupProfileResponse!]!
+  id: ID!
+  links: [LinkResponse!]!
+  logo: String
+  name: String!
+  position: Int!
+  slug: String
+}
+
 input BumpOfferInput {
   id: ID!
   newPrice: Int!
@@ -477,6 +489,15 @@ type LastReportResponse {
   id: ID!
 }
 
+type LinkResponse {
+  brandId: String!
+  createdAt: DateTime!
+  id: ID!
+  platform: PlatformResponse!
+  position: Int!
+  url: String!
+}
+
 input LinkSocialProfileInput {
   provider: String!
 }
@@ -643,6 +664,13 @@ input PlaceBidInput {
   priceCurrency: String!
 }
 
+type PlatformResponse {
+  description: String
+  id: ID!
+  logo: String
+  name: String!
+}
+
 type PostPreviewWithAuthorResponse {
   archivedAt: DateTime
   category: CategoryResponse
@@ -720,6 +748,7 @@ type Query {
   findBidCount(auctionId: ID!): BidCountResponse!
   findBidders(cursor: ID, keyword: String, orderBy: FindBiddersOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBiddersWhereInput!): PaginatedUsersResponse!
   findBids(cursor: ID, keyword: String, orderBy: FindBidsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBidsWhereInput): PaginatedBidsResponse!
+  findBrands: [BrandResponse!]!
   findComment(id: ID, postId: ID): CommentResponse
   findCommentCount(postId: ID!): CommentCountResponse!
   findComments(cursor: ID, keyword: String, orderBy: FindCommentsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindCommentsWhereInput): PaginatedCommentsResponse!
@@ -733,6 +762,7 @@ type Query {
   findOffer(id: ID, slug: String): OfferResponse
   findOfferCount(businessFunction: String!, categoryId: ID!, fromHours: Int!, userId: ID!): Float!
   findOfferPreviews(cursor: ID, keyword: String, orderBy: FindOfferPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindOfferPreviewsWhereInput): PaginatedOfferPreviewsResponse!
+  findPlatforms: [PlatformResponse!]!
   findPostPreview(id: ID!): PostPreviewWithUserResponse!
   findReactions(commentId: ID, postId: ID): [ReactionResponse!]!
   findReport(id: ID!): ReportResponse!
