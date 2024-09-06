@@ -28,6 +28,7 @@ import { ReactionModule } from './app/reaction/reaction.module';
 import { AuctionModule } from './app/auction/auction.module';
 import { ThreadModule } from './app/thread/thread.module';
 import { BrandModule } from './app/brand/brand.module';
+import { PlatformModule } from './app/platform/platform.module';
 
 @Module({
   imports: [
@@ -75,6 +76,7 @@ import { BrandModule } from './app/brand/brand.module';
     ReactionModule,
     ThreadModule,
     BrandModule,
+    PlatformModule,
   ],
 })
 export class ApiModule {}
