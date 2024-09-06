@@ -176,8 +176,8 @@ model Platform {
   updatedAt         DateTime    @updatedAt
   deletedAt         DateTime?
   name              String      @unique  // e.g., 'Instagram', 'Discord', 'Twitter'
-  logo              String?     // Optional logo URL for the platform
   description       String?     // Optional description for the platform
+  logo              String?     // Optional logo URL for the platform
   links             Link[]      // Relationship to the Link model
 
   @@schema("public")
