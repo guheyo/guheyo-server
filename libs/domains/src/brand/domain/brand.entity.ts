@@ -1,5 +1,6 @@
 import { GroupEntity } from '@lib/domains/group/domain/group.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
+import { LinkEntity } from './link.entity';
 
 export class BrandEntity extends AggregateRoot {
   id: string;
@@ -21,6 +22,8 @@ export class BrandEntity extends AggregateRoot {
   position: number;
 
   groups: GroupEntity[];
+
+  links: LinkEntity[];
 
   constructor(partial: Partial<BrandEntity>) {
     super();
