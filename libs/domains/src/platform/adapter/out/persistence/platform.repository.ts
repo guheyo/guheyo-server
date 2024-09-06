@@ -15,37 +15,37 @@ export class PlatformRepository
   }
 
   async findById(id: string): Promise<PlatformEntity | null> {
-    const mannerTag = await this.prismaService.tag.findUnique({
+    const platform = await this.prismaService.platform.findUnique({
       where: {
         id,
       },
     });
-    return this.toEntity(mannerTag);
+    return this.toEntity(platform);
   }
 
-  async create(mannerTag: PlatformEntity): Promise<void> {
-    await this.prismaService.tag.create({
-      data: _.pick(mannerTag, ['id', 'type', 'name', 'description', 'position']),
+  async create(platform: PlatformEntity): Promise<void> {
+    await this.prismaService.platform.create({
+      data: _.pick(platform, ['id', 'name', 'description', 'logo']),
     });
   }
 
-  async createMany(mannerTags: PlatformEntity[]): Promise<void> {
-    await Promise.all(mannerTags.map((mannerTag) => this.create(mannerTag)));
+  async createMany(platforms: PlatformEntity[]): Promise<void> {
+    await Promise.all(platforms.map((platform) => this.create(platform)));
   }
 
-  async save(mannerTag: PlatformEntity): Promise<void> {
-    await this.prismaService.tag.update({
+  async save(platform: PlatformEntity): Promise<void> {
+    await this.prismaService.platform.update({
       where: {
-        id: mannerTag.id,
+        id: platform.id,
       },
-      data: _.pick(mannerTag, 'type', 'name', 'description', 'position'),
+      data: _.pick(platform, 'name', 'description', 'logo'),
     });
   }
 
-  async delete(mannerTag: PlatformEntity): Promise<void> {
-    await this.prismaService.tag.delete({
+  async delete(platform: PlatformEntity): Promise<void> {
+    await this.prismaService.platform.delete({
       where: {
-        id: mannerTag.id,
+        id: platform.id,
       },
     });
   }
