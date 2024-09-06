@@ -170,7 +170,7 @@ model Link {
   @@schema("public")
 }
 
-model Platform  {
+model Platform {
   id                String      @id @default(uuid())
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
