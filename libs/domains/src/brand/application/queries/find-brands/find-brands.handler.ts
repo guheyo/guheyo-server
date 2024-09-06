@@ -11,6 +11,13 @@ export class FindBrandssHandler extends PrismaQueryHandler {
       orderBy: {
         createdAt: 'desc',
       },
+      include: {
+        links: {
+          include: {
+            platform: true,
+          },
+        },
+      },
     });
     return brands.map((brand) => plainToClass(BrandResponse, brand));
   }
