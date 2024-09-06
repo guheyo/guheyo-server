@@ -1,5 +1,6 @@
 import { GroupProfileResponse } from '@lib/domains/group/application/dtos/group-profile.response';
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { LinkResponse } from './link.response';
 
 @ObjectType()
 export class BrandResponse {
@@ -26,6 +27,9 @@ export class BrandResponse {
 
   @Field(() => [GroupProfileResponse])
   groups: GroupProfileResponse[];
+
+  @Field(() => [LinkResponse])
+  links: LinkResponse[];
 
   constructor(partial: Partial<BrandResponse>) {
     Object.assign(this, partial);
