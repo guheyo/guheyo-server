@@ -88,7 +88,6 @@ type BrandResponse {
   links: [LinkResponse!]!
   logo: String
   name: String!
-  position: Int!
   slug: String
 }
 

@@ -19,8 +19,6 @@ export class BrandEntity extends AggregateRoot {
 
   logo: string | null;
 
-  position: number;
-
   groups: GroupEntity[];
 
   links: LinkEntity[];
