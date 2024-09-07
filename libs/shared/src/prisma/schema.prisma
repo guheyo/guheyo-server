@@ -41,6 +41,7 @@ model User {
   receivedReviews   UserReview[]  @relation("receivedUserReviews")
   reactions         Reaction[]
   uploadedEmojis    Emoji[]
+  followBrands      FollowBrand[]
 
   @@schema("public")
 }
@@ -147,11 +148,25 @@ model Brand {
   slug              String?
   description       String?
   logo              String?
-  position          Int
   groups            Group[]
   posts             Post[]
   links             Link[]
+  followBrands      FollowBrand[]
 
+  @@schema("public")
+}
+
+model FollowBrand {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  userId            String      // Foreign key to the user who is following
+  brandId           String      // Foreign key to the brand being followed
+  user              User        @relation(fields: [userId], references: [id])
+  brand             Brand       @relation(fields: [brandId], references: [id])
+
+  @@unique([userId, brandId])  // Ensures that a user can follow a brand only once
   @@schema("public")
 }
 
