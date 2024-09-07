@@ -7,6 +7,7 @@ import { seedTags } from './tags/seed-tags';
 import { seedEmojis } from './emojis/seed-emojis';
 import { seedCommunityCategories } from './categories/seed-community-categories';
 import { seedGbCategories } from './categories/seed-gb-categories';
+import { seedPlatforms } from './platform/seed-platforms';
 
 const prisma = new PrismaClient();
 
@@ -19,6 +20,7 @@ async function main() {
   await seedEmojis(prisma);
   await seedCommunityCategories(prisma);
   await seedGbCategories(prisma);
+  await seedPlatforms(prisma);
 }
 
 main()
