@@ -7,11 +7,11 @@ import { PlatformResponse } from '../../dtos/platform.response';
 @QueryHandler(FindPlatformsQuery)
 export class FindPlatformssHandler extends PrismaQueryHandler {
   async execute(query: FindPlatformsQuery): Promise<PlatformResponse[]> {
-    const brands = await this.prismaService.brand.findMany({
+    const platforms = await this.prismaService.platform.findMany({
       orderBy: {
         createdAt: 'desc',
       },
     });
-    return brands.map((brand) => plainToClass(PlatformResponse, brand));
+    return platforms.map((platform) => plainToClass(PlatformResponse, platform));
   }
 }
