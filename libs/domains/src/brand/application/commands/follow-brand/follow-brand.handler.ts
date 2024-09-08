@@ -26,7 +26,7 @@ export class FollowBrandHandler extends PrismaCommandHandler<FollowBrandCommand,
     });
 
     if (existingFollow)
-      throw new InternalServerErrorException(BrandErrorMessage.BRAND_ALREADY_EXISTS);
+      throw new InternalServerErrorException(BrandErrorMessage.BRAND_ALREADY_FOLLOWED);
 
     const followBrand = await this.prismaService.followBrand.create({
       data: {
