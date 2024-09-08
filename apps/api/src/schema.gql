@@ -88,7 +88,6 @@ type BrandResponse {
   links: [LinkResponse!]!
   logo: String
   name: String!
-  position: Int!
   slug: String
 }
 
@@ -434,6 +433,10 @@ input FindUsersWhereInput {
   userId: ID
 }
 
+input FollowBrandInput {
+  brandId: ID!
+}
+
 type GroupPreviewResponse {
   buys: [OfferPreviewResponse!]!
   description: String
@@ -525,11 +528,13 @@ type Mutation {
   deleteThread(id: ID!): String!
   deleteUserImage(id: ID!): String!
   deleteUserReview(id: ID!): String!
+  followBrand(input: FollowBrandInput!): BrandResponse!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
   placeBid(input: PlaceBidInput!): String!
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
+  unfollowBrand(input: UnfollowBrandInput!): BrandResponse!
   updateAuction(input: UpdateAuctionInput!): String!
   updateComment(input: UpdateCommentInput!): String!
   updateGroup(input: UpdateGroupInput!): String!
@@ -928,6 +933,10 @@ type ThreadResponse {
   id: ID!
   post: PostResponse!
   updatedAt: DateTime!
+}
+
+input UnfollowBrandInput {
+  brandId: ID!
 }
 
 input UpdateAuctionInput {

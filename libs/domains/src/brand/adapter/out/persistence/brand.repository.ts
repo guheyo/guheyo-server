@@ -25,7 +25,7 @@ export class BrandRepository
 
   async create(brand: BrandEntity): Promise<void> {
     await this.prismaService.brand.create({
-      data: _.pick(brand, ['id', 'name', 'slug', 'description', 'logo', 'position']),
+      data: _.pick(brand, ['id', 'name', 'slug', 'description', 'logo']),
     });
   }
 
@@ -38,7 +38,7 @@ export class BrandRepository
       where: {
         id: brand.id,
       },
-      data: _.pick(brand, 'name', 'slug', 'description', 'logo', 'position'),
+      data: _.pick(brand, 'name', 'slug', 'description', 'logo'),
     });
   }
 
