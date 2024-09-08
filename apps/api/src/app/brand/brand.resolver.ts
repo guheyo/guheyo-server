@@ -9,6 +9,7 @@ import { FollowBrandInput } from '@lib/domains/brand/application/commands/follow
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { FollowBrandCommand } from '@lib/domains/brand/application/commands/follow-brand/follow-brand.command';
+import { UnfollowBrandInput } from '@lib/domains/brand/application/commands/unfollow-brand/unfollow-brand.input';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -33,6 +34,20 @@ export class BrandResolver {
   @Mutation(() => BrandResponse)
   async followBrand(
     @Args('input') input: FollowBrandInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    const brand = await this.commandBus.execute(new FollowBrandCommand({ input, user }));
+    return brand;
+  }
+
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [],
+  })
+  @Mutation(() => BrandResponse)
+  async unfollowBrand(
+    @Args('input') input: UnfollowBrandInput,
     @ExtractedUser() user: MyUserResponse,
   ): Promise<string> {
     const brand = await this.commandBus.execute(new FollowBrandCommand({ input, user }));
