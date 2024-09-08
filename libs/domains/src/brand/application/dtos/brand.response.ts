@@ -22,9 +22,6 @@ export class BrandResponse {
   @Field(() => String, { nullable: true })
   logo?: string;
 
-  @Field(() => Int)
-  position: number;
-
   @Field(() => [GroupProfileResponse])
   groups: GroupProfileResponse[];
 
