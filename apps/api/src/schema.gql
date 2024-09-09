@@ -180,6 +180,14 @@ input CreateAuctionInput {
   status: String! = "live"
 }
 
+input CreateBrandInput {
+  description: String
+  id: ID!
+  logo: String
+  name: String!
+  slug: String
+}
+
 input CreateCommentInput {
   content: String
   createdAt: DateTime
@@ -511,6 +519,7 @@ type Mutation {
   cancelReaction(input: CancelReactionInput!): String!
   commentReport(input: CommentReportInput!): ReportCommentResponse!
   createAuction(input: CreateAuctionInput!): String!
+  createBrand(input: CreateBrandInput!): BrandResponse!
   createComment(input: CreateCommentInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
