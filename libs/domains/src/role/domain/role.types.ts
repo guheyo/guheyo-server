@@ -17,4 +17,8 @@ export const ROOT_BLOCKLIST_ROLE_NAMES = [
   '피신고자',
 ] as const;
 
+export const ROOT_ADMIN_ROLE_NAMES = ['사파리의 서포터'] as const;
+
 export type RootBlocklistRoleName = (typeof ROOT_BLOCKLIST_ROLE_NAMES)[number];
+
+export type RootAdminRoleName = (typeof ROOT_ADMIN_ROLE_NAMES)[number];
