@@ -42,7 +42,6 @@ export class LinkSocialProfileHandler extends PrismaCommandHandler<
         imageId: uuid4(),
         url,
         contentType: this.imageService.parseMimeType(url),
-        source: command.provider,
       });
     }
 

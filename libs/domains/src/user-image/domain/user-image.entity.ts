@@ -31,8 +31,6 @@ export class UserImageEntity {
 
   userId: string;
 
-  source: string;
-
   constructor(partial: Partial<UserImageEntity>) {
     Object.assign(this, partial);
     this.name = parseNameFromURL(this.url);

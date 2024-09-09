@@ -51,7 +51,6 @@ export class UserImageRepository
         'refId',
         'tracked',
         'userId',
-        'source',
       ]),
     });
   }

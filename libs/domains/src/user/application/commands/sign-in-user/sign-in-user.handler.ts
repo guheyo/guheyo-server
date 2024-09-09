@@ -44,7 +44,6 @@ export class SignInUserHandler implements ICommandHandler<SignInUserCommand> {
         imageId: uuid4(),
         url,
         contentType: this.imageService.parseMimeType(url),
-        source: command.provider,
       });
     }
 
