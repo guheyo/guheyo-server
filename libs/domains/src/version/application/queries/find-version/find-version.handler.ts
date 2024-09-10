@@ -1,6 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindVersionQuery } from './find-version.query';
 import { VersionResponse } from '../../dtos/version.response';
 
@@ -37,7 +37,7 @@ export class FindVersionHandler extends PrismaQueryHandler {
         createdAt: 'desc',
       },
     });
-    return plainToClass(VersionResponse, {
+    return plainToInstance(VersionResponse, {
       ...version,
       images,
     });

@@ -1,7 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { OFFER_OPEN } from '@lib/domains/offer/domain/offer.constants';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindGroupPreviewsQuery } from './find-group-previews.query';
 import { GroupPreviewResponse } from '../../dtos/group-preview.response';
 
@@ -94,6 +94,6 @@ export class FindGroupPreviewsHandler extends PrismaQueryHandler {
         buys,
       };
     });
-    return groupPreviews.map((groupPreview) => plainToClass(GroupPreviewResponse, groupPreview));
+    return groupPreviews.map((groupPreview) => plainToInstance(GroupPreviewResponse, groupPreview));
   }
 }

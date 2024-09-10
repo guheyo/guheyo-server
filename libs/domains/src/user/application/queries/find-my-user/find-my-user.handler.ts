@@ -1,7 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { Prisma } from '@prisma/client';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindMyUserQuery } from './find-my-user.query';
 import { MyUserResponse } from '../../dtos/my-user.response';
 
@@ -37,6 +37,6 @@ export class FindMyUserHandler extends PrismaQueryHandler {
         },
       },
     });
-    return plainToClass(MyUserResponse, user);
+    return plainToInstance(MyUserResponse, user);
   }
 }

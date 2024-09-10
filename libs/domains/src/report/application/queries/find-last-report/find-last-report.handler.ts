@@ -1,6 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindLastReportQuery } from './find-last-report.query';
 import { LastReportResponse } from '../../dtos/last-report.response';
 
@@ -15,6 +15,6 @@ export class FindLastReportHandler extends PrismaQueryHandler {
         createdAt: 'desc',
       },
     });
-    return plainToClass(LastReportResponse, report);
+    return plainToInstance(LastReportResponse, report);
   }
 }

@@ -1,7 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import bcrypt from 'bcrypt';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindSocialAccountQuery } from './find-social-account.query';
 import { SocialAccountResponse } from '../../dtos/social-account.response';
 
@@ -16,6 +16,6 @@ export class FindSocialAccountHandler extends PrismaQueryHandler {
     });
     if (!socialAccount?.refreshToken) return null;
     if (!bcrypt.compareSync(query.refreshToken, socialAccount.refreshToken)) return null;
-    return plainToClass(SocialAccountResponse, socialAccount);
+    return plainToInstance(SocialAccountResponse, socialAccount);
   }
 }
