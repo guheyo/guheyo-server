@@ -1,6 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindPlatformsQuery } from './find-platforms.query';
 import { PlatformResponse } from '../../dtos/platform.response';
 
@@ -12,6 +12,6 @@ export class FindPlatformssHandler extends PrismaQueryHandler {
         createdAt: 'desc',
       },
     });
-    return platforms.map((platform) => plainToClass(PlatformResponse, platform));
+    return platforms.map((platform) => plainToInstance(PlatformResponse, platform));
   }
 }

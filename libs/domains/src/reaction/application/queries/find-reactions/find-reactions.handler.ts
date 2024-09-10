@@ -1,6 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { ReactionResponse } from '../../dtos/reaction.response';
 import { FindReactionsQuery } from './find-reactions.query';
 
@@ -25,6 +25,6 @@ export class FindReactionsHandler extends PrismaQueryHandler {
       },
     });
 
-    return reactions.map((reaction) => plainToClass(ReactionResponse, reaction));
+    return reactions.map((reaction) => plainToInstance(ReactionResponse, reaction));
   }
 }

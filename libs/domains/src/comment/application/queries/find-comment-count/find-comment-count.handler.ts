@@ -1,6 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindCommentCountQuery } from './find-comment-count.query';
 import { CommentCountResponse } from '../../dtos/comment-count.response';
 
@@ -14,7 +14,7 @@ export class FindCommentCountHandler extends PrismaQueryHandler {
       },
     });
 
-    return plainToClass(CommentCountResponse, {
+    return plainToInstance(CommentCountResponse, {
       postId: query.postId,
       count,
     });

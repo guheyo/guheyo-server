@@ -1,7 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { ThreadErrorMessage } from '@lib/domains/thread/domain/thread.error.message';
 import { THREAD } from '@lib/domains/thread/domain/thread.constants';
 import { FindThreadQuery } from './find-thread.query';
@@ -61,7 +61,7 @@ export class FindThreadHandler extends PrismaQueryHandler {
         position: 'asc',
       },
     });
-    return plainToClass(ThreadResponse, {
+    return plainToInstance(ThreadResponse, {
       ...thread,
       post: {
         ...thread.post,

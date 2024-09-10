@@ -14,8 +14,4 @@ export class UploadAndCreateImageInput {
   @IsString()
   @Field()
   url: string;
-
-  @IsString()
-  @Field()
-  source: string;
 }

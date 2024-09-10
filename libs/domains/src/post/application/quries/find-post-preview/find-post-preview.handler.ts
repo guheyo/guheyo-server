@@ -2,7 +2,7 @@ import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { ForbiddenException } from '@nestjs/common';
 import { PostErrorMessage } from '@lib/domains/post/domain/post.error.message';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindPostPreviewQuery } from './find-post-preview.query';
 import { PostPreviewWithUserResponse } from '../../dtos/post-preview-with-user.response';
 
@@ -23,6 +23,6 @@ export class FindPostPreviewHandler extends PrismaQueryHandler {
     if (post?.archivedAt && post.userId !== query.userId)
       throw new ForbiddenException(PostErrorMessage.FIND_REQUEST_FROM_UNAUTHORIZED_USER);
 
-    return plainToClass(PostPreviewWithUserResponse, post);
+    return plainToInstance(PostPreviewWithUserResponse, post);
   }
 }

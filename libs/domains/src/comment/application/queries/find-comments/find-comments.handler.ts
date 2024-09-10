@@ -3,7 +3,7 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseContainsSearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { COMMENT } from '@lib/domains/comment/domain/comment.constants';
 import { FindCommentsQuery } from './find-comments.query';
 import { PaginatedCommentsResponse } from './paginated-comments.response';
@@ -76,7 +76,7 @@ export class FindCommentsHandler extends PrismaQueryHandler {
       })),
     );
     return paginate<CommentWithAuthorResponse>(
-      commentWithImages.map((comment) => plainToClass(CommentWithAuthorResponse, comment)),
+      commentWithImages.map((comment) => plainToInstance(CommentWithAuthorResponse, comment)),
       'id',
       query.take,
     );

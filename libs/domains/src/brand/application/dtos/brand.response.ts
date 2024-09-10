@@ -1,5 +1,5 @@
 import { GroupProfileResponse } from '@lib/domains/group/application/dtos/group-profile.response';
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { LinkResponse } from './link.response';
 
 @ObjectType()

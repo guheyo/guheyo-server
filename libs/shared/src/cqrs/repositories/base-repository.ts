@@ -1,5 +1,5 @@
 import { Injectable, Type } from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { LoadPort } from '../ports/load.port';
 import { SavePort } from '../ports/save.port';
 
@@ -18,6 +18,6 @@ export abstract class BaseRepository<T> implements LoadPort<T>, SavePort<T> {
   abstract delete(entity: T): Promise<void>;
 
   toEntity(model: Object | null) {
-    return model ? plainToClass(this.Entity, model) : null;
+    return model ? plainToInstance(this.Entity, model) : null;
   }
 }

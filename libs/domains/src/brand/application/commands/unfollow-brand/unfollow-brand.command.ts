@@ -7,7 +7,7 @@ export class UnfollowBrandCommand implements ICommand {
 
   user: MyUserResponse;
 
-  constructor({ input, user }: { input: UnfollowBrandInput, user: MyUserResponse }) {
+  constructor({ input, user }: { input: UnfollowBrandInput; user: MyUserResponse }) {
     this.brandId = input.brandId;
     this.user = user;
   }

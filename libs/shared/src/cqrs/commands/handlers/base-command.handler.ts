@@ -1,6 +1,6 @@
 import { Type } from '@nestjs/common';
 import { ICommand, ICommandHandler } from '@nestjs/cqrs';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 
 export abstract class BaseCommandHandler<T extends ICommand, TRes> implements ICommandHandler<T> {
   constructor(protected readonly Response: Type<TRes>) {}
@@ -8,10 +8,10 @@ export abstract class BaseCommandHandler<T extends ICommand, TRes> implements IC
   abstract execute(command: T): Promise<any>;
 
   parseResponse(model: Object) {
-    return plainToClass(this.Response, model);
+    return plainToInstance(this.Response, model);
   }
 
   parseResponses(models: Object[]) {
-    return models.map((model) => plainToClass(this.Response, model));
+    return models.map((model) => plainToInstance(this.Response, model));
   }
 }
