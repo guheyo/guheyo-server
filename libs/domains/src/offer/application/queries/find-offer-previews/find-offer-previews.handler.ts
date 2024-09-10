@@ -6,7 +6,7 @@ import { Prisma } from '@prisma/client';
 import { ForbiddenException } from '@nestjs/common';
 import { OfferErrorMessage } from '@lib/domains/offer/domain/offer.error.message';
 import { OFFER_CLOSED } from '@lib/domains/offer/domain/offer.constants';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindOfferPreviewsQuery } from './find-offer-previews.query';
 import { PaginatedOfferPreviewsResponse } from './paginated-offer-previews.response';
 import { OfferPreviewResponse } from '../../dtos/offer-preview.response';
@@ -130,7 +130,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
         }))
       : offers;
     return paginate<OfferPreviewResponse>(
-      offerPreviews.map((offerPreview) => plainToClass(OfferPreviewResponse, offerPreview)),
+      offerPreviews.map((offerPreview) => plainToInstance(OfferPreviewResponse, offerPreview)),
       'id',
       query.take,
     );

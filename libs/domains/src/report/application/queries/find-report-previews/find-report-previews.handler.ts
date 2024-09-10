@@ -5,7 +5,7 @@ import { parseContainsSearcher } from '@lib/shared/search/search';
 import { ForbiddenException } from '@nestjs/common';
 import { ReportErrorMessage } from '@lib/domains/report/domain/report.error.message';
 import { Prisma } from '@prisma/client';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindReportPreviewsQuery } from './find-report-previews.query';
 import { PaginatedReportPreviewsResponse } from './paginated-report-previews.response';
 import { ReportPreviewResponse } from '../../dtos/report-preview.response';
@@ -65,7 +65,7 @@ export class FindReportPreviewsHandler extends PrismaQueryHandler {
     });
 
     return paginate<ReportPreviewResponse>(
-      reports.map((report) => plainToClass(ReportPreviewResponse, report)),
+      reports.map((report) => plainToInstance(ReportPreviewResponse, report)),
       'id',
       query.take,
     );

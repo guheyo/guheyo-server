@@ -6,6 +6,4 @@ export class AvatarCreatedInput {
   contentType?: string;
 
   userId: string;
-
-  source: string;
 }

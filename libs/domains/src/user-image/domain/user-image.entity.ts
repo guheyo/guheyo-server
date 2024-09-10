@@ -31,12 +31,12 @@ export class UserImageEntity {
 
   userId: string;
 
-  source: string;
-
   constructor(partial: Partial<UserImageEntity>) {
-    Object.assign(this, partial);
-    this.name = parseNameFromURL(this.url);
-    this.tracked = false;
+    if (partial) {
+      Object.assign(this, partial);
+      this.name = parseNameFromURL(this.url);
+      this.tracked = false;
+    }
   }
 
   updatePosition(position: number) {

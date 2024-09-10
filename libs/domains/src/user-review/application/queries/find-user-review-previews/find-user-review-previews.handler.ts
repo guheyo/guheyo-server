@@ -3,7 +3,7 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseContainsSearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { PaginatedUserReviewPreviewsResponse } from './paginated-user-review-previews.response';
 import { UserReviewPreviewResponse } from '../../dtos/user-review-preview.response';
 import { FindUserReviewPreviewsQuery } from './find-user-review-previews.query';
@@ -120,7 +120,7 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler {
 
     return paginate<UserReviewPreviewResponse>(
       userReviews.map((userReview) =>
-        plainToClass(UserReviewPreviewResponse, {
+        plainToInstance(UserReviewPreviewResponse, {
           ...userReview,
           post: {
             ...userReview.post,

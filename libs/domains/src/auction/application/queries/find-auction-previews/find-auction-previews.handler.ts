@@ -3,7 +3,7 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseContainsSearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { AUCTION_CLOSED } from '@lib/domains/auction/domain/auction.constants';
 import { NotFoundException } from '@nestjs/common';
 import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
@@ -28,7 +28,7 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
     }
 
     return paginate<AuctionPreviewResponse>(
-      auctions.map((auction) => plainToClass(AuctionPreviewResponse, auction)),
+      auctions.map((auction) => plainToInstance(AuctionPreviewResponse, auction)),
       'id',
       query.take,
     );

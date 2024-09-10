@@ -1,6 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindBidCountQuery } from './find-bid-count.query';
 import { BidCountResponse } from '../../dtos/bid-count.response';
 
@@ -13,7 +13,7 @@ export class FindBidCountHandler extends PrismaQueryHandler {
       },
     });
 
-    return plainToClass(BidCountResponse, {
+    return plainToInstance(BidCountResponse, {
       auctionId: query.auctionId,
       count,
     });

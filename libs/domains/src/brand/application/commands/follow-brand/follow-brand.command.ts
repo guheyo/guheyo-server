@@ -7,7 +7,7 @@ export class FollowBrandCommand implements ICommand {
 
   user: MyUserResponse;
 
-  constructor({ input, user }: { input: FollowBrandInput, user: MyUserResponse }) {
+  constructor({ input, user }: { input: FollowBrandInput; user: MyUserResponse }) {
     this.brandId = input.brandId;
     this.user = user;
   }

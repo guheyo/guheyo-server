@@ -2,7 +2,7 @@ import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { AuctionResponse } from '../../dtos/auction.response';
 import { FindAuctionQuery } from './find-auction.query';
 
@@ -55,7 +55,7 @@ export class FindAuctionHandler extends PrismaQueryHandler {
         position: 'asc',
       },
     });
-    return plainToClass(AuctionResponse, {
+    return plainToInstance(AuctionResponse, {
       ...auction,
       post: {
         ...auction.post,

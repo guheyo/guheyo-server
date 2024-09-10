@@ -1,7 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindGroupProfilesQuery } from './find-group-profiles.query';
 import { GroupProfileResponse } from '../../dtos/group-profile.response';
 import { PaginatedGroupProfilesResponse } from './paginated-group-profiles.response';
@@ -35,7 +35,7 @@ export class FindGroupProfilesHandler extends PrismaQueryHandler {
       },
     });
     return paginate<GroupProfileResponse>(
-      groups.map((group) => plainToClass(GroupProfileResponse, group)),
+      groups.map((group) => plainToInstance(GroupProfileResponse, group)),
       'id',
       query.take,
     );

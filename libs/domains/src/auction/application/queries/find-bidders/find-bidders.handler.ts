@@ -1,7 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { NotFoundException } from '@nestjs/common';
 import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
@@ -52,7 +52,7 @@ export class FindBiddersHandler extends PrismaQueryHandler {
         : filteredUsers.slice(0, query.take + 1);
 
     return paginate<UserResponse>(
-      cursorBasedUsers.map((user) => plainToClass(UserResponse, user)),
+      cursorBasedUsers.map((user) => plainToInstance(UserResponse, user)),
       'id',
       query.take,
     );

@@ -1,6 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindUserImagesOfRefQuery } from './find-user-images-of-ref.query';
 import { UserImageResponse } from '../../dtos/user-image.response';
 
@@ -16,6 +16,6 @@ export class FindUserImagesOfRefHandler extends PrismaQueryHandler {
         position: 'asc',
       },
     });
-    return userImages.map((userImage) => plainToClass(UserImageResponse, userImage));
+    return userImages.map((userImage) => plainToInstance(UserImageResponse, userImage));
   }
 }

@@ -3,7 +3,7 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { USER_REVIEW } from '@lib/domains/user-review/domain/user-review.constants';
 import { UserReviewErrorMessage } from '@lib/domains/user-review/domain/user-review.error.message';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindUserReviewQuery } from './find-user-review.query';
 import { UserReviewResponse } from '../../dtos/user-review.response';
 
@@ -73,7 +73,7 @@ export class FindUserReviewHandler extends PrismaQueryHandler {
         position: 'asc',
       },
     });
-    return plainToClass(UserReviewResponse, {
+    return plainToInstance(UserReviewResponse, {
       ...userReview,
       post: {
         ...userReview.post,

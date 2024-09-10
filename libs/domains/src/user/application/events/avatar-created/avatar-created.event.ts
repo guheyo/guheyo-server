@@ -16,8 +16,6 @@ export class AvatarCreatedEvent implements IEvent {
 
   userId: string;
 
-  source: string;
-
   constructor(input: AvatarCreatedInput) {
     this.id = input.id;
     this.url = input.url;
@@ -26,6 +24,5 @@ export class AvatarCreatedEvent implements IEvent {
     this.type = 'avatar';
     this.refId = input.userId;
     this.userId = input.userId;
-    this.source = input.source;
   }
 }

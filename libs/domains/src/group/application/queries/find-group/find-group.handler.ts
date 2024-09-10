@@ -1,6 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindGroupQuery } from './find-group.query';
 import { GroupResponse } from '../../dtos/group.response';
 
@@ -27,6 +27,6 @@ export class FindGroupHandler extends PrismaQueryHandler {
         },
       },
     });
-    return plainToClass(GroupResponse, group);
+    return plainToInstance(GroupResponse, group);
   }
 }
