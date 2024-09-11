@@ -12,11 +12,11 @@ export class FindBrandsHandler extends PrismaQueryHandler {
   async execute(query: FindBrandsQuery): Promise<PaginatedBrandsResponse> {
     const where: Prisma.BrandWhereInput = query.where
       ? {
-          groups: query.where.groupIds
+          groups: query.where.groupId
             ? {
                 some: {
                   id: {
-                    in: query.where.groupIds,
+                    in: [query.where.groupId],
                   },
                 },
               }

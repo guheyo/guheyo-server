@@ -1,9 +1,9 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { ValidateNested } from 'class-validator';
+import { IsOptional } from 'class-validator';
 
 @InputType()
 export class FindBrandsWhereInput {
-  @ValidateNested()
-  @Field(() => [ID], { nullable: true })
-  groupIds?: string[];
+  @IsOptional()
+  @Field(() => ID, { nullable: true })
+  groupId?: string;
 }

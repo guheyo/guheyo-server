@@ -375,7 +375,7 @@ input FindBrandsOrderByInput {
 }
 
 input FindBrandsWhereInput {
-  groupIds: [ID!]
+  groupId: ID
 }
 
 input FindCommentsOrderByInput {
