@@ -187,6 +187,7 @@ input CreateAuctionInput {
 
 input CreateBrandInput {
   description: String
+  groupIds: [ID!]!
   id: ID!
   logo: String
   name: String!
