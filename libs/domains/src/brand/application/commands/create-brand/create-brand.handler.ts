@@ -24,6 +24,7 @@ export class CreateBrandHandler extends PrismaCommandHandler<CreateBrandCommand,
       slug: command.slug,
       description: command.description,
       logo: command.logo,
+      groupIds: command.groupIds,
     });
     await this.savePort.create(brand);
 

@@ -1,3 +1,4 @@
+import { PlatformEntity } from '@lib/domains/platform/domain/platform.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
 
 export class LinkEntity extends AggregateRoot {
@@ -12,6 +13,8 @@ export class LinkEntity extends AggregateRoot {
   url: string;
 
   platformId: string;
+
+  platform: PlatformEntity;
 
   brandId: string;
 

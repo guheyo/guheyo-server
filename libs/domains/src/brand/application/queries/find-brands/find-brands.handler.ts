@@ -30,6 +30,7 @@ export class FindBrandsHandler extends PrismaQueryHandler {
         createdAt: query.orderBy?.createdAt,
       },
       include: {
+        groups: true,
         links: {
           include: {
             platform: true,

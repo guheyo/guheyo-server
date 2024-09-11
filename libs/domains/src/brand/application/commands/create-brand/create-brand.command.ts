@@ -13,6 +13,8 @@ export class CreateBrandCommand implements ICommand {
 
   logo?: string;
 
+  groupIds: string[];
+
   user: MyUserResponse;
 
   constructor({ input, user }: { input: CreateBrandInput; user: MyUserResponse }) {
@@ -21,6 +23,7 @@ export class CreateBrandCommand implements ICommand {
     this.slug = input.slug;
     this.description = input.description;
     this.logo = input.logo;
+    this.groupIds = input.groupIds;
     this.user = user;
   }
 }
