@@ -19,13 +19,28 @@ export class BrandRepository
       where: {
         id,
       },
+      include: {
+        groups: true,
+        links: true,
+      },
     });
     return this.toEntity(brand);
   }
 
   async create(brand: BrandEntity): Promise<void> {
     await this.prismaService.brand.create({
-      data: _.pick(brand, ['id', 'name', 'slug', 'description', 'logo']),
+      data: {
+        id: brand.id,
+        name: brand.name,
+        slug: brand.slug,
+        description: brand.description,
+        logo: brand.logo,
+        groups: {
+          connect: brand.groupIds.map((id) => ({
+            id,
+          })),
+        },
+      },
     });
   }
 
@@ -38,7 +53,18 @@ export class BrandRepository
       where: {
         id: brand.id,
       },
-      data: _.pick(brand, 'name', 'slug', 'description', 'logo'),
+      data: {
+        id: brand.id,
+        name: brand.name,
+        slug: brand.slug,
+        description: brand.description,
+        logo: brand.logo,
+        groups: {
+          set: brand.groupIds.map((id) => ({
+            id,
+          })),
+        },
+      },
     });
   }
 
