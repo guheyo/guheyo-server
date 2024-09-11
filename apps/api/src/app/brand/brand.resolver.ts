@@ -15,6 +15,9 @@ import { FollowBrandCommand } from '@lib/domains/brand/application/commands/foll
 import { UnfollowBrandInput } from '@lib/domains/brand/application/commands/unfollow-brand/unfollow-brand.input';
 import { CreateBrandCommand } from '@lib/domains/brand/application/commands/create-brand/create-brand.command';
 import { CreateBrandInput } from '@lib/domains/brand/application/commands/create-brand/create-brand.input';
+import { FindBrandsArgs } from '@lib/domains/brand/application/queries/find-brands/find-brands.args';
+import { PaginatedBrandsResponse } from '@lib/domains/brand/application/queries/find-brands/paginated-brands.response';
+import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -25,9 +28,16 @@ export class BrandResolver {
     private readonly queryBus: QueryBus,
   ) {}
 
-  @Query(() => [BrandResponse])
-  async findBrands(): Promise<BrandResponse[]> {
-    const query = new FindBrandsQuery();
+  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
+  @Query(() => PaginatedBrandsResponse)
+  async findBrands(
+    @Args() args: FindBrandsArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<PaginatedBrandsResponse> {
+    const query = new FindBrandsQuery({
+      args,
+      userId: user.id,
+    });
     return this.queryBus.execute(query);
   }
 
