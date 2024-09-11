@@ -91,6 +91,11 @@ type BrandResponse {
   slug: String
 }
 
+type BrandResponseEdge {
+  cursor: String!
+  node: BrandResponse!
+}
+
 input BumpOfferInput {
   id: ID!
   newPrice: Int!
@@ -365,6 +370,14 @@ input FindBidsWhereInput {
   userId: ID
 }
 
+input FindBrandsOrderByInput {
+  createdAt: String
+}
+
+input FindBrandsWhereInput {
+  groupIds: [ID!]
+}
+
 input FindCommentsOrderByInput {
   createdAt: String
 }
@@ -631,6 +644,11 @@ type PaginatedBidsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedBrandsResponse {
+  edges: [BrandResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedCommentsResponse {
   edges: [CommentWithAuthorResponseEdge!]!
   pageInfo: PageInfo!
@@ -762,7 +780,7 @@ type Query {
   findBidCount(auctionId: ID!): BidCountResponse!
   findBidders(cursor: ID, keyword: String, orderBy: FindBiddersOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBiddersWhereInput!): PaginatedUsersResponse!
   findBids(cursor: ID, keyword: String, orderBy: FindBidsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBidsWhereInput): PaginatedBidsResponse!
-  findBrands: [BrandResponse!]!
+  findBrands(cursor: ID, keyword: String, orderBy: FindBrandsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBrandsWhereInput): PaginatedBrandsResponse!
   findComment(id: ID, postId: ID): CommentResponse
   findCommentCount(postId: ID!): CommentCountResponse!
   findComments(cursor: ID, keyword: String, orderBy: FindCommentsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindCommentsWhereInput): PaginatedCommentsResponse!
