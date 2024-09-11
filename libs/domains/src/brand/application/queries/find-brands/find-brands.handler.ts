@@ -1,15 +1,33 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { plainToInstance } from 'class-transformer';
+import { Prisma } from '@prisma/client';
+import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { FindBrandsQuery } from './find-brands.query';
 import { BrandResponse } from '../../dtos/brand.response';
+import { PaginatedBrandsResponse } from './paginated-brands.response';
 
 @QueryHandler(FindBrandsQuery)
-export class FindBrandssHandler extends PrismaQueryHandler {
-  async execute(query: FindBrandsQuery): Promise<BrandResponse[]> {
+export class FindBrandsHandler extends PrismaQueryHandler {
+  async execute(query: FindBrandsQuery): Promise<PaginatedBrandsResponse> {
+    const where: Prisma.BrandWhereInput = query.where
+      ? {
+          groups: query.where.groupIds
+            ? {
+                some: {
+                  id: {
+                    in: query.where.groupIds,
+                  },
+                },
+              }
+            : undefined,
+        }
+      : {};
+
     const brands = await this.prismaService.brand.findMany({
+      where,
       orderBy: {
-        createdAt: 'desc',
+        createdAt: query.orderBy?.createdAt,
       },
       include: {
         links: {
@@ -19,6 +37,11 @@ export class FindBrandssHandler extends PrismaQueryHandler {
         },
       },
     });
-    return brands.map((brand) => plainToInstance(BrandResponse, brand));
+
+    return paginate<BrandResponse>(
+      brands.map((brand) => plainToInstance(BrandResponse, brand)),
+      'id',
+      query.take,
+    );
   }
 }
