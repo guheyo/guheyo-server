@@ -22,4 +22,8 @@ export class CreateBrandInput {
   @IsOptional()
   @Field(() => String, { nullable: true })
   logo?: string;
+
+  @IsString({ each: true })
+  @Field(() => [ID])
+  groupIds: string[];
 }
