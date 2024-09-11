@@ -21,7 +21,11 @@ export class BrandRepository
       },
       include: {
         groups: true,
-        links: true,
+        links: {
+          include: {
+            platform: true,
+          },
+        },
       },
     });
     return this.toEntity(brand);
