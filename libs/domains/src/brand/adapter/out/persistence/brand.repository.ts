@@ -78,6 +78,16 @@ export class BrandRepository
             id,
           })),
         },
+        links: {
+          updateMany: brand.links.map((link) => ({
+            where: {
+              id: link.id,
+            },
+            data: {
+              url: link.url,
+            },
+          })),
+        },
       },
     });
   }
