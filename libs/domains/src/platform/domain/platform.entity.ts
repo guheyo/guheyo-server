@@ -15,6 +15,8 @@ export class PlatformEntity extends AggregateRoot {
 
   logo: string | null;
 
+  position: number;
+
   constructor(partial: Partial<PlatformEntity>) {
     super();
     Object.assign(this, partial);

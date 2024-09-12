@@ -702,6 +702,7 @@ type PlatformResponse {
   id: ID!
   logo: String
   name: String!
+  position: Int!
 }
 
 type PostPreviewWithAuthorResponse {

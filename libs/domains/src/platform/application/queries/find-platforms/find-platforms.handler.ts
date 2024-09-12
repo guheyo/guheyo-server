@@ -9,7 +9,7 @@ export class FindPlatformssHandler extends PrismaQueryHandler {
   async execute(query: FindPlatformsQuery): Promise<PlatformResponse[]> {
     const platforms = await this.prismaService.platform.findMany({
       orderBy: {
-        createdAt: 'desc',
+        position: 'asc',
       },
     });
     return platforms.map((platform) => plainToInstance(PlatformResponse, platform));
