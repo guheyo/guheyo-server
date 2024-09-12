@@ -44,6 +44,16 @@ export class BrandRepository
             id,
           })),
         },
+        links: {
+          createMany: {
+            data: brand.links.map((link) => ({
+              id: link.id,
+              url: link.url,
+              platformId: link.platformId,
+              position: link.position,
+            })),
+          },
+        },
       },
     });
   }
@@ -66,6 +76,16 @@ export class BrandRepository
         groups: {
           set: brand.groupIds.map((id) => ({
             id,
+          })),
+        },
+        links: {
+          updateMany: brand.links.map((link) => ({
+            where: {
+              id: link.id,
+            },
+            data: {
+              url: link.url,
+            },
           })),
         },
       },

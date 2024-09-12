@@ -15,7 +15,7 @@ export class LinkResponse {
   @Field(() => PlatformResponse)
   platform: PlatformResponse;
 
-  @Field()
+  @Field(() => ID)
   brandId: string;
 
   @Field(() => Int)

@@ -189,6 +189,7 @@ input CreateBrandInput {
   description: String
   groupIds: [ID!]!
   id: ID!
+  links: [CreateLinkInput!]!
   logo: String
   name: String!
   slug: String
@@ -210,6 +211,14 @@ input CreateGroupInput {
   name: String!
   position: Int!
   slug: String!
+}
+
+input CreateLinkInput {
+  brandId: ID!
+  id: ID!
+  platformId: ID!
+  position: Int!
+  url: String!
 }
 
 input CreateManyUserImageInput {
@@ -515,7 +524,7 @@ type LastReportResponse {
 }
 
 type LinkResponse {
-  brandId: String!
+  brandId: ID!
   createdAt: DateTime!
   id: ID!
   platform: PlatformResponse!
