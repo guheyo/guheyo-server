@@ -25,7 +25,7 @@ export class PlatformRepository
 
   async create(platform: PlatformEntity): Promise<void> {
     await this.prismaService.platform.create({
-      data: _.pick(platform, ['id', 'name', 'description', 'logo']),
+      data: _.pick(platform, ['id', 'name', 'description', 'logo', 'position']),
     });
   }
 
@@ -38,7 +38,7 @@ export class PlatformRepository
       where: {
         id: platform.id,
       },
-      data: _.pick(platform, 'name', 'description', 'logo'),
+      data: _.pick(platform, 'name', 'description', 'logo', 'position'),
     });
   }
 

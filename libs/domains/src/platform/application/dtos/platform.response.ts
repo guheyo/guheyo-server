@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class PlatformResponse {
@@ -13,6 +13,9 @@ export class PlatformResponse {
 
   @Field(() => String, { nullable: true })
   logo?: string;
+
+  @Field(() => Int)
+  position: number;
 
   constructor(partial: Partial<PlatformResponse>) {
     Object.assign(this, partial);
