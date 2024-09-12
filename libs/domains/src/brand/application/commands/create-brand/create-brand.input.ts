@@ -1,5 +1,7 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsOptional, IsString, IsUUID, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { CreateLinkInput } from '../create-link/create-link.input';
 
 @InputType()
 export class CreateBrandInput {
@@ -26,4 +28,9 @@ export class CreateBrandInput {
   @IsString({ each: true })
   @Field(() => [ID])
   groupIds: string[];
+
+  @ValidateNested({ each: true })
+  @Type(() => CreateLinkInput)
+  @Field(() => [CreateLinkInput])
+  links: CreateLinkInput[];
 }
