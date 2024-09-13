@@ -23,10 +23,18 @@ export class FindBrandHandler extends PrismaQueryHandler {
             platform: true,
           },
         },
+        followBrands: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
     if (!brand) throw new NotFoundException(BrandErrorMessage.BRAND_NOT_FOUND);
 
-    return plainToInstance(BrandResponse, brand);
+    return plainToInstance(BrandResponse, {
+      ...brand,
+      followed: brand.followBrands.some((followBrand) => followBrand.userId === query.userId),
+    });
   }
 }

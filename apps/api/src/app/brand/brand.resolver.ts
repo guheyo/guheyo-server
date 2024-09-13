@@ -20,6 +20,7 @@ import { PaginatedBrandsResponse } from '@lib/domains/brand/application/queries/
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
 import { FindBrandArgs } from '@lib/domains/brand/application/queries/find-brand/find-brand.args';
 import { FindBrandQuery } from '@lib/domains/brand/application/queries/find-brand/find-brand.query';
+import { UnfollowBrandCommand } from '@lib/domains/brand/application/commands/unfollow-brand/unfollow-brand.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -94,7 +95,7 @@ export class BrandResolver {
     @Args('input') input: UnfollowBrandInput,
     @ExtractedUser() user: MyUserResponse,
   ): Promise<string> {
-    const brand = await this.commandBus.execute(new FollowBrandCommand({ input, user }));
+    const brand = await this.commandBus.execute(new UnfollowBrandCommand({ input, user }));
     return brand;
   }
 }

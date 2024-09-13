@@ -83,6 +83,8 @@ type BidResponseEdge {
 type BrandResponse {
   createdAt: DateTime!
   description: String
+  followBrands: [FollowBrandResponse!]!
+  followed: Boolean!
   groups: [GroupProfileResponse!]!
   id: ID!
   links: [LinkResponse!]!
@@ -466,6 +468,12 @@ input FindUsersWhereInput {
 
 input FollowBrandInput {
   brandId: ID!
+}
+
+type FollowBrandResponse {
+  brandId: ID!
+  id: ID!
+  user: UserResponse!
 }
 
 type GroupPreviewResponse {
