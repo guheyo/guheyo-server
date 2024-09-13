@@ -31,11 +31,8 @@ export class UnfollowBrandHandler extends PrismaCommandHandler<
     if (!existingFollow)
       throw new InternalServerErrorException(BrandErrorMessage.BRAND_NOT_FOLLOWED);
 
-    await this.prismaService.followBrand.hardDelete({
-      where: {
-        id: existingFollow.id,
-      },
-    });
+    await this.prismaService
+      .$queryRaw`DELETE FROM public."FollowBrand" WHERE id = ${existingFollow.id}`;
 
     const brand = await this.prismaService.brand.findUnique({
       where: {
