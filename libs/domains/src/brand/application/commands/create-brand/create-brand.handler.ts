@@ -31,6 +31,10 @@ export class CreateBrandHandler extends PrismaCommandHandler<CreateBrandCommand,
     await this.savePort.create(brand);
 
     const newBrand = this.loadPort.findById(brand.id);
-    return this.parseResponse(newBrand);
+    return this.parseResponse({
+      ...newBrand,
+      followBrands: [],
+      followed: false,
+    });
   }
 }

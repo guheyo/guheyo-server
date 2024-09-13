@@ -1,5 +1,5 @@
 import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { Inject, InternalServerErrorException } from '@nestjs/common';
+import { Inject, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { BrandErrorMessage } from '@lib/domains/brand/domain/brand.error.message';
 import { FollowBrandCommand } from './follow-brand.command';
@@ -28,16 +28,37 @@ export class FollowBrandHandler extends PrismaCommandHandler<FollowBrandCommand,
     if (existingFollow)
       throw new InternalServerErrorException(BrandErrorMessage.BRAND_ALREADY_FOLLOWED);
 
-    const followBrand = await this.prismaService.followBrand.create({
+    await this.prismaService.followBrand.create({
       data: {
         userId: command.user.id,
         brandId: command.brandId,
       },
+    });
+
+    const brand = await this.prismaService.brand.findUnique({
+      where: {
+        id: command.brandId,
+      },
       include: {
-        brand: true,
+        groups: true,
+        links: {
+          include: {
+            platform: true,
+          },
+        },
+        followBrands: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
-    return this.parseResponse(followBrand.brand);
+    if (!brand) throw new NotFoundException(BrandErrorMessage.BRAND_NOT_FOUND);
+
+    return this.parseResponse({
+      ...brand,
+      followed: brand.followBrands.some((followBrand) => followBrand.userId === command.user.id),
+    });
   }
 }
