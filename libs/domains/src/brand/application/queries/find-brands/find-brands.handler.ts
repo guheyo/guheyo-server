@@ -49,11 +49,21 @@ export class FindBrandsHandler extends PrismaQueryHandler {
             platform: true,
           },
         },
+        followBrands: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
     return paginate<BrandResponse>(
-      brands.map((brand) => plainToInstance(BrandResponse, brand)),
+      brands.map((brand) =>
+        plainToInstance(BrandResponse, {
+          ...brand,
+          followed: brand.followBrands.some((followBrand) => followBrand.userId === query.userId),
+        }),
+      ),
       'id',
       query.take,
     );
