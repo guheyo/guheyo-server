@@ -20,23 +20,6 @@ export const softDelete = Prisma.defineExtension({
   },
 });
 
-export const hardDelete = Prisma.defineExtension({
-  name: 'hardDelete',
-  model: {
-    $allModels: {
-      hardDelete<M, A>(
-        this: M,
-        args: Prisma.Args<M, 'delete'>,
-      ): Promise<Prisma.Result<M, A, 'delete'>> {
-        const context = Prisma.getExtensionContext(this);
-        return (context as any).delete({
-          where: args.where,
-        });
-      },
-    },
-  },
-});
-
 export const filterSoftDeleted = Prisma.defineExtension({
   name: 'filterSoftDeleted',
   query: {
