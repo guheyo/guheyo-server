@@ -18,6 +18,8 @@ import { CreateBrandInput } from '@lib/domains/brand/application/commands/create
 import { FindBrandsArgs } from '@lib/domains/brand/application/queries/find-brands/find-brands.args';
 import { PaginatedBrandsResponse } from '@lib/domains/brand/application/queries/find-brands/paginated-brands.response';
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
+import { FindBrandArgs } from '@lib/domains/brand/application/queries/find-brand/find-brand.args';
+import { FindBrandQuery } from '@lib/domains/brand/application/queries/find-brand/find-brand.query';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -35,6 +37,19 @@ export class BrandResolver {
     @ExtractedUser() user: MyUserResponse,
   ): Promise<PaginatedBrandsResponse> {
     const query = new FindBrandsQuery({
+      args,
+      userId: user.id,
+    });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
+  @Query(() => BrandResponse)
+  async findBrand(
+    @Args() args: FindBrandArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<BrandResponse> {
+    const query = new FindBrandQuery({
       args,
       userId: user.id,
     });
