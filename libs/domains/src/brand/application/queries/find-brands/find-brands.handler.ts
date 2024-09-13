@@ -3,6 +3,7 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { plainToInstance } from 'class-transformer';
 import { Prisma } from '@prisma/client';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
+import { parseContainsSearcher } from '@lib/shared/search/search';
 import { FindBrandsQuery } from './find-brands.query';
 import { BrandResponse } from '../../dtos/brand.response';
 import { PaginatedBrandsResponse } from './paginated-brands.response';
@@ -21,14 +22,26 @@ export class FindBrandsHandler extends PrismaQueryHandler {
                 },
               }
             : undefined,
+          name: parseContainsSearcher({
+            keyword: query.keyword,
+          }),
         }
       : {};
+
+    const cursor = query.cursor
+      ? {
+          id: query.cursor,
+        }
+      : undefined;
 
     const brands = await this.prismaService.brand.findMany({
       where,
       orderBy: {
         createdAt: query.orderBy?.createdAt,
       },
+      cursor,
+      take: query.take + 1,
+      skip: query.skip,
       include: {
         groups: true,
         links: {
