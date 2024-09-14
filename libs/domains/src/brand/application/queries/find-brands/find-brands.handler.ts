@@ -45,6 +45,11 @@ export class FindBrandsHandler extends PrismaQueryHandler {
       where,
       orderBy: {
         createdAt: query.orderBy?.createdAt,
+        ...(query.orderBy?.follower && {
+          followBrands: {
+            _count: query.orderBy?.follower,
+          },
+        }),
       },
       cursor,
       take: query.take + 1,

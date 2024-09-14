@@ -384,6 +384,7 @@ input FindBidsWhereInput {
 
 input FindBrandsOrderByInput {
   createdAt: String
+  follower: String
 }
 
 input FindBrandsWhereInput {

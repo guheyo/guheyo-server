@@ -6,4 +6,8 @@ export class FindBrandsOrderByInput {
   @IsOptional()
   @Field(() => String, { nullable: true })
   createdAt?: 'asc' | 'desc';
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  follower?: 'asc' | 'desc';
 }
