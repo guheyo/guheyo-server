@@ -15,6 +15,13 @@ export class FindBrandHandler extends PrismaQueryHandler {
       where: {
         id: query.id,
         slug: query.slug,
+        ...(query.followed && {
+          followBrands: {
+            some: {
+              userId: query.userId,
+            },
+          },
+        }),
       },
       include: {
         groups: true,
