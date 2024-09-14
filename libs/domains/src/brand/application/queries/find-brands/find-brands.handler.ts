@@ -25,6 +25,13 @@ export class FindBrandsHandler extends PrismaQueryHandler {
           name: parseContainsSearcher({
             keyword: query.keyword,
           }),
+          ...(query.where.followed && {
+            followBrands: {
+              some: {
+                userId: query.userId,
+              },
+            },
+          }),
         }
       : {};
 

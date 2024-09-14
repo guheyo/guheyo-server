@@ -387,6 +387,7 @@ input FindBrandsOrderByInput {
 }
 
 input FindBrandsWhereInput {
+  followed: Boolean
   groupId: ID
 }
 
