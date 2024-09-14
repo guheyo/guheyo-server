@@ -800,7 +800,7 @@ type Query {
   findBidCount(auctionId: ID!): BidCountResponse!
   findBidders(cursor: ID, keyword: String, orderBy: FindBiddersOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBiddersWhereInput!): PaginatedUsersResponse!
   findBids(cursor: ID, keyword: String, orderBy: FindBidsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBidsWhereInput): PaginatedBidsResponse!
-  findBrand(followed: Boolean, id: ID, slug: String): BrandResponse!
+  findBrand(id: ID, slug: String): BrandResponse!
   findBrands(cursor: ID, keyword: String, orderBy: FindBrandsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBrandsWhereInput): PaginatedBrandsResponse!
   findComment(id: ID, postId: ID): CommentResponse
   findCommentCount(postId: ID!): CommentCountResponse!

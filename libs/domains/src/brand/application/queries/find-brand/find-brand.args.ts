@@ -10,8 +10,4 @@ export class FindBrandArgs {
   @IsOptional()
   @Field(() => String, { nullable: true })
   slug?: string;
-
-  @IsOptional()
-  @Field(() => Boolean, { nullable: true })
-  followed?: boolean;
 }
