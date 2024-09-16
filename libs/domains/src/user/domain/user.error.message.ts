@@ -3,4 +3,5 @@ export enum UserErrorMessage {
   USER_ALREADY_EXISTS = 'User already exists',
   FIND_REQUEST_FROM_UNAUTHORIZED_USER = 'Find request from unauthorized user',
   USER_ALREADY_FOLLOWED = 'User already followed',
+  USER_NOT_FOLLOWED = 'User not followed',
 }

@@ -66,7 +66,7 @@ export class BrandResolver {
   async createBrand(
     @Args('input') input: CreateBrandInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<BrandResponse> {
     const brand = await this.commandBus.execute(new CreateBrandCommand({ input, user }));
     return brand;
   }
@@ -80,7 +80,7 @@ export class BrandResolver {
   async followBrand(
     @Args('input') input: FollowBrandInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<BrandResponse> {
     const brand = await this.commandBus.execute(new FollowBrandCommand({ input, user }));
     return brand;
   }
@@ -94,7 +94,7 @@ export class BrandResolver {
   async unfollowBrand(
     @Args('input') input: UnfollowBrandInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<BrandResponse> {
     const brand = await this.commandBus.execute(new UnfollowBrandCommand({ input, user }));
     return brand;
   }

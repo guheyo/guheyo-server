@@ -23,6 +23,8 @@ import { FindUsersArgs } from '@lib/domains/user/application/queries/find-users/
 import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
 import { FollowUserInput } from '@lib/domains/user/application/commands/follow-user/follow-user.input';
 import { FollowUserCommand } from '@lib/domains/user/application/commands/follow-user/follow-user.command';
+import { UnfollowUserInput } from '@lib/domains/user/application/commands/unfollow-user/unfollow-user.input';
+import { UnfollowUserCommand } from '@lib/domains/user/application/commands/unfollow-user/unfollow-user.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -96,4 +98,12 @@ export class UserResolver {
     return this.commandBus.execute(new FollowUserCommand({ input, user }));
   }
 
+  @UseGuards(RequiredJwtUserGuard)
+  @Mutation(() => UserResponse)
+  async unfollowUser(
+    @Args('input') input: UnfollowUserInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<UserResponse> {
+    return this.commandBus.execute(new UnfollowUserCommand({ input, user }));
+  }
 }
