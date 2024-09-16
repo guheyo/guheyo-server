@@ -42,7 +42,23 @@ model User {
   reactions         Reaction[]
   uploadedEmojis    Emoji[]
   followBrands      FollowBrand[]
+  following         FollowUser[]  @relation("userFollowing")
+  followers         FollowUser[]  @relation("userFollowers")
 
+  @@schema("public")
+}
+
+model FollowUser {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  followerId        String
+  follower          User          @relation("userFollowing", fields: [followerId], references: [id])
+  followingId       String
+  following         User          @relation("userFollowers", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
   @@schema("public")
 }
 
