@@ -17,8 +17,11 @@ export class UserResponse {
   @Field(() => String, { nullable: true })
   avatarURL: string | null;
 
-  @Field()
+  @Field(() => Boolean)
   bot: boolean;
+
+  @Field(() => Boolean, { nullable: true })
+  followed?: boolean;
 
   constructor(partial: Partial<UserResponse>) {
     Object.assign(this, partial);

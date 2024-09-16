@@ -10,10 +10,13 @@ export class FindUsersQuery extends PaginationQuery {
 
   keyword?: string;
 
-  constructor({ args }: { args: FindUsersArgs }) {
+  userId?: string;
+
+  constructor({ args, userId }: { args: FindUsersArgs; userId?: string }) {
     super(args);
     this.where = args.where;
     this.orderBy = args.orderBy;
     this.keyword = args.keyword;
+    this.userId = userId;
   }
 }

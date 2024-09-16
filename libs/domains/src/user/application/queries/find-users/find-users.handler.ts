@@ -22,6 +22,13 @@ export class FindUsersHandler extends PrismaQueryHandler {
           mode: 'insensitive',
         },
       },
+      include: {
+        followers: {
+          where: {
+            followerId: query.userId,
+          },
+        },
+      },
       cursor,
       take: query.take + 1,
       skip: query.skip,
@@ -31,8 +38,14 @@ export class FindUsersHandler extends PrismaQueryHandler {
         },
       ],
     });
+
     return paginate<UserResponse>(
-      users.map((user) => plainToInstance(UserResponse, user)),
+      users.map((user) =>
+        plainToInstance(UserResponse, {
+          ...user,
+          followed: user.followers.length > 0,
+        }),
+      ),
       'id',
       query.take,
     );
