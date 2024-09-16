@@ -20,6 +20,9 @@ import { ExtractedJwtPayload } from '@lib/domains/auth/decorators/extracted-jwt-
 import { JwtPayload } from '@lib/shared/jwt/jwt.interfaces';
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { FindUsersArgs } from '@lib/domains/user/application/queries/find-users/find-users.args';
+import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-user.guard';
+import { FollowUserInput } from '@lib/domains/user/application/commands/follow-user/follow-user.input';
+import { FollowUserCommand } from '@lib/domains/user/application/commands/follow-user/follow-user.command';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -48,8 +51,9 @@ export class UserResolver {
     return this.queryBus.execute(query);
   }
 
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => PaginatedUsersResponse)
-  async findUsers(@Args() args: FindUsersArgs) {
+  async findUsers(@Args() args: FindUsersArgs, @ExtractedUser() user: MyUserResponse) {
     const query = new FindUsersQuery({ args });
     return this.queryBus.execute(query);
   }
@@ -82,4 +86,14 @@ export class UserResolver {
     );
     return jwtPayload.id;
   }
+
+  @UseGuards(RequiredJwtUserGuard)
+  @Mutation(() => UserResponse)
+  async followUser(
+    @Args('input') input: FollowUserInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<UserResponse> {
+    return this.commandBus.execute(new FollowUserCommand({ input, user }));
+  }
+
 }

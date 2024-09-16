@@ -53,6 +53,7 @@ type AuthorResponse {
   avatarURL: String
   bot: Boolean!
   createdAt: DateTime!
+  followed: Boolean
   id: ID!
   roles: [RoleResponse!]!
   socialAccounts: [SocialAccountWithoutAuthResponse!]!
@@ -478,6 +479,10 @@ type FollowBrandResponse {
   user: UserResponse!
 }
 
+input FollowUserInput {
+  followingId: String!
+}
+
 type GroupPreviewResponse {
   buys: [OfferPreviewResponse!]!
   description: String
@@ -571,6 +576,7 @@ type Mutation {
   deleteUserImage(id: ID!): String!
   deleteUserReview(id: ID!): String!
   followBrand(input: FollowBrandInput!): BrandResponse!
+  followUser(input: FollowUserInput!): UserResponse!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
   placeBid(input: PlaceBidInput!): String!
@@ -593,6 +599,7 @@ type MyUserResponse {
   avatarURL: String
   bot: Boolean!
   createdAt: DateTime!
+  followed: Boolean
   id: ID!
   name: String
   phoneNumber: String
@@ -1099,6 +1106,7 @@ type UserResponse {
   avatarURL: String
   bot: Boolean!
   createdAt: DateTime!
+  followed: Boolean
   id: ID!
   username: String!
 }
