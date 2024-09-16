@@ -21,6 +21,13 @@ export class FindUsersHandler extends PrismaQueryHandler {
           contains: query.keyword,
           mode: 'insensitive',
         },
+        ...(query.where?.followed && {
+          followers: {
+            some: {
+              followerId: query.userId,
+            },
+          },
+        }),
       },
       include: {
         followers: {

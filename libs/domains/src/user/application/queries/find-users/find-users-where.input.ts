@@ -6,4 +6,8 @@ export class FindUsersWhereInput {
   @IsOptional()
   @Field(() => ID, { nullable: true })
   userId?: string;
+
+  @IsOptional()
+  @Field(() => Boolean, { nullable: true })
+  followed?: boolean;
 }

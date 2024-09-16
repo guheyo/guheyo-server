@@ -466,6 +466,7 @@ input FindUsersOrderByInput {
 }
 
 input FindUsersWhereInput {
+  followed: Boolean
   userId: ID
 }
 
