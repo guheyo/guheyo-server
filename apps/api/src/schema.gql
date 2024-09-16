@@ -583,6 +583,7 @@ type Mutation {
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
   unfollowBrand(input: UnfollowBrandInput!): BrandResponse!
+  unfollowUser(input: UnfollowUserInput!): UserResponse!
   updateAuction(input: UpdateAuctionInput!): String!
   updateComment(input: UpdateCommentInput!): String!
   updateGroup(input: UpdateGroupInput!): String!
@@ -993,6 +994,10 @@ type ThreadResponse {
 
 input UnfollowBrandInput {
   brandId: ID!
+}
+
+input UnfollowUserInput {
+  followingId: String!
 }
 
 input UpdateAuctionInput {
