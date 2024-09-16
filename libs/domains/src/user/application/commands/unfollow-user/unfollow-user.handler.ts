@@ -33,7 +33,7 @@ export class UnfollowUserHandler extends PrismaCommandHandler<UnfollowUserComman
       AND "followerId" = ${command.user.id};
     `;
 
-    const user = this.prismaService.user.findUnique({
+    const user = await this.prismaService.user.findUnique({
       where: {
         id: command.followingId,
       },

@@ -34,7 +34,7 @@ export class FollowUserHandler extends PrismaCommandHandler<FollowUserCommand, U
       },
     });
 
-    const user = this.prismaService.user.findUnique({
+    const user = await this.prismaService.user.findUnique({
       where: {
         id: command.followingId,
       },
