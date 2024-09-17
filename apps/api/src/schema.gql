@@ -454,6 +454,7 @@ input FindUserReviewPreviewsOrderByInput {
 
 input FindUserReviewPreviewsWhereInput {
   createdAt: JSON
+  followed: Boolean
   groupId: ID
   pending: String
   reviewedUserId: ID

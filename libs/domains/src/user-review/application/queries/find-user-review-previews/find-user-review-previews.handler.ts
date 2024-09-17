@@ -52,6 +52,15 @@ export class FindUserReviewPreviewsHandler extends PrismaQueryHandler {
                 },
               },
             },
+            ...(query.where?.followed && {
+              user: {
+                followers: {
+                  some: {
+                    followerId: query.userId,
+                  },
+                },
+              },
+            }),
           },
           reviewedUserId: query.where.reviewedUserId,
           createdAt: query.where.createdAt
