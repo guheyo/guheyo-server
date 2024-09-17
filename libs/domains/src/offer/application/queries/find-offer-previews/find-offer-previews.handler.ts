@@ -58,6 +58,15 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
               : {
                   equals: null,
                 },
+            ...(query.where?.followed && {
+              user: {
+                followers: {
+                  some: {
+                    followerId: query.userId,
+                  },
+                },
+              },
+            }),
           },
           businessFunction: query.where.businessFunction,
           status: query.where.status,

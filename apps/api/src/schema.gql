@@ -359,6 +359,7 @@ input FindAuctionPreviewsWhereInput {
   bidderId: ID
   categoryId: ID
   createdAt: JSON
+  followed: Boolean
   groupId: ID
   pending: String
   status: String
@@ -412,6 +413,7 @@ input FindOfferPreviewsWhereInput {
   bumpedAt: JSON
   businessFunction: String
   categoryId: ID
+  followed: Boolean
   groupId: ID
   isArchived: Boolean
   pending: String
