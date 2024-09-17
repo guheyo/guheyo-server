@@ -64,6 +64,15 @@ export class FindThreadPreviewsHandler extends PrismaQueryHandler {
                   gt: new Date(query.where.createdAt.gt),
                 }
               : undefined,
+            ...(query.where?.followed && {
+              user: {
+                followers: {
+                  some: {
+                    followerId: query.userId,
+                  },
+                },
+              },
+            }),
           },
           ...keywordCondition,
         }

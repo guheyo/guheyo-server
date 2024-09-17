@@ -441,6 +441,7 @@ input FindThreadPreviewsWhereInput {
   categoryId: ID
   categoryType: String
   createdAt: JSON
+  followed: Boolean
   groupId: ID
   pending: String
   tagNames: [String!]
@@ -453,6 +454,7 @@ input FindUserReviewPreviewsOrderByInput {
 
 input FindUserReviewPreviewsWhereInput {
   createdAt: JSON
+  followed: Boolean
   groupId: ID
   pending: String
   reviewedUserId: ID
