@@ -34,4 +34,8 @@ export class FindThreadPreviewsWhereInput {
   createdAt?: {
     gt: string;
   };
+
+  @IsOptional()
+  @Field(() => Boolean, { nullable: true })
+  followed?: boolean;
 }
