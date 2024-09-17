@@ -359,6 +359,7 @@ input FindAuctionPreviewsWhereInput {
   bidderId: ID
   categoryId: ID
   createdAt: JSON
+  followed: Boolean
   groupId: ID
   pending: String
   status: String

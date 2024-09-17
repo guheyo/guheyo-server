@@ -25,6 +25,10 @@ export class FindAuctionPreviewsWhereInput {
   @Field(() => String, { nullable: true })
   pending?: string;
 
+  @IsOptional()
+  @Field(() => Boolean, { nullable: true })
+  followed?: boolean;
+
   // Auction
   @IsOptional()
   @Field(() => String, { nullable: true })

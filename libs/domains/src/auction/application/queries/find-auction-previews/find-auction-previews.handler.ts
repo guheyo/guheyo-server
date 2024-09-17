@@ -104,6 +104,15 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
             categoryId: query.where.categoryId,
             userId: query.where.userId,
             pending: query.where.pending,
+            ...(query.where?.followed && {
+              user: {
+                followers: {
+                  some: {
+                    followerId: query.userId,
+                  },
+                },
+              },
+            }),
           },
           status: query.where.status,
           createdAt: query.where?.createdAt
