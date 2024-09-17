@@ -412,6 +412,7 @@ input FindOfferPreviewsWhereInput {
   bumpedAt: JSON
   businessFunction: String
   categoryId: ID
+  followed: Boolean
   groupId: ID
   isArchived: Boolean
   pending: String

@@ -25,6 +25,10 @@ export class FindOfferPreviewsWhereInput {
   @Field(() => Boolean, { nullable: true })
   isArchived?: boolean;
 
+  @IsOptional()
+  @Field(() => Boolean, { nullable: true })
+  followed?: boolean;
+
   // Offer
   @IsOptional()
   @IsString()
