@@ -1,6 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindUserQuery } from './find-user.query';
 import { UserResponse } from '../../dtos/user.response';
 
@@ -18,7 +18,7 @@ export class FindUserHandler extends PrismaQueryHandler {
           },
         },
       });
-      return plainToClass(UserResponse, user);
+      return plainToInstance(UserResponse, user);
     }
     if (query.username) {
       const user = await this.prismaService.user.findUnique({
@@ -26,7 +26,7 @@ export class FindUserHandler extends PrismaQueryHandler {
           username: query.username,
         },
       });
-      return plainToClass(UserResponse, user);
+      return plainToInstance(UserResponse, user);
     }
     return null;
   }

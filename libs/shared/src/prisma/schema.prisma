@@ -41,7 +41,24 @@ model User {
   receivedReviews   UserReview[]  @relation("receivedUserReviews")
   reactions         Reaction[]
   uploadedEmojis    Emoji[]
+  followBrands      FollowBrand[]
+  following         FollowUser[]  @relation("userFollowing")
+  followers         FollowUser[]  @relation("userFollowers")
 
+  @@schema("public")
+}
+
+model FollowUser {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  deletedAt         DateTime?
+  followerId        String
+  follower          User          @relation("userFollowing", fields: [followerId], references: [id])
+  followingId       String
+  following         User          @relation("userFollowers", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
   @@schema("public")
 }
 
@@ -147,9 +164,53 @@ model Brand {
   slug              String?
   description       String?
   logo              String?
-  position          Int
   groups            Group[]
   posts             Post[]
+  links             Link[]
+  followBrands      FollowBrand[]
+
+  @@schema("public")
+}
+
+model FollowBrand {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  userId            String      // Foreign key to the user who is following
+  brandId           String      // Foreign key to the brand being followed
+  user              User        @relation(fields: [userId], references: [id])
+  brand             Brand       @relation(fields: [brandId], references: [id])
+
+  @@unique([userId, brandId])  // Ensures that a user can follow a brand only once
+  @@schema("public")
+}
+
+model Link {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  url               String
+  platformId        String
+  platform          Platform    @relation(fields: [platformId], references: [id])
+  brandId           String
+  brand             Brand       @relation(fields: [brandId], references: [id])
+  position          Int
+
+  @@schema("public")
+}
+
+model Platform {
+  id                String      @id @default(uuid())
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+  name              String      @unique  // e.g., 'Instagram', 'Discord', 'Twitter'
+  description       String?     // Optional description for the platform
+  logo              String?     // Optional logo URL for the platform
+  position          Int
+  links             Link[]      // Relationship to the Link model
 
   @@schema("public")
 }

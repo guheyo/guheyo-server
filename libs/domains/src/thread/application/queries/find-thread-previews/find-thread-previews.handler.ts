@@ -3,7 +3,7 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseContainsSearcher } from '@lib/shared/search/search';
 import { Prisma } from '@prisma/client';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { PaginatedThreadPreviewsResponse } from './paginated-thread-previews.response';
 import { ThreadPreviewResponse } from '../../dtos/thread-preview.response';
 import { FindThreadPreviewsQuery } from './find-thread-previews.query';
@@ -64,6 +64,15 @@ export class FindThreadPreviewsHandler extends PrismaQueryHandler {
                   gt: new Date(query.where.createdAt.gt),
                 }
               : undefined,
+            ...(query.where?.followed && {
+              user: {
+                followers: {
+                  some: {
+                    followerId: query.userId,
+                  },
+                },
+              },
+            }),
           },
           ...keywordCondition,
         }
@@ -116,7 +125,7 @@ export class FindThreadPreviewsHandler extends PrismaQueryHandler {
 
     return paginate<ThreadPreviewResponse>(
       threads.map((thread) =>
-        plainToClass(ThreadPreviewResponse, {
+        plainToInstance(ThreadPreviewResponse, {
           ...thread,
           post: {
             ...thread.post,

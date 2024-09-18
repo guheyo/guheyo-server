@@ -53,6 +53,9 @@ type AuthorResponse {
   avatarURL: String
   bot: Boolean!
   createdAt: DateTime!
+  followed: Boolean
+  followers: [UserResponse!]
+  following: [UserResponse!]
   id: ID!
   roles: [RoleResponse!]!
   socialAccounts: [SocialAccountWithoutAuthResponse!]!
@@ -78,6 +81,24 @@ type BidResponse {
 type BidResponseEdge {
   cursor: String!
   node: BidResponse!
+}
+
+type BrandResponse {
+  createdAt: DateTime!
+  description: String
+  followBrands: [FollowBrandResponse!]!
+  followed: Boolean!
+  groups: [GroupProfileResponse!]!
+  id: ID!
+  links: [LinkResponse!]!
+  logo: String
+  name: String!
+  slug: String
+}
+
+type BrandResponseEdge {
+  cursor: String!
+  node: BrandResponse!
 }
 
 input BumpOfferInput {
@@ -169,6 +190,16 @@ input CreateAuctionInput {
   status: String! = "live"
 }
 
+input CreateBrandInput {
+  description: String
+  groupIds: [ID!]!
+  id: ID!
+  links: [CreateLinkInput!]!
+  logo: String
+  name: String!
+  slug: String
+}
+
 input CreateCommentInput {
   content: String
   createdAt: DateTime
@@ -185,6 +216,14 @@ input CreateGroupInput {
   name: String!
   position: Int!
   slug: String!
+}
+
+input CreateLinkInput {
+  brandId: ID!
+  id: ID!
+  platformId: ID!
+  position: Int!
+  url: String!
 }
 
 input CreateManyUserImageInput {
@@ -322,6 +361,7 @@ input FindAuctionPreviewsWhereInput {
   bidderId: ID
   categoryId: ID
   createdAt: JSON
+  followed: Boolean
   groupId: ID
   pending: String
   status: String
@@ -346,6 +386,16 @@ input FindBidsWhereInput {
   userId: ID
 }
 
+input FindBrandsOrderByInput {
+  createdAt: String
+  follower: String
+}
+
+input FindBrandsWhereInput {
+  followed: Boolean
+  groupId: ID
+}
+
 input FindCommentsOrderByInput {
   createdAt: String
 }
@@ -365,6 +415,7 @@ input FindOfferPreviewsWhereInput {
   bumpedAt: JSON
   businessFunction: String
   categoryId: ID
+  followed: Boolean
   groupId: ID
   isArchived: Boolean
   pending: String
@@ -394,6 +445,7 @@ input FindThreadPreviewsWhereInput {
   categoryId: ID
   categoryType: String
   createdAt: JSON
+  followed: Boolean
   groupId: ID
   pending: String
   tagNames: [String!]
@@ -406,6 +458,7 @@ input FindUserReviewPreviewsOrderByInput {
 
 input FindUserReviewPreviewsWhereInput {
   createdAt: JSON
+  followed: Boolean
   groupId: ID
   pending: String
   reviewedUserId: ID
@@ -419,7 +472,22 @@ input FindUsersOrderByInput {
 }
 
 input FindUsersWhereInput {
+  followed: Boolean
   userId: ID
+}
+
+input FollowBrandInput {
+  brandId: ID!
+}
+
+type FollowBrandResponse {
+  brandId: ID!
+  id: ID!
+  user: UserResponse!
+}
+
+input FollowUserInput {
+  followingId: String!
 }
 
 type GroupPreviewResponse {
@@ -477,6 +545,15 @@ type LastReportResponse {
   id: ID!
 }
 
+type LinkResponse {
+  brandId: ID!
+  createdAt: DateTime!
+  id: ID!
+  platform: PlatformResponse!
+  position: Int!
+  url: String!
+}
+
 input LinkSocialProfileInput {
   provider: String!
 }
@@ -487,6 +564,7 @@ type Mutation {
   cancelReaction(input: CancelReactionInput!): String!
   commentReport(input: CommentReportInput!): ReportCommentResponse!
   createAuction(input: CreateAuctionInput!): String!
+  createBrand(input: CreateBrandInput!): BrandResponse!
   createComment(input: CreateCommentInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
@@ -504,11 +582,15 @@ type Mutation {
   deleteThread(id: ID!): String!
   deleteUserImage(id: ID!): String!
   deleteUserReview(id: ID!): String!
+  followBrand(input: FollowBrandInput!): BrandResponse!
+  followUser(input: FollowUserInput!): UserResponse!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
   placeBid(input: PlaceBidInput!): String!
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
+  unfollowBrand(input: UnfollowBrandInput!): BrandResponse!
+  unfollowUser(input: UnfollowUserInput!): UserResponse!
   updateAuction(input: UpdateAuctionInput!): String!
   updateComment(input: UpdateCommentInput!): String!
   updateGroup(input: UpdateGroupInput!): String!
@@ -525,6 +607,9 @@ type MyUserResponse {
   avatarURL: String
   bot: Boolean!
   createdAt: DateTime!
+  followed: Boolean
+  followers: [UserResponse!]
+  following: [UserResponse!]
   id: ID!
   name: String
   phoneNumber: String
@@ -596,6 +681,11 @@ type PaginatedBidsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedBrandsResponse {
+  edges: [BrandResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedCommentsResponse {
   edges: [CommentWithAuthorResponseEdge!]!
   pageInfo: PageInfo!
@@ -641,6 +731,14 @@ input PlaceBidInput {
   id: ID!
   price: Int!
   priceCurrency: String!
+}
+
+type PlatformResponse {
+  description: String
+  id: ID!
+  logo: String
+  name: String!
+  position: Int!
 }
 
 type PostPreviewWithAuthorResponse {
@@ -720,6 +818,8 @@ type Query {
   findBidCount(auctionId: ID!): BidCountResponse!
   findBidders(cursor: ID, keyword: String, orderBy: FindBiddersOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBiddersWhereInput!): PaginatedUsersResponse!
   findBids(cursor: ID, keyword: String, orderBy: FindBidsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBidsWhereInput): PaginatedBidsResponse!
+  findBrand(id: ID, slug: String): BrandResponse!
+  findBrands(cursor: ID, keyword: String, orderBy: FindBrandsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBrandsWhereInput): PaginatedBrandsResponse!
   findComment(id: ID, postId: ID): CommentResponse
   findCommentCount(postId: ID!): CommentCountResponse!
   findComments(cursor: ID, keyword: String, orderBy: FindCommentsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindCommentsWhereInput): PaginatedCommentsResponse!
@@ -733,6 +833,7 @@ type Query {
   findOffer(id: ID, slug: String): OfferResponse
   findOfferCount(businessFunction: String!, categoryId: ID!, fromHours: Int!, userId: ID!): Float!
   findOfferPreviews(cursor: ID, keyword: String, orderBy: FindOfferPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindOfferPreviewsWhereInput): PaginatedOfferPreviewsResponse!
+  findPlatforms: [PlatformResponse!]!
   findPostPreview(id: ID!): PostPreviewWithUserResponse!
   findReactions(commentId: ID, postId: ID): [ReactionResponse!]!
   findReport(id: ID!): ReportResponse!
@@ -900,6 +1001,14 @@ type ThreadResponse {
   updatedAt: DateTime!
 }
 
+input UnfollowBrandInput {
+  brandId: ID!
+}
+
+input UnfollowUserInput {
+  followingId: String!
+}
+
 input UpdateAuctionInput {
   content: String
   id: ID!
@@ -1011,6 +1120,7 @@ type UserResponse {
   avatarURL: String
   bot: Boolean!
   createdAt: DateTime!
+  followed: Boolean
   id: ID!
   username: String!
 }

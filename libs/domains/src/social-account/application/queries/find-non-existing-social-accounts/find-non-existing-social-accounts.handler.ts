@@ -1,6 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindNonExistingSocialAccountsQuery } from './find-non-existing-social-accounts.query';
 import { NonExistingSocialAccountsResponse } from '../../dtos/non-existing-social-accounts.response';
 import { SocialUserResponse } from '../../dtos/social-user.response';
@@ -22,7 +22,7 @@ export class FindNonExistingSocialAccountsHandler extends PrismaQueryHandler {
     });
 
     const socialUsers = await Promise.all(socialUserPromises);
-    return plainToClass(NonExistingSocialAccountsResponse, {
+    return plainToInstance(NonExistingSocialAccountsResponse, {
       socialUsers: socialUsers.filter(
         (socialUser): socialUser is SocialUserResponse => !!socialUser,
       ),

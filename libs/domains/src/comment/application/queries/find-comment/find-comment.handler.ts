@@ -1,6 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindCommentQuery } from './find-comment.query';
 import { CommentResponse } from '../../dtos/comment.response';
 
@@ -25,6 +25,6 @@ export class FindCommentHandler extends PrismaQueryHandler {
         },
       },
     });
-    return plainToClass(CommentResponse, comment);
+    return plainToInstance(CommentResponse, comment);
   }
 }

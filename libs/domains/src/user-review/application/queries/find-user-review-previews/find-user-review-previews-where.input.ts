@@ -35,4 +35,8 @@ export class FindUserReviewPreviewsWhereInput {
   createdAt?: {
     gt: string;
   };
+
+  @IsOptional()
+  @Field(() => Boolean, { nullable: true })
+  followed?: boolean;
 }

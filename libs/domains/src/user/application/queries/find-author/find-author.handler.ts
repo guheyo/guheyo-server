@@ -1,6 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindAuthorQuery } from './find-author.query';
 import { AuthorResponse } from '../../dtos/author.response';
 
@@ -21,8 +21,24 @@ export class FindAuthorHandler extends PrismaQueryHandler {
           },
         },
         socialAccounts: true,
+        followers: {
+          include: {
+            follower: true,
+          },
+        },
+        following: {
+          include: {
+            following: true,
+          },
+        },
       },
     });
-    return plainToClass(AuthorResponse, user);
+
+    return plainToInstance(AuthorResponse, {
+      ...user,
+      followed: user?.followers.some((follow) => follow.followerId === query.user?.id),
+      followers: user?.followers.map((follow) => follow.follower),
+      following: user?.following.map((follow) => follow.following),
+    });
   }
 }

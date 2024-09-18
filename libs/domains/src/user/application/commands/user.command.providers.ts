@@ -5,6 +5,8 @@ import { SignInUserHandler } from './sign-in-user/sign-in-user.handler';
 import { LinkSocialProfileHandler } from './link-social-profile/link-social-profile.handler';
 import { ConnectRolesHandler } from './connect-roles/connect-roles.handler';
 import { DisconnectRolesHandler } from './disconnect-roles/disconnect-roles.handler';
+import { FollowUserHandler } from './follow-user/follow-user.handler';
+import { UnfollowUserHandler } from './unfollow-user/unfollow-user.handler';
 
 export const USER_COMMAND_PROVIDERS = [
   CreateUserHandler,
@@ -14,4 +16,6 @@ export const USER_COMMAND_PROVIDERS = [
   LinkSocialProfileHandler,
   ConnectRolesHandler,
   DisconnectRolesHandler,
+  FollowUserHandler,
+  UnfollowUserHandler,
 ];

@@ -1,6 +1,6 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindEmojisQuery } from './find-emojis.query';
 import { EmojiResponse } from '../../dtos/emoji.response';
 
@@ -15,6 +15,6 @@ export class FindEmojisHandler extends PrismaQueryHandler {
         position: 'asc',
       },
     });
-    return plainToClass(EmojiResponse, emojis);
+    return plainToInstance(EmojiResponse, emojis);
   }
 }

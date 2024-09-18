@@ -2,7 +2,7 @@ import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { NotFoundException } from '@nestjs/common';
 import { VersionErrorMessage } from '@lib/domains/version/domain/version.error.message';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { FindVersionPreviewQuery } from './find-version-preview.query';
 import { VersionPreviewResponse } from '../../dtos/version-preview.response';
 
@@ -26,6 +26,6 @@ export class FindVersionPreviewHandler extends PrismaQueryHandler {
         createdAt: 'desc',
       },
     });
-    return plainToClass(VersionPreviewResponse, version);
+    return plainToInstance(VersionPreviewResponse, version);
   }
 }

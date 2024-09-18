@@ -1,7 +1,7 @@
 import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { CommentWithAuthorResponse } from '@lib/domains/comment/application/dtos/comment-with-author.response';
 import { COMMENT } from '@lib/domains/comment/domain/comment.constants';
 import { FindAuctionInteractionItemsQuery } from './find-auction-interaction-items.query';
@@ -116,8 +116,8 @@ export class FindAuctionInteractionItemsHandler extends PrismaQueryHandler {
     );
 
     const auctionInteractionItems = [
-      ...bids.map((bid) => plainToClass(BidResponse, bid)),
-      ...commentWithImages.map((comment) => plainToClass(CommentWithAuthorResponse, comment)),
+      ...bids.map((bid) => plainToInstance(BidResponse, bid)),
+      ...commentWithImages.map((comment) => plainToInstance(CommentWithAuthorResponse, comment)),
     ]
       .sort((a, b) =>
         query.orderBy?.createdAt === 'asc'

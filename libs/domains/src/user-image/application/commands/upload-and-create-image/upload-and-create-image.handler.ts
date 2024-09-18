@@ -25,7 +25,6 @@ export class UploadAndCreateImageHandler implements ICommandHandler<UploadAndCre
       type: command.type,
       refId: command.refId,
       userId: command.userId,
-      source: command.source,
     });
     await this.userImageSavePort.create(userImage);
   }
