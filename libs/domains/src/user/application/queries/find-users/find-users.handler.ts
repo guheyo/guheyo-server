@@ -24,7 +24,7 @@ export class FindUsersHandler extends PrismaQueryHandler {
         ...(query.where?.followed && {
           followers: {
             some: {
-              followerId: query.userId,
+              followerId: query.userId || '-1',
             },
           },
         }),
@@ -52,6 +52,7 @@ export class FindUsersHandler extends PrismaQueryHandler {
       users.map((user) =>
         plainToInstance(UserResponse, {
           ...user,
+          // NOTE: included followers if followerId === query.userId
           followed: query.userId && user.followers.length > 0,
         }),
       ),
