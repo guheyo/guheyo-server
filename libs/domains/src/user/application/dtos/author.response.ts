@@ -2,12 +2,21 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { SocialAccountWithoutAuthResponse } from '@lib/domains/social-account/application/dtos/social-account.without-auth.response';
 import { Type } from 'class-transformer';
 import { UserWithRolesResponse } from './user-with-roles';
+import { UserResponse } from './user.response';
 
 @ObjectType()
 export class AuthorResponse extends UserWithRolesResponse {
   @Type(() => SocialAccountWithoutAuthResponse)
   @Field(() => [SocialAccountWithoutAuthResponse])
   socialAccounts: SocialAccountWithoutAuthResponse[];
+
+  @Type(() => UserResponse)
+  @Field(() => [UserResponse], { nullable: true })
+  followers?: UserResponse[];
+
+  @Type(() => UserResponse)
+  @Field(() => [UserResponse], { nullable: true })
+  following?: UserResponse[];
 
   constructor(partial: Partial<AuthorResponse>) {
     super(partial);

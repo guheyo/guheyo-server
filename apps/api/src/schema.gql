@@ -54,6 +54,8 @@ type AuthorResponse {
   bot: Boolean!
   createdAt: DateTime!
   followed: Boolean
+  followers: [UserResponse!]
+  following: [UserResponse!]
   id: ID!
   roles: [RoleResponse!]!
   socialAccounts: [SocialAccountWithoutAuthResponse!]!
@@ -606,6 +608,8 @@ type MyUserResponse {
   bot: Boolean!
   createdAt: DateTime!
   followed: Boolean
+  followers: [UserResponse!]
+  following: [UserResponse!]
   id: ID!
   name: String
   phoneNumber: String
