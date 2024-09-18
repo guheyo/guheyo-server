@@ -108,7 +108,7 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
               user: {
                 followers: {
                   some: {
-                    followerId: query.userId,
+                    followerId: query.userId || '-1',
                   },
                 },
               },
