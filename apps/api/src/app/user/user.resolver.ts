@@ -60,7 +60,7 @@ export class UserResolver {
   @UseGuards(OptionalJwtUserGuard)
   @Query(() => PaginatedUsersResponse)
   async findUsers(@Args() args: FindUsersArgs, @ExtractedUser() user: MyUserResponse) {
-    const query = new FindUsersQuery({ args });
+    const query = new FindUsersQuery({ args, userId: user.id });
     return this.queryBus.execute(query);
   }
 
