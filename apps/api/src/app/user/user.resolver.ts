@@ -47,9 +47,13 @@ export class UserResolver {
     return this.queryBus.execute(query);
   }
 
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => AuthorResponse, { nullable: true })
-  async findAuthor(@Args() args: FindAuthorArgs): Promise<AuthorResponse | null> {
-    const query = new FindAuthorQuery(args);
+  async findAuthor(
+    @Args() args: FindAuthorArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<AuthorResponse | null> {
+    const query = new FindAuthorQuery({ args, user });
     return this.queryBus.execute(query);
   }
 
