@@ -21,8 +21,24 @@ export class FindAuthorHandler extends PrismaQueryHandler {
           },
         },
         socialAccounts: true,
+        followers: {
+          include: {
+            follower: true,
+          },
+        },
+        following: {
+          include: {
+            following: true,
+          },
+        },
       },
     });
-    return plainToInstance(AuthorResponse, user);
+
+    return plainToInstance(AuthorResponse, {
+      ...user,
+      followed: user?.followers.some((follow) => follow.followerId === query.user?.id),
+      followers: user?.followers.map((follow) => follow.follower),
+      following: user?.following.map((follow) => follow.following),
+    });
   }
 }
