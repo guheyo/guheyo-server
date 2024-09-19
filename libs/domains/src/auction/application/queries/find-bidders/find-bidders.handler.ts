@@ -21,7 +21,17 @@ export class FindBiddersHandler extends PrismaQueryHandler {
             canceledAt: null,
           },
           include: {
-            user: true,
+            user: {
+              include: {
+                ...(query.user?.id && {
+                  followers: {
+                    where: {
+                      followerId: query.user.id,
+                    },
+                  },
+                }),
+              },
+            },
           },
           orderBy: {
             createdAt: query.orderBy?.createdAt,
@@ -52,7 +62,12 @@ export class FindBiddersHandler extends PrismaQueryHandler {
         : filteredUsers.slice(0, query.take + 1);
 
     return paginate<UserResponse>(
-      cursorBasedUsers.map((user) => plainToInstance(UserResponse, user)),
+      cursorBasedUsers.map((user) =>
+        plainToInstance(UserResponse, {
+          ...user,
+          followed: query.user && user.followers.length > 0,
+        }),
+      ),
       'id',
       query.take,
     );
