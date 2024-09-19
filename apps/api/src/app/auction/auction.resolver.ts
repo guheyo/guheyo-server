@@ -105,11 +105,12 @@ export class AuctionResolver {
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(GqlThrottlerBehindProxyGuard)
+  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
   @Query(() => PaginatedUsersResponse)
-  async findBidders(@Args() args: FindBiddersArgs) {
+  async findBidders(@Args() args: FindBiddersArgs, @ExtractedUser() user: MyUserResponse) {
     const query = new FindBiddersQuery({
       args,
+      user,
     });
     return this.queryBus.execute(query);
   }
