@@ -5,8 +5,8 @@ import { Prisma } from '@prisma/client';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseContainsSearcher } from '@lib/shared/search/search';
 import { FindBrandsQuery } from './find-brands.query';
-import { BrandResponse } from '../../dtos/brand.response';
 import { PaginatedBrandsResponse } from './paginated-brands.response';
+import { BrandPreviewResponse } from '../../dtos/brand-preview.response';
 
 @QueryHandler(FindBrandsQuery)
 export class FindBrandsHandler extends PrismaQueryHandler {
@@ -56,11 +56,6 @@ export class FindBrandsHandler extends PrismaQueryHandler {
       skip: query.skip,
       include: {
         groups: true,
-        links: {
-          include: {
-            platform: true,
-          },
-        },
         followBrands: {
           include: {
             user: true,
@@ -69,9 +64,9 @@ export class FindBrandsHandler extends PrismaQueryHandler {
       },
     });
 
-    return paginate<BrandResponse>(
+    return paginate<BrandPreviewResponse>(
       brands.map((brand) =>
-        plainToInstance(BrandResponse, {
+        plainToInstance(BrandPreviewResponse, {
           ...brand,
           followed: brand.followBrands.some((followBrand) => followBrand.userId === query.userId),
         }),

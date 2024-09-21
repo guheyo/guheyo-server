@@ -3,21 +3,21 @@ import { Inject, InternalServerErrorException, NotFoundException } from '@nestjs
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { BrandErrorMessage } from '@lib/domains/brand/domain/brand.error.message';
 import { FollowBrandCommand } from './follow-brand.command';
-import { BrandResponse } from '../../dtos/brand.response';
+import { BrandDetailResponse } from '../../dtos/brand-detail.response';
 import { BrandSavePort } from '../../ports/out/brand.save.port';
 import { BrandLoadPort } from '../../ports/out/brand.load.port';
 
 @CommandHandler(FollowBrandCommand)
-export class FollowBrandHandler extends PrismaCommandHandler<FollowBrandCommand, BrandResponse> {
+export class FollowBrandHandler extends PrismaCommandHandler<FollowBrandCommand, BrandDetailResponse> {
   constructor(
     @Inject('BrandSavePort') private savePort: BrandSavePort,
     @Inject('BrandLoadPort') private loadPort: BrandLoadPort,
     private readonly publisher: EventPublisher,
   ) {
-    super(BrandResponse);
+    super(BrandDetailResponse);
   }
 
-  async execute(command: FollowBrandCommand): Promise<BrandResponse> {
+  async execute(command: FollowBrandCommand): Promise<BrandDetailResponse> {
     const existingFollow = await this.prismaService.followBrand.findFirst({
       where: {
         userId: command.user.id,

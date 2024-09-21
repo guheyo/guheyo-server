@@ -59,6 +59,17 @@ export class FindThreadPreviewsHandler extends PrismaQueryHandler {
                   },
                 }
               : {}),
+            ...(query.where.brandSlugs
+              ? {
+                  brands: {
+                    some: {
+                      slug: {
+                        in: query.where.brandSlugs,
+                      },
+                    },
+                  },
+                }
+              : {}),
             createdAt: query.where.createdAt
               ? {
                   gt: new Date(query.where.createdAt.gt),

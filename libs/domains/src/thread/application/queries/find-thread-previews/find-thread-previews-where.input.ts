@@ -30,6 +30,10 @@ export class FindThreadPreviewsWhereInput {
   tagNames?: string[];
 
   @IsOptional()
+  @Field(() => [String], { nullable: true })
+  brandSlugs?: string[];
+
+  @IsOptional()
   @Field(() => GraphQLJSON, { nullable: true })
   createdAt?: {
     gt: string;

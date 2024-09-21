@@ -4,21 +4,21 @@ import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-
 import { BrandEntity } from '@lib/domains/brand/domain/brand.entity';
 import { LinkEntity } from '@lib/domains/brand/domain/link.entity';
 import { CreateBrandCommand } from './create-brand.command';
-import { BrandResponse } from '../../dtos/brand.response';
+import { BrandDetailResponse } from '../../dtos/brand-detail.response';
 import { BrandSavePort } from '../../ports/out/brand.save.port';
 import { BrandLoadPort } from '../../ports/out/brand.load.port';
 
 @CommandHandler(CreateBrandCommand)
-export class CreateBrandHandler extends PrismaCommandHandler<CreateBrandCommand, BrandResponse> {
+export class CreateBrandHandler extends PrismaCommandHandler<CreateBrandCommand, BrandDetailResponse> {
   constructor(
     @Inject('BrandSavePort') private savePort: BrandSavePort,
     @Inject('BrandLoadPort') private loadPort: BrandLoadPort,
     private readonly publisher: EventPublisher,
   ) {
-    super(BrandResponse);
+    super(BrandDetailResponse);
   }
 
-  async execute(command: CreateBrandCommand): Promise<BrandResponse> {
+  async execute(command: CreateBrandCommand): Promise<BrandDetailResponse> {
     const brand = new BrandEntity({
       id: command.id,
       name: command.name,
