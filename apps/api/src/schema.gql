@@ -442,6 +442,7 @@ input FindThreadPreviewsOrderByInput {
 }
 
 input FindThreadPreviewsWhereInput {
+  brandSlugs: [String!]
   categoryId: ID
   categoryType: String
   createdAt: JSON
