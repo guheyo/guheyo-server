@@ -1,7 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { UseGuards } from '@nestjs/common';
-import { BrandResponse } from '@lib/domains/brand/application/dtos/brand.response';
 import { FindBrandsQuery } from '@lib/domains/brand/application/queries/find-brands/find-brands.query';
 import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
 import {
@@ -21,6 +20,7 @@ import { OptionalJwtUserGuard } from '@lib/domains/auth/guards/jwt/optional-jwt-
 import { FindBrandArgs } from '@lib/domains/brand/application/queries/find-brand/find-brand.args';
 import { FindBrandQuery } from '@lib/domains/brand/application/queries/find-brand/find-brand.query';
 import { UnfollowBrandCommand } from '@lib/domains/brand/application/commands/unfollow-brand/unfollow-brand.command';
+import { BrandDetailResponse } from '@lib/domains/brand/application/dtos/brand-detail.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -45,11 +45,11 @@ export class BrandResolver {
   }
 
   @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
-  @Query(() => BrandResponse)
+  @Query(() => BrandDetailResponse)
   async findBrand(
     @Args() args: FindBrandArgs,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<BrandResponse> {
+  ): Promise<BrandDetailResponse> {
     const query = new FindBrandQuery({
       args,
       userId: user.id,
@@ -62,11 +62,11 @@ export class BrandResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [...ROOT_ADMIN_ROLE_NAMES],
   })
-  @Mutation(() => BrandResponse)
+  @Mutation(() => BrandDetailResponse)
   async createBrand(
     @Args('input') input: CreateBrandInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<BrandResponse> {
+  ): Promise<BrandDetailResponse> {
     const brand = await this.commandBus.execute(new CreateBrandCommand({ input, user }));
     return brand;
   }
@@ -76,11 +76,11 @@ export class BrandResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => BrandResponse)
+  @Mutation(() => BrandDetailResponse)
   async followBrand(
     @Args('input') input: FollowBrandInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<BrandResponse> {
+  ): Promise<BrandDetailResponse> {
     const brand = await this.commandBus.execute(new FollowBrandCommand({ input, user }));
     return brand;
   }
@@ -90,11 +90,11 @@ export class BrandResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => BrandResponse)
+  @Mutation(() => BrandDetailResponse)
   async unfollowBrand(
     @Args('input') input: UnfollowBrandInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<BrandResponse> {
+  ): Promise<BrandDetailResponse> {
     const brand = await this.commandBus.execute(new UnfollowBrandCommand({ input, user }));
     return brand;
   }

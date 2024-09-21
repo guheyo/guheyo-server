@@ -83,11 +83,11 @@ type BidResponseEdge {
   node: BidResponse!
 }
 
-type BrandResponse {
+type BrandDetailResponse {
   createdAt: DateTime!
   description: String
   followBrands: [FollowBrandResponse!]!
-  followed: Boolean!
+  followed: Boolean
   groups: [GroupProfileResponse!]!
   id: ID!
   links: [LinkResponse!]!
@@ -96,9 +96,20 @@ type BrandResponse {
   slug: String
 }
 
-type BrandResponseEdge {
+type BrandPreviewResponse {
+  createdAt: DateTime!
+  description: String
+  followed: Boolean
+  groups: [GroupProfileResponse!]!
+  id: ID!
+  logo: String
+  name: String!
+  slug: String
+}
+
+type BrandPreviewResponseEdge {
   cursor: String!
-  node: BrandResponse!
+  node: BrandPreviewResponse!
 }
 
 input BumpOfferInput {
@@ -565,7 +576,7 @@ type Mutation {
   cancelReaction(input: CancelReactionInput!): String!
   commentReport(input: CommentReportInput!): ReportCommentResponse!
   createAuction(input: CreateAuctionInput!): String!
-  createBrand(input: CreateBrandInput!): BrandResponse!
+  createBrand(input: CreateBrandInput!): BrandDetailResponse!
   createComment(input: CreateCommentInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
@@ -583,14 +594,14 @@ type Mutation {
   deleteThread(id: ID!): String!
   deleteUserImage(id: ID!): String!
   deleteUserReview(id: ID!): String!
-  followBrand(input: FollowBrandInput!): BrandResponse!
+  followBrand(input: FollowBrandInput!): BrandDetailResponse!
   followUser(input: FollowUserInput!): UserResponse!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
   placeBid(input: PlaceBidInput!): String!
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
-  unfollowBrand(input: UnfollowBrandInput!): BrandResponse!
+  unfollowBrand(input: UnfollowBrandInput!): BrandDetailResponse!
   unfollowUser(input: UnfollowUserInput!): UserResponse!
   updateAuction(input: UpdateAuctionInput!): String!
   updateComment(input: UpdateCommentInput!): String!
@@ -683,7 +694,7 @@ type PaginatedBidsResponse {
 }
 
 type PaginatedBrandsResponse {
-  edges: [BrandResponseEdge!]!
+  edges: [BrandPreviewResponseEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -819,7 +830,7 @@ type Query {
   findBidCount(auctionId: ID!): BidCountResponse!
   findBidders(cursor: ID, keyword: String, orderBy: FindBiddersOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBiddersWhereInput!): PaginatedUsersResponse!
   findBids(cursor: ID, keyword: String, orderBy: FindBidsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBidsWhereInput): PaginatedBidsResponse!
-  findBrand(id: ID, slug: String): BrandResponse!
+  findBrand(id: ID, slug: String): BrandDetailResponse!
   findBrands(cursor: ID, keyword: String, orderBy: FindBrandsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBrandsWhereInput): PaginatedBrandsResponse!
   findComment(id: ID, postId: ID): CommentResponse
   findCommentCount(postId: ID!): CommentCountResponse!
