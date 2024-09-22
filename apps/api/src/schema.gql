@@ -256,7 +256,7 @@ input CreateOfferInput {
 }
 
 input CreatePostInput {
-  brandSlug: String
+  brandId: ID
   categoryId: ID
   createdAt: DateTime
   groupId: ID!
@@ -454,7 +454,7 @@ input FindThreadPreviewsOrderByInput {
 }
 
 input FindThreadPreviewsWhereInput {
-  brandSlugs: [String!]
+  brandIds: [ID!]
   categoryId: ID
   categoryType: String
   createdAt: JSON

@@ -46,7 +46,7 @@ export class CreatePostInput {
   tagNames?: string[];
 
   @IsOptional()
-  @IsString()
-  @Field(() => String, { nullable: true })
-  brandSlug?: string;
+  @IsUUID()
+  @Field(() => ID, { nullable: true })
+  brandId?: string;
 }
