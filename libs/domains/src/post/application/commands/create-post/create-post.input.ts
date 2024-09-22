@@ -44,4 +44,9 @@ export class CreatePostInput {
   @IsString({ each: true })
   @Field(() => [String], { nullable: true })
   tagNames?: string[];
+
+  @IsOptional()
+  @IsString()
+  @Field(() => String, { nullable: true })
+  brandSlug?: string;
 }
