@@ -59,6 +59,11 @@ export class ThreadRepository
           'categoryId',
           'userId',
         ]),
+        brands: {
+          connect: thread.post.brands.map((brand) => ({
+            id: brand.id,
+          })),
+        },
       },
     });
     await this.prismaService.thread.create({
