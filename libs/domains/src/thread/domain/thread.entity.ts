@@ -25,7 +25,7 @@ export class ThreadEntity extends AggregateRoot {
     Object.assign(this, partial);
   }
 
-  create(tagNames: string[]) {
+  create({ tagNames }: { tagNames: string[] }) {
     this.apply(
       new ThreadCreatedEvent({
         threadId: this.id,
