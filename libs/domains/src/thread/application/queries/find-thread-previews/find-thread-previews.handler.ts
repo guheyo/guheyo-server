@@ -59,12 +59,12 @@ export class FindThreadPreviewsHandler extends PrismaQueryHandler {
                   },
                 }
               : {}),
-            ...(query.where.brandSlugs
+            ...(query.where.brandIds
               ? {
                   brands: {
                     some: {
-                      slug: {
-                        in: query.where.brandSlugs,
+                      id: {
+                        in: query.where.brandIds,
                       },
                     },
                   },
