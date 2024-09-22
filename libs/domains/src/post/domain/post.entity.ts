@@ -3,6 +3,7 @@ import { UserEntity } from '@lib/domains/user/domain/user.entity';
 import { Type } from 'class-transformer';
 import { TagEntity } from '@lib/domains/tag/domain/tag.entity';
 import { isUndefined, omitBy } from 'lodash';
+import { BrandEntity } from '@lib/domains/brand/domain/brand.entity';
 import { UpdatePostProps } from './post.types';
 
 export class PostEntity extends AggregateRoot {
@@ -43,6 +44,9 @@ export class PostEntity extends AggregateRoot {
 
   @Type(() => TagEntity)
   tags: TagEntity[];
+
+  @Type(() => BrandEntity)
+  brands: BrandEntity[];
 
   constructor(partial: Partial<PostEntity>) {
     super();
