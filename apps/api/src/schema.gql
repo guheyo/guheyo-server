@@ -256,6 +256,7 @@ input CreateOfferInput {
 }
 
 input CreatePostInput {
+  brandSlug: String
   categoryId: ID
   createdAt: DateTime
   groupId: ID!
