@@ -34,6 +34,7 @@ export class FindGroupProfilesHandler extends PrismaQueryHandler {
       },
       orderBy: {
         position: query.orderBy?.position,
+        createdAt: query.orderBy?.createdAt,
       },
     });
     return paginate<GroupProfileResponse>(
