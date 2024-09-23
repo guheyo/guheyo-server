@@ -47,7 +47,7 @@ export class GroupResolver {
   async findGroupProfiles(
     @Args() findGroupProfilesArgs: FindGroupProfilesArgs,
   ): Promise<PaginatedGroupProfilesResponse> {
-    const query = new FindGroupProfilesQuery(findGroupProfilesArgs);
+    const query = new FindGroupProfilesQuery({ args: findGroupProfilesArgs });
     return this.queryBus.execute(query);
   }
 

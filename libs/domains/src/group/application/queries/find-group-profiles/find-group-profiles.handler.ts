@@ -2,6 +2,7 @@ import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { plainToInstance } from 'class-transformer';
+import { parseContainsSearcher } from '@lib/shared/search/search';
 import { FindGroupProfilesQuery } from './find-group-profiles.query';
 import { GroupProfileResponse } from '../../dtos/group-profile.response';
 import { PaginatedGroupProfilesResponse } from './paginated-group-profiles.response';
@@ -17,6 +18,7 @@ export class FindGroupProfilesHandler extends PrismaQueryHandler {
     const groups = await this.prismaService.group.findMany({
       where: {
         ...query.where,
+        name: parseContainsSearcher({ keyword: query.keyword }),
         position: {
           gt: 0,
         },
@@ -31,7 +33,7 @@ export class FindGroupProfilesHandler extends PrismaQueryHandler {
         icon: true,
       },
       orderBy: {
-        position: 'asc',
+        position: query.orderBy?.position,
       },
     });
     return paginate<GroupProfileResponse>(
