@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import { GraphQLJSON } from 'graphql-type-json';
 
@@ -9,4 +9,8 @@ export class FindGroupProfilesWhereInput {
   createdAt?: {
     gt: string;
   };
+
+  @IsOptional()
+  @Field(() => [ID], { nullable: true })
+  brandIds?: string[];
 }
