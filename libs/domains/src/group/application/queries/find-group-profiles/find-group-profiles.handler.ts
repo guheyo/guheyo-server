@@ -17,11 +17,11 @@ export class FindGroupProfilesHandler extends PrismaQueryHandler {
       : undefined;
     const groups = await this.prismaService.group.findMany({
       where: {
-        ...query.where,
         name: parseContainsSearcher({ keyword: query.keyword }),
         position: {
           gt: 0,
         },
+        createdAt: query.where?.createdAt,
         brands: {
           some: {
             OR: query.where?.brandIds?.map((brandId) => ({
