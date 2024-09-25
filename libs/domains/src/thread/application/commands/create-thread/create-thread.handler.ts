@@ -21,11 +21,13 @@ export class CreateThreadHandler extends PrismaCommandHandler<CreateThreadComman
   }
 
   async execute(command: CreateThreadCommand): Promise<void> {
-    const brand = await this.prismaService.brand.findUnique({
-      where: {
-        id: command.post.brandId,
-      },
-    });
+    const brand =
+      command.post.brandId &&
+      (await this.prismaService.brand.findUnique({
+        where: {
+          id: command.post.brandId,
+        },
+      }));
 
     await this.savePort.create(
       new ThreadEntity({
