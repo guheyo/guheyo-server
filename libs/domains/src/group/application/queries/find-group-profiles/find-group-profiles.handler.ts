@@ -22,6 +22,9 @@ export class FindGroupProfilesHandler extends PrismaQueryHandler {
           gt: 0,
         },
         createdAt: query.where?.createdAt,
+        id: {
+          in: query.where?.groupIds,
+        },
         brands: {
           some: {
             OR: query.where?.brandIds?.map((brandId) => ({
@@ -44,6 +47,7 @@ export class FindGroupProfilesHandler extends PrismaQueryHandler {
         createdAt: query.orderBy?.createdAt,
       },
     });
+
     return paginate<GroupProfileResponse>(
       groups.map((group) => plainToInstance(GroupProfileResponse, group)),
       'id',
