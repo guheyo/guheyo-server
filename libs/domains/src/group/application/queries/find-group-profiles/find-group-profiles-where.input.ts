@@ -12,5 +12,9 @@ export class FindGroupProfilesWhereInput {
 
   @IsOptional()
   @Field(() => [ID], { nullable: true })
+  groupIds?: string[];
+
+  @IsOptional()
+  @Field(() => [ID], { nullable: true })
   brandIds?: string[];
 }

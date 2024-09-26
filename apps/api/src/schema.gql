@@ -426,6 +426,7 @@ input FindGroupProfilesOrderByInput {
 input FindGroupProfilesWhereInput {
   brandIds: [ID!]
   createdAt: JSON
+  groupIds: [ID!]
 }
 
 input FindOfferPreviewsOrderByInput {
