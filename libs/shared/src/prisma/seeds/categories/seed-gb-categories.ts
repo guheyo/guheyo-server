@@ -14,39 +14,33 @@ export async function seedGbCategories(prisma: PrismaClient) {
       data: [
         {
           type: GB,
-          name: '공제',
-          slug: 'group-buy',
-          position: 0,
-        },
-        {
-          type: GB,
-          name: '래플',
-          slug: 'raffle',
-          position: 1,
-        },
-        {
-          type: GB,
-          name: '드랍',
-          slug: 'drop',
-          position: 2,
-        },
-        {
-          type: GB,
-          name: '수요조사',
-          slug: 'ic',
-          position: 3,
-        },
-        {
-          type: GB,
           name: '수익 공구',
           slug: 'profit',
-          position: 4,
+          position: 0,
         },
         {
           type: GB,
           name: '비수익 공구',
           slug: 'non-profit',
-          position: 5,
+          position: 1,
+        },
+        {
+          type: GB,
+          name: '수요조사',
+          slug: 'ic',
+          position: 2,
+        },
+        {
+          type: GB,
+          name: '공제',
+          slug: 'group-buy',
+          position: 3,
+        },
+        {
+          type: GB,
+          name: '래플',
+          slug: 'raffle',
+          position: 4,
         },
       ],
     });
