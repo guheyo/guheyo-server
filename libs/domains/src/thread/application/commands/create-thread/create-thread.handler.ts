@@ -29,11 +29,22 @@ export class CreateThreadHandler extends PrismaCommandHandler<CreateThreadComman
         },
       }));
 
+    let { categoryId } = command.post;
+    if (!categoryId) {
+      const category = await this.prismaService.category.findFirst({
+        where: {
+          name: '일반',
+        },
+      });
+      categoryId = category?.id;
+    }
+
     await this.savePort.create(
       new ThreadEntity({
         ...command,
         post: new PostEntity({
           ...command.post,
+          categoryId,
           userId: command.user.id,
           userAgent: command.userAgent,
           ipAddress: command.ipAddress,
