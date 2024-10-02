@@ -35,6 +35,7 @@ export class FindUserReviewHandler extends PrismaQueryHandler {
               },
             },
             tags: true,
+            brands: true,
             comments: {
               where: {
                 deletedAt: null,

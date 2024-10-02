@@ -35,6 +35,11 @@ export class PostRepository
             position: 'asc',
           },
         },
+        brands: {
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
       },
     });
     return this.toEntity(post);

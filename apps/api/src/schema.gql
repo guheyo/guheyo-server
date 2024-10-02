@@ -83,6 +83,15 @@ type BidResponseEdge {
   node: BidResponse!
 }
 
+type BrandBaseResponse {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  logo: String
+  name: String!
+  slug: String
+}
+
 type BrandDetailResponse {
   createdAt: DateTime!
   description: String
@@ -767,6 +776,7 @@ type PlatformResponse {
 
 type PostPreviewWithAuthorResponse {
   archivedAt: DateTime
+  brands: [BrandBaseResponse!]!
   category: CategoryResponse
   commentCount: Int
   createdAt: DateTime!
@@ -784,6 +794,7 @@ type PostPreviewWithAuthorResponse {
 
 type PostPreviewWithUserResponse {
   archivedAt: DateTime
+  brands: [BrandBaseResponse!]!
   category: CategoryResponse
   commentCount: Int
   createdAt: DateTime!
@@ -801,6 +812,7 @@ type PostPreviewWithUserResponse {
 
 type PostPreviewWithoutUserResponse {
   archivedAt: DateTime
+  brands: [BrandBaseResponse!]!
   category: CategoryResponse
   commentCount: Int
   createdAt: DateTime!
@@ -817,6 +829,7 @@ type PostPreviewWithoutUserResponse {
 
 type PostResponse {
   archivedAt: DateTime
+  brands: [BrandBaseResponse!]!
   category: CategoryResponse
   commentCount: Int
   createdAt: DateTime!
