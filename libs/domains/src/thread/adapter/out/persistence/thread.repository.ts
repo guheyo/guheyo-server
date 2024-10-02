@@ -37,6 +37,11 @@ export class ThreadRepository
                 position: 'asc',
               },
             },
+            brands: {
+              orderBy: {
+                createdAt: 'asc',
+              },
+            },
           },
         },
       },

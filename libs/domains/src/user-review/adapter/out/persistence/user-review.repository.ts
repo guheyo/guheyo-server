@@ -37,6 +37,11 @@ export class UserReviewRepository
                 position: 'asc',
               },
             },
+            brands: {
+              orderBy: {
+                createdAt: 'asc',
+              },
+            },
           },
         },
       },
@@ -80,6 +85,11 @@ export class UserReviewRepository
             tags: {
               orderBy: {
                 position: 'asc',
+              },
+            },
+            brands: {
+              orderBy: {
+                createdAt: 'asc',
               },
             },
           },

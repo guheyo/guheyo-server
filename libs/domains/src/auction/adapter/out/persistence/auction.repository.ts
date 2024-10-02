@@ -39,6 +39,11 @@ export class AuctionRepository
                 position: 'asc',
               },
             },
+            brands: {
+              orderBy: {
+                createdAt: 'asc',
+              },
+            },
           },
         },
         bids: {
