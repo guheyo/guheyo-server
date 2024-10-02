@@ -34,6 +34,7 @@ export class FindOfferHandler extends PrismaQueryHandler {
               },
             },
             tags: true,
+            brands: true,
             reports: {
               select: {
                 id: true,

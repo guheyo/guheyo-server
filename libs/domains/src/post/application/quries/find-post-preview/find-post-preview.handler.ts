@@ -18,6 +18,7 @@ export class FindPostPreviewHandler extends PrismaQueryHandler {
         category: true,
         user: true,
         tags: true,
+        brands: true,
       },
     });
     if (post?.archivedAt && post.userId !== query.userId)
