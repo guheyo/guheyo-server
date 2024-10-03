@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { BrandEntity } from '@lib/domains/brand/domain/brand.entity';

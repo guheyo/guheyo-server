@@ -9,7 +9,10 @@ import { BrandSavePort } from '../../ports/out/brand.save.port';
 import { BrandLoadPort } from '../../ports/out/brand.load.port';
 
 @CommandHandler(CreateBrandCommand)
-export class CreateBrandHandler extends PrismaCommandHandler<CreateBrandCommand, BrandDetailResponse> {
+export class CreateBrandHandler extends PrismaCommandHandler<
+  CreateBrandCommand,
+  BrandDetailResponse
+> {
   constructor(
     @Inject('BrandSavePort') private savePort: BrandSavePort,
     @Inject('BrandLoadPort') private loadPort: BrandLoadPort,
