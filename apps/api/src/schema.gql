@@ -633,6 +633,7 @@ type Mutation {
   updateThread(input: UpdateThreadInput!): String!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
+  upsertBrandsFromCsv(input: UpsertBrandsFromCsvInput!): String!
 }
 
 type MyUserResponse {
@@ -1133,6 +1134,10 @@ type UpdatedCommentResponse {
   id: ID!
   pinned: Boolean!
   updatedAt: DateTime!
+}
+
+input UpsertBrandsFromCsvInput {
+  filePath: String!
 }
 
 type UserImageResponse {

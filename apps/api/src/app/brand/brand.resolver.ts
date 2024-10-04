@@ -21,6 +21,10 @@ import { FindBrandArgs } from '@lib/domains/brand/application/queries/find-brand
 import { FindBrandQuery } from '@lib/domains/brand/application/queries/find-brand/find-brand.query';
 import { UnfollowBrandCommand } from '@lib/domains/brand/application/commands/unfollow-brand/unfollow-brand.command';
 import { BrandDetailResponse } from '@lib/domains/brand/application/dtos/brand-detail.response';
+import { UpsertBrandsFromCsvInput } from '@lib/domains/brand/application/commands/upsert-brands-from-csv/upsert-brands-from-csv.input';
+import { UpsertBrandsFromCsvCommand } from '@lib/domains/brand/application/commands/upsert-brands-from-csv/upsert-brands-from-csv.command';
+import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
+import { ADMIN_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -97,5 +101,19 @@ export class BrandResolver {
   ): Promise<BrandDetailResponse> {
     const brand = await this.commandBus.execute(new UnfollowBrandCommand({ input, user }));
     return brand;
+  }
+
+  @AuthenticatedSocialAccountAndRole({
+    providers: ['kakao'],
+    blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
+    allowlistRoleNames: [ADMIN_ROLE_NAME],
+  })
+  @Mutation(() => String)
+  async upsertBrandsFromCsv(
+    @Args('input') input: UpsertBrandsFromCsvInput,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<string> {
+    await this.commandBus.execute(new UpsertBrandsFromCsvCommand({ input, user }));
+    return input.filePath;
   }
 }
