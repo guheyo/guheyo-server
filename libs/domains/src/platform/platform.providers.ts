@@ -1,5 +1,6 @@
 import { PlatformRepository } from './adapter/out/persistence/platform.repository';
 import { PLATFORM_QUERY_PROVIDERS } from './application/queries/platform.query.providers';
+import { PlatformService } from './application/services/platform.service';
 
 export const PLATFORM_PROVIDERS = [
   {
@@ -11,4 +12,5 @@ export const PLATFORM_PROVIDERS = [
     useClass: PlatformRepository,
   },
   ...PLATFORM_QUERY_PROVIDERS,
+  PlatformService,
 ];
