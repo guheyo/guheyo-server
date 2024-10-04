@@ -37,6 +37,7 @@
     "@types/passport-jwt": "^4.0.1",
     "@types/passport-kakao": "^1.0.3",
     "@types/passport-naver": "^1.0.4",
-    "@types/uuid": "^9.0.8"
+    "@types/uuid": "^9.0.8",
+    "fast-csv": "^5.0.1"
   }
 }
