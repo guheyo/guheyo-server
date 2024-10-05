@@ -23,7 +23,6 @@ import { UnfollowBrandCommand } from '@lib/domains/brand/application/commands/un
 import { BrandDetailResponse } from '@lib/domains/brand/application/dtos/brand-detail.response';
 import { UpsertBrandsFromCsvInput } from '@lib/domains/brand/application/commands/upsert-brands-from-csv/upsert-brands-from-csv.input';
 import { UpsertBrandsFromCsvCommand } from '@lib/domains/brand/application/commands/upsert-brands-from-csv/upsert-brands-from-csv.command';
-import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { ADMIN_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
