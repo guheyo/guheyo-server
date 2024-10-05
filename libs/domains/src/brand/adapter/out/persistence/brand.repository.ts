@@ -39,8 +39,8 @@ export class BrandRepository
         description: brand.description,
         logo: brand.logo,
         groups: {
-          connect: brand.groupIds.map((id) => ({
-            id,
+          connect: brand.groups.map((group) => ({
+            id: group.id,
           })),
         },
         links: {
@@ -73,8 +73,8 @@ export class BrandRepository
         description: brand.description,
         logo: brand.logo,
         groups: {
-          set: brand.groupIds.map((id) => ({
-            id,
+          set: brand.groups.map((group) => ({
+            id: group.id,
           })),
         },
         links: {
