@@ -3,13 +3,18 @@ import { Inject } from '@nestjs/common';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { BrandEntity } from '@lib/domains/brand/domain/brand.entity';
 import { LinkEntity } from '@lib/domains/brand/domain/link.entity';
+import { plainToInstance } from 'class-transformer';
+import { GroupEntity } from '@lib/domains/group/domain/group.entity';
 import { CreateBrandCommand } from './create-brand.command';
 import { BrandDetailResponse } from '../../dtos/brand-detail.response';
 import { BrandSavePort } from '../../ports/out/brand.save.port';
 import { BrandLoadPort } from '../../ports/out/brand.load.port';
 
 @CommandHandler(CreateBrandCommand)
-export class CreateBrandHandler extends PrismaCommandHandler<CreateBrandCommand, BrandDetailResponse> {
+export class CreateBrandHandler extends PrismaCommandHandler<
+  CreateBrandCommand,
+  BrandDetailResponse
+> {
   constructor(
     @Inject('BrandSavePort') private savePort: BrandSavePort,
     @Inject('BrandLoadPort') private loadPort: BrandLoadPort,
@@ -25,7 +30,7 @@ export class CreateBrandHandler extends PrismaCommandHandler<CreateBrandCommand,
       slug: command.slug,
       description: command.description,
       logo: command.logo,
-      groupIds: command.groupIds,
+      groups: command.groupIds.map((id) => plainToInstance(GroupEntity, { id })),
       links: command.links.map((link) => new LinkEntity(link)),
     });
     await this.savePort.create(brand);

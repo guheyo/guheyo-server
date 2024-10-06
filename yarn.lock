@@ -2281,6 +2281,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fast-csv/format@npm:5.0.0":
+  version: 5.0.0
+  resolution: "@fast-csv/format@npm:5.0.0"
+  dependencies:
+    lodash.escaperegexp: ^4.1.2
+    lodash.isboolean: ^3.0.3
+    lodash.isequal: ^4.5.0
+    lodash.isfunction: ^3.0.9
+    lodash.isnil: ^4.0.0
+  checksum: 70a01af53a47ecbbb5247696c6bd425e706e59f2aeca4cfeae879c52861c1518e5f0a86c8b2e5e00e4493aaef7d1547b1f95ca2b60078938ebd80273c4533f26
+  languageName: node
+  linkType: hard
+
+"@fast-csv/parse@npm:5.0.0":
+  version: 5.0.0
+  resolution: "@fast-csv/parse@npm:5.0.0"
+  dependencies:
+    lodash.escaperegexp: ^4.1.2
+    lodash.groupby: ^4.6.0
+    lodash.isfunction: ^3.0.9
+    lodash.isnil: ^4.0.0
+    lodash.isundefined: ^3.0.1
+    lodash.uniq: ^4.5.0
+  checksum: 5f5df7f26d9eefc95d4af20be39986a3bb0b5983299b1b454b38b27dd890a53c2a5630e239221c4e084cade96eb98e3a6a963f6b0a5104b4b11fb0011aa6e996
+  languageName: node
+  linkType: hard
+
 "@graphql-tools/merge@npm:9.0.0, @graphql-tools/merge@npm:^9.0.0":
   version: 9.0.0
   resolution: "@graphql-tools/merge@npm:9.0.0"
@@ -2391,6 +2418,7 @@ __metadata:
     class-validator: ^0.14.0
     dayjs: ^1.11.11
     discord.js: ^14.15.3
+    fast-csv: ^5.0.1
     graphql: ^16.8.0
     lodash: ^4.17.21
     necord: ^6.1.8
@@ -9149,6 +9177,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-csv@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "fast-csv@npm:5.0.1"
+  dependencies:
+    "@fast-csv/format": 5.0.0
+    "@fast-csv/parse": 5.0.0
+  checksum: c33d135074d89210af9d2b4fbf3ac9a7e07037adefaf94da16ea98a198498780e14adbbb47bec7168807fcde6ad874a2719136a402951961eeadd31967c6ed2c
+  languageName: node
+  linkType: hard
+
 "fast-deep-equal@npm:3.1.3, fast-deep-equal@npm:^3.1.1, fast-deep-equal@npm:^3.1.3":
   version: 3.1.3
   resolution: "fast-deep-equal@npm:3.1.3"
@@ -11917,10 +11955,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.escaperegexp@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "lodash.escaperegexp@npm:4.1.2"
+  checksum: 6d99452b1cfd6073175a9b741a9b09ece159eac463f86f02ea3bee2e2092923fce812c8d2bf446309cc52d1d61bf9af51c8118b0d7421388e6cead7bd3798f0f
+  languageName: node
+  linkType: hard
+
 "lodash.flatten@npm:^4.4.0":
   version: 4.4.0
   resolution: "lodash.flatten@npm:4.4.0"
   checksum: 0ac34a393d4b795d4b7421153d27c13ae67e08786c9cbb60ff5b732210d46f833598eee3fb3844bb10070e8488efe390ea53bb567377e0cb47e9e630bf0811cb
+  languageName: node
+  linkType: hard
+
+"lodash.groupby@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "lodash.groupby@npm:4.6.0"
+  checksum: e2d4d13d12790a1cacab3f5f120b7c072a792224e83b2f403218866d18efde76024b2579996dfebb230a61ce06469332e16639103669a35a605287e19ced6b9b
   languageName: node
   linkType: hard
 
@@ -11938,10 +11990,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.isequal@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.isequal@npm:4.5.0"
+  checksum: da27515dc5230eb1140ba65ff8de3613649620e8656b19a6270afe4866b7bd461d9ba2ac8a48dcc57f7adac4ee80e1de9f965d89d4d81a0ad52bb3eec2609644
+  languageName: node
+  linkType: hard
+
+"lodash.isfunction@npm:^3.0.9":
+  version: 3.0.9
+  resolution: "lodash.isfunction@npm:3.0.9"
+  checksum: 99e54c34b1e8a9ba75c034deb39cedbd2aca7af685815e67a2a8ec4f73ec9748cda6ebee5a07d7de4b938e90d421fd280e9c385cc190f903ac217ac8aff30314
+  languageName: node
+  linkType: hard
+
 "lodash.isinteger@npm:^4.0.4":
   version: 4.0.4
   resolution: "lodash.isinteger@npm:4.0.4"
   checksum: 6034821b3fc61a2ffc34e7d5644bb50c5fd8f1c0121c554c21ac271911ee0c0502274852845005f8651d51e199ee2e0cfebfe40aaa49c7fe617f603a8a0b1691
+  languageName: node
+  linkType: hard
+
+"lodash.isnil@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "lodash.isnil@npm:4.0.0"
+  checksum: ebf8df69879badd6ad99c4f64c54c470248df5cf92b208ca730861b1d8ac058da7b632ac811d18b0929d93cbac8d8fc866e781ee816b0142c56952e85edc682f
   languageName: node
   linkType: hard
 
@@ -11963,6 +12036,13 @@ __metadata:
   version: 4.0.1
   resolution: "lodash.isstring@npm:4.0.1"
   checksum: eaac87ae9636848af08021083d796e2eea3d02e80082ab8a9955309569cb3a463ce97fd281d7dc119e402b2e7d8c54a23914b15d2fc7fff56461511dc8937ba0
+  languageName: node
+  linkType: hard
+
+"lodash.isundefined@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "lodash.isundefined@npm:3.0.1"
+  checksum: 52b4d99a47bd41daa4e2860200258f56b1f2c99263c11a5f607fbbd91d6447fe674bdafc172735d099908a09136d4a0f98cf79715e38ca4b490fdda7162be289
   languageName: node
   linkType: hard
 
@@ -12012,6 +12092,13 @@ __metadata:
   version: 4.6.0
   resolution: "lodash.union@npm:4.6.0"
   checksum: 1514dc6508b2614ec071a6470f36eb7a70f69bf1abb6d55bdfdc21069635a4517783654b28504c0f025059a7598d37529766888e6d5902b8ab28b712228f7b2a
+  languageName: node
+  linkType: hard
+
+"lodash.uniq@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.uniq@npm:4.5.0"
+  checksum: a4779b57a8d0f3c441af13d9afe7ecff22dd1b8ce1129849f71d9bbc8e8ee4e46dfb4b7c28f7ad3d67481edd6e51126e4e2a6ee276e25906d10f7140187c392d
   languageName: node
   linkType: hard
 

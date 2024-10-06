@@ -1,13 +1,15 @@
 import { GroupEntity } from '@lib/domains/group/domain/group.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
+import { isUndefined, omitBy } from 'lodash';
 import { LinkEntity } from './link.entity';
+import { UpdateBrandProps } from './brand.types';
 
 export class BrandEntity extends AggregateRoot {
   id: string;
 
   createdAt: Date;
 
-  updateedAt: Date;
+  updatedAt: Date;
 
   deletedAt: Date | null;
 
@@ -19,8 +21,6 @@ export class BrandEntity extends AggregateRoot {
 
   logo: string | null;
 
-  groupIds: string[];
-
   groups: GroupEntity[];
 
   links: LinkEntity[];
@@ -28,5 +28,9 @@ export class BrandEntity extends AggregateRoot {
   constructor(partial: Partial<BrandEntity>) {
     super();
     Object.assign(this, partial);
+  }
+
+  update(props: UpdateBrandProps) {
+    Object.assign(this, omitBy(props, isUndefined));
   }
 }

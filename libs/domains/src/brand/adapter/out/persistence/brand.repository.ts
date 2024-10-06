@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '@lib/shared/cqrs/repositories/prisma-repository';
 import { BrandEntity } from '@lib/domains/brand/domain/brand.entity';
@@ -40,8 +39,8 @@ export class BrandRepository
         description: brand.description,
         logo: brand.logo,
         groups: {
-          connect: brand.groupIds.map((id) => ({
-            id,
+          connect: brand.groups.map((group) => ({
+            id: group.id,
           })),
         },
         links: {
@@ -74,8 +73,8 @@ export class BrandRepository
         description: brand.description,
         logo: brand.logo,
         groups: {
-          set: brand.groupIds.map((id) => ({
-            id,
+          set: brand.groups.map((group) => ({
+            id: group.id,
           })),
         },
         links: {
