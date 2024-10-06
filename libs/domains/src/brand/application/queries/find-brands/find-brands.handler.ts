@@ -49,9 +49,14 @@ export class FindBrandsHandler extends PrismaQueryHandler {
         },
       });
     }
-    orderBy.push({
-      createdAt: query.orderBy?.createdAt || 'desc',
-    });
+    orderBy.push(
+      {
+        createdAt: query.orderBy?.createdAt || 'desc',
+      },
+      {
+        id: 'asc',
+      },
+    );
 
     const brands = await this.prismaService.brand.findMany({
       where,
