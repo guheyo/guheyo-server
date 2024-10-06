@@ -47,10 +47,13 @@ export class FindMyUserHandler extends PrismaQueryHandler {
         },
       },
     });
-    return plainToInstance(MyUserResponse, {
-      ...user,
-      followers: user?.followers.map((follow) => follow.follower),
-      following: user?.following.map((follow) => follow.following),
-    });
+
+    return user
+      ? plainToInstance(MyUserResponse, {
+          ...user,
+          followers: user?.followers.map((follow) => follow.follower),
+          following: user?.following.map((follow) => follow.following),
+        })
+      : null;
   }
 }
