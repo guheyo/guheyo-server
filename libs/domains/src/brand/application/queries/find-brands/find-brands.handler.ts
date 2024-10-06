@@ -41,16 +41,26 @@ export class FindBrandsHandler extends PrismaQueryHandler {
         }
       : undefined;
 
+    const orderBy: Prisma.BrandOrderByWithRelationAndSearchRelevanceInput[] = [];
+    if (query.orderBy?.follower) {
+      orderBy.push({
+        followBrands: {
+          _count: query.orderBy.follower,
+        },
+      });
+    }
+    orderBy.push(
+      {
+        createdAt: query.orderBy?.createdAt || 'desc',
+      },
+      {
+        id: 'asc',
+      },
+    );
+
     const brands = await this.prismaService.brand.findMany({
       where,
-      orderBy: {
-        createdAt: query.orderBy?.createdAt,
-        ...(query.orderBy?.follower && {
-          followBrands: {
-            _count: query.orderBy?.follower,
-          },
-        }),
-      },
+      orderBy,
       cursor,
       take: query.take + 1,
       skip: query.skip,
