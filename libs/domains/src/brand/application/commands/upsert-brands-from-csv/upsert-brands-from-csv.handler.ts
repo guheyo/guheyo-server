@@ -7,6 +7,7 @@ import { ImageService } from '@lib/shared';
 import { BrandEntity } from '@lib/domains/brand/domain/brand.entity';
 import { LinkEntity } from '@lib/domains/brand/domain/link.entity';
 import { PlatformService } from '@lib/domains/platform/application/services/platform.service';
+import { plainToInstance } from 'class-transformer';
 import { UpsertBrandsFromCsvCommand } from './upsert-brands-from-csv.command';
 import { BrandDetailResponse } from '../../dtos/brand-detail.response';
 import { BrandSavePort } from '../../ports/out/brand.save.port';
@@ -27,94 +28,64 @@ export class UpsertBrandsFromCsvHandler extends PrismaCommandHandler<
     super(BrandDetailResponse);
   }
 
-  async execute(command: UpsertBrandsFromCsvCommand) {
-    const brandsData = await this.parseCsv(command.filePath);
+  async execute(command: UpsertBrandsFromCsvCommand): Promise<void> {
+    const csvData = await this.parseCsvFile(command.filePath);
+    const allGroups = await this.prismaService.group.findMany();
+    const allPlatforms = await this.prismaService.platform.findMany();
 
-    const groups = await this.prismaService.group.findMany();
-    const platforms = await this.prismaService.platform.findMany();
+    const brandEntities = await this.mapToBrandEntities(csvData, command, allGroups, allPlatforms);
+    const existingBrandNames = await this.fetchExistingBrandNames(brandEntities);
 
-    const brandEntities = await this.createBrandEntities(brandsData, command, groups, platforms);
-    const brandNames = brandEntities.map((brand) => brand.name);
-    const existingBrandNames = await this.getExistingBrandNames(brandNames);
+    const { newBrands, brandsToUpdate } = this.categorizeBrands(brandEntities, existingBrandNames);
 
-    const { newBrandEntities, existingBrandEntities } = this.separateNewAndExistingBrandEntities(
-      brandEntities,
-      existingBrandNames,
-    );
-
-    if (newBrandEntities.length > 0) {
-      this.brandSavePort.createMany(newBrandEntities);
-    }
-    if (existingBrandEntities) {
-      existingBrandEntities.map((brand) =>
-        brand.update({
-          id: brand.id,
-          name: brand.name,
-          slug: brand.slug || undefined,
-          description: brand.description || undefined,
-          logo: brand.logo || undefined,
-          groups: brand.groups || undefined,
-          links: brand.links,
-        }),
-      );
-    }
+    await this.saveNewBrands(newBrands);
+    await this.updateExistingBrands(brandsToUpdate);
   }
 
   /**
-   * Parses the CSV file to extract brand data.
+   * Parses the CSV file and returns an array of brand data.
    */
-  private async parseCsv(filePath: string): Promise<any[]> {
-    const brandsData: any[] = [];
+  private async parseCsvFile(filePath: string): Promise<any[]> {
+    const csvData: any[] = [];
     await new Promise((resolve, reject) => {
       fs.createReadStream(filePath)
         .pipe(fastCsv.parse({ headers: true }))
         .on('data', (row: any) => {
-          brandsData.push({
+          csvData.push({
             name: row.name,
             slug: row.slug,
             description: row.description,
             logo: row.logo,
             url: row.url,
-            groupNames: row.groups
-              ? row.groups.split(',').map((groupName: string) => groupName.trim())
-              : [],
+            groupNames: row.groups ? row.groups.split(',').map((g: string) => g.trim()) : [],
           });
         })
         .on('end', resolve)
         .on('error', reject);
     });
-    return brandsData;
+    return csvData;
   }
 
   /**
-   * Creates brand entities from the CSV data.
+   * Maps the CSV data to brand entities.
    */
-  private async createBrandEntities(
-    brandsData: any[],
+  private async mapToBrandEntities(
+    csvData: any[],
     command: UpsertBrandsFromCsvCommand,
     groups: any[],
     platforms: any[],
   ): Promise<BrandEntity[]> {
     return Promise.all(
-      brandsData.map(async (brandData) => {
-        const platformName = this.platformService.parsePlatformName(brandData.url);
-        const platformId = platforms.find((platform) => platform.name === platformName)?.id;
-
+      csvData.map(async (brandData) => {
+        const platformId = this.getPlatformIdFromUrl(brandData.url, platforms);
         const logoUrl = await this.imageService.uploadFileFromURL({
           url: brandData.logo,
           type: 'brand',
           userId: command.user.id,
         });
 
-        const links = platformId
-          ? [
-              new LinkEntity({
-                brandId: brandData.id,
-                platformId,
-                url: brandData.url,
-                position: 0,
-              }),
-            ]
+        const brandLinks = platformId
+          ? [new LinkEntity({ brandId: brandData.id, platformId, url: brandData.url, position: 0 })]
           : [];
 
         return new BrandEntity({
@@ -124,40 +95,74 @@ export class UpsertBrandsFromCsvHandler extends PrismaCommandHandler<
           description: brandData.description,
           logo: logoUrl,
           groups: groups.filter((group) => brandData.groupNames.includes(group.name)),
-          links,
+          links: brandLinks,
         });
       }),
     );
   }
 
-  private async getExistingBrandNames(brandNames: string[]) {
-    const brands = await this.prismaService.brand.findMany({
-      where: {
-        name: {
-          in: brandNames,
-        },
-      },
-    });
-    return brands.map((brand) => brand.name);
+  /**
+   * Gets the platform ID based on the URL from the platforms list.
+   */
+  private getPlatformIdFromUrl(url: string, platforms: any[]): string | undefined {
+    const platformName = this.platformService.parsePlatformName(url);
+    return platforms.find((platform) => platform.name === platformName)?.id;
   }
 
   /**
-   * Categorizes brands into new and existing ones and processes them accordingly.
+   * Fetches the names of existing brands from the database.
    */
-  private separateNewAndExistingBrandEntities(
+  private async fetchExistingBrandNames(brandEntities: BrandEntity[]): Promise<string[]> {
+    const brandNames = brandEntities.map((brand) => brand.name);
+    const existingBrands = await this.prismaService.brand.findMany({
+      where: { name: { in: brandNames } },
+    });
+    return existingBrands.map((brand) => brand.name);
+  }
+
+  /**
+   * Categorizes the brands into new and existing ones.
+   */
+  private categorizeBrands(
     brandEntities: BrandEntity[],
     existingBrandNames: string[],
-  ) {
-    const newBrandEntities = brandEntities.filter(
-      (brand) => !existingBrandNames.includes(brand.name),
-    );
-    const existingBrandEntities = brandEntities.filter((brand) =>
-      existingBrandNames.includes(brand.name),
-    );
+  ): { newBrands: BrandEntity[]; brandsToUpdate: BrandEntity[] } {
+    const newBrands = brandEntities.filter((brand) => !existingBrandNames.includes(brand.name));
+    const brandsToUpdate = brandEntities.filter((brand) => existingBrandNames.includes(brand.name));
 
-    return {
-      newBrandEntities,
-      existingBrandEntities,
-    };
+    return { newBrands, brandsToUpdate };
+  }
+
+  /**
+   * Saves new brands to the database.
+   */
+  private async saveNewBrands(newBrands: BrandEntity[]): Promise<void> {
+    if (newBrands.length > 0) {
+      await this.brandSavePort.createMany(newBrands);
+    }
+  }
+
+  /**
+   * Updates existing brands with new data from CSV.
+   */
+  private async updateExistingBrands(brandsToUpdate: BrandEntity[]): Promise<void> {
+    brandsToUpdate.forEach(async (brandToUpdate) => {
+      const existingBrand = await this.prismaService.brand.findFirst({
+        where: { name: brandToUpdate.name },
+        include: { groups: true, links: true },
+      });
+      const brandEntity = plainToInstance(BrandEntity, existingBrand);
+
+      brandEntity.update({
+        name: brandToUpdate.name || undefined,
+        slug: brandToUpdate.slug || undefined,
+        description: brandToUpdate.description || undefined,
+        logo: brandToUpdate.logo || undefined,
+        groups: brandToUpdate.groups,
+        links: brandToUpdate.links,
+      });
+
+      await this.brandSavePort.save(brandEntity);
+    });
   }
 }
