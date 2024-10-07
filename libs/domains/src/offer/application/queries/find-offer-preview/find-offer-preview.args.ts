@@ -2,7 +2,7 @@ import { ArgsType, Field, ID } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
 @ArgsType()
-export class FindThreadPreviewArgs {
+export class FindOfferPreviewArgs {
   @IsOptional()
   @Field(() => ID, { nullable: true })
   id?: string;

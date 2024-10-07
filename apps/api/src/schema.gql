@@ -851,12 +851,14 @@ type PostResponse {
 type Query {
   findAuction(id: ID, slug: String): AuctionResponse
   findAuctionInteractionItems(cursor: ID, keyword: String, orderBy: FindAuctionInteractionItemsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindAuctionInteractionItemsWhereInput): PaginatedAuctionInteractionItemsResponse!
+  findAuctionPreview(id: ID, slug: String): AuctionPreviewResponse
   findAuctionPreviews(cursor: ID, keyword: String, orderBy: FindAuctionPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindAuctionPreviewsWhereInput): PaginatedAuctionPreviewsResponse!
   findAuthor(id: ID, username: String): AuthorResponse
   findBidCount(auctionId: ID!): BidCountResponse!
   findBidders(cursor: ID, keyword: String, orderBy: FindBiddersOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBiddersWhereInput!): PaginatedUsersResponse!
   findBids(cursor: ID, keyword: String, orderBy: FindBidsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBidsWhereInput): PaginatedBidsResponse!
   findBrand(id: ID, slug: String): BrandDetailResponse!
+  findBrandPreview(id: ID, slug: String): BrandPreviewResponse!
   findBrands(cursor: ID, keyword: String, orderBy: FindBrandsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBrandsWhereInput): PaginatedBrandsResponse!
   findComment(id: ID, postId: ID): CommentResponse
   findCommentCount(postId: ID!): CommentCountResponse!
@@ -870,6 +872,7 @@ type Query {
   findMyUser: MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferCount(businessFunction: String!, categoryId: ID!, fromHours: Int!, userId: ID!): Float!
+  findOfferPreview(id: ID, slug: String): OfferPreviewResponse
   findOfferPreviews(cursor: ID, keyword: String, orderBy: FindOfferPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindOfferPreviewsWhereInput): PaginatedOfferPreviewsResponse!
   findPlatforms: [PlatformResponse!]!
   findPostPreview(id: ID!): PostPreviewWithUserResponse!
@@ -881,7 +884,7 @@ type Query {
   findTags: [TagResponse!]!
   findTerm(name: String!): TermResponse
   findThread(id: ID, slug: String): ThreadResponse
-  findThreadPreview(cursor: ID, id: ID, keyword: String, skip: Int! = 1, slug: String, take: Int!, target: String): ThreadPreviewResponse
+  findThreadPreview(id: ID, slug: String): ThreadPreviewResponse
   findThreadPreviews(cursor: ID, keyword: String, orderBy: FindThreadPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindThreadPreviewsWhereInput): PaginatedThreadPreviewsResponse!
   findUser(provider: String, socialId: String, username: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse

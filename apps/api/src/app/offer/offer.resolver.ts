@@ -25,6 +25,8 @@ import { FindOfferCountQuery } from '@lib/domains/offer/application/queries/find
 import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
 import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
 import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
+import { FindOfferPreviewQuery } from '@lib/domains/offer/application/queries/find-offer-preview/find-offer-preview.query';
+import { FindOfferPreviewArgs } from '@lib/domains/offer/application/queries/find-offer-preview/find-offer-preview.args';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -43,6 +45,19 @@ export class OfferResolver {
   ): Promise<OfferResponse | null> {
     const query = new FindOfferQuery({
       args: findOfferArgs,
+      userId: user.id,
+    });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(OptionalJwtUserGuard)
+  @Query(() => OfferPreviewResponse, { nullable: true })
+  async findOfferPreview(
+    @Args() findOfferPreviewArgs: FindOfferPreviewArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<OfferPreviewResponse | null> {
+    const query = new FindOfferPreviewQuery({
+      args: findOfferPreviewArgs,
       userId: user.id,
     });
     return this.queryBus.execute(query);
