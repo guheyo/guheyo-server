@@ -851,6 +851,7 @@ type PostResponse {
 type Query {
   findAuction(id: ID, slug: String): AuctionResponse
   findAuctionInteractionItems(cursor: ID, keyword: String, orderBy: FindAuctionInteractionItemsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindAuctionInteractionItemsWhereInput): PaginatedAuctionInteractionItemsResponse!
+  findAuctionPreview(id: ID, slug: String): AuctionPreviewResponse
   findAuctionPreviews(cursor: ID, keyword: String, orderBy: FindAuctionPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindAuctionPreviewsWhereInput): PaginatedAuctionPreviewsResponse!
   findAuthor(id: ID, username: String): AuthorResponse
   findBidCount(auctionId: ID!): BidCountResponse!

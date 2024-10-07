@@ -45,6 +45,9 @@ import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/fi
 import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
 import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
 import { FindAuctionPreviewsArgs } from '@lib/domains/auction/application/queries/find-auction-previews/find-auction-previews.args';
+import { AuctionPreviewResponse } from '@lib/domains/auction/application/dtos/auction-preview.response';
+import { FindAuctionPreviewQuery } from '@lib/domains/auction/application/queries/find-auction-preview/find-auction-preview.query';
+import { FindAuctionPreviewArgs } from '@lib/domains/auction/application/queries/find-auction-preview/find-auction-preview.args';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
@@ -62,6 +65,16 @@ export class AuctionResolver {
     @ExtractedUser() user: MyUserResponse,
   ): Promise<AuctionResponse | null> {
     const query = new FindAuctionQuery({ args, userId: user.id });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
+  @Query(() => AuctionPreviewResponse, { nullable: true })
+  async findAuctionPreview(
+    @Args() args: FindAuctionPreviewArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<AuctionPreviewResponse | null> {
+    const query = new FindAuctionPreviewQuery({ args, userId: user.id });
     return this.queryBus.execute(query);
   }
 
