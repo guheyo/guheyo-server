@@ -24,6 +24,9 @@ import { BrandDetailResponse } from '@lib/domains/brand/application/dtos/brand-d
 import { UpsertBrandsFromCsvInput } from '@lib/domains/brand/application/commands/upsert-brands-from-csv/upsert-brands-from-csv.input';
 import { UpsertBrandsFromCsvCommand } from '@lib/domains/brand/application/commands/upsert-brands-from-csv/upsert-brands-from-csv.command';
 import { ADMIN_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
+import { BrandPreviewResponse } from '@lib/domains/brand/application/dtos/brand-preview.response';
+import { FindBrandPreviewArgs } from '@lib/domains/brand/application/queries/find-brand-preview/find-brand-preview.args';
+import { FindBrandPreviewQuery } from '@lib/domains/brand/application/queries/find-brand-preview/find-brand-preview.query';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -41,6 +44,19 @@ export class BrandResolver {
     @ExtractedUser() user: MyUserResponse,
   ): Promise<PaginatedBrandsResponse> {
     const query = new FindBrandsQuery({
+      args,
+      userId: user.id,
+    });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
+  @Query(() => BrandPreviewResponse)
+  async findBrandPreview(
+    @Args() args: FindBrandPreviewArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<BrandPreviewResponse> {
+    const query = new FindBrandPreviewQuery({
       args,
       userId: user.id,
     });
