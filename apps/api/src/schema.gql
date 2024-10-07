@@ -871,6 +871,7 @@ type Query {
   findMyUser: MyUserResponse
   findOffer(id: ID, slug: String): OfferResponse
   findOfferCount(businessFunction: String!, categoryId: ID!, fromHours: Int!, userId: ID!): Float!
+  findOfferPreview(id: ID, slug: String): OfferPreviewResponse
   findOfferPreviews(cursor: ID, keyword: String, orderBy: FindOfferPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindOfferPreviewsWhereInput): PaginatedOfferPreviewsResponse!
   findPlatforms: [PlatformResponse!]!
   findPostPreview(id: ID!): PostPreviewWithUserResponse!
