@@ -1,9 +1,8 @@
-import { PaginationSearchArgs } from '@lib/shared/cqrs/queries/pagination/pagination-search.args';
 import { ArgsType, Field, ID } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
 @ArgsType()
-export class FindThreadPreviewArgs extends PaginationSearchArgs {
+export class FindThreadPreviewArgs {
   @IsOptional()
   @Field(() => ID, { nullable: true })
   id?: string;
