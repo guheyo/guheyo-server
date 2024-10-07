@@ -606,7 +606,7 @@ type Mutation {
   createReport(input: CreateReportInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
-  createThread(input: CreateThreadInput!): String!
+  createThread(input: CreateThreadInput!): ThreadPreviewResponse!
   createUserImage(input: CreateUserImageInput!): String!
   createUserReview(input: CreateUserReviewInput!): String!
   deleteComment(input: DeleteCommentInput!): String!

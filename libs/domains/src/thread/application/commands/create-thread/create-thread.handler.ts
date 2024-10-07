@@ -8,19 +8,22 @@ import { BrandEntity } from '@lib/domains/brand/domain/brand.entity';
 import { CreateThreadCommand } from './create-thread.command';
 import { ThreadLoadPort } from '../../ports/out/thread.load.port';
 import { ThreadSavePort } from '../../ports/out/thread.save.port';
-import { ThreadResponse } from '../../dtos/thread.response';
+import { ThreadPreviewResponse } from '../../dtos/thread-preview.response';
 
 @CommandHandler(CreateThreadCommand)
-export class CreateThreadHandler extends PrismaCommandHandler<CreateThreadCommand, ThreadResponse> {
+export class CreateThreadHandler extends PrismaCommandHandler<
+  CreateThreadCommand,
+  ThreadPreviewResponse
+> {
   constructor(
     @Inject('ThreadLoadPort') private loadPort: ThreadLoadPort,
     @Inject('ThreadSavePort') private savePort: ThreadSavePort,
     private readonly publisher: EventPublisher,
   ) {
-    super(ThreadResponse);
+    super(ThreadPreviewResponse);
   }
 
-  async execute(command: CreateThreadCommand): Promise<void> {
+  async execute(command: CreateThreadCommand): Promise<ThreadPreviewResponse> {
     const brand =
       command.post.brandId &&
       (await this.prismaService.brand.findUnique({
@@ -60,5 +63,35 @@ export class CreateThreadHandler extends PrismaCommandHandler<CreateThreadComman
       tagNames: command.post.tagNames || [],
     });
     thread.commit();
+
+    const newThread = await this.prismaService.thread.findUnique({
+      where: {
+        id: command.id,
+      },
+      include: {
+        post: {
+          include: {
+            group: true,
+            category: true,
+            tags: true,
+            brands: true,
+            user: {
+              include: {
+                socialAccounts: true,
+                roles: {
+                  orderBy: {
+                    position: 'asc',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!newThread)
+      throw new InternalServerErrorException(ThreadErrorMessage.THREAD_CREATION_FAILED);
+    return this.parseResponse(newThread);
   }
 }

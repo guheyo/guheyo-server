@@ -21,6 +21,7 @@ import { UpdateThreadCommand } from '@lib/domains/thread/application/commands/up
 import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
 import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
+import { ThreadPreviewResponse } from '@lib/domains/thread/application/dtos/thread-preview.response';
 
 @UseGuards()
 @Resolver()
@@ -55,15 +56,14 @@ export class ThreadResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => ThreadPreviewResponse)
   async createThread(
     @Args('input') input: CreateThreadInput,
     @ExtractedUser() user: MyUserResponse,
     @UserAgent() userAgent: string,
     @IpAddress() ipAddress: string,
-  ): Promise<string> {
-    await this.commandBus.execute(new CreateThreadCommand({ input, user, userAgent, ipAddress }));
-    return input.id;
+  ): Promise<ThreadPreviewResponse> {
+    return this.commandBus.execute(new CreateThreadCommand({ input, user, userAgent, ipAddress }));
   }
 
   @AuthenticatedSocialAccountAndRole({
