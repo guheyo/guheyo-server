@@ -20,6 +20,9 @@ import { UpdateThreadInput } from '@lib/domains/thread/application/commands/upda
 import { UpdateThreadCommand } from '@lib/domains/thread/application/commands/update-thread/update-thread.command';
 import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
 import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
+import { ThreadPreviewResponse } from '@lib/domains/thread/application/dtos/thread-preview.response';
+import { FindThreadPreviewQuery } from '@lib/domains/thread/application/queries/find-thread-preview/find-thread-preview.query';
+import { FindThreadPreviewArgs } from '@lib/domains/thread/application/queries/find-thread-preview/find-thread-preview.args';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
@@ -37,6 +40,16 @@ export class ThreadResolver {
     @ExtractedUser() user: MyUserResponse,
   ): Promise<ThreadResponse | null> {
     const query = new FindThreadQuery({ args, userId: user.id });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
+  @Query(() => ThreadPreviewResponse, { nullable: true })
+  async findThreadPreview(
+    @Args() args: FindThreadPreviewArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<ThreadPreviewResponse | null> {
+    const query = new FindThreadPreviewQuery({ args, userId: user.id });
     return this.queryBus.execute(query);
   }
 

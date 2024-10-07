@@ -881,6 +881,7 @@ type Query {
   findTags: [TagResponse!]!
   findTerm(name: String!): TermResponse
   findThread(id: ID, slug: String): ThreadResponse
+  findThreadPreview(cursor: ID, id: ID, keyword: String, skip: Int! = 1, slug: String, take: Int!, target: String): ThreadPreviewResponse
   findThreadPreviews(cursor: ID, keyword: String, orderBy: FindThreadPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindThreadPreviewsWhereInput): PaginatedThreadPreviewsResponse!
   findUser(provider: String, socialId: String, username: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse
