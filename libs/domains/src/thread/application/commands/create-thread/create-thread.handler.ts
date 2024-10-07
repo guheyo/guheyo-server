@@ -8,22 +8,19 @@ import { BrandEntity } from '@lib/domains/brand/domain/brand.entity';
 import { CreateThreadCommand } from './create-thread.command';
 import { ThreadLoadPort } from '../../ports/out/thread.load.port';
 import { ThreadSavePort } from '../../ports/out/thread.save.port';
-import { ThreadPreviewResponse } from '../../dtos/thread-preview.response';
+import { ThreadResponse } from '../../dtos/thread.response';
 
 @CommandHandler(CreateThreadCommand)
-export class CreateThreadHandler extends PrismaCommandHandler<
-  CreateThreadCommand,
-  ThreadPreviewResponse
-> {
+export class CreateThreadHandler extends PrismaCommandHandler<CreateThreadCommand, ThreadResponse> {
   constructor(
     @Inject('ThreadLoadPort') private loadPort: ThreadLoadPort,
     @Inject('ThreadSavePort') private savePort: ThreadSavePort,
     private readonly publisher: EventPublisher,
   ) {
-    super(ThreadPreviewResponse);
+    super(ThreadResponse);
   }
 
-  async execute(command: CreateThreadCommand): Promise<ThreadPreviewResponse> {
+  async execute(command: CreateThreadCommand): Promise<void> {
     const brand =
       command.post.brandId &&
       (await this.prismaService.brand.findUnique({
@@ -63,35 +60,5 @@ export class CreateThreadHandler extends PrismaCommandHandler<
       tagNames: command.post.tagNames || [],
     });
     thread.commit();
-
-    const newThread = await this.prismaService.thread.findUnique({
-      where: {
-        id: command.id,
-      },
-      include: {
-        post: {
-          include: {
-            group: true,
-            category: true,
-            tags: true,
-            brands: true,
-            user: {
-              include: {
-                socialAccounts: true,
-                roles: {
-                  orderBy: {
-                    position: 'asc',
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    });
-
-    if (!newThread)
-      throw new InternalServerErrorException(ThreadErrorMessage.THREAD_CREATION_FAILED);
-    return this.parseResponse(newThread);
   }
 }
