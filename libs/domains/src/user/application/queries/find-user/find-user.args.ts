@@ -6,6 +6,11 @@ export class FindUserArgs {
   @IsOptional()
   @IsString()
   @Field({ nullable: true })
+  id?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field({ nullable: true })
   provider?: string;
 
   @IsOptional()

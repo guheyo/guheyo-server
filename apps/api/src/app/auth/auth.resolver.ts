@@ -57,8 +57,10 @@ export class AuthResolver {
     const jwtPayload = req.user as JwtPayload;
     const user = (await this.queryBus.execute(
       new FindUserQuery({
-        provider: jwtPayload.socialProfile.provider,
-        socialId: jwtPayload.socialProfile.id,
+        args: {
+          provider: jwtPayload.socialProfile.provider,
+          socialId: jwtPayload.socialProfile.id,
+        },
       }),
     )) as UserResponse | null;
     if (!user) throw new NotFoundException(UserErrorMessage.USER_IS_NOT_FOUND);

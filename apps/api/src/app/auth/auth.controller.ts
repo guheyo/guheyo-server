@@ -37,8 +37,10 @@ export class AuthController {
     const socialProfile = req.user as SocialProfile;
     const user = (await this.queryBus.execute(
       new FindUserQuery({
-        provider: socialProfile.provider,
-        socialId: socialProfile.id,
+        args: {
+          provider: socialProfile.provider,
+          socialId: socialProfile.id,
+        },
       }),
     )) as UserResponse | null;
 
