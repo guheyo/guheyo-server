@@ -8,7 +8,7 @@ import { CreateUserImageCommand } from './create-user-image.command';
 export class CreateUserImageHandler implements ICommandHandler<CreateUserImageCommand> {
   constructor(@Inject('UserImageSavePort') private readonly userImageSavePort: UserImageSavePort) {}
 
-  async execute(command: CreateUserImageCommand): Promise<any> {
+  async execute(command: CreateUserImageCommand): Promise<void> {
     const userImage = new UserImageEntity(command);
     await this.userImageSavePort.create(userImage);
   }

@@ -8,7 +8,7 @@ import { UserImageSavePort } from '../../ports/user-image.save.port';
 export class CreateManyUserImageHandler implements ICommandHandler<CreateManyUserImageCommand> {
   constructor(@Inject('UserImageSavePort') private readonly userImageSavePort: UserImageSavePort) {}
 
-  async execute(command: CreateManyUserImageCommand): Promise<any> {
+  async execute(command: CreateManyUserImageCommand): Promise<void> {
     const userImages = command.createUserImageInputs.map(
       (createUserInput) =>
         new UserImageEntity({
