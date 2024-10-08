@@ -37,7 +37,7 @@ export class UpdateThumbnailHandler extends PrismaCommandHandler<
     });
     if (image?.url && post.isUpdatedThumbnail(image.url)) {
       post.updateThumbnail(image.url);
-      this.savePort.save(post);
+      await this.savePort.save(post);
     }
   }
 }

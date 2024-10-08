@@ -16,6 +16,6 @@ export class ConnectTagsHandler implements ICommandHandler<ConnectTagsCommand> {
     const post = await this.loadPort.findById(command.postId);
     if (!post) throw new NotFoundException(PostErrorMessage.POST_NOT_FOUND);
 
-    this.savePort.connectTags(command.postId, command.tagIds);
+    await this.savePort.connectTags(command.postId, command.tagIds);
   }
 }
