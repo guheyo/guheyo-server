@@ -600,20 +600,20 @@ type Mutation {
   createBrand(input: CreateBrandInput!): MutationResponse!
   createComment(input: CreateCommentInput!): MutationResponse!
   createGroup(input: CreateGroupInput!): MutationResponse!
-  createManyUserImage(input: CreateManyUserImageInput!): String!
+  createManyUserImage(input: CreateManyUserImageInput!): MutationResponse!
   createOffer(input: CreateOfferInput!): MutationResponse!
   createReaction(input: CreateReactionInput!): MutationResponse!
   createReport(input: CreateReportInput!): MutationResponse!
   createRole(input: CreateRoleInput!): MutationResponse!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
   createThread(input: CreateThreadInput!): MutationResponse!
-  createUserImage(input: CreateUserImageInput!): String!
+  createUserImage(input: CreateUserImageInput!): MutationResponse!
   createUserReview(input: CreateUserReviewInput!): String!
   deleteComment(input: DeleteCommentInput!): MutationResponse!
   deleteOffer(id: ID!): MutationResponse!
   deleteRole(id: ID!): MutationResponse!
   deleteThread(id: ID!): MutationResponse!
-  deleteUserImage(id: ID!): String!
+  deleteUserImage(id: ID!): MutationResponse!
   deleteUserReview(id: ID!): String!
   followBrand(input: FollowBrandInput!): MutationResponse!
   followUser(input: FollowUserInput!): MutationResponse!
@@ -632,7 +632,7 @@ type Mutation {
   updateRole(input: UpdateRoleInput!): MutationResponse!
   updateThread(input: UpdateThreadInput!): MutationResponse!
   updateUser(input: UpdateUserInput!): MutationResponse!
-  updateUserImage(input: UpdateUserImageInput!): String!
+  updateUserImage(input: UpdateUserImageInput!): MutationResponse!
   upsertBrandsFromCsv(input: UpsertBrandsFromCsvInput!): MutationResponse!
 }
 

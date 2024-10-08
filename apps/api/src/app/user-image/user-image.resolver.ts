@@ -9,7 +9,7 @@ import { UserImageResponse } from '@lib/domains/user-image/application/dtos/user
 import { FindUserImagesOfRefArgs } from '@lib/domains/user-image/application/queries/find-user-iamges-of-ref/find-user-images-of-ref.args';
 import { FindUserImagesOfRefQuery } from '@lib/domains/user-image/application/queries/find-user-iamges-of-ref/find-user-images-of-ref.query';
 import { FindUserImageByIdQuery } from '@lib/domains/user-image/application/queries/find-user-image-by-id/find-user-image-by-id.query';
-import { UseGuards } from '@nestjs/common';
+import { HttpStatus, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateSignedUrlInput } from '@lib/domains/user-image/application/commands/create-signed-url/create-signed-url.input';
@@ -18,6 +18,7 @@ import { SignedUrlResponse } from '@lib/shared/image/image.response';
 import { AuthenticatedSocialAccount } from '@lib/domains/auth/decorators/authenticated-social-account/authenticated-social-account.decorator';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
+import { MutationResponse } from '@lib/shared/mutation/mutation.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -43,28 +44,34 @@ export class UserImageResolver {
   }
 
   @AuthenticatedSocialAccount('kakao')
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async createUserImage(
     @Args('input') input: CreateUserImageInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(
       new CreateUserImageCommand({
         input,
         userId: user.id,
       }),
     );
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccount('kakao')
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async createManyUserImage(
     @Args('input') input: CreateManyUserImageInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new CreateManyUserImageCommand({ input, userId: user.id }));
-    return '200';
+    return {
+      code: HttpStatus.OK,
+      id: '',
+    };
   }
 
   @AuthenticatedSocialAccount('kakao')
@@ -77,22 +84,28 @@ export class UserImageResolver {
   }
 
   @AuthenticatedSocialAccount('kakao')
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async updateUserImage(
     @Args('input') input: UpdateUserImageInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new UpdateUserImageCommand({ input, userId: user.id }));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccount('kakao')
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async deleteUserImage(
     @Args('id', { type: () => ID }) id: string,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new DeleteUserImageCommand({ id, userId: user.id }));
-    return id;
+    return {
+      code: HttpStatus.OK,
+      id,
+    };
   }
 }
