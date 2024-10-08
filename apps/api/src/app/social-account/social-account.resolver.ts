@@ -6,7 +6,8 @@ import { UpdateSocialAccountCommand } from '@lib/domains/social-account/applicat
 import { UpdateSocialAccountInput } from '@lib/domains/social-account/application/commands/update-social-account/update-social-account.input';
 import { DeleteSocialAccountCommand } from '@lib/domains/social-account/application/commands/delete-social-account/delete-social-account.command';
 import { DeleteSocialAccountByProviderCommand } from '@lib/domains/social-account/application/commands/delete-social-account-by-provider/delete-social-account-by-provider.command';
-import { UseGuards } from '@nestjs/common';
+import { HttpStatus, UseGuards } from '@nestjs/common';
+import { MutationResponse } from '@lib/shared/mutation/mutation.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -14,36 +15,46 @@ import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-
 export class SocialAccountResolver {
   constructor(private readonly commandBus: CommandBus) {}
 
-  // TODO: implement getSocialAccountsByUserId using SocialAccountQueryService
-  @Query(() => String)
-  async getSocialAccountsByUserId(@Args('id', { type: () => ID }) id: string) {
-    return 'hello world';
-  }
-
-  @Mutation(() => String)
-  async createSocialAccount(@Args('input') input: CreateSocialAccountInput): Promise<string> {
+  @Mutation(() => MutationResponse)
+  async createSocialAccount(
+    @Args('input') input: CreateSocialAccountInput,
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new CreateSocialAccountCommand(input));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
-  @Mutation(() => String)
-  async updateSocialAccount(@Args('input') input: UpdateSocialAccountInput): Promise<string> {
+  @Mutation(() => MutationResponse)
+  async updateSocialAccount(
+    @Args('input') input: UpdateSocialAccountInput,
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new UpdateSocialAccountCommand(input));
-    return 'ok';
+    return {
+      code: HttpStatus.OK,
+      id: input.id || '',
+    };
   }
 
-  @Mutation(() => String)
-  async deleteSocialAccount(@Args('id', { type: () => ID }) id: string): Promise<string> {
+  @Mutation(() => MutationResponse)
+  async deleteSocialAccount(@Args('id', { type: () => ID }) id: string): Promise<MutationResponse> {
     await this.commandBus.execute(new DeleteSocialAccountCommand(id));
-    return id;
+    return {
+      code: HttpStatus.OK,
+      id,
+    };
   }
 
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async deleteSocialAccountByProvider(
     @Args('provider') provider: string,
     @Args('socialId') socialId: string,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new DeleteSocialAccountByProviderCommand(provider, socialId));
-    return socialId;
+    return {
+      code: HttpStatus.OK,
+      id: socialId,
+    };
   }
 }
