@@ -10,7 +10,7 @@ import { FindOfferPreviewsQuery } from '@lib/domains/offer/application/queries/f
 import { PaginatedOfferPreviewsResponse } from '@lib/domains/offer/application/queries/find-offer-previews/paginated-offer-previews.response';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { HttpStatus, UseGuards } from '@nestjs/common';
 import { FindOfferArgs } from '@lib/domains/offer/application/queries/find-offer/find-offer.args';
 import { DeleteOfferArgs } from '@lib/domains/offer/application/commands/delete-offer/delete-offer.args';
 import { BumpOfferInput } from '@lib/domains/offer/application/commands/bump-offer/bump-offer.input';
@@ -27,6 +27,7 @@ import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.de
 import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
 import { FindOfferPreviewQuery } from '@lib/domains/offer/application/queries/find-offer-preview/find-offer-preview.query';
 import { FindOfferPreviewArgs } from '@lib/domains/offer/application/queries/find-offer-preview/find-offer-preview.args';
+import { MutationResponse } from '@lib/shared/mutation/mutation.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -87,15 +88,18 @@ export class OfferResolver {
     blocklistRoleNames: [REPORTED_USER_ROLE_NAME],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async createOffer(
     @Args('input') input: CreateOfferInput,
     @ExtractedUser() user: MyUserResponse,
     @UserAgent() userAgent: string,
     @IpAddress() ipAddress: string,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new CreateOfferCommand({ input, user, userAgent, ipAddress }));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -103,12 +107,16 @@ export class OfferResolver {
     blocklistRoleNames: [REPORTED_USER_ROLE_NAME],
     allowlistRoleNames: [],
   })
-  @Mutation(() => OfferPreviewResponse)
+  @Mutation(() => MutationResponse)
   async updateOffer(
     @Args('input') input: UpdateOfferInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<OfferPreviewResponse> {
-    return this.commandBus.execute(new UpdateOfferCommand({ input, user }));
+  ): Promise<MutationResponse> {
+    await this.commandBus.execute(new UpdateOfferCommand({ input, user }));
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -116,13 +124,16 @@ export class OfferResolver {
     blocklistRoleNames: [REPORTED_USER_ROLE_NAME],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async deleteOffer(
     @Args() args: DeleteOfferArgs,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new DeleteOfferCommand({ args, user }));
-    return args.id;
+    return {
+      code: HttpStatus.OK,
+      id: args.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -130,11 +141,15 @@ export class OfferResolver {
     blocklistRoleNames: [REPORTED_USER_ROLE_NAME],
     allowlistRoleNames: [],
   })
-  @Mutation(() => OfferPreviewResponse)
+  @Mutation(() => MutationResponse)
   async bumpOffer(
     @Args('input') input: BumpOfferInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<OfferPreviewResponse> {
-    return this.commandBus.execute(new BumpOfferCommand({ input, user }));
+  ): Promise<MutationResponse> {
+    await this.commandBus.execute(new BumpOfferCommand({ input, user }));
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 }
