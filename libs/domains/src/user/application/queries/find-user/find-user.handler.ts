@@ -7,8 +7,28 @@ import { UserResponse } from '../../dtos/user.response';
 @QueryHandler(FindUserQuery)
 export class FindUserHandler extends PrismaQueryHandler {
   async execute(query: FindUserQuery): Promise<UserResponse | null> {
+    let user;
+    const include = {
+      ...(query.user?.id && {
+        followers: {
+          where: {
+            followerId: query.user?.id,
+          },
+        },
+      }),
+    };
+
+    if (query.id) {
+      user = await this.prismaService.user.findUnique({
+        where: {
+          id: query.id,
+        },
+        include,
+      });
+    }
+
     if (query.provider && query.socialId) {
-      const user = await this.prismaService.user.findFirst({
+      user = await this.prismaService.user.findFirst({
         where: {
           socialAccounts: {
             some: {
@@ -17,17 +37,23 @@ export class FindUserHandler extends PrismaQueryHandler {
             },
           },
         },
+        include,
       });
-      return plainToInstance(UserResponse, user);
     }
     if (query.username) {
-      const user = await this.prismaService.user.findUnique({
+      user = await this.prismaService.user.findUnique({
         where: {
           username: query.username,
         },
+        include,
       });
-      return plainToInstance(UserResponse, user);
     }
-    return null;
+
+    return user
+      ? plainToInstance(UserResponse, {
+          ...user,
+          followed: query.user?.id && user.followers.length > 0,
+        })
+      : null;
   }
 }
