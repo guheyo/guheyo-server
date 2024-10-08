@@ -1,7 +1,7 @@
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
-import { UseGuards } from '@nestjs/common';
+import { HttpStatus, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateUserReviewInput } from '@lib/domains/user-review/application/commands/create-user-review/create-user-review.input';
@@ -18,6 +18,7 @@ import { DeleteUserReviewCommand } from '@lib/domains/user-review/application/co
 import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
 import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
 import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
+import { MutationResponse } from '@lib/shared/mutation/mutation.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -59,17 +60,20 @@ export class UserReviewResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async createUserReview(
     @Args('input') input: CreateUserReviewInput,
     @ExtractedUser() user: MyUserResponse,
     @UserAgent() userAgent: string,
     @IpAddress() ipAddress: string,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(
       new CreateUserReviewCommand({ input, user, userAgent, ipAddress }),
     );
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -77,12 +81,15 @@ export class UserReviewResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async deleteUserReview(
     @Args() args: DeleteUserReviewArgs,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new DeleteUserReviewCommand({ args, user }));
-    return args.id;
+    return {
+      code: HttpStatus.OK,
+      id: args.id,
+    };
   }
 }

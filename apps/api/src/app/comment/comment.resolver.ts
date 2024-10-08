@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { UseGuards } from '@nestjs/common';
+import { HttpStatus, UseGuards } from '@nestjs/common';
 import { CreateCommentInput } from '@lib/domains/comment/application/commands/create-comment/create-comment.input';
 import { CreateCommentCommand } from '@lib/domains/comment/application/commands/create-comment/create-comment.command';
 import { CommentResponse } from '@lib/domains/comment/application/dtos/comment.response';
@@ -33,6 +33,7 @@ import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
 import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
 import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
+import { MutationResponse } from '@lib/shared/mutation/mutation.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @Resolver()
@@ -71,15 +72,18 @@ export class CommentResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async createComment(
     @Args('input') input: CreateCommentInput,
     @ExtractedUser() user: MyUserResponse,
     @UserAgent() userAgent: string,
     @IpAddress() ipAddress: string,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new CreateCommentCommand({ input, user, userAgent, ipAddress }));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -87,13 +91,16 @@ export class CommentResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async updateComment(
     @Args('input') input: UpdateCommentInput,
     @ExtractedUser() user: MyUserResponse,
   ) {
     await this.commandBus.execute(new UpdateCommentCommand({ input, user }));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -101,13 +108,16 @@ export class CommentResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async deleteComment(
     @Args('input') input: DeleteCommentInput,
     @ExtractedUser() user: MyUserResponse,
   ) {
     await this.commandBus.execute(new DeleteCommentCommand({ input, user }));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @Subscription(() => CommentWithAuthorResponse)

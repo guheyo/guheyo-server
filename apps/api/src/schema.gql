@@ -593,47 +593,47 @@ input LinkSocialProfileInput {
 
 type Mutation {
   bumpOffer(input: BumpOfferInput!): MutationResponse!
-  cancelBid(input: CancelBidInput!): String!
-  cancelReaction(input: CancelReactionInput!): String!
-  commentReport(input: CommentReportInput!): ReportCommentResponse!
-  createAuction(input: CreateAuctionInput!): String!
-  createBrand(input: CreateBrandInput!): BrandDetailResponse!
-  createComment(input: CreateCommentInput!): String!
-  createGroup(input: CreateGroupInput!): String!
-  createManyUserImage(input: CreateManyUserImageInput!): String!
+  cancelBid(input: CancelBidInput!): MutationResponse!
+  cancelReaction(input: CancelReactionInput!): MutationResponse!
+  commentReport(input: CommentReportInput!): MutationResponse!
+  createAuction(input: CreateAuctionInput!): MutationResponse!
+  createBrand(input: CreateBrandInput!): MutationResponse!
+  createComment(input: CreateCommentInput!): MutationResponse!
+  createGroup(input: CreateGroupInput!): MutationResponse!
+  createManyUserImage(input: CreateManyUserImageInput!): MutationResponse!
   createOffer(input: CreateOfferInput!): MutationResponse!
-  createReaction(input: CreateReactionInput!): String!
-  createReport(input: CreateReportInput!): String!
-  createRole(input: CreateRoleInput!): String!
+  createReaction(input: CreateReactionInput!): MutationResponse!
+  createReport(input: CreateReportInput!): MutationResponse!
+  createRole(input: CreateRoleInput!): MutationResponse!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
-  createThread(input: CreateThreadInput!): String!
-  createUserImage(input: CreateUserImageInput!): String!
-  createUserReview(input: CreateUserReviewInput!): String!
-  deleteComment(input: DeleteCommentInput!): String!
+  createThread(input: CreateThreadInput!): MutationResponse!
+  createUserImage(input: CreateUserImageInput!): MutationResponse!
+  createUserReview(input: CreateUserReviewInput!): MutationResponse!
+  deleteComment(input: DeleteCommentInput!): MutationResponse!
   deleteOffer(id: ID!): MutationResponse!
-  deleteRole(id: ID!): String!
-  deleteThread(id: ID!): String!
-  deleteUserImage(id: ID!): String!
-  deleteUserReview(id: ID!): String!
-  followBrand(input: FollowBrandInput!): BrandDetailResponse!
-  followUser(input: FollowUserInput!): UserResponse!
-  linkSocialProfile(input: LinkSocialProfileInput!): String!
+  deleteRole(id: ID!): MutationResponse!
+  deleteThread(id: ID!): MutationResponse!
+  deleteUserImage(id: ID!): MutationResponse!
+  deleteUserReview(id: ID!): MutationResponse!
+  followBrand(input: FollowBrandInput!): MutationResponse!
+  followUser(input: FollowUserInput!): MutationResponse!
+  linkSocialProfile(input: LinkSocialProfileInput!): MutationResponse!
   logout: SocialUserResponse!
-  placeBid(input: PlaceBidInput!): String!
+  placeBid(input: PlaceBidInput!): MutationResponse!
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
-  unfollowBrand(input: UnfollowBrandInput!): BrandDetailResponse!
-  unfollowUser(input: UnfollowUserInput!): UserResponse!
-  updateAuction(input: UpdateAuctionInput!): String!
-  updateComment(input: UpdateCommentInput!): String!
-  updateGroup(input: UpdateGroupInput!): String!
+  unfollowBrand(input: UnfollowBrandInput!): MutationResponse!
+  unfollowUser(input: UnfollowUserInput!): MutationResponse!
+  updateAuction(input: UpdateAuctionInput!): MutationResponse!
+  updateComment(input: UpdateCommentInput!): MutationResponse!
+  updateGroup(input: UpdateGroupInput!): MutationResponse!
   updateOffer(input: UpdateOfferInput!): MutationResponse!
-  updateReportComment(input: UpdateReportCommentInput!): ReportCommentResponse!
-  updateRole(input: UpdateRoleInput!): String!
-  updateThread(input: UpdateThreadInput!): String!
-  updateUser(input: UpdateUserInput!): String!
-  updateUserImage(input: UpdateUserImageInput!): String!
-  upsertBrandsFromCsv(input: UpsertBrandsFromCsvInput!): String!
+  updateReportComment(input: UpdateReportCommentInput!): MutationResponse!
+  updateRole(input: UpdateRoleInput!): MutationResponse!
+  updateThread(input: UpdateThreadInput!): MutationResponse!
+  updateUser(input: UpdateUserInput!): MutationResponse!
+  updateUserImage(input: UpdateUserImageInput!): MutationResponse!
+  upsertBrandsFromCsv(input: UpsertBrandsFromCsvInput!): MutationResponse!
 }
 
 type MutationResponse {

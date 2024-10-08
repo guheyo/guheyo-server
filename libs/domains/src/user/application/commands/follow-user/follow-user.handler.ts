@@ -15,7 +15,7 @@ export class FollowUserHandler extends PrismaCommandHandler<FollowUserCommand, U
     super(UserResponse);
   }
 
-  async execute(command: FollowUserCommand): Promise<UserResponse> {
+  async execute(command: FollowUserCommand): Promise<void> {
     const alreadyFollowing = await this.prismaService.followUser.findFirst({
       where: {
         followingId: command.followingId,
@@ -32,25 +32,6 @@ export class FollowUserHandler extends PrismaCommandHandler<FollowUserCommand, U
         followingId: command.followingId,
         followerId: command.user.id,
       },
-    });
-
-    const user = await this.prismaService.user.findUnique({
-      where: {
-        id: command.followingId,
-      },
-      include: {
-        followers: {
-          where: {
-            followerId: command.user.id,
-          },
-        },
-      },
-    });
-    if (!user) throw new NotFoundException(UserErrorMessage.USER_IS_NOT_FOUND);
-
-    return this.parseResponse({
-      ...user,
-      followed: user.followers.length > 0,
     });
   }
 }

@@ -7,12 +7,13 @@ import { CreateRoleCommand } from '@lib/domains/role/application/commands/create
 import { UpdateRoleInput } from '@lib/domains/role/application/commands/update-role/update-role.input';
 import { UpdateRoleCommand } from '@lib/domains/role/application/commands/update-role/update-role.command';
 import { DeleteRoleCommand } from '@lib/domains/role/application/commands/delete-role/delete-role.command';
-import { UseGuards } from '@nestjs/common';
+import { HttpStatus, UseGuards } from '@nestjs/common';
 import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
 import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
 import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
 import { ADMIN_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
+import { MutationResponse } from '@lib/shared/mutation/mutation.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -32,27 +33,36 @@ export class RoleResolver {
   @BlocklistRoleNames([])
   @AllowlistRoleNames([ADMIN_ROLE_NAME])
   @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
-  @Mutation(() => String)
-  async createRole(@Args('input') input: CreateRoleInput): Promise<string> {
+  @Mutation(() => MutationResponse)
+  async createRole(@Args('input') input: CreateRoleInput): Promise<MutationResponse> {
     await this.commandBus.execute(new CreateRoleCommand(input));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @BlocklistRoleNames([])
   @AllowlistRoleNames([ADMIN_ROLE_NAME])
   @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
-  @Mutation(() => String)
-  async updateRole(@Args('input') input: UpdateRoleInput): Promise<string> {
+  @Mutation(() => MutationResponse)
+  async updateRole(@Args('input') input: UpdateRoleInput): Promise<MutationResponse> {
     await this.commandBus.execute(new UpdateRoleCommand(input));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @BlocklistRoleNames([])
   @AllowlistRoleNames([ADMIN_ROLE_NAME])
   @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
-  @Mutation(() => String)
-  async deleteRole(@Args('id', { type: () => ID }) id: string): Promise<string> {
+  @Mutation(() => MutationResponse)
+  async deleteRole(@Args('id', { type: () => ID }) id: string): Promise<MutationResponse> {
     await this.commandBus.execute(new DeleteRoleCommand(id));
-    return id;
+    return {
+      code: HttpStatus.OK,
+      id,
+    };
   }
 }
