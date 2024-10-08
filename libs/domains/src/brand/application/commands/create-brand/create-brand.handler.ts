@@ -23,7 +23,7 @@ export class CreateBrandHandler extends PrismaCommandHandler<
     super(BrandDetailResponse);
   }
 
-  async execute(command: CreateBrandCommand): Promise<BrandDetailResponse> {
+  async execute(command: CreateBrandCommand): Promise<void> {
     const brand = new BrandEntity({
       id: command.id,
       name: command.name,
@@ -34,12 +34,5 @@ export class CreateBrandHandler extends PrismaCommandHandler<
       links: command.links.map((link) => new LinkEntity(link)),
     });
     await this.savePort.create(brand);
-
-    const newBrand = this.loadPort.findById(brand.id);
-    return this.parseResponse({
-      ...newBrand,
-      followBrands: [],
-      followed: false,
-    });
   }
 }

@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { UseGuards } from '@nestjs/common';
+import { HttpStatus, UseGuards } from '@nestjs/common';
 import { FindBrandsQuery } from '@lib/domains/brand/application/queries/find-brands/find-brands.query';
 import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/authenticated-social-account-and-role/authenticated-social-account-and-role.decorator';
 import {
@@ -27,6 +27,7 @@ import { ADMIN_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
 import { BrandPreviewResponse } from '@lib/domains/brand/application/dtos/brand-preview.response';
 import { FindBrandPreviewArgs } from '@lib/domains/brand/application/queries/find-brand-preview/find-brand-preview.args';
 import { FindBrandPreviewQuery } from '@lib/domains/brand/application/queries/find-brand-preview/find-brand-preview.query';
+import { MutationResponse } from '@lib/shared/mutation/mutation.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -81,13 +82,16 @@ export class BrandResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [...ROOT_ADMIN_ROLE_NAMES],
   })
-  @Mutation(() => BrandDetailResponse)
+  @Mutation(() => MutationResponse)
   async createBrand(
     @Args('input') input: CreateBrandInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<BrandDetailResponse> {
-    const brand = await this.commandBus.execute(new CreateBrandCommand({ input, user }));
-    return brand;
+  ): Promise<MutationResponse> {
+    await this.commandBus.execute(new CreateBrandCommand({ input, user }));
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -95,13 +99,16 @@ export class BrandResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => BrandDetailResponse)
+  @Mutation(() => MutationResponse)
   async followBrand(
     @Args('input') input: FollowBrandInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<BrandDetailResponse> {
-    const brand = await this.commandBus.execute(new FollowBrandCommand({ input, user }));
-    return brand;
+  ): Promise<MutationResponse> {
+    await this.commandBus.execute(new FollowBrandCommand({ input, user }));
+    return {
+      code: HttpStatus.OK,
+      id: input.brandId,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -109,13 +116,16 @@ export class BrandResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => BrandDetailResponse)
+  @Mutation(() => MutationResponse)
   async unfollowBrand(
     @Args('input') input: UnfollowBrandInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<BrandDetailResponse> {
-    const brand = await this.commandBus.execute(new UnfollowBrandCommand({ input, user }));
-    return brand;
+  ): Promise<MutationResponse> {
+    await this.commandBus.execute(new UnfollowBrandCommand({ input, user }));
+    return {
+      code: HttpStatus.OK,
+      id: input.brandId,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -123,12 +133,15 @@ export class BrandResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [ADMIN_ROLE_NAME],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async upsertBrandsFromCsv(
     @Args('input') input: UpsertBrandsFromCsvInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new UpsertBrandsFromCsvCommand({ input, user }));
-    return input.filePath;
+    return {
+      code: HttpStatus.OK,
+      id: input.filePath,
+    };
   }
 }

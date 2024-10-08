@@ -597,7 +597,7 @@ type Mutation {
   cancelReaction(input: CancelReactionInput!): String!
   commentReport(input: CommentReportInput!): ReportCommentResponse!
   createAuction(input: CreateAuctionInput!): String!
-  createBrand(input: CreateBrandInput!): BrandDetailResponse!
+  createBrand(input: CreateBrandInput!): MutationResponse!
   createComment(input: CreateCommentInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
@@ -615,14 +615,14 @@ type Mutation {
   deleteThread(id: ID!): String!
   deleteUserImage(id: ID!): String!
   deleteUserReview(id: ID!): String!
-  followBrand(input: FollowBrandInput!): BrandDetailResponse!
+  followBrand(input: FollowBrandInput!): MutationResponse!
   followUser(input: FollowUserInput!): UserResponse!
   linkSocialProfile(input: LinkSocialProfileInput!): String!
   logout: SocialUserResponse!
   placeBid(input: PlaceBidInput!): String!
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
-  unfollowBrand(input: UnfollowBrandInput!): BrandDetailResponse!
+  unfollowBrand(input: UnfollowBrandInput!): MutationResponse!
   unfollowUser(input: UnfollowUserInput!): UserResponse!
   updateAuction(input: UpdateAuctionInput!): String!
   updateComment(input: UpdateCommentInput!): String!
@@ -633,7 +633,7 @@ type Mutation {
   updateThread(input: UpdateThreadInput!): String!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
-  upsertBrandsFromCsv(input: UpsertBrandsFromCsvInput!): String!
+  upsertBrandsFromCsv(input: UpsertBrandsFromCsvInput!): MutationResponse!
 }
 
 type MutationResponse {
