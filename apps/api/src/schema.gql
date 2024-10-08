@@ -593,10 +593,10 @@ input LinkSocialProfileInput {
 
 type Mutation {
   bumpOffer(input: BumpOfferInput!): MutationResponse!
-  cancelBid(input: CancelBidInput!): String!
+  cancelBid(input: CancelBidInput!): MutationResponse!
   cancelReaction(input: CancelReactionInput!): MutationResponse!
   commentReport(input: CommentReportInput!): MutationResponse!
-  createAuction(input: CreateAuctionInput!): String!
+  createAuction(input: CreateAuctionInput!): MutationResponse!
   createBrand(input: CreateBrandInput!): MutationResponse!
   createComment(input: CreateCommentInput!): MutationResponse!
   createGroup(input: CreateGroupInput!): MutationResponse!
@@ -619,12 +619,12 @@ type Mutation {
   followUser(input: FollowUserInput!): MutationResponse!
   linkSocialProfile(input: LinkSocialProfileInput!): MutationResponse!
   logout: SocialUserResponse!
-  placeBid(input: PlaceBidInput!): String!
+  placeBid(input: PlaceBidInput!): MutationResponse!
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
   unfollowBrand(input: UnfollowBrandInput!): MutationResponse!
   unfollowUser(input: UnfollowUserInput!): MutationResponse!
-  updateAuction(input: UpdateAuctionInput!): String!
+  updateAuction(input: UpdateAuctionInput!): MutationResponse!
   updateComment(input: UpdateCommentInput!): MutationResponse!
   updateGroup(input: UpdateGroupInput!): MutationResponse!
   updateOffer(input: UpdateOfferInput!): MutationResponse!

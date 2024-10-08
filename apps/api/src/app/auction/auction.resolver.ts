@@ -7,7 +7,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { CancelBidInput } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.input';
 import { CancelBidCommand } from '@lib/domains/auction/application/commands/cancel-bid/cancel-bid.command';
-import { UseGuards } from '@nestjs/common';
+import { HttpStatus, UseGuards } from '@nestjs/common';
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
@@ -48,6 +48,7 @@ import { FindAuctionPreviewsArgs } from '@lib/domains/auction/application/querie
 import { AuctionPreviewResponse } from '@lib/domains/auction/application/dtos/auction-preview.response';
 import { FindAuctionPreviewQuery } from '@lib/domains/auction/application/queries/find-auction-preview/find-auction-preview.query';
 import { FindAuctionPreviewArgs } from '@lib/domains/auction/application/queries/find-auction-preview/find-auction-preview.args';
+import { MutationResponse } from '@lib/shared/mutation/mutation.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
@@ -134,13 +135,13 @@ export class AuctionResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async createAuction(
     @Args('input') input: CreateAuctionInput,
     @ExtractedUser() user: MyUserResponse,
     @UserAgent() userAgent: string,
     @IpAddress() ipAddress: string,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(
       new CreateAuctionCommand({
         input,
@@ -149,7 +150,10 @@ export class AuctionResolver {
         ipAddress,
       }),
     );
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -157,13 +161,16 @@ export class AuctionResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async updateAuction(
     @Args('input') input: UpdateAuctionInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new UpdateAuctionCommand({ input, user }));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -171,15 +178,18 @@ export class AuctionResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async placeBid(
     @Args('input') input: PlaceBidInput,
     @ExtractedUser() user: MyUserResponse,
     @UserAgent() userAgent: string,
     @IpAddress() ipAddress: string,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new PlaceBidCommand({ input, user, userAgent, ipAddress }));
-    return input.auctionId;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -187,13 +197,16 @@ export class AuctionResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async cancelBid(
     @Args('input') input: CancelBidInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new CancelBidCommand({ input, user }));
-    return input.auctionId;
+    return {
+      code: HttpStatus.OK,
+      id: input.auctionId,
+    };
   }
 
   @Subscription(() => BidResponse)
