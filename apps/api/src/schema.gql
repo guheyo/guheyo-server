@@ -608,13 +608,13 @@ type Mutation {
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
   createThread(input: CreateThreadInput!): MutationResponse!
   createUserImage(input: CreateUserImageInput!): MutationResponse!
-  createUserReview(input: CreateUserReviewInput!): String!
+  createUserReview(input: CreateUserReviewInput!): MutationResponse!
   deleteComment(input: DeleteCommentInput!): MutationResponse!
   deleteOffer(id: ID!): MutationResponse!
   deleteRole(id: ID!): MutationResponse!
   deleteThread(id: ID!): MutationResponse!
   deleteUserImage(id: ID!): MutationResponse!
-  deleteUserReview(id: ID!): String!
+  deleteUserReview(id: ID!): MutationResponse!
   followBrand(input: FollowBrandInput!): MutationResponse!
   followUser(input: FollowUserInput!): MutationResponse!
   linkSocialProfile(input: LinkSocialProfileInput!): MutationResponse!
