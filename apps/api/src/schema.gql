@@ -594,7 +594,7 @@ input LinkSocialProfileInput {
 type Mutation {
   bumpOffer(input: BumpOfferInput!): MutationResponse!
   cancelBid(input: CancelBidInput!): String!
-  cancelReaction(input: CancelReactionInput!): String!
+  cancelReaction(input: CancelReactionInput!): MutationResponse!
   commentReport(input: CommentReportInput!): ReportCommentResponse!
   createAuction(input: CreateAuctionInput!): String!
   createBrand(input: CreateBrandInput!): MutationResponse!
@@ -602,7 +602,7 @@ type Mutation {
   createGroup(input: CreateGroupInput!): MutationResponse!
   createManyUserImage(input: CreateManyUserImageInput!): String!
   createOffer(input: CreateOfferInput!): MutationResponse!
-  createReaction(input: CreateReactionInput!): String!
+  createReaction(input: CreateReactionInput!): MutationResponse!
   createReport(input: CreateReportInput!): String!
   createRole(input: CreateRoleInput!): String!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
