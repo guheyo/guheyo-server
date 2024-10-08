@@ -595,7 +595,7 @@ type Mutation {
   bumpOffer(input: BumpOfferInput!): MutationResponse!
   cancelBid(input: CancelBidInput!): String!
   cancelReaction(input: CancelReactionInput!): MutationResponse!
-  commentReport(input: CommentReportInput!): ReportCommentResponse!
+  commentReport(input: CommentReportInput!): MutationResponse!
   createAuction(input: CreateAuctionInput!): String!
   createBrand(input: CreateBrandInput!): MutationResponse!
   createComment(input: CreateCommentInput!): MutationResponse!
@@ -603,7 +603,7 @@ type Mutation {
   createManyUserImage(input: CreateManyUserImageInput!): String!
   createOffer(input: CreateOfferInput!): MutationResponse!
   createReaction(input: CreateReactionInput!): MutationResponse!
-  createReport(input: CreateReportInput!): String!
+  createReport(input: CreateReportInput!): MutationResponse!
   createRole(input: CreateRoleInput!): String!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
   createThread(input: CreateThreadInput!): String!
@@ -628,7 +628,7 @@ type Mutation {
   updateComment(input: UpdateCommentInput!): MutationResponse!
   updateGroup(input: UpdateGroupInput!): MutationResponse!
   updateOffer(input: UpdateOfferInput!): MutationResponse!
-  updateReportComment(input: UpdateReportCommentInput!): ReportCommentResponse!
+  updateReportComment(input: UpdateReportCommentInput!): MutationResponse!
   updateRole(input: UpdateRoleInput!): String!
   updateThread(input: UpdateThreadInput!): String!
   updateUser(input: UpdateUserInput!): String!

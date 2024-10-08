@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { UseGuards } from '@nestjs/common';
+import { HttpStatus, UseGuards } from '@nestjs/common';
 import { CreateReportInput } from '@lib/domains/report/application/commands/create-report/create-report.input';
 import { CreateReportCommand } from '@lib/domains/report/application/commands/create-report/create-report.command';
 import { ReportResponse } from '@lib/domains/report/application/dtos/report.response';
@@ -27,6 +27,7 @@ import { AuthenticatedSocialAccountAndRole } from '@lib/domains/auth/decorators/
 import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
 import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
+import { MutationResponse } from '@lib/shared/mutation/mutation.response';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
 @Resolver()
@@ -75,15 +76,18 @@ export class ReportResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async createReport(
     @Args('input') input: CreateReportInput,
     @ExtractedUser() user: MyUserResponse,
     @UserAgent() userAgent: string,
     @IpAddress() ipAddress: string,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new CreateReportCommand({ input, user, userAgent, ipAddress }));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -91,14 +95,18 @@ export class ReportResolver {
     blocklistRoleNames: [],
     allowlistRoleNames: [],
   })
-  @Mutation(() => ReportCommentResponse)
+  @Mutation(() => MutationResponse)
   async commentReport(
     @Args('input') input: CommentReportInput,
     @ExtractedUser() user: MyUserResponse,
     @UserAgent() userAgent: string,
     @IpAddress() ipAddress: string,
-  ): Promise<ReportCommentResponse> {
-    return this.commandBus.execute(new CommentReportCommand({ input, user, userAgent, ipAddress }));
+  ): Promise<MutationResponse> {
+    await this.commandBus.execute(new CommentReportCommand({ input, user, userAgent, ipAddress }));
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -106,11 +114,15 @@ export class ReportResolver {
     blocklistRoleNames: [],
     allowlistRoleNames: [],
   })
-  @Mutation(() => ReportCommentResponse)
+  @Mutation(() => MutationResponse)
   async updateReportComment(
     @Args('input') input: UpdateReportCommentInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<ReportCommentResponse> {
-    return this.commandBus.execute(new UpdateReportCommentCommand({ input, user }));
+  ): Promise<MutationResponse> {
+    await this.commandBus.execute(new UpdateReportCommentCommand({ input, user }));
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 }
