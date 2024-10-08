@@ -616,14 +616,14 @@ type Mutation {
   deleteUserImage(id: ID!): String!
   deleteUserReview(id: ID!): String!
   followBrand(input: FollowBrandInput!): MutationResponse!
-  followUser(input: FollowUserInput!): UserResponse!
-  linkSocialProfile(input: LinkSocialProfileInput!): String!
+  followUser(input: FollowUserInput!): MutationResponse!
+  linkSocialProfile(input: LinkSocialProfileInput!): MutationResponse!
   logout: SocialUserResponse!
   placeBid(input: PlaceBidInput!): String!
   reGenerateTokens: JwtResponse!
   refreshTokens: JwtResponse!
   unfollowBrand(input: UnfollowBrandInput!): MutationResponse!
-  unfollowUser(input: UnfollowUserInput!): UserResponse!
+  unfollowUser(input: UnfollowUserInput!): MutationResponse!
   updateAuction(input: UpdateAuctionInput!): String!
   updateComment(input: UpdateCommentInput!): MutationResponse!
   updateGroup(input: UpdateGroupInput!): MutationResponse!
@@ -631,7 +631,7 @@ type Mutation {
   updateReportComment(input: UpdateReportCommentInput!): MutationResponse!
   updateRole(input: UpdateRoleInput!): MutationResponse!
   updateThread(input: UpdateThreadInput!): MutationResponse!
-  updateUser(input: UpdateUserInput!): String!
+  updateUser(input: UpdateUserInput!): MutationResponse!
   updateUserImage(input: UpdateUserImageInput!): String!
   upsertBrandsFromCsv(input: UpsertBrandsFromCsvInput!): MutationResponse!
 }

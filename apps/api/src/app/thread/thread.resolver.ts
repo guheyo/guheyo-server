@@ -113,7 +113,7 @@ export class ThreadResolver {
     await this.commandBus.execute(new DeleteThreadCommand({ args, user }));
     return {
       code: HttpStatus.OK,
-      id: input.id,
+      id: args.id,
     };
   }
 }
