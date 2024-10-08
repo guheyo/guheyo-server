@@ -891,7 +891,7 @@ type Query {
   findThread(id: ID, slug: String): ThreadResponse
   findThreadPreview(id: ID, slug: String): ThreadPreviewResponse
   findThreadPreviews(cursor: ID, keyword: String, orderBy: FindThreadPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindThreadPreviewsWhereInput): PaginatedThreadPreviewsResponse!
-  findUser(provider: String, socialId: String, username: String): UserResponse
+  findUser(id: String, provider: String, socialId: String, username: String): UserResponse
   findUserImageById(id: ID!): UserImageResponse
   findUserImagesOfRef(refId: ID!, type: String!): [UserImageResponse!]!
   findUserReview(id: ID, slug: String): UserReviewResponse

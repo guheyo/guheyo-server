@@ -42,9 +42,13 @@ export class UserResolver {
     return user;
   }
 
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => UserResponse, { nullable: true })
-  async findUser(@Args() args: FindUserArgs): Promise<UserResponse | null> {
-    const query = new FindUserQuery(args);
+  async findUser(
+    @Args() args: FindUserArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<UserResponse | null> {
+    const query = new FindUserQuery({ args, user });
     return this.queryBus.execute(query);
   }
 
