@@ -592,7 +592,7 @@ input LinkSocialProfileInput {
 }
 
 type Mutation {
-  bumpOffer(input: BumpOfferInput!): OfferPreviewResponse!
+  bumpOffer(input: BumpOfferInput!): MutationResponse!
   cancelBid(input: CancelBidInput!): String!
   cancelReaction(input: CancelReactionInput!): String!
   commentReport(input: CommentReportInput!): ReportCommentResponse!
@@ -601,7 +601,7 @@ type Mutation {
   createComment(input: CreateCommentInput!): String!
   createGroup(input: CreateGroupInput!): String!
   createManyUserImage(input: CreateManyUserImageInput!): String!
-  createOffer(input: CreateOfferInput!): String!
+  createOffer(input: CreateOfferInput!): MutationResponse!
   createReaction(input: CreateReactionInput!): String!
   createReport(input: CreateReportInput!): String!
   createRole(input: CreateRoleInput!): String!
@@ -610,7 +610,7 @@ type Mutation {
   createUserImage(input: CreateUserImageInput!): String!
   createUserReview(input: CreateUserReviewInput!): String!
   deleteComment(input: DeleteCommentInput!): String!
-  deleteOffer(id: ID!): String!
+  deleteOffer(id: ID!): MutationResponse!
   deleteRole(id: ID!): String!
   deleteThread(id: ID!): String!
   deleteUserImage(id: ID!): String!
@@ -627,13 +627,18 @@ type Mutation {
   updateAuction(input: UpdateAuctionInput!): String!
   updateComment(input: UpdateCommentInput!): String!
   updateGroup(input: UpdateGroupInput!): String!
-  updateOffer(input: UpdateOfferInput!): OfferPreviewResponse!
+  updateOffer(input: UpdateOfferInput!): MutationResponse!
   updateReportComment(input: UpdateReportCommentInput!): ReportCommentResponse!
   updateRole(input: UpdateRoleInput!): String!
   updateThread(input: UpdateThreadInput!): String!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
   upsertBrandsFromCsv(input: UpsertBrandsFromCsvInput!): String!
+}
+
+type MutationResponse {
+  code: Float!
+  id: String!
 }
 
 type MyUserResponse {
