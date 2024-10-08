@@ -606,13 +606,13 @@ type Mutation {
   createReport(input: CreateReportInput!): MutationResponse!
   createRole(input: CreateRoleInput!): MutationResponse!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
-  createThread(input: CreateThreadInput!): String!
+  createThread(input: CreateThreadInput!): MutationResponse!
   createUserImage(input: CreateUserImageInput!): String!
   createUserReview(input: CreateUserReviewInput!): String!
   deleteComment(input: DeleteCommentInput!): MutationResponse!
   deleteOffer(id: ID!): MutationResponse!
   deleteRole(id: ID!): MutationResponse!
-  deleteThread(id: ID!): String!
+  deleteThread(id: ID!): MutationResponse!
   deleteUserImage(id: ID!): String!
   deleteUserReview(id: ID!): String!
   followBrand(input: FollowBrandInput!): MutationResponse!
@@ -630,7 +630,7 @@ type Mutation {
   updateOffer(input: UpdateOfferInput!): MutationResponse!
   updateReportComment(input: UpdateReportCommentInput!): MutationResponse!
   updateRole(input: UpdateRoleInput!): MutationResponse!
-  updateThread(input: UpdateThreadInput!): String!
+  updateThread(input: UpdateThreadInput!): MutationResponse!
   updateUser(input: UpdateUserInput!): String!
   updateUserImage(input: UpdateUserImageInput!): String!
   upsertBrandsFromCsv(input: UpsertBrandsFromCsvInput!): MutationResponse!
