@@ -29,6 +29,7 @@ export class CommentReportHandler extends PrismaCommandHandler<
       );
 
     report = this.publisher.mergeObjectContext(report);
+    await this.savePort.createComment(command);
     report.commentReport();
     report.commit();
   }
