@@ -8,7 +8,7 @@ import { PaginatedUsersResponse } from '@lib/domains/user/application/queries/fi
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { FindUserArgs } from '@lib/domains/user/application/queries/find-user/find-user.args';
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
-import { UseGuards } from '@nestjs/common';
+import { HttpStatus, UseGuards } from '@nestjs/common';
 import { JwtAccessGuard } from '@lib/domains/auth/guards/jwt/jwt-access.guard';
 import { AuthorResponse } from '@lib/domains/user/application/dtos/author.response';
 import { FindAuthorArgs } from '@lib/domains/user/application/queries/find-author/find-author.args';
@@ -25,6 +25,7 @@ import { FollowUserInput } from '@lib/domains/user/application/commands/follow-u
 import { FollowUserCommand } from '@lib/domains/user/application/commands/follow-user/follow-user.command';
 import { UnfollowUserInput } from '@lib/domains/user/application/commands/unfollow-user/unfollow-user.input';
 import { UnfollowUserCommand } from '@lib/domains/user/application/commands/unfollow-user/unfollow-user.command';
+import { MutationResponse } from '@lib/shared/mutation/mutation.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -41,9 +42,13 @@ export class UserResolver {
     return user;
   }
 
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => UserResponse, { nullable: true })
-  async findUser(@Args() args: FindUserArgs): Promise<UserResponse | null> {
-    const query = new FindUserQuery(args);
+  async findUser(
+    @Args() args: FindUserArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<UserResponse | null> {
+    const query = new FindUserQuery({ args, user });
     return this.queryBus.execute(query);
   }
 
@@ -70,18 +75,21 @@ export class UserResolver {
   // TODO
   // deleteUser
 
-  @Mutation(() => String)
-  async updateUser(@Args('input') input: UpdateUserInput): Promise<string> {
+  @Mutation(() => MutationResponse)
+  async updateUser(@Args('input') input: UpdateUserInput): Promise<MutationResponse> {
     await this.commandBus.execute(new UpdateUserCommand(input));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @UseGuards(JwtAccessGuard)
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async linkSocialProfile(
     @Args('input') input: LinkSocialProfileInput,
     @ExtractedJwtPayload() jwtPayload: JwtPayload,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(
       new LinkSocialProfileCommand({
         input,
@@ -90,24 +98,35 @@ export class UserResolver {
         avatarURL: jwtPayload.socialProfile.avatarURL,
       }),
     );
-    return jwtPayload.id;
+    return {
+      code: HttpStatus.OK,
+      id: jwtPayload.id,
+    };
   }
 
   @UseGuards(RequiredJwtUserGuard)
-  @Mutation(() => UserResponse)
+  @Mutation(() => MutationResponse)
   async followUser(
     @Args('input') input: FollowUserInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<UserResponse> {
-    return this.commandBus.execute(new FollowUserCommand({ input, user }));
+  ): Promise<MutationResponse> {
+    await this.commandBus.execute(new FollowUserCommand({ input, user }));
+    return {
+      code: HttpStatus.OK,
+      id: input.followingId,
+    };
   }
 
   @UseGuards(RequiredJwtUserGuard)
-  @Mutation(() => UserResponse)
+  @Mutation(() => MutationResponse)
   async unfollowUser(
     @Args('input') input: UnfollowUserInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<UserResponse> {
-    return this.commandBus.execute(new UnfollowUserCommand({ input, user }));
+  ): Promise<MutationResponse> {
+    await this.commandBus.execute(new UnfollowUserCommand({ input, user }));
+    return {
+      code: HttpStatus.OK,
+      id: input.followingId,
+    };
   }
 }

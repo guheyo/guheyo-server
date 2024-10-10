@@ -20,7 +20,7 @@ export class UpdateOfferHandler extends PrismaCommandHandler<
     super(OfferPreviewResponse);
   }
 
-  async execute(command: UpdateOfferCommand): Promise<OfferPreviewResponse> {
+  async execute(command: UpdateOfferCommand): Promise<void> {
     let offer = await this.offerLoadPort.findById(command.id);
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_NOT_FOUND);
     if (!offer.isAuthorized(command.user.id))
@@ -32,6 +32,5 @@ export class UpdateOfferHandler extends PrismaCommandHandler<
     offer.update(command);
     await this.offerSavePort.save(offer);
     offer.commit();
-    return this.parseResponse(offer);
   }
 }

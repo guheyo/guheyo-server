@@ -59,6 +59,17 @@ export class FindThreadPreviewsHandler extends PrismaQueryHandler {
                   },
                 }
               : {}),
+            ...(query.where.brandIds
+              ? {
+                  brands: {
+                    some: {
+                      id: {
+                        in: query.where.brandIds,
+                      },
+                    },
+                  },
+                }
+              : {}),
             createdAt: query.where.createdAt
               ? {
                   gt: new Date(query.where.createdAt.gt),
@@ -105,6 +116,7 @@ export class FindThreadPreviewsHandler extends PrismaQueryHandler {
               },
             },
             tags: true,
+            brands: true,
             comments: {
               where: {
                 deletedAt: null,

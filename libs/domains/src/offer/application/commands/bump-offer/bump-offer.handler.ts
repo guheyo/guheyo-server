@@ -18,7 +18,7 @@ export class BumpOfferHandler extends PrismaCommandHandler<BumpOfferCommand, Off
     super(OfferPreviewResponse);
   }
 
-  async execute(command: BumpOfferCommand): Promise<OfferPreviewResponse> {
+  async execute(command: BumpOfferCommand): Promise<void> {
     let offer = await this.offerLoadPort.findById(command.input.offerId);
     if (!offer) throw new NotFoundException(OfferErrorMessage.OFFER_NOT_FOUND);
     if (!offer.isAuthorized(command.user.id))
@@ -39,6 +39,5 @@ export class BumpOfferHandler extends PrismaCommandHandler<BumpOfferCommand, Off
     offer.bump(command.input);
     await this.offerSavePort.save(offer);
     offer.commit();
-    return this.parseResponse(offer);
   }
 }

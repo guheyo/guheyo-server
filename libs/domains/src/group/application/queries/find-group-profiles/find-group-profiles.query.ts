@@ -1,16 +1,22 @@
 import { PaginationQuery } from '@lib/shared/cqrs/queries/pagination/pagination.query';
-import { parseContainsSearcher } from '@lib/shared/search/search';
 import { FindGroupProfilesArgs } from './find-group-profiles.args';
+import { FindGroupProfilesWhereInput } from './find-group-profiles-where.input';
+import { FindGroupProfilesOrderByInput } from './find-group-profiles-order-by.input';
 
 export class FindGroupProfilesQuery extends PaginationQuery {
-  where: {
-    name?: any;
-  };
+  where?: FindGroupProfilesWhereInput;
 
-  constructor(findGroupProfilesArgs: FindGroupProfilesArgs) {
-    super(findGroupProfilesArgs);
-    this.where = {
-      name: parseContainsSearcher({ keyword: findGroupProfilesArgs.keyword }),
-    };
+  orderBy?: FindGroupProfilesOrderByInput;
+
+  keyword?: string;
+
+  target?: string;
+
+  constructor({ args }: { args: FindGroupProfilesArgs }) {
+    super(args);
+    this.where = args.where;
+    this.orderBy = args.orderBy;
+    this.keyword = args.keyword;
+    this.target = args.target;
   }
 }

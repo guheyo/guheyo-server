@@ -20,7 +20,7 @@ export class CommentReportHandler extends PrismaCommandHandler<
     super(ReportCommentResponse);
   }
 
-  async execute(command: CommentReportCommand): Promise<ReportCommentResponse> {
+  async execute(command: CommentReportCommand): Promise<void> {
     let report = await this.loadPort.findById(command.reportId);
     if (!report) throw new NotFoundException(ReportErrorMessage.REPORT_NOT_FOUND);
     if (!report.validateCommenter(command.user.id))
@@ -29,9 +29,8 @@ export class CommentReportHandler extends PrismaCommandHandler<
       );
 
     report = this.publisher.mergeObjectContext(report);
-    const comment = await this.savePort.createComment(command);
+    await this.savePort.createComment(command);
     report.commentReport();
     report.commit();
-    return this.parseResponse(comment);
   }
 }

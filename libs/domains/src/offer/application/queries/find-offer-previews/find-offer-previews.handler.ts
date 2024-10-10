@@ -110,6 +110,7 @@ export class FindOfferPreviewsHandler extends PrismaQueryHandler {
               },
             },
             tags: true,
+            brands: true,
           },
         },
         userReviews: isMyClosedOffers

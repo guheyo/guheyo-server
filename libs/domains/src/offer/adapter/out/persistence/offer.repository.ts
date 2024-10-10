@@ -37,6 +37,11 @@ export class OfferRepository
                 position: 'asc',
               },
             },
+            brands: {
+              orderBy: {
+                createdAt: 'asc',
+              },
+            },
           },
         },
         bumps: true,

@@ -44,6 +44,6 @@ export class ConnectOrCreateTagsHandler extends PrismaCommandHandler<
     );
 
     const tagIds = tags.map((tag) => tag.id);
-    this.savePort.connectTags(command.postId, tagIds);
+    await this.savePort.connectTags(command.postId, tagIds);
   }
 }

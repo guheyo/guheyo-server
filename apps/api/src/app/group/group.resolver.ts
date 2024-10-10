@@ -15,12 +15,13 @@ import { FindGroupPreviewsQuery } from '@lib/domains/group/application/queries/f
 import { PaginatedGroupProfilesResponse } from '@lib/domains/group/application/queries/find-group-profiles/paginated-group-profiles.response';
 import { FindGroupProfilesArgs } from '@lib/domains/group/application/queries/find-group-profiles/find-group-profiles.args';
 import { FindGroupProfilesQuery } from '@lib/domains/group/application/queries/find-group-profiles/find-group-profiles.query';
-import { UseGuards } from '@nestjs/common';
+import { HttpStatus, UseGuards } from '@nestjs/common';
 import { RootRoleGuard } from '@lib/domains/auth/guards/role/root-role.guard';
 import { BlocklistRoleNames } from '@lib/domains/auth/decorators/blocklist-role-names/blocklist-role-names.decorator';
 import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-names/allowlist-role-names.decorator';
 import { ADMIN_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
+import { MutationResponse } from '@lib/shared/mutation/mutation.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -47,7 +48,7 @@ export class GroupResolver {
   async findGroupProfiles(
     @Args() findGroupProfilesArgs: FindGroupProfilesArgs,
   ): Promise<PaginatedGroupProfilesResponse> {
-    const query = new FindGroupProfilesQuery(findGroupProfilesArgs);
+    const query = new FindGroupProfilesQuery({ args: findGroupProfilesArgs });
     return this.queryBus.execute(query);
   }
 
@@ -60,19 +61,25 @@ export class GroupResolver {
   @BlocklistRoleNames([])
   @AllowlistRoleNames([ADMIN_ROLE_NAME])
   @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
-  @Mutation(() => String)
-  async createGroup(@Args('input') input: CreateGroupInput): Promise<string> {
+  @Mutation(() => MutationResponse)
+  async createGroup(@Args('input') input: CreateGroupInput): Promise<MutationResponse> {
     await this.commandBus.execute(new CreateGroupCommand(input));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @BlocklistRoleNames([])
   @AllowlistRoleNames([ADMIN_ROLE_NAME])
   @UseGuards(RequiredJwtUserGuard, RootRoleGuard)
-  @Mutation(() => String)
-  async updateGroup(@Args('input') input: UpdateGroupInput): Promise<string> {
+  @Mutation(() => MutationResponse)
+  async updateGroup(@Args('input') input: UpdateGroupInput): Promise<MutationResponse> {
     await this.commandBus.execute(new UpdateGroupCommand(input));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   // NOTE

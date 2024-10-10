@@ -1,5 +1,5 @@
 import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { Inject, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Inject, InternalServerErrorException } from '@nestjs/common';
 import { UserErrorMessage } from '@lib/domains/user/domain/user.error.message';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { UnfollowUserCommand } from './unfollow-user.command';
@@ -15,7 +15,7 @@ export class UnfollowUserHandler extends PrismaCommandHandler<UnfollowUserComman
     super(UserResponse);
   }
 
-  async execute(command: UnfollowUserCommand): Promise<UserResponse> {
+  async execute(command: UnfollowUserCommand): Promise<void> {
     const alreadyFollowing = await this.prismaService.followUser.findFirst({
       where: {
         followingId: command.followingId,
@@ -32,24 +32,5 @@ export class UnfollowUserHandler extends PrismaCommandHandler<UnfollowUserComman
       WHERE "followingId" = ${command.followingId}
       AND "followerId" = ${command.user.id};
     `;
-
-    const user = await this.prismaService.user.findUnique({
-      where: {
-        id: command.followingId,
-      },
-      include: {
-        followers: {
-          where: {
-            followerId: command.user.id,
-          },
-        },
-      },
-    });
-    if (!user) throw new NotFoundException(UserErrorMessage.USER_IS_NOT_FOUND);
-
-    return this.parseResponse({
-      ...user,
-      followed: user.followers.length > 0,
-    });
   }
 }

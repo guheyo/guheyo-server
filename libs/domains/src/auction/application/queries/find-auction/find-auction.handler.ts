@@ -35,6 +35,7 @@ export class FindAuctionHandler extends PrismaQueryHandler {
               },
             },
             tags: true,
+            brands: true,
             reports: {
               select: {
                 id: true,

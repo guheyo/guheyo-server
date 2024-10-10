@@ -1,6 +1,6 @@
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { HttpStatus, UseGuards } from '@nestjs/common';
 import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { ROOT_BLOCKLIST_ROLE_NAMES } from '@lib/domains/role/domain/role.types';
@@ -20,6 +20,10 @@ import { UpdateThreadInput } from '@lib/domains/thread/application/commands/upda
 import { UpdateThreadCommand } from '@lib/domains/thread/application/commands/update-thread/update-thread.command';
 import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
 import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
+import { ThreadPreviewResponse } from '@lib/domains/thread/application/dtos/thread-preview.response';
+import { FindThreadPreviewQuery } from '@lib/domains/thread/application/queries/find-thread-preview/find-thread-preview.query';
+import { FindThreadPreviewArgs } from '@lib/domains/thread/application/queries/find-thread-preview/find-thread-preview.args';
+import { MutationResponse } from '@lib/shared/mutation/mutation.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards()
@@ -41,6 +45,16 @@ export class ThreadResolver {
   }
 
   @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
+  @Query(() => ThreadPreviewResponse, { nullable: true })
+  async findThreadPreview(
+    @Args() args: FindThreadPreviewArgs,
+    @ExtractedUser() user: MyUserResponse,
+  ): Promise<ThreadPreviewResponse | null> {
+    const query = new FindThreadPreviewQuery({ args, userId: user.id });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
   @Query(() => PaginatedThreadPreviewsResponse)
   async findThreadPreviews(
     @Args() args: FindThreadPreviewsArgs,
@@ -55,15 +69,18 @@ export class ThreadResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async createThread(
     @Args('input') input: CreateThreadInput,
     @ExtractedUser() user: MyUserResponse,
     @UserAgent() userAgent: string,
     @IpAddress() ipAddress: string,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new CreateThreadCommand({ input, user, userAgent, ipAddress }));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -71,13 +88,16 @@ export class ThreadResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async updateThread(
     @Args('input') input: UpdateThreadInput,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new UpdateThreadCommand({ input, user }));
-    return input.id;
+    return {
+      code: HttpStatus.OK,
+      id: input.id,
+    };
   }
 
   @AuthenticatedSocialAccountAndRole({
@@ -85,12 +105,15 @@ export class ThreadResolver {
     blocklistRoleNames: [...ROOT_BLOCKLIST_ROLE_NAMES],
     allowlistRoleNames: [],
   })
-  @Mutation(() => String)
+  @Mutation(() => MutationResponse)
   async deleteThread(
     @Args() args: DeleteThreadArgs,
     @ExtractedUser() user: MyUserResponse,
-  ): Promise<string> {
+  ): Promise<MutationResponse> {
     await this.commandBus.execute(new DeleteThreadCommand({ args, user }));
-    return args.id;
+    return {
+      code: HttpStatus.OK,
+      id: args.id,
+    };
   }
 }

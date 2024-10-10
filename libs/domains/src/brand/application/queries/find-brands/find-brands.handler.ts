@@ -5,8 +5,8 @@ import { Prisma } from '@prisma/client';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { parseContainsSearcher } from '@lib/shared/search/search';
 import { FindBrandsQuery } from './find-brands.query';
-import { BrandResponse } from '../../dtos/brand.response';
 import { PaginatedBrandsResponse } from './paginated-brands.response';
+import { BrandPreviewResponse } from '../../dtos/brand-preview.response';
 
 @QueryHandler(FindBrandsQuery)
 export class FindBrandsHandler extends PrismaQueryHandler {
@@ -41,26 +41,31 @@ export class FindBrandsHandler extends PrismaQueryHandler {
         }
       : undefined;
 
+    const orderBy: Prisma.BrandOrderByWithRelationAndSearchRelevanceInput[] = [];
+    if (query.orderBy?.follower) {
+      orderBy.push({
+        followBrands: {
+          _count: query.orderBy.follower,
+        },
+      });
+    }
+    orderBy.push(
+      {
+        createdAt: query.orderBy?.createdAt || 'desc',
+      },
+      {
+        id: 'asc',
+      },
+    );
+
     const brands = await this.prismaService.brand.findMany({
       where,
-      orderBy: {
-        createdAt: query.orderBy?.createdAt,
-        ...(query.orderBy?.follower && {
-          followBrands: {
-            _count: query.orderBy?.follower,
-          },
-        }),
-      },
+      orderBy,
       cursor,
       take: query.take + 1,
       skip: query.skip,
       include: {
         groups: true,
-        links: {
-          include: {
-            platform: true,
-          },
-        },
         followBrands: {
           include: {
             user: true,
@@ -69,9 +74,9 @@ export class FindBrandsHandler extends PrismaQueryHandler {
       },
     });
 
-    return paginate<BrandResponse>(
+    return paginate<BrandPreviewResponse>(
       brands.map((brand) =>
-        plainToInstance(BrandResponse, {
+        plainToInstance(BrandPreviewResponse, {
           ...brand,
           followed: brand.followBrands.some((followBrand) => followBrand.userId === query.userId),
         }),

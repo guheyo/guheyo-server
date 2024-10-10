@@ -1,26 +1,26 @@
 import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { Inject, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Inject, InternalServerErrorException } from '@nestjs/common';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { BrandErrorMessage } from '@lib/domains/brand/domain/brand.error.message';
 import { UnfollowBrandCommand } from './unfollow-brand.command';
-import { BrandResponse } from '../../dtos/brand.response';
+import { BrandDetailResponse } from '../../dtos/brand-detail.response';
 import { BrandSavePort } from '../../ports/out/brand.save.port';
 import { BrandLoadPort } from '../../ports/out/brand.load.port';
 
 @CommandHandler(UnfollowBrandCommand)
 export class UnfollowBrandHandler extends PrismaCommandHandler<
   UnfollowBrandCommand,
-  BrandResponse
+  BrandDetailResponse
 > {
   constructor(
     @Inject('BrandSavePort') private savePort: BrandSavePort,
     @Inject('BrandLoadPort') private loadPort: BrandLoadPort,
     private readonly publisher: EventPublisher,
   ) {
-    super(BrandResponse);
+    super(BrandDetailResponse);
   }
 
-  async execute(command: UnfollowBrandCommand): Promise<BrandResponse> {
+  async execute(command: UnfollowBrandCommand): Promise<void> {
     const existingFollow = await this.prismaService.followBrand.findFirst({
       where: {
         userId: command.user.id,
@@ -33,31 +33,5 @@ export class UnfollowBrandHandler extends PrismaCommandHandler<
 
     await this.prismaService
       .$queryRaw`DELETE FROM public."FollowBrand" WHERE id = ${existingFollow.id}`;
-
-    const brand = await this.prismaService.brand.findUnique({
-      where: {
-        id: command.brandId,
-      },
-      include: {
-        groups: true,
-        links: {
-          include: {
-            platform: true,
-          },
-        },
-        followBrands: {
-          include: {
-            user: true,
-          },
-        },
-      },
-    });
-
-    if (!brand) throw new NotFoundException(BrandErrorMessage.BRAND_NOT_FOUND);
-
-    return this.parseResponse({
-      ...brand,
-      followed: brand.followBrands.some((followBrand) => followBrand.userId === command.user.id),
-    });
   }
 }
