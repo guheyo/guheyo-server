@@ -1,5 +1,5 @@
 import { CommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { Inject, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Inject, InternalServerErrorException } from '@nestjs/common';
 import { UserErrorMessage } from '@lib/domains/user/domain/user.error.message';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { UnfollowUserCommand } from './unfollow-user.command';
