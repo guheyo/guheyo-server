@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { OFFER } from '@lib/domains/offer/domain/offer.constants';
+import { formatNumber } from '@lib/shared/number/format-number';
 
 @Injectable()
 export class DiscordWebhookParser {
@@ -27,10 +28,10 @@ export class DiscordWebhookParser {
     title: string;
     price: number;
   }) {
-    if (businessFunction === 'sell') return `[판매] ${title} - ${price}`;
-    if (businessFunction === 'buy') return `[구매] ${title} - ${price}`;
+    if (businessFunction === 'sell') return `[판매] ${title} - ${formatNumber(price)}원`;
+    if (businessFunction === 'buy') return `[구매] ${title} - ${formatNumber(price)}원`;
     // swap
-    return `[교환] ${title} ${price ? `- 내 추가금 +${price}` : ''}`;
+    return `[교환] ${title} ${price ? `\n내 추가금 +${formatNumber(price)}원` : ''}`;
   }
 
   parseUserReviewTitle({ rating, title }: { rating: number; title: string }) {
