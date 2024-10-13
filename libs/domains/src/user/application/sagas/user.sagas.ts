@@ -17,12 +17,14 @@ export class UserSagas {
       map(
         (event) =>
           new CreateSocialAccountCommand({
-            id: event.socialAccountId,
-            provider: event.provider,
-            socialId: event.socialId,
-            userId: event.userId,
-            accessToken: event.accessToken,
-            refreshToken: event.refreshToken,
+            input: {
+              id: event.socialAccountId,
+              provider: event.provider,
+              socialId: event.socialId,
+              userId: event.userId,
+              accessToken: event.accessToken,
+              refreshToken: event.refreshToken,
+            },
           }),
       ),
     );
