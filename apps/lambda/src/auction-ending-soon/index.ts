@@ -1,6 +1,7 @@
 import { EmbedBuilder, WebhookClient } from 'discord.js';
 import { PrismaClient } from '@prisma/client';
 import dayjs from 'dayjs';
+import { formatNumber } from '@lib/shared/number/format-number';
 
 export const handler = async (event: any): Promise<void> => {
   const { auctionId } = event;
@@ -65,9 +66,9 @@ export const handler = async (event: any): Promise<void> => {
       .setDescription(
         `경매 시작: ${dayjs(auction.createdAt).format(
           'YYYY-MM-DD HH:mm',
-        )}\n${`<t:${unixTimestamp}:R> 종료`}\n입찰가: ${String(auction.bids[0]?.price || 0)}\n\n${
-          process.env.FRONTEND_HOST
-        }/auction/${auction.post.slug}`,
+        )}\n${`<t:${unixTimestamp}:R> 종료`}\n입찰가: ${formatNumber(
+          auction.bids[0]?.price || 0,
+        )}원\n\n${process.env.FRONTEND_HOST}/auction/${auction.post.slug}`,
       )
       .setImage(auction.post.thumbnail);
 
