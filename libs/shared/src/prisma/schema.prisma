@@ -484,6 +484,23 @@ model Term {
   @@schema("public")
 }
 
+model SocialAccountConflict {
+  id                  String          @id @default(uuid())
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  deletedAt           DateTime?
+  conflictReason      String?
+  provider            String
+  socialId            String
+  newUserId           String
+  existingUserId      String
+  status              String
+  userAgent           String?
+  ipAddress           String?
+
+  @@schema("public")
+}
+
 model Version {
   id                String            @id @default(uuid())
   createdAt         DateTime          @default(now())
