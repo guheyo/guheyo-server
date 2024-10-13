@@ -91,15 +91,23 @@ export class OfferEntity extends AggregateRoot {
   }
 
   bump(input: BumpOfferInput) {
+    this.bumpedAt = new Date();
+    this.price = input.newPrice;
     this.apply(
       new BumpedEvent({
         id: input.id,
         offerId: this.id,
         oldPrice: this.price,
         newPrice: input.newPrice,
+        username: this.post.user.username,
+        avatarURL: this.post.user.avatarURL || undefined,
+        businessFunction: this.businessFunction,
+        title: this.post.title,
+        slug: this.post.slug || undefined,
+        price: this.price,
+        postId: this.post.id,
+        thumbnail: this.post.thumbnail || undefined,
       }),
     );
-    this.bumpedAt = new Date();
-    this.price = input.newPrice;
   }
 }
