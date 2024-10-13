@@ -10,6 +10,7 @@ import { AuctionCreatedEvent } from '@lib/domains/auction/application/events/auc
 import { EmbedBuilder } from 'discord.js';
 import dayjs from 'dayjs';
 import { DISCORD } from '@lib/shared/discord/discord.constants';
+import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
 import { SendDiscordWebhookCommand } from '../commands/send-discord-webhook/send-discord-webhook.command';
 import { DiscordWebhookParser } from '../services/discord-webhook.parser';
 
@@ -22,6 +23,35 @@ export class DiscordWebhookSagas {
     events$.pipe(
       ofType(OfferCreatedEvent),
       filter((event) => event.userAgent !== DISCORD),
+      filter((event) => !!event.slug),
+      filter((event) => includes(OFFER_BUSINESS_FUNCTIONS, event.businessFunction)),
+      map((event) => {
+        const embed = new EmbedBuilder()
+          .setTitle(
+            this.discordWebhookParser.parseOfferTitle({
+              businessFunction: event.businessFunction,
+              title: event.title,
+              price: event.price,
+            }),
+          )
+          .setColor(this.discordWebhookParser.parseOfferColor(event.businessFunction))
+          .setAuthor({
+            name: event.username,
+            iconURL: event.avatarURL,
+          })
+          .setDescription(this.discordWebhookParser.parseOfferURL({ slug: event.slug! }))
+          .setImage(event.thumbnail || null);
+        return new SendDiscordWebhookCommand({
+          target: 'offer',
+          embed,
+        });
+      }),
+    );
+
+  @Saga()
+  offerBumped = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(BumpedEvent),
       filter((event) => !!event.slug),
       filter((event) => includes(OFFER_BUSINESS_FUNCTIONS, event.businessFunction)),
       map((event) => {
