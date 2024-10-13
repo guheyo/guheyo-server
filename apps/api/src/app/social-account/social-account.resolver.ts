@@ -19,7 +19,7 @@ export class SocialAccountResolver {
   async createSocialAccount(
     @Args('input') input: CreateSocialAccountInput,
   ): Promise<MutationResponse> {
-    await this.commandBus.execute(new CreateSocialAccountCommand(input));
+    await this.commandBus.execute(new CreateSocialAccountCommand({ input }));
     return {
       code: HttpStatus.OK,
       id: input.id,

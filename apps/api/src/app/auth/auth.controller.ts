@@ -13,6 +13,8 @@ import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
 import { CreateSocialAccountCommand } from '@lib/domains/social-account/application/commands/create-social-account/create-social-account.command';
 import { MultiPlatformGuard } from '@lib/domains/auth/guards/multi-platform/multi-platform.guard';
 import { get } from 'lodash';
+import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
+import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
 import { ThrottlerBehindProxyGuard } from '../throttler/throttler-behind-proxy.guard';
 
 @UseGuards(ThrottlerBehindProxyGuard)
@@ -108,13 +110,22 @@ export class AuthController {
 
   @Get('naver/callback')
   @UseGuards(new MultiPlatformGuard('naver'))
-  async naverLoginCallback(@Req() req: any, @Res() res: Response) {
+  async naverLoginCallback(
+    @Req() req: any,
+    @Res() res: Response,
+    @UserAgent() userAgent: string,
+    @IpAddress() ipAddress: string,
+  ) {
     await this.commandBus.execute(
       new CreateSocialAccountCommand({
-        id: uuid4(),
-        provider: get(req.user, 'socialData.naver.provider'),
-        socialId: get(req.user, 'socialData.naver.socialId'),
-        userId: req.user.id,
+        input: {
+          id: uuid4(),
+          provider: get(req.user, 'socialData.naver.provider'),
+          socialId: get(req.user, 'socialData.naver.socialId'),
+          userId: req.user.id,
+        },
+        userAgent,
+        ipAddress,
       }),
     );
     return res.redirect(
@@ -132,13 +143,22 @@ export class AuthController {
 
   @Get('kakao/callback')
   @UseGuards(new MultiPlatformGuard('kakao'))
-  async kakaoLoginCallback(@Req() req: any, @Res() res: Response) {
+  async kakaoLoginCallback(
+    @Req() req: any,
+    @Res() res: Response,
+    @UserAgent() userAgent: string,
+    @IpAddress() ipAddress: string,
+  ) {
     await this.commandBus.execute(
       new CreateSocialAccountCommand({
-        id: uuid4(),
-        provider: get(req.user, 'socialData.kakao.provider'),
-        socialId: get(req.user, 'socialData.kakao.socialId'),
-        userId: req.user.id,
+        input: {
+          id: uuid4(),
+          provider: get(req.user, 'socialData.kakao.provider'),
+          socialId: get(req.user, 'socialData.kakao.socialId'),
+          userId: req.user.id,
+        },
+        userAgent,
+        ipAddress,
       }),
     );
     return res.redirect(
