@@ -24,7 +24,19 @@ export class CreateSocialAccountCommand implements ICommand {
 
   sessionState?: string;
 
-  constructor(input: CreateSocialAccountInput) {
+  userAgent?: string;
+
+  ipAddress?: string;
+
+  constructor({
+    input,
+    userAgent,
+    ipAddress,
+  }: {
+    input: CreateSocialAccountInput;
+    userAgent?: string;
+    ipAddress?: string;
+  }) {
     this.id = input.id;
     this.provider = input.provider;
     this.socialId = input.socialId;
@@ -36,5 +48,7 @@ export class CreateSocialAccountCommand implements ICommand {
     this.scope = input.scope;
     this.idToken = input.idToken;
     this.sessionState = input.sessionState;
+    this.userAgent = userAgent;
+    this.ipAddress = ipAddress;
   }
 }
