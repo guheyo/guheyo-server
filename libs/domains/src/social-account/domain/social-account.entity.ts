@@ -32,6 +32,10 @@ export class SocialAccountEntity extends AggregateRoot {
 
   sessionState: string | null;
 
+  userAgent: string | null;
+
+  ipAddress: string | null;
+
   constructor(partial: Partial<SocialAccountEntity>) {
     super();
     Object.assign(this, partial);
