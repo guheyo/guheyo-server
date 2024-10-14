@@ -28,7 +28,7 @@ export class FindBrandsHandler extends PrismaQueryHandler {
           ...(query.where.followed && {
             followBrands: {
               some: {
-                userId: query.userId,
+                userId: query.userId || '-1',
               },
             },
           }),
