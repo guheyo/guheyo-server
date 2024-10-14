@@ -98,6 +98,8 @@ model SocialAccount {
   expiresAt         Int?
   tokenType         String?
   scope             String?
+  userAgent         String?
+  ipAddress         String?
 
   @@unique([provider, socialId])
 
