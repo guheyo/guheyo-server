@@ -504,6 +504,8 @@ input FindSocialAccountConflictsOrderByInput {
 
 input FindSocialAccountConflictsWhereInput {
   createdAt: JSON
+  provider: String
+  socialId: String
   status: String
 }
 

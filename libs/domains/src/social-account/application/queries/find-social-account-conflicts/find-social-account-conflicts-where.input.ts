@@ -13,4 +13,12 @@ export class FindSocialAccountConflictsWhereInput {
   createdAt?: {
     gt: string;
   };
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  provider?: string;
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  socialId?: string;
 }
