@@ -62,6 +62,11 @@ type AuthorResponse {
   username: String!
 }
 
+type AuthorResponseEdge {
+  cursor: String!
+  node: AuthorResponse!
+}
+
 type BidCountResponse {
   auctionId: ID!
   count: Int!
@@ -400,6 +405,15 @@ input FindAuctionPreviewsWhereInput {
   groupId: ID
   pending: String
   status: String
+  userId: ID
+}
+
+input FindAuthorsOrderByInput {
+  createdAt: String
+}
+
+input FindAuthorsWhereInput {
+  followed: Boolean
   userId: ID
 }
 
@@ -742,6 +756,11 @@ type PaginatedAuctionPreviewsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedAuthorsResponse {
+  edges: [AuthorResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedBidsResponse {
   edges: [BidResponseEdge!]!
   pageInfo: PageInfo!
@@ -891,6 +910,7 @@ type Query {
   findAuctionPreview(id: ID, slug: String): AuctionPreviewResponse
   findAuctionPreviews(cursor: ID, keyword: String, orderBy: FindAuctionPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindAuctionPreviewsWhereInput): PaginatedAuctionPreviewsResponse!
   findAuthor(id: ID, username: String): AuthorResponse
+  findAuthors(cursor: ID, keyword: String, orderBy: FindAuthorsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindAuthorsWhereInput): PaginatedAuthorsResponse!
   findBidCount(auctionId: ID!): BidCountResponse!
   findBidders(cursor: ID, keyword: String, orderBy: FindBiddersOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBiddersWhereInput!): PaginatedUsersResponse!
   findBids(cursor: ID, keyword: String, orderBy: FindBidsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBidsWhereInput): PaginatedBidsResponse!
