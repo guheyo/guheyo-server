@@ -21,6 +21,14 @@ export class FindSocialAccountConflictsHandler extends PrismaQueryHandler {
       cursor,
       take: query.take + 1,
       skip: query.skip,
+      where: {
+        status: query.where?.status,
+        createdAt: query.where?.createdAt
+          ? {
+              gt: new Date(query.where.createdAt.gt),
+            }
+          : undefined,
+      },
       orderBy: [
         {
           createdAt: query.orderBy?.createdAt,
@@ -47,16 +55,6 @@ export class FindSocialAccountConflictsHandler extends PrismaQueryHandler {
           },
         },
         socialAccounts: true,
-        followers: {
-          include: {
-            follower: true,
-          },
-        },
-        following: {
-          include: {
-            following: true,
-          },
-        },
       },
     });
 
@@ -69,8 +67,8 @@ export class FindSocialAccountConflictsHandler extends PrismaQueryHandler {
       socialAccountConflicts.map((conflict) =>
         plainToInstance(SocialAccountConflictResponse, {
           ...conflict,
-          newUser: userMap[conflict.newUserId] || null,
-          existingUser: userMap[conflict.existingUserId] || null,
+          newUser: userMap[conflict.newUserId],
+          existingUser: userMap[conflict.existingUserId],
         }),
       ),
       'id',
