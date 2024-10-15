@@ -489,9 +489,7 @@ input FindSocialAccountConflictsOrderByInput {
 
 input FindSocialAccountConflictsWhereInput {
   createdAt: JSON
-  followed: Boolean
   status: String
-  userId: ID
 }
 
 input FindThreadPreviewsOrderByInput {
