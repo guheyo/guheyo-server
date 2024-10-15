@@ -1,5 +1,5 @@
 import { IQuery } from '@nestjs/cqrs';
-import { FindSocialAccountArgs } from './find-social-account.args';
+import { FindSocialAccountWithTokenInput } from './find-social-account-with-token.input';
 
 export class FindSocialAccountQuery implements IQuery {
   provider: string;
@@ -8,9 +8,9 @@ export class FindSocialAccountQuery implements IQuery {
 
   refreshToken: string;
 
-  constructor(args: FindSocialAccountArgs) {
-    this.provider = args.provider;
-    this.socialId = args.socialId;
-    this.refreshToken = args.refreshToken;
+  constructor(input: FindSocialAccountWithTokenInput) {
+    this.provider = input.provider;
+    this.socialId = input.socialId;
+    this.refreshToken = input.refreshToken;
   }
 }
