@@ -26,6 +26,9 @@ import { FollowUserCommand } from '@lib/domains/user/application/commands/follow
 import { UnfollowUserInput } from '@lib/domains/user/application/commands/unfollow-user/unfollow-user.input';
 import { UnfollowUserCommand } from '@lib/domains/user/application/commands/unfollow-user/unfollow-user.command';
 import { MutationResponse } from '@lib/shared/mutation/mutation.response';
+import { FindAuthorsArgs } from '@lib/domains/user/application/queries/find-authors/find-authors.args';
+import { FindAuthorsQuery } from '@lib/domains/user/application/queries/find-authors/find-authors.query';
+import { PaginatedAuthorsResponse } from '@lib/domains/user/application/queries/find-authors/paginated-authors.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -59,6 +62,13 @@ export class UserResolver {
     @ExtractedUser() user: MyUserResponse,
   ): Promise<AuthorResponse | null> {
     const query = new FindAuthorQuery({ args, user });
+    return this.queryBus.execute(query);
+  }
+
+  @UseGuards(OptionalJwtUserGuard)
+  @Query(() => PaginatedAuthorsResponse)
+  async findAuthors(@Args() args: FindAuthorsArgs, @ExtractedUser() user: MyUserResponse) {
+    const query = new FindAuthorsQuery({ args, userId: user.id });
     return this.queryBus.execute(query);
   }
 
