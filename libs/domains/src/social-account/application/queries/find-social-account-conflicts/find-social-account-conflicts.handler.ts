@@ -28,6 +28,8 @@ export class FindSocialAccountConflictsHandler extends PrismaQueryHandler {
               gt: new Date(query.where.createdAt.gt),
             }
           : undefined,
+        provider: query.where?.provider,
+        socialId: query.where?.socialId,
       },
       orderBy: [
         {
