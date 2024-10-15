@@ -38,7 +38,7 @@ export class BrandResolver {
     private readonly queryBus: QueryBus,
   ) {}
 
-  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => PaginatedBrandsResponse)
   async findBrands(
     @Args() args: FindBrandsArgs,
@@ -51,7 +51,7 @@ export class BrandResolver {
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => BrandPreviewResponse)
   async findBrandPreview(
     @Args() args: FindBrandPreviewArgs,
@@ -64,7 +64,7 @@ export class BrandResolver {
     return this.queryBus.execute(query);
   }
 
-  @UseGuards(GqlThrottlerBehindProxyGuard, OptionalJwtUserGuard)
+  @UseGuards(OptionalJwtUserGuard)
   @Query(() => BrandDetailResponse)
   async findBrand(
     @Args() args: FindBrandArgs,

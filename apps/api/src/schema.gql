@@ -308,6 +308,20 @@ input CreateSignedUrlInput {
   type: String!
 }
 
+input CreateSocialAccountInput {
+  accessToken: String
+  expiresAt: Int
+  id: ID!
+  idToken: String
+  provider: String!
+  refreshToken: String
+  scope: String
+  sessionState: String
+  socialId: String!
+  tokenType: String
+  userId: String!
+}
+
 input CreateThreadInput {
   content: String
   id: ID!
@@ -469,6 +483,15 @@ input FindReportPreviewsWhereInput {
   userId: ID
 }
 
+input FindSocialAccountConflictsOrderByInput {
+  createdAt: String
+}
+
+input FindSocialAccountConflictsWhereInput {
+  createdAt: JSON
+  status: String
+}
+
 input FindThreadPreviewsOrderByInput {
   createdAt: String
 }
@@ -606,12 +629,15 @@ type Mutation {
   createReport(input: CreateReportInput!): MutationResponse!
   createRole(input: CreateRoleInput!): MutationResponse!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
+  createSocialAccount(input: CreateSocialAccountInput!): MutationResponse!
   createThread(input: CreateThreadInput!): MutationResponse!
   createUserImage(input: CreateUserImageInput!): MutationResponse!
   createUserReview(input: CreateUserReviewInput!): MutationResponse!
   deleteComment(input: DeleteCommentInput!): MutationResponse!
   deleteOffer(id: ID!): MutationResponse!
   deleteRole(id: ID!): MutationResponse!
+  deleteSocialAccount(id: ID!): MutationResponse!
+  deleteSocialAccountByProvider(provider: String!, socialId: String!): MutationResponse!
   deleteThread(id: ID!): MutationResponse!
   deleteUserImage(id: ID!): MutationResponse!
   deleteUserReview(id: ID!): MutationResponse!
@@ -630,6 +656,7 @@ type Mutation {
   updateOffer(input: UpdateOfferInput!): MutationResponse!
   updateReportComment(input: UpdateReportCommentInput!): MutationResponse!
   updateRole(input: UpdateRoleInput!): MutationResponse!
+  updateSocialAccount(input: UpdateSocialAccountInput!): MutationResponse!
   updateThread(input: UpdateThreadInput!): MutationResponse!
   updateUser(input: UpdateUserInput!): MutationResponse!
   updateUserImage(input: UpdateUserImageInput!): MutationResponse!
@@ -747,6 +774,11 @@ type PaginatedOfferPreviewsResponse {
 
 type PaginatedReportPreviewsResponse {
   edges: [ReportPreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PaginatedSocialAccountConflictsResponse {
+  edges: [SocialAccountConflictResponseEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -886,6 +918,7 @@ type Query {
   findReportComment(reportId: ID!): ReportCommentResponse!
   findReportPreviews(cursor: ID, keyword: String, orderBy: FindReportPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindReportPreviewsWhereInput): PaginatedReportPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
+  findSocialAccountConflicts(cursor: ID, keyword: String, orderBy: FindSocialAccountConflictsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindSocialAccountConflictsWhereInput): PaginatedSocialAccountConflictsResponse!
   findTags: [TagResponse!]!
   findTerm(name: String!): TermResponse
   findThread(id: ID, slug: String): ThreadResponse
@@ -968,6 +1001,24 @@ type RoleResponse {
 type SignedUrlResponse {
   signedUrl: String!
   url: String!
+}
+
+type SocialAccountConflictResponse {
+  conflictReason: String
+  createdAt: DateTime!
+  existingUser: AuthorResponse!
+  id: ID!
+  ipAddress: String
+  newUser: AuthorResponse!
+  provider: String!
+  socialId: String!
+  status: String!
+  userAgent: String
+}
+
+type SocialAccountConflictResponseEdge {
+  cursor: String!
+  node: SocialAccountConflictResponse!
 }
 
 type SocialAccountResponse {
@@ -1109,6 +1160,20 @@ input UpdateRoleInput {
   id: ID!
   name: String
   position: Int
+}
+
+input UpdateSocialAccountInput {
+  accessToken: String
+  expiresAt: Int
+  id: ID
+  idToken: String
+  provider: String
+  refreshToken: String
+  scope: String
+  sessionState: String
+  socialId: String
+  tokenType: String
+  userId: ID
 }
 
 input UpdateThreadInput {
