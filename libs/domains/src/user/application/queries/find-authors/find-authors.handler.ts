@@ -28,6 +28,14 @@ export class FindAuthorsHandler extends PrismaQueryHandler {
             },
           },
         }),
+        ...(query.where?.socialAccount && {
+          socialAccounts: {
+            some: {
+              provider: query.where?.socialAccount?.provider,
+              socialId: query.where?.socialAccount?.socialId,
+            },
+          },
+        }),
       },
       include: {
         ...(query.userId && {

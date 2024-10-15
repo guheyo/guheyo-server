@@ -414,6 +414,7 @@ input FindAuthorsOrderByInput {
 
 input FindAuthorsWhereInput {
   followed: Boolean
+  socialAccount: FindSocialAccountWithoutTokenInput
   userId: ID
 }
 
@@ -504,6 +505,11 @@ input FindSocialAccountConflictsOrderByInput {
 input FindSocialAccountConflictsWhereInput {
   createdAt: JSON
   status: String
+}
+
+input FindSocialAccountWithoutTokenInput {
+  provider: String
+  socialId: String
 }
 
 input FindThreadPreviewsOrderByInput {
