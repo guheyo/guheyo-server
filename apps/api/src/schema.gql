@@ -62,6 +62,11 @@ type AuthorResponse {
   username: String!
 }
 
+type AuthorResponseEdge {
+  cursor: String!
+  node: AuthorResponse!
+}
+
 type BidCountResponse {
   auctionId: ID!
   count: Int!
@@ -308,6 +313,20 @@ input CreateSignedUrlInput {
   type: String!
 }
 
+input CreateSocialAccountInput {
+  accessToken: String
+  expiresAt: Int
+  id: ID!
+  idToken: String
+  provider: String!
+  refreshToken: String
+  scope: String
+  sessionState: String
+  socialId: String!
+  tokenType: String
+  userId: String!
+}
+
 input CreateThreadInput {
   content: String
   id: ID!
@@ -389,6 +408,16 @@ input FindAuctionPreviewsWhereInput {
   userId: ID
 }
 
+input FindAuthorsOrderByInput {
+  createdAt: String
+}
+
+input FindAuthorsWhereInput {
+  followed: Boolean
+  socialAccount: FindSocialAccountWithoutTokenInput
+  userId: ID
+}
+
 input FindBiddersOrderByInput {
   createdAt: String
 }
@@ -467,6 +496,22 @@ input FindReportPreviewsWhereInput {
   status: String
   type: String
   userId: ID
+}
+
+input FindSocialAccountConflictsOrderByInput {
+  createdAt: String
+}
+
+input FindSocialAccountConflictsWhereInput {
+  createdAt: JSON
+  provider: String
+  socialId: String
+  status: String
+}
+
+input FindSocialAccountWithoutTokenInput {
+  provider: String
+  socialId: String
 }
 
 input FindThreadPreviewsOrderByInput {
@@ -606,12 +651,15 @@ type Mutation {
   createReport(input: CreateReportInput!): MutationResponse!
   createRole(input: CreateRoleInput!): MutationResponse!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
+  createSocialAccount(input: CreateSocialAccountInput!): MutationResponse!
   createThread(input: CreateThreadInput!): MutationResponse!
   createUserImage(input: CreateUserImageInput!): MutationResponse!
   createUserReview(input: CreateUserReviewInput!): MutationResponse!
   deleteComment(input: DeleteCommentInput!): MutationResponse!
   deleteOffer(id: ID!): MutationResponse!
   deleteRole(id: ID!): MutationResponse!
+  deleteSocialAccount(id: ID!): MutationResponse!
+  deleteSocialAccountByProvider(provider: String!, socialId: String!): MutationResponse!
   deleteThread(id: ID!): MutationResponse!
   deleteUserImage(id: ID!): MutationResponse!
   deleteUserReview(id: ID!): MutationResponse!
@@ -630,6 +678,7 @@ type Mutation {
   updateOffer(input: UpdateOfferInput!): MutationResponse!
   updateReportComment(input: UpdateReportCommentInput!): MutationResponse!
   updateRole(input: UpdateRoleInput!): MutationResponse!
+  updateSocialAccount(input: UpdateSocialAccountInput!): MutationResponse!
   updateThread(input: UpdateThreadInput!): MutationResponse!
   updateUser(input: UpdateUserInput!): MutationResponse!
   updateUserImage(input: UpdateUserImageInput!): MutationResponse!
@@ -715,6 +764,11 @@ type PaginatedAuctionPreviewsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedAuthorsResponse {
+  edges: [AuthorResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedBidsResponse {
   edges: [BidResponseEdge!]!
   pageInfo: PageInfo!
@@ -747,6 +801,11 @@ type PaginatedOfferPreviewsResponse {
 
 type PaginatedReportPreviewsResponse {
   edges: [ReportPreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PaginatedSocialAccountConflictsResponse {
+  edges: [SocialAccountConflictResponseEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -859,6 +918,7 @@ type Query {
   findAuctionPreview(id: ID, slug: String): AuctionPreviewResponse
   findAuctionPreviews(cursor: ID, keyword: String, orderBy: FindAuctionPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindAuctionPreviewsWhereInput): PaginatedAuctionPreviewsResponse!
   findAuthor(id: ID, username: String): AuthorResponse
+  findAuthors(cursor: ID, keyword: String, orderBy: FindAuthorsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindAuthorsWhereInput): PaginatedAuthorsResponse!
   findBidCount(auctionId: ID!): BidCountResponse!
   findBidders(cursor: ID, keyword: String, orderBy: FindBiddersOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBiddersWhereInput!): PaginatedUsersResponse!
   findBids(cursor: ID, keyword: String, orderBy: FindBidsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBidsWhereInput): PaginatedBidsResponse!
@@ -886,6 +946,7 @@ type Query {
   findReportComment(reportId: ID!): ReportCommentResponse!
   findReportPreviews(cursor: ID, keyword: String, orderBy: FindReportPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindReportPreviewsWhereInput): PaginatedReportPreviewsResponse!
   findRoleById(id: ID!): RoleResponse
+  findSocialAccountConflicts(cursor: ID, keyword: String, orderBy: FindSocialAccountConflictsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindSocialAccountConflictsWhereInput): PaginatedSocialAccountConflictsResponse!
   findTags: [TagResponse!]!
   findTerm(name: String!): TermResponse
   findThread(id: ID, slug: String): ThreadResponse
@@ -968,6 +1029,24 @@ type RoleResponse {
 type SignedUrlResponse {
   signedUrl: String!
   url: String!
+}
+
+type SocialAccountConflictResponse {
+  conflictReason: String
+  createdAt: DateTime!
+  existingUser: AuthorResponse!
+  id: ID!
+  ipAddress: String
+  newUser: AuthorResponse!
+  provider: String!
+  socialId: String!
+  status: String!
+  userAgent: String
+}
+
+type SocialAccountConflictResponseEdge {
+  cursor: String!
+  node: SocialAccountConflictResponse!
 }
 
 type SocialAccountResponse {
@@ -1109,6 +1188,20 @@ input UpdateRoleInput {
   id: ID!
   name: String
   position: Int
+}
+
+input UpdateSocialAccountInput {
+  accessToken: String
+  expiresAt: Int
+  id: ID
+  idToken: String
+  provider: String
+  refreshToken: String
+  scope: String
+  sessionState: String
+  socialId: String
+  tokenType: String
+  userId: ID
 }
 
 input UpdateThreadInput {
