@@ -2,7 +2,7 @@ import { QueryHandler } from '@nestjs/cqrs';
 import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-query.handler';
 import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { plainToInstance } from 'class-transformer';
-import { FindSocialAccountConflictsQuery } from './find-social-account-conflicts-users.query';
+import { FindSocialAccountConflictsQuery } from './find-social-account-conflicts.query';
 import { PaginatedSocialAccountConflictsResponse } from './paginated-social-account-conflicts.response';
 import { SocialAccountConflictResponse } from '../../dtos/social-account-conflict.response';
 

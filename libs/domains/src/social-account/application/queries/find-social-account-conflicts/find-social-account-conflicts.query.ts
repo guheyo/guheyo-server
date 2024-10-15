@@ -1,7 +1,7 @@
 import { PaginationQuery } from '@lib/shared/cqrs/queries/pagination/pagination.query';
 import { FindSocialAccountConflictsWhereInput } from './find-social-account-conflicts-where.input';
 import { FindSocialAccountConflictsOrderByInput } from './find-social-account-conflicts-order-by.input';
-import { FindSocialAccountConflictsArgs } from './find-social-account-conflicts-users.args';
+import { FindSocialAccountConflictsArgs } from './find-social-account-conflicts.args';
 
 export class FindSocialAccountConflictsQuery extends PaginationQuery {
   where?: FindSocialAccountConflictsWhereInput;
