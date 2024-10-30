@@ -547,6 +547,7 @@ input FindUserReviewPreviewsWhereInput {
 
 input FindUsersOrderByInput {
   createdAt: String
+  username: String
 }
 
 input FindUsersWhereInput {

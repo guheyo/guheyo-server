@@ -43,6 +43,9 @@ export class FindUsersHandler extends PrismaQueryHandler {
       skip: query.skip,
       orderBy: [
         {
+          username: query.orderBy?.username,
+        },
+        {
           createdAt: query.orderBy?.createdAt,
         },
       ],

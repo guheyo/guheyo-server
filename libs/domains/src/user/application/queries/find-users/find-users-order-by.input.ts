@@ -6,4 +6,8 @@ export class FindUsersOrderByInput {
   @IsOptional()
   @Field(() => String, { nullable: true })
   createdAt?: 'asc' | 'desc';
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  username?: 'asc' | 'desc';
 }
