@@ -552,6 +552,7 @@ input FindUsersOrderByInput {
 
 input FindUsersWhereInput {
   followed: Boolean
+  isBot: Boolean
   userId: ID
 }
 
