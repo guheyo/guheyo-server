@@ -51,6 +51,9 @@ export class FindBrandsHandler extends PrismaQueryHandler {
     }
     orderBy.push(
       {
+        name: query.orderBy?.name || 'asc',
+      },
+      {
         createdAt: query.orderBy?.createdAt || 'desc',
       },
       {
