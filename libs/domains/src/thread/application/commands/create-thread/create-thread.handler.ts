@@ -4,7 +4,6 @@ import { PostEntity } from '@lib/domains/post/domain/post.entity';
 import { ThreadEntity } from '@lib/domains/thread/domain/thread.entity';
 import { ThreadErrorMessage } from '@lib/domains/thread/domain/thread.error.message';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
-import { BrandEntity } from '@lib/domains/brand/domain/brand.entity';
 import { CreateThreadCommand } from './create-thread.command';
 import { ThreadLoadPort } from '../../ports/out/thread.load.port';
 import { ThreadSavePort } from '../../ports/out/thread.save.port';
@@ -46,9 +45,9 @@ export class CreateThreadHandler extends PrismaCommandHandler<CreateThreadComman
           ...command.post,
           categoryId,
           userId: command.user.id,
+          brandId: brand ? brand.id : undefined,
           userAgent: command.userAgent,
           ipAddress: command.ipAddress,
-          brands: brand ? [new BrandEntity(brand)] : [],
         }),
       }),
     );
