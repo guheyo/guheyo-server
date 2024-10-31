@@ -1174,6 +1174,7 @@ input UpdateOfferInput {
 
 input UpdatePostInput {
   archivedAt: DateTime
+  brandId: ID
   categoryId: ID
   pending: String
   tagIds: [ID!]
