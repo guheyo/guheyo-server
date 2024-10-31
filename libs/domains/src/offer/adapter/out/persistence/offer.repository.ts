@@ -66,6 +66,10 @@ export class OfferRepository
           'categoryId',
           'userId',
         ]),
+        brands:
+          offer.post.brands.length > 0
+            ? { connect: offer.post.brands.map((brand) => ({ id: brand.id })) }
+            : undefined,
       },
     });
     await this.prismaService.offer.create({
