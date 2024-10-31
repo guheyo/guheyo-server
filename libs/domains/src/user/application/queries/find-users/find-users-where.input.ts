@@ -10,4 +10,8 @@ export class FindUsersWhereInput {
   @IsOptional()
   @Field(() => Boolean, { nullable: true })
   followed?: boolean;
+
+  @IsOptional()
+  @Field(() => Boolean, { nullable: true })
+  isBot?: boolean;
 }

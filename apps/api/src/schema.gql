@@ -439,6 +439,7 @@ input FindBidsWhereInput {
 input FindBrandsOrderByInput {
   createdAt: String
   follower: String
+  name: String
 }
 
 input FindBrandsWhereInput {
@@ -547,10 +548,12 @@ input FindUserReviewPreviewsWhereInput {
 
 input FindUsersOrderByInput {
   createdAt: String
+  username: String
 }
 
 input FindUsersWhereInput {
   followed: Boolean
+  isBot: Boolean
   userId: ID
 }
 
