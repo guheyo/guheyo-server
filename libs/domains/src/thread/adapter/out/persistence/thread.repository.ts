@@ -64,11 +64,7 @@ export class ThreadRepository
           'categoryId',
           'userId',
         ]),
-        brands: {
-          connect: thread.post.brands.map((brand) => ({
-            id: brand.id,
-          })),
-        },
+        brands: thread.post.brandId ? { connect: { id: thread.post.brandId } } : undefined,
       },
     });
     await this.prismaService.thread.create({
@@ -94,6 +90,9 @@ export class ThreadRepository
         post: {
           update: {
             ..._.pick(thread.post, ['pending', 'title', 'categoryId']),
+            brands: {
+              set: thread.post.brandId ? [{ id: thread.post.brandId }] : [],
+            },
           },
         },
         ..._.pick(thread, ['content']),

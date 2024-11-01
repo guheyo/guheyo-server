@@ -24,6 +24,11 @@ export class UpdatePostInput {
   categoryId?: string;
 
   @IsOptional()
+  @IsUUID()
+  @Field(() => ID, { nullable: true })
+  brandId?: string;
+
+  @IsOptional()
   @IsString({ each: true })
   @Field(() => [ID], { nullable: true })
   tagIds?: string[];

@@ -4,7 +4,6 @@ import { PostEntity } from '@lib/domains/post/domain/post.entity';
 import { ThreadEntity } from '@lib/domains/thread/domain/thread.entity';
 import { ThreadErrorMessage } from '@lib/domains/thread/domain/thread.error.message';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
-import { BrandEntity } from '@lib/domains/brand/domain/brand.entity';
 import { CreateThreadCommand } from './create-thread.command';
 import { ThreadLoadPort } from '../../ports/out/thread.load.port';
 import { ThreadSavePort } from '../../ports/out/thread.save.port';
@@ -21,14 +20,6 @@ export class CreateThreadHandler extends PrismaCommandHandler<CreateThreadComman
   }
 
   async execute(command: CreateThreadCommand): Promise<void> {
-    const brand =
-      command.post.brandId &&
-      (await this.prismaService.brand.findUnique({
-        where: {
-          id: command.post.brandId,
-        },
-      }));
-
     let { categoryId } = command.post;
     if (!categoryId) {
       const category = await this.prismaService.category.findFirst({
@@ -48,7 +39,6 @@ export class CreateThreadHandler extends PrismaCommandHandler<CreateThreadComman
           userId: command.user.id,
           userAgent: command.userAgent,
           ipAddress: command.ipAddress,
-          brands: brand ? [new BrandEntity(brand)] : [],
         }),
       }),
     );

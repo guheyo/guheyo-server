@@ -10,4 +10,8 @@ export class FindBrandsOrderByInput {
   @IsOptional()
   @Field(() => String, { nullable: true })
   follower?: 'asc' | 'desc';
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  name?: 'asc' | 'desc';
 }

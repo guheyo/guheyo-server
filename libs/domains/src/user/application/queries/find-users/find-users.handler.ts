@@ -21,6 +21,7 @@ export class FindUsersHandler extends PrismaQueryHandler {
           contains: query.keyword,
           mode: 'insensitive',
         },
+        bot: query.where?.isBot,
         ...(query.where?.followed && {
           followers: {
             some: {
@@ -42,6 +43,9 @@ export class FindUsersHandler extends PrismaQueryHandler {
       take: query.take + 1,
       skip: query.skip,
       orderBy: [
+        {
+          username: query.orderBy?.username,
+        },
         {
           createdAt: query.orderBy?.createdAt,
         },

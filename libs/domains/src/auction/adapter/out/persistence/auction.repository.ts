@@ -84,6 +84,7 @@ export class AuctionRepository
           'categoryId',
           'userId',
         ]),
+        brands: auction.post.brandId ? { connect: { id: auction.post.brandId } } : undefined,
       },
     });
     await this.prismaService.auction.create({
