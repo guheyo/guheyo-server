@@ -9,7 +9,6 @@ import {
 } from '@lib/domains/offer/domain/offer.constants';
 import { PrismaCommandHandler } from '@lib/shared/cqrs/commands/handlers/prisma-command.handler';
 import { PostEntity } from '@lib/domains/post/domain/post.entity';
-import { BrandEntity } from '@lib/domains/brand/domain/brand.entity';
 import { CreateOfferCommand } from './create-offer.command';
 import { OfferSavePort } from '../../ports/out/offer.save.port';
 import { OfferResponse } from '../../dtos/offer.response';
@@ -62,10 +61,10 @@ export class CreateOfferHandler extends PrismaCommandHandler<CreateOfferCommand,
         post: new PostEntity({
           ...command.post,
           userId: command.user.id,
+          brandId: brand ? brand.id : undefined,
           thumbnail: image?.url,
           userAgent: command.userAgent,
           ipAddress: command.ipAddress,
-          brands: brand ? [new BrandEntity(brand)] : [],
         }),
       }),
     );
