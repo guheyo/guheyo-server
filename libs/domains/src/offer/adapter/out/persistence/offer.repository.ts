@@ -66,10 +66,7 @@ export class OfferRepository
           'categoryId',
           'userId',
         ]),
-        brands:
-          offer.post.brands.length > 0
-            ? { connect: offer.post.brands.map((brand) => ({ id: brand.id })) }
-            : undefined,
+        brands: offer.post.brandId ? { connect: { id: offer.post.brandId } } : undefined,
       },
     });
     await this.prismaService.offer.create({
@@ -107,6 +104,9 @@ export class OfferRepository
         post: {
           update: {
             ..._.pick(offer.post, ['archivedAt', 'pending', 'title', 'categoryId']),
+            brands: {
+              set: offer.post.brandId ? [{ id: offer.post.brandId }] : [],
+            },
           },
         },
         ..._.pick(offer, [
