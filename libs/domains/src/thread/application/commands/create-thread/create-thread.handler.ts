@@ -20,14 +20,6 @@ export class CreateThreadHandler extends PrismaCommandHandler<CreateThreadComman
   }
 
   async execute(command: CreateThreadCommand): Promise<void> {
-    const brand =
-      command.post.brandId &&
-      (await this.prismaService.brand.findUnique({
-        where: {
-          id: command.post.brandId,
-        },
-      }));
-
     let { categoryId } = command.post;
     if (!categoryId) {
       const category = await this.prismaService.category.findFirst({
@@ -45,7 +37,6 @@ export class CreateThreadHandler extends PrismaCommandHandler<CreateThreadComman
           ...command.post,
           categoryId,
           userId: command.user.id,
-          brandId: brand ? brand.id : undefined,
           userAgent: command.userAgent,
           ipAddress: command.ipAddress,
         }),

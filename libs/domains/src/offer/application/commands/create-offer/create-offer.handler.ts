@@ -47,21 +47,12 @@ export class CreateOfferHandler extends PrismaCommandHandler<CreateOfferCommand,
       },
     });
 
-    const brand = command.post.brandId
-      ? await this.prismaService.brand.findUnique({
-          where: {
-            id: command.post.brandId,
-          },
-        })
-      : null;
-
     await this.savePort.create(
       new OfferEntity({
         ...command,
         post: new PostEntity({
           ...command.post,
           userId: command.user.id,
-          brandId: brand ? brand.id : undefined,
           thumbnail: image?.url,
           userAgent: command.userAgent,
           ipAddress: command.ipAddress,
