@@ -1,7 +1,6 @@
 import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { Context, ContextOf, On } from 'necord';
 import { GroupGuard } from '@app/bot/apps/group/guards/group.guard';
-import { Name } from '@app/bot/decorators/name.decorator';
 import { ParseUserFromMessagePipe } from '@app/bot/apps/user/pipes/parse-user-from-message.pipe';
 import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
 import { ThreadChannelGuard } from '@app/bot/apps/thread/guards/thread-channel.guard';
@@ -12,7 +11,6 @@ import { ParsePostFromThreadPipe } from '@app/bot/apps/thread/pipes/parse-post-f
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
 
 @UseGuards(GroupGuard, ThreadChannelGuard, PostMessageGuard)
-@Name('커스텀 키보드')
 @Injectable()
 export class ThreadUpdatedHandler {
   protected readonly logger: Logger;
