@@ -21,6 +21,18 @@ export abstract class OfferParser extends GroupParser {
     group: GroupResponse,
   ): CreateOfferInput;
 
+  abstract parseCreateOfferInputFromThread({
+    startMessage,
+    group,
+    threadTitle,
+    categoryName,
+  }: {
+    startMessage: Message;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+  }): CreateOfferInput;
+
   abstract parseUpdateOfferInputFromMessage(message: Message): UpdateOfferInput;
 
   parseDeleteOfferArgs(message: Message | PartialMessage): DeleteOfferArgs {
