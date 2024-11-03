@@ -102,7 +102,6 @@ export class DiscordConfigService {
 
   findThreadChannel(guildName: string, channelName: string): DiscordThreadChannel | null {
     const server = this.findDiscordServerByName(guildName);
-    console.log(channelName);
     const channel = server?.thread.channels.find(
       (c) => formatToHyphenCase(c.name) === formatToHyphenCase(channelName),
     );
