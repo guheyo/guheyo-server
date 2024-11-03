@@ -13,8 +13,16 @@ import { OfferParser } from '../../parsers/abstracts/offer.parser';
 export class BuyParser extends OfferParser {
   private readonly messageFormatRegex = /^wtb[\r\n](.*)-[ ()a-zA-Z가-힣]*(\d+(?:\.\d+)?)([\s\S]*)/i;
 
+  private readonly threadFormatRegex = /^(.*)-[ ()a-zA-Z가-힣]*(\d+(?:\.\d+)?)/i;
+
   parseMessageContent(content: string): RegExpExecArray {
     const match = this.messageFormatRegex.exec(content);
+    if (!match) throw new RpcException(BuyErrorMessage.INVALID_BUY_FORMAT);
+    return match;
+  }
+
+  parseThreadContent(content: string): RegExpExecArray {
+    const match = this.threadFormatRegex.exec(content);
     if (!match) throw new RpcException(BuyErrorMessage.INVALID_BUY_FORMAT);
     return match;
   }
@@ -39,6 +47,43 @@ export class BuyParser extends OfferParser {
       businessFunction: 'buy',
       name0: match[1].trim(),
       content: match[3].trim(),
+      price: this.parsePrice(match[2]),
+      priceCurrency: 'krw',
+      shippingCost: 0,
+      shippingType: SHIPPING_FREE,
+      status: OFFER_OPEN,
+    };
+  }
+
+  parseCreateOfferInputFromThread({
+    startMessage,
+    group,
+    threadTitle,
+    categoryName,
+  }: {
+    startMessage: Message;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+  }): CreateOfferInput {
+    const match = this.parseThreadContent(threadTitle);
+    const post = {
+      id: this.parsePostIdFromMessageId(startMessage.id),
+      createdAt: startMessage.createdAt,
+      updatedAt: startMessage.editedAt || startMessage.createdAt,
+      type: OFFER,
+      title: match[1].trim(),
+      groupId: group.id,
+      categoryId: this.parseCategoryId(categoryName, group),
+      tagIds: [],
+    };
+
+    return {
+      post,
+      id: this.parseIdFromMessageId(startMessage.id),
+      businessFunction: 'buy',
+      name0: match[1].trim(),
+      content: startMessage.content,
       price: this.parsePrice(match[2]),
       priceCurrency: 'krw',
       shippingCost: 0,
