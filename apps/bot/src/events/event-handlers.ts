@@ -15,6 +15,7 @@ import { ThreadCreatedHandler } from './thread-created/thread-created.handler';
 import { ThreadUpdatedHandler } from './thread-updated/thread-updated.handler';
 import { PostCommentCreatedHandler } from './post-comment-created/post-comment-created.handler';
 import { PostCommentUpdatedHandler } from './post-comment-updated/post-comment-updated.handler';
+import { BuyThreadCreatedHandler } from './buy-thread-created/buy-thread-created.handler';
 
 export const EVENT_HANDLERS = [
   ReadyHandler,
@@ -34,6 +35,7 @@ export const EVENT_HANDLERS = [
   ThreadUpdatedHandler,
   PostCommentCreatedHandler,
   PostCommentUpdatedHandler,
+  BuyThreadCreatedHandler,
   // NOTE: Delete directly from the web
   // offer, demand, swap messages
 ];
