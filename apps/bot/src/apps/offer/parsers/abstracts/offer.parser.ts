@@ -16,9 +16,12 @@ export abstract class OfferParser extends GroupParser {
     return match ? match[1] : null;
   }
 
-  abstract parseCreateOfferInput(message: Message, group: GroupResponse): CreateOfferInput;
+  abstract parseCreateOfferInputFromMessage(
+    message: Message,
+    group: GroupResponse,
+  ): CreateOfferInput;
 
-  abstract parseUpdateOfferInput(message: Message): UpdateOfferInput;
+  abstract parseUpdateOfferInputFromMessage(message: Message): UpdateOfferInput;
 
   parseDeleteOfferArgs(message: Message | PartialMessage): DeleteOfferArgs {
     return {

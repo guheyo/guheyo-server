@@ -47,7 +47,7 @@ export abstract class OfferClient extends UserImageClient {
       message,
       OFFER,
     );
-    const createOfferInput = this.offerParser.parseCreateOfferInput(message, group);
+    const createOfferInput = this.offerParser.parseCreateOfferInputFromMessage(message, group);
 
     await this.uploadAndCreateAttachments(user, uploadUserImageInputList, OFFER);
     await this.createOffer({ input: createOfferInput, user });
@@ -55,7 +55,7 @@ export abstract class OfferClient extends UserImageClient {
   }
 
   async updateOfferFromMessage(user: MyUserResponse, message: Message) {
-    const updateOfferInput = this.offerParser.parseUpdateOfferInput(message);
+    const updateOfferInput = this.offerParser.parseUpdateOfferInputFromMessage(message);
     await this.updateOffer({ input: updateOfferInput, user });
     this.logger.log(`${this.businessFunction}<@${updateOfferInput.id}> updated`);
   }

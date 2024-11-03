@@ -18,7 +18,7 @@ export class BuyParser extends OfferParser {
     return match;
   }
 
-  parseCreateOfferInput(message: Message, group: GroupResponse): CreateOfferInput {
+  parseCreateOfferInputFromMessage(message: Message, group: GroupResponse): CreateOfferInput {
     const match = this.matchFormat(message.content);
     const channelName = this.parseCategoryNameFromMessage(message);
     const post = {
@@ -46,7 +46,7 @@ export class BuyParser extends OfferParser {
     };
   }
 
-  parseUpdateOfferInput(message: Message<boolean>): UpdateOfferInput {
+  parseUpdateOfferInputFromMessage(message: Message<boolean>): UpdateOfferInput {
     const match = this.matchFormat(message.content);
     const post = {
       title: match[1].trim(),
