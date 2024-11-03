@@ -68,6 +68,15 @@ export class DiscordConfigService {
     return servers.find((server) => server.id === guildId) || null;
   }
 
+  findDiscordServerByThreadChannelId(threadChannelId: string): DiscordServer | null {
+    const servers = this.getDiscordServers();
+    return (
+      servers.find((server) =>
+        server.thread.channels.find((channel) => channel.id === threadChannelId),
+      ) || null
+    );
+  }
+
   findAllChannelIds(server: DiscordServer): string[] {
     const channelIds = [
       ...server.market.wts.channels.map((channel) => channel.id),
