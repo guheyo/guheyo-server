@@ -11,15 +11,16 @@ import { OfferParser } from '../../parsers/abstracts/offer.parser';
 
 @Injectable()
 export class SwapParser extends OfferParser {
-  matchFormat(content: string): RegExpExecArray {
-    const re = /^wtt[\r\n](.*)[\s\S]+wttf[\r\n](.*)([\s\S]*)/i;
-    const match = re.exec(content);
+  private readonly messageFormatRegex = /^wtt[\r\n](.*)[\s\S]+wttf[\r\n](.*)([\s\S]*)/i;
+
+  parseMessageContent(content: string): RegExpExecArray {
+    const match = this.messageFormatRegex.exec(content);
     if (!match) throw new RpcException(SwapErrorMessage.INVALID_SWAP_FORMAT);
     return match;
   }
 
   parseCreateOfferInputFromMessage(message: Message, group: GroupResponse): CreateOfferInput {
-    const match = this.matchFormat(message.content);
+    const match = this.parseMessageContent(message.content);
     const channelName = this.parseCategoryNameFromMessage(message);
     const post = {
       id: this.parsePostIdFromMessageId(message.id),
@@ -48,7 +49,7 @@ export class SwapParser extends OfferParser {
   }
 
   parseUpdateOfferInputFromMessage(message: Message<boolean>): UpdateOfferInput {
-    const match = this.matchFormat(message.content);
+    const match = this.parseMessageContent(message.content);
     const post = {
       title: `${match[1].trim()} - ${match[2].trim()}`,
     };

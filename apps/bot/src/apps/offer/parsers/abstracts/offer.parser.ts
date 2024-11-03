@@ -8,7 +8,7 @@ import { CreateOfferInput } from '@lib/domains/offer/application/commands/create
 import { OfferErrorMessage } from './offer.error-message';
 
 export abstract class OfferParser extends GroupParser {
-  abstract matchFormat(content: string): RegExpExecArray;
+  abstract parseMessageContent(content: string): RegExpExecArray;
 
   matchCategoryName(channelName: string): string | null {
     const re = /([a-zA-Z가-힣]*)-(삽니다|팝니다|교환합니다|의뢰합니다|구합니다)/;

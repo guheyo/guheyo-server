@@ -11,15 +11,16 @@ import { OfferParser } from '../../parsers/abstracts/offer.parser';
 
 @Injectable()
 export class BuyParser extends OfferParser {
-  matchFormat(content: string): RegExpExecArray {
-    const re = /^wtb[\r\n](.*)-[ ()a-zA-Z가-힣]*(\d+(?:\.\d+)?)([\s\S]*)/i;
-    const match = re.exec(content);
+  private readonly messageFormatRegex = /^wtb[\r\n](.*)-[ ()a-zA-Z가-힣]*(\d+(?:\.\d+)?)([\s\S]*)/i;
+
+  parseMessageContent(content: string): RegExpExecArray {
+    const match = this.messageFormatRegex.exec(content);
     if (!match) throw new RpcException(BuyErrorMessage.INVALID_BUY_FORMAT);
     return match;
   }
 
   parseCreateOfferInputFromMessage(message: Message, group: GroupResponse): CreateOfferInput {
-    const match = this.matchFormat(message.content);
+    const match = this.parseMessageContent(message.content);
     const channelName = this.parseCategoryNameFromMessage(message);
     const post = {
       id: this.parsePostIdFromMessageId(message.id),
@@ -47,7 +48,7 @@ export class BuyParser extends OfferParser {
   }
 
   parseUpdateOfferInputFromMessage(message: Message<boolean>): UpdateOfferInput {
-    const match = this.matchFormat(message.content);
+    const match = this.parseMessageContent(message.content);
     const post = {
       title: match[1].trim(),
     };
