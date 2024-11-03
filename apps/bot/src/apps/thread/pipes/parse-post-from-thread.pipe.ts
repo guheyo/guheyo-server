@@ -12,7 +12,7 @@ export class ParsePostFromThreadPipe implements PipeTransform {
   async transform(
     [createdOrOldmessage, newMessage]: ContextOf<'messageCreate' | 'messageUpdate'>,
     metadata: ArgumentMetadata,
-  ): Promise<ThreadPost | null> {
+  ): Promise<ThreadPost> {
     let message: Message;
     if (newMessage) message = await newMessage.fetch();
     else message = await createdOrOldmessage.fetch();
@@ -21,6 +21,7 @@ export class ParsePostFromThreadPipe implements PipeTransform {
         `Guild not found. messageId: ${message.id}, channelId: ${message.channelId}`,
       );
     }
+
     this.discordManager = new DiscordManager(message.guild);
     const channel = message.channel as ThreadChannel;
     if (!channel.parentId) {
@@ -28,11 +29,18 @@ export class ParsePostFromThreadPipe implements PipeTransform {
         `Message parentId. messageId: ${message.id}, channelId: ${message.channelId}`,
       );
     }
+
     const forumChannel = await this.discordManager.fetchForumChannel(channel.parentId);
     const threadPost = await this.discordManager.fetchThreadPost(
       channel,
       forumChannel.availableTags,
     );
+
+    if (!threadPost)
+      throw new RpcException(
+        `Thread post not fetched. messageId: ${message.id}, channelId: ${message.channelId}`,
+      );
+
     return threadPost;
   }
 }
