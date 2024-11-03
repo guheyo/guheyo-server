@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Message } from 'discord.js';
+import { Message, ThreadChannel } from 'discord.js';
 import { MarketChannelType } from '../types/market-channel.type';
 import {
   DiscordChannel,
@@ -42,9 +42,12 @@ export class DiscordConfigService {
   }
 
   findDiscordMarket(type: MarketChannelType, message: Message): DiscordMarket | null {
+    const { parentId } = message.channel as ThreadChannel;
     const servers = this.getDiscordServers();
-    const server = servers.find(({ market }) =>
-      market[type].channels.find((channel) => channel.id === message.channelId),
+    const server = servers.find(
+      ({ market }) =>
+        market[type].channels.find((channel) => channel.id === message.channelId) ||
+        market[type].threads.find((channel) => channel.id === parentId),
     );
     return server?.market || null;
   }
@@ -69,6 +72,9 @@ export class DiscordConfigService {
       ...server.market.wts.channels.map((channel) => channel.id),
       ...server.market.wtb.channels.map((channel) => channel.id),
       ...server.market.wtt.channels.map((channel) => channel.id),
+      ...server.market.wts.threads.map((channel) => channel.id),
+      ...server.market.wtb.threads.map((channel) => channel.id),
+      ...server.market.wtt.threads.map((channel) => channel.id),
       ...server.auction.channels.map((channel) => channel.id),
       ...server.thread.channels.map((channel) => channel.id),
     ];
