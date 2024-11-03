@@ -10,8 +10,6 @@ import { OfferChannelGuard } from '@app/bot/apps/offer/guards/offer-channel.guar
 import { BuyClient } from '@app/bot/apps/offer/buy/clients/buy.client';
 import { ParsePostFromThreadPipe } from '@app/bot/apps/thread/pipes/parse-post-from-thread.pipe';
 import { ThreadPost } from '@app/bot/shared/interfaces/post-message.interfaces';
-import { ParseThreadChannelFromThreadPipe } from '@app/bot/apps/thread/pipes/parse-thread-channel-from-thread.pipe';
-import { DiscordThreadChannel } from '@app/bot/shared/interfaces/discord-server.interface';
 
 @UseGuards(GroupGuard, OfferChannelGuard)
 @Type('wtb')
@@ -27,8 +25,6 @@ export class BuyThreadCreatedHandler {
     group: GroupResponse,
     @Context(ParsePostFromThreadPipe)
     threadPost: ThreadPost,
-    @Context(ParseThreadChannelFromThreadPipe)
-    threadChannel: DiscordThreadChannel,
     @Context()
     [message]: ContextOf<'messageCreate'>,
   ) {
