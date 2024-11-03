@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Message, ThreadChannel } from 'discord.js';
+import { formatToHyphenCase } from '@lib/shared/case/format-to-hyphen-case';
 import { MarketChannelType } from '../types/market-channel.type';
 import {
   DiscordChannel,
@@ -93,19 +94,26 @@ export class DiscordConfigService {
     channelName: string,
   ): string | null {
     const server = this.findDiscordServerByName(guildName);
-    const channel = server?.market[marketChannelType].channels.find((c) => c.name === channelName);
+    const channel = server?.market[marketChannelType].channels.find(
+      (c) => formatToHyphenCase(c.name) === formatToHyphenCase(channelName),
+    );
     return channel ? channel.id : null;
   }
 
   findThreadChannel(guildName: string, channelName: string): DiscordThreadChannel | null {
     const server = this.findDiscordServerByName(guildName);
-    const channel = server?.thread.channels.find((c) => c.name === channelName);
+    console.log(channelName);
+    const channel = server?.thread.channels.find(
+      (c) => formatToHyphenCase(c.name) === formatToHyphenCase(channelName),
+    );
     return channel || null;
   }
 
   findAuctionChannelId(guildName: string, channelName: string): string | null {
     const server = this.findDiscordServerByName(guildName);
-    const channel = server?.auction.channels.find((c) => c.name === channelName);
+    const channel = server?.auction.channels.find(
+      (c) => formatToHyphenCase(c.name) === formatToHyphenCase(channelName),
+    );
     return channel?.id || null;
   }
 
