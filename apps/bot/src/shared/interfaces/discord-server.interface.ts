@@ -11,12 +11,15 @@ export interface DiscordServer {
 export interface DiscordMarket extends RolePermissions {
   wts: {
     channels: DiscordBaseChannel[];
+    threads: DiscordBaseChannel[];
   };
   wtb: {
     channels: DiscordBaseChannel[];
+    threads: DiscordBaseChannel[];
   };
   wtt: {
     channels: DiscordBaseChannel[];
+    threads: DiscordBaseChannel[];
   };
 }
 
