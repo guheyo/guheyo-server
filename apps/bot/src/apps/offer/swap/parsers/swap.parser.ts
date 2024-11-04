@@ -13,7 +13,7 @@ import { OfferParser } from '../../parsers/abstracts/offer.parser';
 export class SwapParser extends OfferParser {
   private readonly messageFormatRegex = /^wtt[\r\n](.*)[\s\S]+wttf[\r\n](.*)([\s\S]*)/i;
 
-  private readonly threadFormatRegex = /TODO/i;
+  private readonly threadFormatRegex = /^([\s\S]+)[\s]*-[\s]*([\s\S]+)/i;
 
   parseMessageContent(content: string): RegExpExecArray {
     const match = this.messageFormatRegex.exec(content);
@@ -106,6 +106,31 @@ export class SwapParser extends OfferParser {
       name1: match[2].trim(),
       content: match[3].trim(),
       price: this.parsePrice(match[2]),
+    };
+  }
+
+  parseUpdateOfferInputFromThread({
+    startMessage,
+    group,
+    threadTitle,
+    categoryName,
+  }: {
+    startMessage: Message;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+  }): UpdateOfferInput {
+    const match = this.parseThreadContent(threadTitle);
+    const post = {
+      title: `${match[1].trim()} - ${match[2].trim()}`,
+      categoryId: this.parseCategoryId(categoryName, group),
+    };
+    return {
+      post,
+      id: this.parseIdFromMessageId(startMessage.id),
+      name0: match[1].trim(),
+      name1: match[2].trim(),
+      content: startMessage.content,
     };
   }
 }

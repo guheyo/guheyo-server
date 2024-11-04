@@ -17,6 +17,10 @@ import { PostCommentCreatedHandler } from './post-comment-created/post-comment-c
 import { PostCommentUpdatedHandler } from './post-comment-updated/post-comment-updated.handler';
 import { BuyThreadCreatedHandler } from './buy-thread-created/buy-thread-created.handler';
 import { BuyThreadUpdatedHandler } from './buy-thread-updated/buy-thread-updated.handler';
+import { SellThreadCreatedHandler } from './sell-thread-created/sell-thread-created.handler';
+import { SellThreadUpdatedHandler } from './sell-thread-updated/sell-thread-updated.handler';
+import { SwapThreadCreatedHandler } from './swap-thread-created/swap-thread-created.handler';
+import { SwapThreadUpdatedHandler } from './swap-thread-updated/swap-thread-updated.handler';
 
 export const EVENT_HANDLERS = [
   ReadyHandler,
@@ -36,8 +40,12 @@ export const EVENT_HANDLERS = [
   ThreadUpdatedHandler,
   PostCommentCreatedHandler,
   PostCommentUpdatedHandler,
+  SellThreadCreatedHandler,
+  SellThreadUpdatedHandler,
   BuyThreadCreatedHandler,
   BuyThreadUpdatedHandler,
+  SwapThreadCreatedHandler,
+  SwapThreadUpdatedHandler,
   // NOTE: Delete directly from the web
   // offer, demand, swap messages
 ];
