@@ -19,6 +19,8 @@ import { BuyThreadCreatedHandler } from './buy-thread-created/buy-thread-created
 import { BuyThreadUpdatedHandler } from './buy-thread-updated/buy-thread-updated.handler';
 import { SellThreadCreatedHandler } from './sell-thread-created/sell-thread-created.handler';
 import { SellThreadUpdatedHandler } from './sell-thread-updated/sell-thread-updated.handler';
+import { SwapThreadCreatedHandler } from './swap-thread-created/swap-thread-created.handler';
+import { SwapThreadUpdatedHandler } from './swap-thread-updated/swap-thread-updated.handler';
 
 export const EVENT_HANDLERS = [
   ReadyHandler,
@@ -42,6 +44,8 @@ export const EVENT_HANDLERS = [
   SellThreadUpdatedHandler,
   BuyThreadCreatedHandler,
   BuyThreadUpdatedHandler,
+  SwapThreadCreatedHandler,
+  SwapThreadUpdatedHandler,
   // NOTE: Delete directly from the web
   // offer, demand, swap messages
 ];
