@@ -13,7 +13,7 @@ import { OfferParser } from '../../parsers/abstracts/offer.parser';
 export class SwapParser extends OfferParser {
   private readonly messageFormatRegex = /^wtt[\r\n](.*)[\s\S]+wttf[\r\n](.*)([\s\S]*)/i;
 
-  private readonly threadFormatRegex = /TODO/i;
+  private readonly threadFormatRegex = /^([\s\S]+)[\s]*-[\s]*([\s\S]+)/i;
 
   parseMessageContent(content: string): RegExpExecArray {
     const match = this.messageFormatRegex.exec(content);
