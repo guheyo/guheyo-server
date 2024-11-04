@@ -108,4 +108,29 @@ export class SwapParser extends OfferParser {
       price: this.parsePrice(match[2]),
     };
   }
+
+  parseUpdateOfferInputFromThread({
+    startMessage,
+    group,
+    threadTitle,
+    categoryName,
+  }: {
+    startMessage: Message;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+  }): UpdateOfferInput {
+    const match = this.parseThreadContent(threadTitle);
+    const post = {
+      title: `${match[1].trim()} - ${match[2].trim()}`,
+      categoryId: this.parseCategoryId(categoryName, group),
+    };
+    return {
+      post,
+      id: this.parseIdFromMessageId(startMessage.id),
+      name0: match[1].trim(),
+      name1: match[2].trim(),
+      content: startMessage.content,
+    };
+  }
 }
