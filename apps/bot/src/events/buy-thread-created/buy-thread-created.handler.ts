@@ -28,6 +28,12 @@ export class BuyThreadCreatedHandler {
     @Context()
     [message]: ContextOf<'messageCreate'>,
   ) {
-    // TODO
+    await this.buyClient.createOfferFromThread({
+      user,
+      group,
+      threadTitle: threadPost.threadChannel.name,
+      categoryName: threadPost.tagNames[0],
+      startMessage: threadPost.starterMessage,
+    });
   }
 }
