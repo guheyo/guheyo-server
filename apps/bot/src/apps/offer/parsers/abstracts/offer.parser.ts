@@ -35,6 +35,18 @@ export abstract class OfferParser extends GroupParser {
 
   abstract parseUpdateOfferInputFromMessage(message: Message): UpdateOfferInput;
 
+  abstract parseUpdateOfferInputFromThread({
+    startMessage,
+    group,
+    threadTitle,
+    categoryName,
+  }: {
+    startMessage: Message;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+  }): UpdateOfferInput;
+
   parseDeleteOfferArgs(message: Message | PartialMessage): DeleteOfferArgs {
     return {
       id: this.parseIdFromMessageId(message.id),
