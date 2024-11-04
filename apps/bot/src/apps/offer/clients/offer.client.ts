@@ -92,6 +92,30 @@ export abstract class OfferClient extends UserImageClient {
     this.logger.log(`${this.businessFunction}<@${updateOfferInput.id}> updated`);
   }
 
+  async updateOfferFromThread({
+    user,
+    group,
+    threadTitle,
+    categoryName,
+    startMessage,
+  }: {
+    user: MyUserResponse;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+    startMessage: Message;
+  }) {
+    const updateOfferInput = this.offerParser.parseUpdateOfferInputFromThread({
+      startMessage,
+      group,
+      threadTitle,
+      categoryName,
+    });
+
+    await this.updateOffer({ input: updateOfferInput, user });
+    this.logger.log(`${this.businessFunction}<@${updateOfferInput.id}> updated`);
+  }
+
   async deleteOfferFromMessage(user: MyUserResponse, message: Message | PartialMessage) {
     const args = this.offerParser.parseDeleteOfferArgs(message);
     await this.deleteOffer({ args, user });
