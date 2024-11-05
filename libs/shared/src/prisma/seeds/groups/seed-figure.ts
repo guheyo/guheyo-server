@@ -30,8 +30,8 @@ export async function seedFigure(prisma: PrismaClient) {
     },
     {
       type: PRODUCT_CATEGORY_TYPE,
-      name: '건프라',
-      slug: 'gunpla',
+      name: '프라모델',
+      slug: 'plamodel',
       position: 3,
     },
     {
