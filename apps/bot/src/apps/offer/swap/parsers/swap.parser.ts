@@ -11,15 +11,24 @@ import { OfferParser } from '../../parsers/abstracts/offer.parser';
 
 @Injectable()
 export class SwapParser extends OfferParser {
-  matchFormat(content: string): RegExpExecArray {
-    const re = /^wtt[\r\n](.*)[\s\S]+wttf[\r\n](.*)([\s\S]*)/i;
-    const match = re.exec(content);
+  private readonly messageFormatRegex = /^wtt[\r\n](.*)[\s\S]+wttf[\r\n](.*)([\s\S]*)/i;
+
+  private readonly threadFormatRegex = /^([\s\S]+)[\s]*-[\s]*([\s\S]+)/i;
+
+  parseMessageContent(content: string): RegExpExecArray {
+    const match = this.messageFormatRegex.exec(content);
     if (!match) throw new RpcException(SwapErrorMessage.INVALID_SWAP_FORMAT);
     return match;
   }
 
-  parseCreateOfferInput(message: Message, group: GroupResponse): CreateOfferInput {
-    const match = this.matchFormat(message.content);
+  parseThreadContent(content: string): RegExpExecArray {
+    const match = this.threadFormatRegex.exec(content);
+    if (!match) throw new RpcException(SwapErrorMessage.INVALID_SWAP_FORMAT);
+    return match;
+  }
+
+  parseCreateOfferInputFromMessage(message: Message, group: GroupResponse): CreateOfferInput {
+    const match = this.parseMessageContent(message.content);
     const channelName = this.parseCategoryNameFromMessage(message);
     const post = {
       id: this.parsePostIdFromMessageId(message.id),
@@ -47,8 +56,46 @@ export class SwapParser extends OfferParser {
     };
   }
 
-  parseUpdateOfferInput(message: Message<boolean>): UpdateOfferInput {
-    const match = this.matchFormat(message.content);
+  parseCreateOfferInputFromThread({
+    startMessage,
+    group,
+    threadTitle,
+    categoryName,
+  }: {
+    startMessage: Message;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+  }): CreateOfferInput {
+    const match = this.parseThreadContent(threadTitle);
+    const post = {
+      id: this.parsePostIdFromMessageId(startMessage.id),
+      createdAt: startMessage.createdAt,
+      updatedAt: startMessage.editedAt || startMessage.createdAt,
+      type: OFFER,
+      title: `${match[1].trim()} - ${match[2].trim()}`,
+      groupId: group.id,
+      categoryId: this.parseCategoryId(categoryName, group),
+      tagIds: [],
+    };
+
+    return {
+      post,
+      id: this.parseIdFromMessageId(startMessage.id),
+      businessFunction: 'swap',
+      name0: match[1].trim(),
+      name1: match[2].trim(),
+      content: startMessage.content,
+      price: 0,
+      priceCurrency: 'krw',
+      shippingCost: 0,
+      shippingType: SHIPPING_FREE,
+      status: OFFER_OPEN,
+    };
+  }
+
+  parseUpdateOfferInputFromMessage(message: Message<boolean>): UpdateOfferInput {
+    const match = this.parseMessageContent(message.content);
     const post = {
       title: `${match[1].trim()} - ${match[2].trim()}`,
     };
@@ -59,6 +106,31 @@ export class SwapParser extends OfferParser {
       name1: match[2].trim(),
       content: match[3].trim(),
       price: this.parsePrice(match[2]),
+    };
+  }
+
+  parseUpdateOfferInputFromThread({
+    startMessage,
+    group,
+    threadTitle,
+    categoryName,
+  }: {
+    startMessage: Message;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+  }): UpdateOfferInput {
+    const match = this.parseThreadContent(threadTitle);
+    const post = {
+      title: `${match[1].trim()} - ${match[2].trim()}`,
+      categoryId: this.parseCategoryId(categoryName, group),
+    };
+    return {
+      post,
+      id: this.parseIdFromMessageId(startMessage.id),
+      name0: match[1].trim(),
+      name1: match[2].trim(),
+      content: startMessage.content,
     };
   }
 }

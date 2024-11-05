@@ -47,7 +47,39 @@ export abstract class OfferClient extends UserImageClient {
       message,
       OFFER,
     );
-    const createOfferInput = this.offerParser.parseCreateOfferInput(message, group);
+    const createOfferInput = this.offerParser.parseCreateOfferInputFromMessage(message, group);
+
+    await this.uploadAndCreateAttachments(user, uploadUserImageInputList, OFFER);
+    await this.createOffer({ input: createOfferInput, user });
+    this.logger.log(`${this.businessFunction}<@${createOfferInput.id}> created`);
+  }
+
+  async createOfferFromThread({
+    user,
+    group,
+    threadTitle,
+    categoryName,
+    startMessage,
+  }: {
+    user: MyUserResponse;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+    startMessage: Message;
+  }) {
+    if (this.businessFunction !== 'buy' && startMessage.attachments.size === 0) {
+      throw new RpcException(OfferErrorMessage.NOT_FOUND_OFFER_ATTACHMENTS);
+    }
+    const uploadUserImageInputList = this.userImageParser.parseUploadUserImageInputList(
+      startMessage,
+      OFFER,
+    );
+    const createOfferInput = this.offerParser.parseCreateOfferInputFromThread({
+      startMessage,
+      group,
+      threadTitle,
+      categoryName,
+    });
 
     await this.uploadAndCreateAttachments(user, uploadUserImageInputList, OFFER);
     await this.createOffer({ input: createOfferInput, user });
@@ -55,7 +87,31 @@ export abstract class OfferClient extends UserImageClient {
   }
 
   async updateOfferFromMessage(user: MyUserResponse, message: Message) {
-    const updateOfferInput = this.offerParser.parseUpdateOfferInput(message);
+    const updateOfferInput = this.offerParser.parseUpdateOfferInputFromMessage(message);
+    await this.updateOffer({ input: updateOfferInput, user });
+    this.logger.log(`${this.businessFunction}<@${updateOfferInput.id}> updated`);
+  }
+
+  async updateOfferFromThread({
+    user,
+    group,
+    threadTitle,
+    categoryName,
+    startMessage,
+  }: {
+    user: MyUserResponse;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+    startMessage: Message;
+  }) {
+    const updateOfferInput = this.offerParser.parseUpdateOfferInputFromThread({
+      startMessage,
+      group,
+      threadTitle,
+      categoryName,
+    });
+
     await this.updateOffer({ input: updateOfferInput, user });
     this.logger.log(`${this.businessFunction}<@${updateOfferInput.id}> updated`);
   }

@@ -25,13 +25,6 @@ export class FindGroupProfilesHandler extends PrismaQueryHandler {
         id: {
           in: query.where?.groupIds,
         },
-        brands: {
-          some: {
-            OR: query.where?.brandIds?.map((brandId) => ({
-              id: brandId,
-            })),
-          },
-        },
       },
       cursor,
       take: query.take + 1,

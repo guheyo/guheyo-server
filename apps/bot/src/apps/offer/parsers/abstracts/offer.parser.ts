@@ -8,7 +8,7 @@ import { CreateOfferInput } from '@lib/domains/offer/application/commands/create
 import { OfferErrorMessage } from './offer.error-message';
 
 export abstract class OfferParser extends GroupParser {
-  abstract matchFormat(content: string): RegExpExecArray;
+  abstract parseMessageContent(content: string): RegExpExecArray;
 
   matchCategoryName(channelName: string): string | null {
     const re = /([a-zA-Z가-힣]*)-(삽니다|팝니다|교환합니다|의뢰합니다|구합니다)/;
@@ -16,9 +16,36 @@ export abstract class OfferParser extends GroupParser {
     return match ? match[1] : null;
   }
 
-  abstract parseCreateOfferInput(message: Message, group: GroupResponse): CreateOfferInput;
+  abstract parseCreateOfferInputFromMessage(
+    message: Message,
+    group: GroupResponse,
+  ): CreateOfferInput;
 
-  abstract parseUpdateOfferInput(message: Message): UpdateOfferInput;
+  abstract parseCreateOfferInputFromThread({
+    startMessage,
+    group,
+    threadTitle,
+    categoryName,
+  }: {
+    startMessage: Message;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+  }): CreateOfferInput;
+
+  abstract parseUpdateOfferInputFromMessage(message: Message): UpdateOfferInput;
+
+  abstract parseUpdateOfferInputFromThread({
+    startMessage,
+    group,
+    threadTitle,
+    categoryName,
+  }: {
+    startMessage: Message;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+  }): UpdateOfferInput;
 
   parseDeleteOfferArgs(message: Message | PartialMessage): DeleteOfferArgs {
     return {

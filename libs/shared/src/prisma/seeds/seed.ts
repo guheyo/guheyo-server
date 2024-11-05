@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { seedKeyboard } from './groups/seed-keyboard';
 import { seedMouse } from './groups/seed-mouse';
 import { seedAudio } from './groups/seed-audio';
+import { seedFigure } from './groups/seed-figure';
 import { seedRoot } from './groups/seed-root';
 import { seedTags } from './tags/seed-tags';
 import { seedEmojis } from './emojis/seed-emojis';
@@ -16,6 +17,7 @@ async function main() {
   await seedKeyboard(prisma);
   await seedMouse(prisma);
   await seedAudio(prisma);
+  await seedFigure(prisma);
   await seedTags(prisma);
   await seedEmojis(prisma);
   await seedCommunityCategories(prisma);

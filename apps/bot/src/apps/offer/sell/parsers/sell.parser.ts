@@ -11,15 +11,24 @@ import { SellErrorMessage } from './sell.error-message';
 
 @Injectable()
 export class SellParser extends OfferParser {
-  matchFormat(content: string): RegExpExecArray {
-    const re = /^wts[\r\n](.*)-[ ()a-zA-Z가-힣]*(\d+(?:\.\d+)?)([\s\S]*)/i;
-    const match = re.exec(content);
+  private readonly messageFormatRegex = /^wts[\r\n](.*)-[ ()a-zA-Z가-힣]*(\d+(?:\.\d+)?)([\s\S]*)/i;
+
+  private readonly threadFormatRegex = /^(.*)-[ ()a-zA-Z가-힣]*(\d+(?:\.\d+)?)/i;
+
+  parseMessageContent(content: string): RegExpExecArray {
+    const match = this.messageFormatRegex.exec(content);
     if (!match) throw new RpcException(SellErrorMessage.INVALID_SELL_FORMAT);
     return match;
   }
 
-  parseCreateOfferInput(message: Message, group: GroupResponse): CreateOfferInput {
-    const match = this.matchFormat(message.content);
+  parseThreadContent(content: string): RegExpExecArray {
+    const match = this.threadFormatRegex.exec(content);
+    if (!match) throw new RpcException(SellErrorMessage.INVALID_SELL_FORMAT);
+    return match;
+  }
+
+  parseCreateOfferInputFromMessage(message: Message, group: GroupResponse): CreateOfferInput {
+    const match = this.parseMessageContent(message.content);
     const channelName = this.parseCategoryNameFromMessage(message);
     const post = {
       id: this.parsePostIdFromMessageId(message.id),
@@ -46,8 +55,45 @@ export class SellParser extends OfferParser {
     };
   }
 
-  parseUpdateOfferInput(message: Message<boolean>): UpdateOfferInput {
-    const match = this.matchFormat(message.content);
+  parseCreateOfferInputFromThread({
+    startMessage,
+    group,
+    threadTitle,
+    categoryName,
+  }: {
+    startMessage: Message;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+  }): CreateOfferInput {
+    const match = this.parseThreadContent(threadTitle);
+    const post = {
+      id: this.parsePostIdFromMessageId(startMessage.id),
+      createdAt: startMessage.createdAt,
+      updatedAt: startMessage.editedAt || startMessage.createdAt,
+      type: OFFER,
+      title: match[1].trim(),
+      groupId: group.id,
+      categoryId: this.parseCategoryId(categoryName, group),
+      tagIds: [],
+    };
+
+    return {
+      post,
+      id: this.parseIdFromMessageId(startMessage.id),
+      businessFunction: 'sell',
+      name0: match[1].trim(),
+      content: startMessage.content,
+      price: this.parsePrice(match[2]),
+      priceCurrency: 'krw',
+      shippingCost: 0,
+      shippingType: SHIPPING_FREE,
+      status: OFFER_OPEN,
+    };
+  }
+
+  parseUpdateOfferInputFromMessage(message: Message<boolean>): UpdateOfferInput {
+    const match = this.parseMessageContent(message.content);
     const post = {
       title: match[1].trim(),
     };
@@ -56,6 +102,31 @@ export class SellParser extends OfferParser {
       id: this.parseIdFromMessageId(message.id),
       name0: match[1].trim(),
       content: match[3].trim(),
+      price: this.parsePrice(match[2]),
+    };
+  }
+
+  parseUpdateOfferInputFromThread({
+    startMessage,
+    group,
+    threadTitle,
+    categoryName,
+  }: {
+    startMessage: Message;
+    group: GroupResponse;
+    threadTitle: string;
+    categoryName: string;
+  }): UpdateOfferInput {
+    const match = this.parseThreadContent(threadTitle);
+    const post = {
+      title: match[1].trim(),
+      categoryId: this.parseCategoryId(categoryName, group),
+    };
+    return {
+      post,
+      id: this.parseIdFromMessageId(startMessage.id),
+      name0: match[1].trim(),
+      content: startMessage.content,
       price: this.parsePrice(match[2]),
     };
   }

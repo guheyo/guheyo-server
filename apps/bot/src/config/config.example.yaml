@@ -30,12 +30,21 @@ discord:
           channels:
             - id:
               name:
+          threads:
+            - id:
+              name:
         wtb:
           channels:
             - id:
               name:
+          threads:
+            - id:
+              name:
         wtt:
           channels:
+            - id:
+              name:
+          threads:
             - id:
               name:
         allowedRoleIds:
