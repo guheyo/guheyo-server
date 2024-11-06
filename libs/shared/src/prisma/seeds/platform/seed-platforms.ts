@@ -25,6 +25,12 @@ const PLATFORMS = [
     logo: 'https://guheyo.s3.ap-northeast-2.amazonaws.com/platform/202409/instagram/Instagram_Glyph_Gradient.png',
     position: 3,
   },
+  {
+    name: 'X',
+    description: '',
+    logo: 'https://guheyo.s3.ap-northeast-2.amazonaws.com/platform/202411/x/logo-black.png',
+    position: 4,
+  },
 ];
 
 export async function seedPlatforms(prisma: PrismaClient) {
