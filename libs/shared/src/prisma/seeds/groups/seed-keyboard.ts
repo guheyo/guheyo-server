@@ -11,7 +11,7 @@ const SWITCH_NAME = '스위치';
 const ETC_NAME = '기타';
 const REQUEST_NAME = '공임';
 
-const GROUP_SLUG = 'custom-keyboard';
+const GROUP_SLUG = 'keyboard';
 const CUSTOM_SLUG = 'custom-keyboard';
 const NORMAL_KEYBOARD_SLUG = 'mechanical-keyboard';
 const KEYCAP_SLUG = 'keycap';
