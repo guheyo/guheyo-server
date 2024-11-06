@@ -9,7 +9,7 @@ import { GuildName } from '@app/bot/decorators/guild-name.decorator';
 import { UserClient } from '@app/bot/apps/user/clients/user.client';
 import { KakaoService } from '@app/bot/apps/kakao/service/kakao.service';
 
-@GuildName('커스텀 키보드')
+@GuildName('키보드')
 @Name('kakao')
 @UseGuards(GroupGuard, CommandChannelGuard)
 @Injectable()

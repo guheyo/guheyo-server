@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { v5 as uuid5 } from 'uuid';
 import { PRODUCT_CATEGORY_TYPE } from './seed-audio';
 
-const GROUP_NAME = '커스텀 키보드';
+const GROUP_NAME = '키보드';
 const CUSTOM_NAME = '커스텀';
 const NORMAL_KEYBOARD_NAME = '기성품';
 const KEYCAP_NAME = '키캡';
