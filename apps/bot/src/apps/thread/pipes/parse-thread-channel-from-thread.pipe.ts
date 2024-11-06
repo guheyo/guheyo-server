@@ -34,7 +34,7 @@ export class ParseThreadChannelFromThreadPipe implements PipeTransform {
     }
 
     const threadChannel = this.discordConfigService.findThreadChannel(
-      '커스텀 키보드',
+      '키보드',
       channel.parent.name,
     );
     if (!threadChannel) throw new RpcException('ThreadChannel not found');
