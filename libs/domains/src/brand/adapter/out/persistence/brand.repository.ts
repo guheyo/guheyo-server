@@ -77,18 +77,37 @@ export class BrandRepository
             id: group.id,
           })),
         },
-        links: {
-          updateMany: brand.links.map((link) => ({
-            where: {
-              id: link.id,
-            },
-            data: {
-              url: link.url,
-            },
-          })),
-        },
       },
     });
+
+    await Promise.all(
+      brand.links.map(async (link) => {
+        const existingLink = await this.prismaService.link.findFirst({
+          where: {
+            platformId: link.platformId,
+            brandId: brand.id,
+          },
+        });
+
+        if (existingLink) {
+          // Update the existing link if found
+          return this.prismaService.link.update({
+            where: { id: existingLink.id },
+            data: { url: link.url, position: link.position },
+          });
+        }
+        // Create a new link if no matching platformId and brandId found
+        return this.prismaService.link.create({
+          data: {
+            id: link.id,
+            url: link.url,
+            platformId: link.platformId,
+            brandId: brand.id,
+            position: link.position,
+          },
+        });
+      }),
+    );
   }
 
   async delete(brand: BrandEntity): Promise<void> {
