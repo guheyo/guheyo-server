@@ -1,5 +1,5 @@
 import { ObjectType } from '@nestjs/graphql';
-import { ProductBaseResponse } from './brand-base.response';
+import { ProductBaseResponse } from './product-base.response';
 
 @ObjectType()
 export class ProductPreviewResponse extends ProductBaseResponse {
