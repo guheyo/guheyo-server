@@ -170,6 +170,7 @@ model Brand {
   posts             Post[]
   links             Link[]
   followBrands      FollowBrand[]
+  products          Product[]
 
   @@schema("public")
 }
@@ -240,6 +241,7 @@ model Post {
   offer               Offer?
   auction             Auction?
   userReview          UserReview?
+  review              Review?
   comments            Comment[]
   tags                Tag[]
   brands              Brand[]
@@ -412,6 +414,36 @@ model UserReview {
   offer             Offer?            @relation(fields: [offerId], references: [id])
   auctionId         String?
   auction           Auction?          @relation(fields: [auctionId], references: [id])
+  content           String?
+  rating            Int
+  status            String
+
+  @@schema("public")
+}
+
+model Product {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  name              String
+  description       String?
+  brandId           String?
+  brand             Brand?            @relation(fields: [brandId], references: [id])
+  reviews           Review[]
+
+  @@schema("public")
+}
+
+model Review {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  postId            String            @unique()
+  post              Post              @relation(fields: [postId], references: [id])
+  productId         String
+  product           Product           @relation(fields: [productId], references: [id])
   content           String?
   rating            Int
   status            String
