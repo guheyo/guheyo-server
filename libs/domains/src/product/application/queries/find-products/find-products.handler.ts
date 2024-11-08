@@ -16,6 +16,9 @@ export class FindProductsHandler extends PrismaQueryHandler {
           name: parseContainsSearcher({
             keyword: query.keyword,
           }),
+          groupId: query.where.groupId,
+          categoryId: query.where.categoryId,
+          brandId: query.where.brandId,
         }
       : {};
 

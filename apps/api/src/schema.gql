@@ -501,6 +501,8 @@ input FindProductsOrderByInput {
 
 input FindProductsWhereInput {
   brandId: ID
+  categoryId: ID
+  groupId: ID
 }
 
 input FindReportPreviewsOrderByInput {
