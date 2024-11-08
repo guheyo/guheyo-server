@@ -29,6 +29,7 @@ import { AuctionModule } from './app/auction/auction.module';
 import { ThreadModule } from './app/thread/thread.module';
 import { BrandModule } from './app/brand/brand.module';
 import { PlatformModule } from './app/platform/platform.module';
+import { ProductModule } from './app/product/product.module';
 
 @Module({
   imports: [
@@ -77,6 +78,7 @@ import { PlatformModule } from './app/platform/platform.module';
     ThreadModule,
     BrandModule,
     PlatformModule,
+    ProductModule,
   ],
 })
 export class ApiModule {}

@@ -282,6 +282,13 @@ input CreatePostInput {
   updatedAt: DateTime
 }
 
+input CreateProductInput {
+  brandId: ID
+  description: String
+  id: ID!
+  name: String!
+}
+
 input CreateReactionInput {
   commentId: ID
   emojiId: ID!
@@ -485,6 +492,15 @@ input FindOfferPreviewsWhereInput {
   userId: ID
 }
 
+input FindProductsOrderByInput {
+  createdAt: String
+  name: String
+}
+
+input FindProductsWhereInput {
+  brandId: ID
+}
+
 input FindReportPreviewsOrderByInput {
   createdAt: String
 }
@@ -650,6 +666,7 @@ type Mutation {
   createGroup(input: CreateGroupInput!): MutationResponse!
   createManyUserImage(input: CreateManyUserImageInput!): MutationResponse!
   createOffer(input: CreateOfferInput!): MutationResponse!
+  createProduct(input: CreateProductInput!): MutationResponse!
   createReaction(input: CreateReactionInput!): MutationResponse!
   createReport(input: CreateReportInput!): MutationResponse!
   createRole(input: CreateRoleInput!): MutationResponse!
@@ -802,6 +819,11 @@ type PaginatedOfferPreviewsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedProductsResponse {
+  edges: [ProductPreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedReportPreviewsResponse {
   edges: [ReportPreviewResponseEdge!]!
   pageInfo: PageInfo!
@@ -915,6 +937,25 @@ type PostResponse {
   user: AuthorResponse!
 }
 
+type ProductDetailResponse {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+}
+
+type ProductPreviewResponse {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+}
+
+type ProductPreviewResponseEdge {
+  cursor: String!
+  node: ProductPreviewResponse!
+}
+
 type Query {
   findAuction(id: ID, slug: String): AuctionResponse
   findAuctionInteractionItems(cursor: ID, keyword: String, orderBy: FindAuctionInteractionItemsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindAuctionInteractionItemsWhereInput): PaginatedAuctionInteractionItemsResponse!
@@ -944,6 +985,9 @@ type Query {
   findOfferPreviews(cursor: ID, keyword: String, orderBy: FindOfferPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindOfferPreviewsWhereInput): PaginatedOfferPreviewsResponse!
   findPlatforms: [PlatformResponse!]!
   findPostPreview(id: ID!): PostPreviewWithUserResponse!
+  findProduct(id: ID): ProductDetailResponse!
+  findProductPreview(id: ID): ProductPreviewResponse!
+  findProducts(cursor: ID, keyword: String, orderBy: FindProductsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindProductsWhereInput): PaginatedProductsResponse!
   findReactions(commentId: ID, postId: ID): [ReactionResponse!]!
   findReport(id: ID!): ReportResponse!
   findReportComment(reportId: ID!): ReportCommentResponse!
