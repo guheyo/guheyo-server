@@ -15,6 +15,11 @@ export class FindProductHandler extends PrismaQueryHandler {
       where: {
         id: query.id,
       },
+      include: {
+        group: true,
+        category: true,
+        brand: true,
+      },
     });
     if (!product) throw new NotFoundException(ProductErrorMessage.PRODUCT_NOT_FOUND);
 

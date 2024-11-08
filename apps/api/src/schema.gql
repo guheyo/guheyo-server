@@ -940,15 +940,21 @@ type PostResponse {
 }
 
 type ProductDetailResponse {
+  brand: BrandBaseResponse!
+  category: CategoryResponse!
   createdAt: DateTime!
   description: String
+  group: GroupProfileResponse!
   id: ID!
   name: String!
 }
 
 type ProductPreviewResponse {
+  brand: BrandBaseResponse!
+  category: CategoryResponse!
   createdAt: DateTime!
   description: String
+  group: GroupProfileResponse!
   id: ID!
   name: String!
 }
