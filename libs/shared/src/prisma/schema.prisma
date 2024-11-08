@@ -137,6 +137,7 @@ model Group {
   posts             Post[]
   reports           Report[]
   emojis            Emoji[]
+  products          Product[]
 
   @@schema("public")
 }
@@ -153,6 +154,8 @@ model Category {
   position          Int
   groups            Group[]
   posts             Post[]
+  brands            Brand[]
+  products          Product[]
 
   @@schema("public")
 }
@@ -167,6 +170,7 @@ model Brand {
   description       String?
   logo              String?
   groups            Group[]
+  categories        Category[]
   posts             Post[]
   links             Link[]
   followBrands      FollowBrand[]
@@ -428,6 +432,10 @@ model Product {
   deletedAt         DateTime?
   name              String
   description       String?
+  groupId           String
+  group             Group             @relation(fields: [groupId], references: [id])
+  categoryId        String
+  category          Category          @relation(fields: [categoryId], references: [id])
   brandId           String?
   brand             Brand?            @relation(fields: [brandId], references: [id])
   reviews           Review[]
