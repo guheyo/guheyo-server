@@ -284,7 +284,9 @@ input CreatePostInput {
 
 input CreateProductInput {
   brandId: ID
+  categoryId: ID!
   description: String
+  groupId: ID!
   id: ID!
   name: String!
 }

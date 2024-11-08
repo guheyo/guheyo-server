@@ -15,6 +15,14 @@ export class CreateProductInput {
   @Field(() => String, { nullable: true })
   description?: string;
 
+  @IsUUID()
+  @Field(() => ID)
+  groupId: string;
+
+  @IsUUID()
+  @Field(() => ID)
+  categoryId: string;
+
   @IsOptional()
   @Field(() => ID, { nullable: true })
   brandId?: string;
