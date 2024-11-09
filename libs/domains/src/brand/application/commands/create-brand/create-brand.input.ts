@@ -29,6 +29,10 @@ export class CreateBrandInput {
   @Field(() => [ID])
   groupIds: string[];
 
+  @IsString({ each: true })
+  @Field(() => [ID])
+  categoryIds: string[];
+
   @ValidateNested({ each: true })
   @Type(() => CreateLinkInput)
   @Field(() => [CreateLinkInput])
