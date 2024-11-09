@@ -1,4 +1,5 @@
 import { GroupEntity } from '@lib/domains/group/domain/group.entity';
+import { CategoryEntity } from '@lib/domains/group/domain/category.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { isUndefined, omitBy } from 'lodash';
 import { LinkEntity } from './link.entity';
@@ -22,6 +23,8 @@ export class BrandEntity extends AggregateRoot {
   logo: string | null;
 
   groups: GroupEntity[];
+
+  categories: CategoryEntity[];
 
   links: LinkEntity[];
 
