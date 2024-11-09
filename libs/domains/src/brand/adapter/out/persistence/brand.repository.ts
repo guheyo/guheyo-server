@@ -43,6 +43,11 @@ export class BrandRepository
             id: group.id,
           })),
         },
+        categories: {
+          connect: brand.categories.map((category) => ({
+            id: category.id,
+          })),
+        },
         links: {
           createMany: {
             data: brand.links.map((link) => ({
@@ -75,6 +80,11 @@ export class BrandRepository
         groups: {
           set: brand.groups.map((group) => ({
             id: group.id,
+          })),
+        },
+        categories: {
+          set: brand.categories.map((category) => ({
+            id: category.id,
           })),
         },
       },

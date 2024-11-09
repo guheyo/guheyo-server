@@ -218,6 +218,7 @@ input CreateAuctionInput {
 }
 
 input CreateBrandInput {
+  categoryIds: [ID!]!
   description: String
   groupIds: [ID!]!
   id: ID!
