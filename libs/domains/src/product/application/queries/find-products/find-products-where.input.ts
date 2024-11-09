@@ -5,5 +5,13 @@ import { IsOptional } from 'class-validator';
 export class FindProductsWhereInput {
   @IsOptional()
   @Field(() => ID, { nullable: true })
+  groupId?: string;
+
+  @IsOptional()
+  @Field(() => ID, { nullable: true })
+  categoryId?: string;
+
+  @IsOptional()
+  @Field(() => ID, { nullable: true })
   brandId?: string;
 }

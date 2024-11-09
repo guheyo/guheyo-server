@@ -16,6 +16,9 @@ export class FindProductsHandler extends PrismaQueryHandler {
           name: parseContainsSearcher({
             keyword: query.keyword,
           }),
+          groupId: query.where.groupId,
+          categoryId: query.where.categoryId,
+          brandId: query.where.brandId,
         }
       : {};
 
@@ -41,6 +44,11 @@ export class FindProductsHandler extends PrismaQueryHandler {
     const products = await this.prismaService.product.findMany({
       where,
       orderBy,
+      include: {
+        group: true,
+        category: true,
+        brand: true,
+      },
       cursor,
       take: query.take + 1,
       skip: query.skip,

@@ -25,6 +25,8 @@ export class CreateProductHandler extends PrismaCommandHandler<
       id: command.id,
       name: command.name,
       description: command.description,
+      groupId: command.groupId,
+      categoryId: command.categoryId,
       brandId: command.brandId,
     });
     await this.savePort.create(product);

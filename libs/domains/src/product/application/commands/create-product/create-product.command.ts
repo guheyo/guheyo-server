@@ -9,6 +9,10 @@ export class CreateProductCommand implements ICommand {
 
   description?: string;
 
+  groupId: string;
+
+  categoryId: string;
+
   brandId?: string;
 
   user: MyUserResponse;
@@ -17,6 +21,8 @@ export class CreateProductCommand implements ICommand {
     this.id = input.id;
     this.name = input.name;
     this.description = input.description;
+    this.groupId = input.groupId;
+    this.categoryId = input.categoryId;
     this.brandId = input.brandId;
     this.user = user;
   }

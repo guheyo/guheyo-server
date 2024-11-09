@@ -15,6 +15,10 @@ export class ProductEntity extends AggregateRoot {
 
   description: string | null;
 
+  groupId: string;
+
+  categoryId: string;
+
   brandId: string | null;
 
   constructor(partial: Partial<ProductEntity>) {

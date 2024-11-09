@@ -3,5 +3,9 @@ export interface UpdateBrandProps {
 
   description?: string;
 
+  groupId?: string;
+
+  categoryId?: string;
+
   brandId?: string;
 }

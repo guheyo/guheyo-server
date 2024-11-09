@@ -28,6 +28,8 @@ export class ProductRepository
         id: product.id,
         name: product.name,
         description: product.description,
+        groupId: product.groupId,
+        categoryId: product.categoryId,
         brandId: product.brandId,
       },
     });
@@ -46,6 +48,8 @@ export class ProductRepository
         id: product.id,
         name: product.name,
         description: product.description,
+        groupId: product.groupId,
+        categoryId: product.categoryId,
         brandId: product.brandId,
       },
     });
