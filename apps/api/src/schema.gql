@@ -98,6 +98,7 @@ type BrandBaseResponse {
 }
 
 type BrandDetailResponse {
+  categories: [CategoryResponse!]!
   createdAt: DateTime!
   description: String
   followBrands: [FollowBrandResponse!]!
@@ -111,6 +112,7 @@ type BrandDetailResponse {
 }
 
 type BrandPreviewResponse {
+  categories: [CategoryResponse!]!
   createdAt: DateTime!
   description: String
   followed: Boolean
@@ -216,6 +218,7 @@ input CreateAuctionInput {
 }
 
 input CreateBrandInput {
+  categoryIds: [ID!]!
   description: String
   groupIds: [ID!]!
   id: ID!
@@ -452,6 +455,7 @@ input FindBrandsOrderByInput {
 }
 
 input FindBrandsWhereInput {
+  categoryId: ID
   followed: Boolean
   groupId: ID
 }

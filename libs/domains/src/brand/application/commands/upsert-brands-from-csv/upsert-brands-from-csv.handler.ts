@@ -31,9 +31,16 @@ export class UpsertBrandsFromCsvHandler extends PrismaCommandHandler<
   async execute(command: UpsertBrandsFromCsvCommand): Promise<void> {
     const csvData = await this.parseCsvFile(command.filePath);
     const allGroups = await this.prismaService.group.findMany();
+    const allCategories = await this.prismaService.category.findMany();
     const allPlatforms = await this.prismaService.platform.findMany();
 
-    const brandEntities = await this.mapToBrandEntities(csvData, command, allGroups, allPlatforms);
+    const brandEntities = await this.mapToBrandEntities({
+      csvData,
+      command,
+      groups: allGroups,
+      categories: allCategories,
+      platforms: allPlatforms,
+    });
     const existingBrandNames = await this.fetchExistingBrandNames(brandEntities);
 
     const { newBrands, brandsToUpdate } = this.categorizeBrands(brandEntities, existingBrandNames);
@@ -58,6 +65,9 @@ export class UpsertBrandsFromCsvHandler extends PrismaCommandHandler<
             logo: row.logo,
             url: row.url,
             groupNames: row.groups ? row.groups.split(',').map((g: string) => g.trim()) : [],
+            categoryNames: row.categories
+              ? row.categories.split(',').map((c: string) => c.trim())
+              : [],
           });
         })
         .on('end', resolve)
@@ -69,12 +79,19 @@ export class UpsertBrandsFromCsvHandler extends PrismaCommandHandler<
   /**
    * Maps the CSV data to brand entities.
    */
-  private async mapToBrandEntities(
-    csvData: any[],
-    command: UpsertBrandsFromCsvCommand,
-    groups: any[],
-    platforms: any[],
-  ): Promise<BrandEntity[]> {
+  private async mapToBrandEntities({
+    csvData,
+    command,
+    groups,
+    categories,
+    platforms,
+  }: {
+    csvData: any[];
+    command: UpsertBrandsFromCsvCommand;
+    groups: any[];
+    categories: any[];
+    platforms: any[];
+  }): Promise<BrandEntity[]> {
     return Promise.all(
       csvData.map(async (brandData) => {
         const platformId = this.getPlatformIdFromUrl(brandData.url, platforms);
@@ -95,6 +112,9 @@ export class UpsertBrandsFromCsvHandler extends PrismaCommandHandler<
           description: brandData.description,
           logo: logoUrl,
           groups: groups.filter((group) => brandData.groupNames.includes(group.name)),
+          categories: categories.filter((category) =>
+            brandData.categoryNames.includes(category.name),
+          ),
           links: brandLinks,
         });
       }),
@@ -149,7 +169,7 @@ export class UpsertBrandsFromCsvHandler extends PrismaCommandHandler<
     brandsToUpdate.forEach(async (brandToUpdate) => {
       const existingBrand = await this.prismaService.brand.findFirst({
         where: { name: brandToUpdate.name },
-        include: { groups: true, links: true },
+        include: { groups: true, categories: true, links: true },
       });
       const brandEntity = plainToInstance(BrandEntity, existingBrand);
 
@@ -159,6 +179,7 @@ export class UpsertBrandsFromCsvHandler extends PrismaCommandHandler<
         description: brandToUpdate.description || undefined,
         logo: brandToUpdate.logo || undefined,
         groups: brandToUpdate.groups,
+        categories: brandToUpdate.categories,
         links: brandToUpdate.links,
       });
 

@@ -22,6 +22,15 @@ export class FindBrandsHandler extends PrismaQueryHandler {
                 },
               }
             : undefined,
+          categories: query.where.categoryId
+            ? {
+                some: {
+                  id: {
+                    in: [query.where.categoryId],
+                  },
+                },
+              }
+            : undefined,
           name: parseContainsSearcher({
             keyword: query.keyword,
           }),
@@ -69,6 +78,7 @@ export class FindBrandsHandler extends PrismaQueryHandler {
       skip: query.skip,
       include: {
         groups: true,
+        categories: true,
         followBrands: {
           include: {
             user: true,

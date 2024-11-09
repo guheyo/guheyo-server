@@ -16,6 +16,8 @@ export class CreateBrandCommand implements ICommand {
 
   groupIds: string[];
 
+  categoryIds: string[];
+
   links: CreateLinkInput[];
 
   user: MyUserResponse;
@@ -27,6 +29,7 @@ export class CreateBrandCommand implements ICommand {
     this.description = input.description;
     this.logo = input.logo;
     this.groupIds = input.groupIds;
+    this.categoryIds = input.categoryIds;
     this.links = input.links;
     this.user = user;
   }

@@ -18,6 +18,7 @@ export class FindBrandPreviewHandler extends PrismaQueryHandler {
       },
       include: {
         groups: true,
+        categories: true,
         followBrands: {
           include: {
             user: true,

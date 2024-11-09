@@ -8,6 +8,10 @@ export class FindBrandsWhereInput {
   groupId?: string;
 
   @IsOptional()
+  @Field(() => ID, { nullable: true })
+  categoryId?: string;
+
+  @IsOptional()
   @Field(() => Boolean, { nullable: true })
   followed?: boolean;
 }
