@@ -18,6 +18,7 @@ export class FindBrandHandler extends PrismaQueryHandler {
       },
       include: {
         groups: true,
+        categories: true,
         links: {
           include: {
             platform: true,
