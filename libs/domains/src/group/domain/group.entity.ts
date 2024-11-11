@@ -2,6 +2,7 @@ import { RoleEntity } from '@lib/domains/role/domain/role.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { isUndefined, omitBy } from 'lodash';
 import { UpdateGroupProps } from './group.types';
+import { GroupStatus } from './group.enums';
 
 export class GroupEntity extends AggregateRoot {
   id: string;
@@ -19,6 +20,8 @@ export class GroupEntity extends AggregateRoot {
   icon: string | null;
 
   position: number;
+
+  status: GroupStatus;
 
   roles: RoleEntity[];
 
