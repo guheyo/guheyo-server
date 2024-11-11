@@ -165,6 +165,11 @@ type CategoryResponse {
   type: String!
 }
 
+type CategoryResponseEdge {
+  cursor: String!
+  node: CategoryResponse!
+}
+
 type CommentCountResponse {
   count: Int!
   postId: ID!
@@ -467,6 +472,17 @@ input FindBrandsWhereInput {
   categoryId: ID
   followed: Boolean
   groupId: ID
+}
+
+input FindCategoriesOrderByInput {
+  createdAt: String
+  position: String
+}
+
+input FindCategoriesWhereInput {
+  categoryTypes: [ID!]
+  createdAt: JSON
+  groupIds: [ID!]
 }
 
 input FindCommentsOrderByInput {
@@ -833,6 +849,11 @@ type PaginatedBrandsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedCategoriesResponse {
+  edges: [CategoryResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedCommentsResponse {
   edges: [CommentWithAuthorResponseEdge!]!
   pageInfo: PageInfo!
@@ -1021,6 +1042,7 @@ type Query {
   findBrand(id: ID, slug: String): BrandDetailResponse!
   findBrandPreview(id: ID, slug: String): BrandPreviewResponse!
   findBrands(cursor: ID, keyword: String, orderBy: FindBrandsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBrandsWhereInput): PaginatedBrandsResponse!
+  findCategories(cursor: ID, keyword: String, orderBy: FindCategoriesOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindCategoriesWhereInput): PaginatedCategoriesResponse!
   findComment(id: ID, postId: ID): CommentResponse
   findCommentCount(postId: ID!): CommentCountResponse!
   findComments(cursor: ID, keyword: String, orderBy: FindCommentsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindCommentsWhereInput): PaginatedCommentsResponse!
