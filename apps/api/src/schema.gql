@@ -645,6 +645,7 @@ type GroupPreviewResponse {
   position: Int!
   sells: [OfferPreviewResponse!]!
   slug: String
+  status: GroupStatus!
 }
 
 type GroupProfileResponse {
@@ -653,6 +654,7 @@ type GroupProfileResponse {
   id: ID!
   name: String!
   slug: String
+  status: GroupStatus!
 }
 
 type GroupProfileResponseEdge {
@@ -669,11 +671,18 @@ type GroupResponse {
   position: Int
   roles: [RoleResponse!]!
   slug: String
+  status: GroupStatus!
 }
 
 type GroupResponseEdge {
   cursor: String!
   node: GroupResponse!
+}
+
+"""The status of the group (either MINOR or MAJOR)"""
+enum GroupStatus {
+  MAJOR
+  MINOR
 }
 
 """
