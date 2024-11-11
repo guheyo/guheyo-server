@@ -25,6 +25,7 @@ export class FindGroupProfilesHandler extends PrismaQueryHandler {
         id: {
           in: query.where?.groupIds,
         },
+        status: query.where?.status,
       },
       cursor,
       take: query.take + 1,

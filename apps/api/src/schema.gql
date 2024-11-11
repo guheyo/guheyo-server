@@ -504,6 +504,7 @@ input FindGroupProfilesWhereInput {
   brandIds: [ID!]
   createdAt: JSON
   groupIds: [ID!]
+  status: GroupStatus
 }
 
 input FindOfferPreviewsOrderByInput {

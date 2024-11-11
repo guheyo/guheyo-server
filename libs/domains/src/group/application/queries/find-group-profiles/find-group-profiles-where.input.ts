@@ -1,3 +1,4 @@
+import { GroupStatus } from '@lib/domains/group/domain/group.enums';
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import { GraphQLJSON } from 'graphql-type-json';
@@ -17,4 +18,8 @@ export class FindGroupProfilesWhereInput {
   @IsOptional()
   @Field(() => [ID], { nullable: true })
   brandIds?: string[];
+
+  @IsOptional()
+  @Field(() => GroupStatus, { nullable: true })
+  status?: GroupStatus;
 }
