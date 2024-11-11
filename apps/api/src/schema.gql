@@ -312,6 +312,15 @@ input CreateReportInput {
   type: String!
 }
 
+input CreateReviewInput {
+  content: String
+  id: ID!
+  post: CreatePostInput!
+  productId: ID!
+  rating: Int!
+  status: String!
+}
+
 input CreateRoleInput {
   groupId: ID!
   hexColor: String! = "#000000"
@@ -523,6 +532,22 @@ input FindReportPreviewsWhereInput {
   userId: ID
 }
 
+input FindReviewsOrderByInput {
+  createdAt: String
+  rating: Int
+}
+
+input FindReviewsWhereInput {
+  categoryId: ID
+  followed: Boolean
+  groupId: ID
+  isArchived: Boolean
+  pending: String
+  productId: ID
+  rating: Int
+  userId: ID
+}
+
 input FindSocialAccountConflictsOrderByInput {
   createdAt: String
 }
@@ -677,6 +702,7 @@ type Mutation {
   createProduct(input: CreateProductInput!): MutationResponse!
   createReaction(input: CreateReactionInput!): MutationResponse!
   createReport(input: CreateReportInput!): MutationResponse!
+  createReview(input: CreateReviewInput!): MutationResponse!
   createRole(input: CreateRoleInput!): MutationResponse!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
   createSocialAccount(input: CreateSocialAccountInput!): MutationResponse!
@@ -837,6 +863,11 @@ type PaginatedReportPreviewsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedReviewsResponse {
+  edges: [ReviewPreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedSocialAccountConflictsResponse {
   edges: [SocialAccountConflictResponseEdge!]!
   pageInfo: PageInfo!
@@ -945,6 +976,13 @@ type PostResponse {
   user: AuthorResponse!
 }
 
+type ProductBaseResponse {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+}
+
 type ProductDetailResponse {
   brand: BrandBaseResponse!
   category: CategoryResponse!
@@ -1006,6 +1044,9 @@ type Query {
   findReport(id: ID!): ReportResponse!
   findReportComment(reportId: ID!): ReportCommentResponse!
   findReportPreviews(cursor: ID, keyword: String, orderBy: FindReportPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindReportPreviewsWhereInput): PaginatedReportPreviewsResponse!
+  findReview(id: ID): ReviewDetailResponse
+  findReviewPreview(id: ID): ReviewPreviewResponse
+  findReviewPreviews(cursor: ID, keyword: String, orderBy: FindReviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindReviewsWhereInput): PaginatedReviewsResponse!
   findRoleById(id: ID!): RoleResponse
   findSocialAccountConflicts(cursor: ID, keyword: String, orderBy: FindSocialAccountConflictsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindSocialAccountConflictsWhereInput): PaginatedSocialAccountConflictsResponse!
   findTags: [TagResponse!]!
@@ -1077,6 +1118,31 @@ type ReportResponse {
   type: String!
   updatedAt: DateTime!
   version: VersionResponse!
+}
+
+type ReviewDetailResponse {
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  post: PostResponse!
+  product: ProductBaseResponse!
+  rating: Int!
+  status: String!
+}
+
+type ReviewPreviewResponse {
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  post: PostPreviewWithUserResponse!
+  product: ProductBaseResponse!
+  rating: Int!
+  status: String!
+}
+
+type ReviewPreviewResponseEdge {
+  cursor: String!
+  node: ReviewPreviewResponse!
 }
 
 type RoleResponse {
