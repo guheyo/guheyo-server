@@ -30,6 +30,7 @@ import { ThreadModule } from './app/thread/thread.module';
 import { BrandModule } from './app/brand/brand.module';
 import { PlatformModule } from './app/platform/platform.module';
 import { ProductModule } from './app/product/product.module';
+import { ReviewModule } from './app/review/review.module';
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import { ProductModule } from './app/product/product.module';
     BrandModule,
     PlatformModule,
     ProductModule,
+    ReviewModule,
   ],
 })
 export class ApiModule {}
