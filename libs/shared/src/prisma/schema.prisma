@@ -131,6 +131,7 @@ model Group {
   description       String?
   icon              String?
   position          Int
+  status            GroupStatus @default(MINOR)
   roles             Role[]
   brands            Brand[]
   categories        Category[]
@@ -138,6 +139,13 @@ model Group {
   reports           Report[]
   emojis            Emoji[]
   products          Product[]
+
+  @@schema("public")
+}
+
+enum GroupStatus {
+  MINOR
+  MAJOR
 
   @@schema("public")
 }
