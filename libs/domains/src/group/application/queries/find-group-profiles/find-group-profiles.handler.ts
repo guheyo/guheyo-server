@@ -29,12 +29,6 @@ export class FindGroupProfilesHandler extends PrismaQueryHandler {
       cursor,
       take: query.take + 1,
       skip: query.skip,
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-        icon: true,
-      },
       orderBy: {
         position: query.orderBy?.position,
         createdAt: query.orderBy?.createdAt,
