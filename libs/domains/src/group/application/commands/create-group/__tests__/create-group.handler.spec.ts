@@ -27,6 +27,7 @@ describe('CreateGroupHandler', () => {
   describe('execute', () => {
     it('should execute create', async () => {
       const command: CreateGroupCommand = {
+        categories: [],
         id: '94587c54-4d7d-11ee-be56-0242ac120002',
         name: 'guild-name',
         slug: 'group-slug',
