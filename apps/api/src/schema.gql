@@ -233,6 +233,15 @@ input CreateBrandInput {
   slug: String
 }
 
+input CreateCategoryInput {
+  description: String
+  id: ID
+  name: String!
+  position: Int!
+  slug: String
+  type: String!
+}
+
 input CreateCommentInput {
   content: String
   createdAt: DateTime
@@ -243,6 +252,7 @@ input CreateCommentInput {
 }
 
 input CreateGroupInput {
+  categories: [CreateCategoryInput!]!
   description: String
   icon: String
   id: ID!
