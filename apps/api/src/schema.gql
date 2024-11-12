@@ -247,7 +247,7 @@ input CreateGroupInput {
   icon: String
   id: ID!
   name: String!
-  position: Int!
+  position: Int
   slug: String!
 }
 

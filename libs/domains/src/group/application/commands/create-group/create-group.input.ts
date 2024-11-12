@@ -25,7 +25,8 @@ export class CreateGroupInput {
   @Field(() => String, { nullable: true })
   icon?: string;
 
+  @IsOptional()
   @IsNumber()
-  @Field(() => Int)
-  position: number;
+  @Field(() => Int, { nullable: true })
+  position?: number;
 }

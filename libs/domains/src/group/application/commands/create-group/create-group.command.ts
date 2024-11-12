@@ -12,7 +12,7 @@ export class CreateGroupCommand implements ICommand {
 
   icon?: string;
 
-  position: number;
+  position?: number;
 
   constructor(input: CreateGroupInput) {
     this.id = input.id;
