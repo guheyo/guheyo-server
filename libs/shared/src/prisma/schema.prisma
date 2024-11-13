@@ -130,7 +130,7 @@ model Group {
   slug              String?
   description       String?
   icon              String?
-  position          Int
+  position          Int         @default(autoincrement())
   status            GroupStatus @default(MINOR)
   roles             Role[]
   brands            Brand[]
