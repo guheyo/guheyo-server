@@ -130,13 +130,22 @@ model Group {
   slug              String?
   description       String?
   icon              String?
-  position          Int
+  position          Int         @default(autoincrement())
+  status            GroupStatus @default(MINOR)
   roles             Role[]
   brands            Brand[]
   categories        Category[]
   posts             Post[]
   reports           Report[]
   emojis            Emoji[]
+  products          Product[]
+
+  @@schema("public")
+}
+
+enum GroupStatus {
+  MINOR
+  MAJOR
 
   @@schema("public")
 }
@@ -153,6 +162,8 @@ model Category {
   position          Int
   groups            Group[]
   posts             Post[]
+  brands            Brand[]
+  products          Product[]
 
   @@schema("public")
 }
@@ -167,9 +178,11 @@ model Brand {
   description       String?
   logo              String?
   groups            Group[]
+  categories        Category[]
   posts             Post[]
   links             Link[]
   followBrands      FollowBrand[]
+  products          Product[]
 
   @@schema("public")
 }
@@ -240,6 +253,7 @@ model Post {
   offer               Offer?
   auction             Auction?
   userReview          UserReview?
+  review              Review?
   comments            Comment[]
   tags                Tag[]
   brands              Brand[]
@@ -412,6 +426,40 @@ model UserReview {
   offer             Offer?            @relation(fields: [offerId], references: [id])
   auctionId         String?
   auction           Auction?          @relation(fields: [auctionId], references: [id])
+  content           String?
+  rating            Int
+  status            String
+
+  @@schema("public")
+}
+
+model Product {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  name              String
+  description       String?
+  groupId           String
+  group             Group             @relation(fields: [groupId], references: [id])
+  categoryId        String
+  category          Category          @relation(fields: [categoryId], references: [id])
+  brandId           String?
+  brand             Brand?            @relation(fields: [brandId], references: [id])
+  reviews           Review[]
+
+  @@schema("public")
+}
+
+model Review {
+  id                String            @id @default(uuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+  postId            String            @unique()
+  post              Post              @relation(fields: [postId], references: [id])
+  productId         String
+  product           Product           @relation(fields: [productId], references: [id])
   content           String?
   rating            Int
   status            String

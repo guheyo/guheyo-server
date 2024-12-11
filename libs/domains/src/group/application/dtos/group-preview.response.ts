@@ -1,5 +1,6 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { OfferPreviewResponse } from '@lib/domains/offer/application/dtos/offer-preview.response';
+import { GroupStatus } from '../../domain/group.enums';
 
 @ObjectType()
 export class GroupPreviewResponse {
@@ -20,6 +21,9 @@ export class GroupPreviewResponse {
 
   @Field(() => Int)
   position: number;
+
+  @Field(() => GroupStatus)
+  status: GroupStatus;
 
   @Field(() => [OfferPreviewResponse])
   sells: OfferPreviewResponse[];

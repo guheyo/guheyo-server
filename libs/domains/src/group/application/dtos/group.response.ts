@@ -2,6 +2,7 @@ import { RoleResponse } from '@lib/domains/role/application/dtos/role.response';
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import { CategoryResponse } from './category.response';
+import { GroupStatus } from '../../domain/group.enums';
 
 @ObjectType()
 export class GroupResponse {
@@ -24,6 +25,9 @@ export class GroupResponse {
 
   @Field(() => Int, { nullable: true })
   position: number;
+
+  @Field(() => GroupStatus)
+  status: GroupStatus;
 
   @Field(() => [CategoryResponse])
   categories: CategoryResponse[];

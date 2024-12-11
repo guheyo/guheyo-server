@@ -5,6 +5,7 @@ import { BrandEntity } from '@lib/domains/brand/domain/brand.entity';
 import { LinkEntity } from '@lib/domains/brand/domain/link.entity';
 import { plainToInstance } from 'class-transformer';
 import { GroupEntity } from '@lib/domains/group/domain/group.entity';
+import { CategoryEntity } from '@lib/domains/group/domain/category.entity';
 import { CreateBrandCommand } from './create-brand.command';
 import { BrandDetailResponse } from '../../dtos/brand-detail.response';
 import { BrandSavePort } from '../../ports/out/brand.save.port';
@@ -31,6 +32,7 @@ export class CreateBrandHandler extends PrismaCommandHandler<
       description: command.description,
       logo: command.logo,
       groups: command.groupIds.map((id) => plainToInstance(GroupEntity, { id })),
+      categories: command.categoryIds.map((id) => plainToInstance(CategoryEntity, { id })),
       links: command.links.map((link) => new LinkEntity(link)),
     });
     await this.savePort.create(brand);

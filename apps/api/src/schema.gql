@@ -98,6 +98,7 @@ type BrandBaseResponse {
 }
 
 type BrandDetailResponse {
+  categories: [CategoryResponse!]!
   createdAt: DateTime!
   description: String
   followBrands: [FollowBrandResponse!]!
@@ -111,6 +112,7 @@ type BrandDetailResponse {
 }
 
 type BrandPreviewResponse {
+  categories: [CategoryResponse!]!
   createdAt: DateTime!
   description: String
   followed: Boolean
@@ -161,6 +163,11 @@ type CategoryResponse {
   position: Int
   slug: String
   type: String!
+}
+
+type CategoryResponseEdge {
+  cursor: String!
+  node: CategoryResponse!
 }
 
 type CommentCountResponse {
@@ -216,6 +223,7 @@ input CreateAuctionInput {
 }
 
 input CreateBrandInput {
+  categoryIds: [ID!]!
   description: String
   groupIds: [ID!]!
   id: ID!
@@ -223,6 +231,15 @@ input CreateBrandInput {
   logo: String
   name: String!
   slug: String
+}
+
+input CreateCategoryInput {
+  description: String
+  id: ID
+  name: String!
+  position: Int!
+  slug: String
+  type: String!
 }
 
 input CreateCommentInput {
@@ -235,11 +252,12 @@ input CreateCommentInput {
 }
 
 input CreateGroupInput {
+  categories: [CreateCategoryInput!]!
   description: String
   icon: String
   id: ID!
   name: String!
-  position: Int!
+  position: Int
   slug: String!
 }
 
@@ -282,6 +300,15 @@ input CreatePostInput {
   updatedAt: DateTime
 }
 
+input CreateProductInput {
+  brandId: ID
+  categoryId: ID!
+  description: String
+  groupId: ID!
+  id: ID!
+  name: String!
+}
+
 input CreateReactionInput {
   commentId: ID
   emojiId: ID!
@@ -298,6 +325,15 @@ input CreateReportInput {
   reportedPostId: ID
   reportedUserId: ID!
   type: String!
+}
+
+input CreateReviewInput {
+  content: String
+  id: ID!
+  post: CreatePostInput!
+  productId: ID!
+  rating: Int!
+  status: String!
 }
 
 input CreateRoleInput {
@@ -443,8 +479,20 @@ input FindBrandsOrderByInput {
 }
 
 input FindBrandsWhereInput {
+  categoryId: ID
   followed: Boolean
   groupId: ID
+}
+
+input FindCategoriesOrderByInput {
+  createdAt: String
+  position: String
+}
+
+input FindCategoriesWhereInput {
+  categoryTypes: [ID!]
+  createdAt: JSON
+  groupIds: [ID!]
 }
 
 input FindCommentsOrderByInput {
@@ -466,6 +514,7 @@ input FindGroupProfilesWhereInput {
   brandIds: [ID!]
   createdAt: JSON
   groupIds: [ID!]
+  status: GroupStatus
 }
 
 input FindOfferPreviewsOrderByInput {
@@ -485,6 +534,17 @@ input FindOfferPreviewsWhereInput {
   userId: ID
 }
 
+input FindProductsOrderByInput {
+  createdAt: String
+  name: String
+}
+
+input FindProductsWhereInput {
+  brandId: ID
+  categoryId: ID
+  groupId: ID
+}
+
 input FindReportPreviewsOrderByInput {
   createdAt: String
 }
@@ -496,6 +556,22 @@ input FindReportPreviewsWhereInput {
   reportedUserId: ID
   status: String
   type: String
+  userId: ID
+}
+
+input FindReviewsOrderByInput {
+  createdAt: String
+  rating: Int
+}
+
+input FindReviewsWhereInput {
+  categoryId: ID
+  followed: Boolean
+  groupId: ID
+  isArchived: Boolean
+  pending: String
+  productId: ID
+  rating: Int
   userId: ID
 }
 
@@ -580,6 +656,7 @@ type GroupPreviewResponse {
   position: Int!
   sells: [OfferPreviewResponse!]!
   slug: String
+  status: GroupStatus!
 }
 
 type GroupProfileResponse {
@@ -588,6 +665,7 @@ type GroupProfileResponse {
   id: ID!
   name: String!
   slug: String
+  status: GroupStatus!
 }
 
 type GroupProfileResponseEdge {
@@ -604,11 +682,18 @@ type GroupResponse {
   position: Int
   roles: [RoleResponse!]!
   slug: String
+  status: GroupStatus!
 }
 
 type GroupResponseEdge {
   cursor: String!
   node: GroupResponse!
+}
+
+"""The status of the group (either MINOR or MAJOR)"""
+enum GroupStatus {
+  MAJOR
+  MINOR
 }
 
 """
@@ -650,8 +735,10 @@ type Mutation {
   createGroup(input: CreateGroupInput!): MutationResponse!
   createManyUserImage(input: CreateManyUserImageInput!): MutationResponse!
   createOffer(input: CreateOfferInput!): MutationResponse!
+  createProduct(input: CreateProductInput!): MutationResponse!
   createReaction(input: CreateReactionInput!): MutationResponse!
   createReport(input: CreateReportInput!): MutationResponse!
+  createReview(input: CreateReviewInput!): MutationResponse!
   createRole(input: CreateRoleInput!): MutationResponse!
   createSignedUrl(input: CreateSignedUrlInput!): SignedUrlResponse!
   createSocialAccount(input: CreateSocialAccountInput!): MutationResponse!
@@ -782,6 +869,11 @@ type PaginatedBrandsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedCategoriesResponse {
+  edges: [CategoryResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedCommentsResponse {
   edges: [CommentWithAuthorResponseEdge!]!
   pageInfo: PageInfo!
@@ -802,8 +894,18 @@ type PaginatedOfferPreviewsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedProductsResponse {
+  edges: [ProductPreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedReportPreviewsResponse {
   edges: [ReportPreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PaginatedReviewsResponse {
+  edges: [ReviewPreviewResponseEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -915,6 +1017,38 @@ type PostResponse {
   user: AuthorResponse!
 }
 
+type ProductBaseResponse {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+}
+
+type ProductDetailResponse {
+  brand: BrandBaseResponse!
+  category: CategoryResponse!
+  createdAt: DateTime!
+  description: String
+  group: GroupProfileResponse!
+  id: ID!
+  name: String!
+}
+
+type ProductPreviewResponse {
+  brand: BrandBaseResponse!
+  category: CategoryResponse!
+  createdAt: DateTime!
+  description: String
+  group: GroupProfileResponse!
+  id: ID!
+  name: String!
+}
+
+type ProductPreviewResponseEdge {
+  cursor: String!
+  node: ProductPreviewResponse!
+}
+
 type Query {
   findAuction(id: ID, slug: String): AuctionResponse
   findAuctionInteractionItems(cursor: ID, keyword: String, orderBy: FindAuctionInteractionItemsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindAuctionInteractionItemsWhereInput): PaginatedAuctionInteractionItemsResponse!
@@ -928,6 +1062,7 @@ type Query {
   findBrand(id: ID, slug: String): BrandDetailResponse!
   findBrandPreview(id: ID, slug: String): BrandPreviewResponse!
   findBrands(cursor: ID, keyword: String, orderBy: FindBrandsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindBrandsWhereInput): PaginatedBrandsResponse!
+  findCategories(cursor: ID, keyword: String, orderBy: FindCategoriesOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindCategoriesWhereInput): PaginatedCategoriesResponse!
   findComment(id: ID, postId: ID): CommentResponse
   findCommentCount(postId: ID!): CommentCountResponse!
   findComments(cursor: ID, keyword: String, orderBy: FindCommentsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindCommentsWhereInput): PaginatedCommentsResponse!
@@ -944,10 +1079,16 @@ type Query {
   findOfferPreviews(cursor: ID, keyword: String, orderBy: FindOfferPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindOfferPreviewsWhereInput): PaginatedOfferPreviewsResponse!
   findPlatforms: [PlatformResponse!]!
   findPostPreview(id: ID!): PostPreviewWithUserResponse!
+  findProduct(id: ID): ProductDetailResponse!
+  findProductPreview(id: ID): ProductPreviewResponse!
+  findProducts(cursor: ID, keyword: String, orderBy: FindProductsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindProductsWhereInput): PaginatedProductsResponse!
   findReactions(commentId: ID, postId: ID): [ReactionResponse!]!
   findReport(id: ID!): ReportResponse!
   findReportComment(reportId: ID!): ReportCommentResponse!
   findReportPreviews(cursor: ID, keyword: String, orderBy: FindReportPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindReportPreviewsWhereInput): PaginatedReportPreviewsResponse!
+  findReview(id: ID): ReviewDetailResponse
+  findReviewPreview(id: ID): ReviewPreviewResponse
+  findReviewPreviews(cursor: ID, keyword: String, orderBy: FindReviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindReviewsWhereInput): PaginatedReviewsResponse!
   findRoleById(id: ID!): RoleResponse
   findSocialAccountConflicts(cursor: ID, keyword: String, orderBy: FindSocialAccountConflictsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindSocialAccountConflictsWhereInput): PaginatedSocialAccountConflictsResponse!
   findTags: [TagResponse!]!
@@ -1019,6 +1160,31 @@ type ReportResponse {
   type: String!
   updatedAt: DateTime!
   version: VersionResponse!
+}
+
+type ReviewDetailResponse {
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  post: PostResponse!
+  product: ProductBaseResponse!
+  rating: Int!
+  status: String!
+}
+
+type ReviewPreviewResponse {
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  post: PostPreviewWithUserResponse!
+  product: ProductBaseResponse!
+  rating: Int!
+  status: String!
+}
+
+type ReviewPreviewResponseEdge {
+  cursor: String!
+  node: ReviewPreviewResponse!
 }
 
 type RoleResponse {

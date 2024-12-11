@@ -1,4 +1,5 @@
 import { GroupEntity } from '@lib/domains/group/domain/group.entity';
+import { CategoryEntity } from '@lib/domains/group/domain/category.entity';
 import { LinkEntity } from './link.entity';
 
 export interface UpdateBrandProps {
@@ -11,6 +12,8 @@ export interface UpdateBrandProps {
   logo?: string;
 
   groups?: GroupEntity[];
+
+  categories: CategoryEntity[];
 
   links?: LinkEntity[];
 }

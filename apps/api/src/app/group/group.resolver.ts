@@ -22,6 +22,9 @@ import { AllowlistRoleNames } from '@lib/domains/auth/decorators/allowlist-role-
 import { ADMIN_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
 import { RequiredJwtUserGuard } from '@lib/domains/auth/guards/jwt/required-jwt-user.guard';
 import { MutationResponse } from '@lib/shared/mutation/mutation.response';
+import { PaginatedCategoriesResponse } from '@lib/domains/group/application/queries/find-categories/paginated-categories.response';
+import { FindCategoriesQuery } from '@lib/domains/group/application/queries/find-categories/find-categories.query';
+import { FindCategoriesArgs } from '@lib/domains/group/application/queries/find-categories/find-categories.args';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -55,6 +58,14 @@ export class GroupResolver {
   @Query(() => [GroupPreviewResponse])
   async findGroupPreviews(): Promise<GroupPreviewResponse[]> {
     const query = new FindGroupPreviewsQuery();
+    return this.queryBus.execute(query);
+  }
+
+  @Query(() => PaginatedCategoriesResponse)
+  async findCategories(
+    @Args() findCategoriesArgs: FindCategoriesArgs,
+  ): Promise<PaginatedCategoriesResponse> {
+    const query = new FindCategoriesQuery({ args: findCategoriesArgs });
     return this.queryBus.execute(query);
   }
 
