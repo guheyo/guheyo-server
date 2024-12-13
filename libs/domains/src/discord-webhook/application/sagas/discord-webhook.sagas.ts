@@ -11,6 +11,8 @@ import { EmbedBuilder } from 'discord.js';
 import dayjs from 'dayjs';
 import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
+import { BidPlacedEvent } from '@lib/domains/auction/application/events/bid-placed/bid-placed.event';
+import { formatNumber } from '@lib/shared/number/format-number';
 import { SendDiscordWebhookCommand } from '../commands/send-discord-webhook/send-discord-webhook.command';
 import { DiscordWebhookParser } from '../services/discord-webhook.parser';
 
@@ -102,6 +104,26 @@ export class DiscordWebhookSagas {
           .setImage(event.thumbnail || null);
         return new SendDiscordWebhookCommand({
           target: 'auction',
+          embed,
+        });
+      }),
+    );
+
+  @Saga()
+  bidPlaced = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(BidPlacedEvent),
+      filter((event) => !!event.slug),
+      map((event) => {
+        const embed = new EmbedBuilder()
+          .setColor('Blue')
+          .setTitle(event.title)
+          .setDescription(
+            `입찰: ${formatNumber(event.price)}원
+            ${this.discordWebhookParser.parseAuctionURL({ slug: event.slug! })}`,
+          );
+        return new SendDiscordWebhookCommand({
+          target: 'bid',
           embed,
         });
       }),
