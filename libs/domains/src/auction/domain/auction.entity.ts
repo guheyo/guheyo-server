@@ -90,10 +90,14 @@ export class AuctionEntity extends AggregateRoot {
     if (this.isCanceler(bid.userId))
       throw new Error(AuctionErrorMessage.CANCELLERS_ATTEMPT_TO_RE_BID);
     this.bids.push(bid);
+
     this.apply(
       new BidPlacedEvent({
         auctionId: this.id,
         bidId: bid.id,
+        title: this.post.title,
+        slug: this.post.slug || undefined,
+        price: bid.price,
       }),
     );
     return bid;
