@@ -119,8 +119,9 @@ export class DiscordWebhookSagas {
           .setColor('Blue')
           .setTitle(event.title)
           .setDescription(
-            `입찰: ${formatNumber(event.price)}원
-            ${this.discordWebhookParser.parseAuctionURL({ slug: event.slug! })}`,
+            `입찰: ${formatNumber(event.price)}원\n\n${this.discordWebhookParser.parseAuctionURL({
+              slug: event.slug!,
+            })}`,
           );
         return new SendDiscordWebhookCommand({
           target: 'bid',
