@@ -505,6 +505,15 @@ input FindCommentsWhereInput {
   userId: ID
 }
 
+input FindGroupPreviewsOrderByInput {
+  createdAt: String
+  position: String
+}
+
+input FindGroupPreviewsWhereInput {
+  status: GroupStatus
+}
+
 input FindGroupProfilesOrderByInput {
   createdAt: String
   position: String
@@ -657,6 +666,11 @@ type GroupPreviewResponse {
   sells: [OfferPreviewResponse!]!
   slug: String
   status: GroupStatus!
+}
+
+type GroupPreviewResponseEdge {
+  cursor: String!
+  node: GroupPreviewResponse!
 }
 
 type GroupProfileResponse {
@@ -879,6 +893,11 @@ type PaginatedCommentsResponse {
   pageInfo: PageInfo!
 }
 
+type PaginatedGroupPreviewsResponse {
+  edges: [GroupPreviewResponseEdge!]!
+  pageInfo: PageInfo!
+}
+
 type PaginatedGroupProfilesResponse {
   edges: [GroupProfileResponseEdge!]!
   pageInfo: PageInfo!
@@ -1068,7 +1087,7 @@ type Query {
   findComments(cursor: ID, keyword: String, orderBy: FindCommentsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindCommentsWhereInput): PaginatedCommentsResponse!
   findEmojis(groupId: ID): [EmojiResponse!]!
   findGroup(id: ID, slug: String): GroupResponse
-  findGroupPreviews: [GroupPreviewResponse!]!
+  findGroupPreviews(cursor: ID, keyword: String, orderBy: FindGroupPreviewsOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindGroupPreviewsWhereInput): PaginatedGroupPreviewsResponse!
   findGroupProfiles(cursor: ID, keyword: String, orderBy: FindGroupProfilesOrderByInput, skip: Int! = 1, take: Int!, target: String, where: FindGroupProfilesWhereInput): PaginatedGroupProfilesResponse!
   findGroups(cursor: ID, skip: Int! = 1, take: Int!): PaginatedGroupsResponse!
   findLastReport: LastReportResponse!

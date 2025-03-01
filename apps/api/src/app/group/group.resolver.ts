@@ -10,7 +10,6 @@ import { PaginatedGroupsResponse } from '@lib/domains/group/application/queries/
 import { FindGroupsArgs } from '@lib/domains/group/application/queries/find-groups/find-groups.args';
 import { FindGroupQuery } from '@lib/domains/group/application/queries/find-group/find-group.query';
 import { FindGroupArgs } from '@lib/domains/group/application/queries/find-group/find-group.args';
-import { GroupPreviewResponse } from '@lib/domains/group/application/dtos/group-preview.response';
 import { FindGroupPreviewsQuery } from '@lib/domains/group/application/queries/find-group-previews/find-group-previews.query';
 import { PaginatedGroupProfilesResponse } from '@lib/domains/group/application/queries/find-group-profiles/paginated-group-profiles.response';
 import { FindGroupProfilesArgs } from '@lib/domains/group/application/queries/find-group-profiles/find-group-profiles.args';
@@ -25,6 +24,8 @@ import { MutationResponse } from '@lib/shared/mutation/mutation.response';
 import { PaginatedCategoriesResponse } from '@lib/domains/group/application/queries/find-categories/paginated-categories.response';
 import { FindCategoriesQuery } from '@lib/domains/group/application/queries/find-categories/find-categories.query';
 import { FindCategoriesArgs } from '@lib/domains/group/application/queries/find-categories/find-categories.args';
+import { FindGroupPreviewsArgs } from '@lib/domains/group/application/queries/find-group-previews/find-group-previews.args';
+import { PaginatedGroupPreviewsResponse } from '@lib/domains/group/application/queries/find-group-previews/paginated-group-previews.response';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -55,9 +56,11 @@ export class GroupResolver {
     return this.queryBus.execute(query);
   }
 
-  @Query(() => [GroupPreviewResponse])
-  async findGroupPreviews(): Promise<GroupPreviewResponse[]> {
-    const query = new FindGroupPreviewsQuery();
+  @Query(() => PaginatedGroupPreviewsResponse)
+  async findGroupPreviews(
+    @Args() findGroupPreviewsArgs: FindGroupPreviewsArgs,
+  ): Promise<PaginatedGroupPreviewsResponse> {
+    const query = new FindGroupPreviewsQuery({ args: findGroupPreviewsArgs });
     return this.queryBus.execute(query);
   }
 
