@@ -2,14 +2,10 @@ import { CommentEntity } from '@lib/domains/comment/domain/comment.entity';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { validateCooldown } from '@lib/shared/cooldown/validate-cooldown';
 import { Type } from 'class-transformer';
-import { NotFoundException } from '@nestjs/common';
 import { PostEntity } from '@lib/domains/post/domain/post.entity';
 import { ReportCreatedEvent } from '../application/events/report-created/report-created.event';
-import { ReportStatusUpdatedEvent } from '../application/events/report-status-updated/report-status-updated.event';
 import { REPORT_COMMENTED, REPORT_OPEN } from './report.constants';
 import { ReportedUserEntity } from './reported-user.entity';
-import { ReportErrorMessage } from './report.error.message';
-import { CheckedReportedUserEvent } from '../application/events/checked-reported-user/checked-reported-user.event';
 import { ReportCommentedEvent } from '../application/events/report-commented/report-commented.event';
 import { ReportCommentEntity } from './report-comment.entity';
 import { ReportCommentUpdatedEvent } from '../application/events/report-comment-updated/report-comment-updated.event';
@@ -68,6 +64,7 @@ export class ReportEntity extends AggregateRoot {
         type: this.type,
         reportedPostId: this.reportedPostId || undefined,
         reportedCommentId: this.reportedCommentId || undefined,
+        reportedUserId: this.reportedUserId,
         reportedUserUsername: this.reportedUser.username,
         reportedUserAvatarURL: this.reportedUser.avatarURL || undefined,
         reason: this.reason,
@@ -88,29 +85,19 @@ export class ReportEntity extends AggregateRoot {
     );
   }
 
-  updateComment() {
+  updateComment({ oldContent, newContent }: { oldContent: string; newContent: string }) {
     this.apply(
       new ReportCommentUpdatedEvent({
         reportId: this.id,
+        reportedUserId: this.reportedUserId,
+        oldContent,
+        newContent,
       }),
     );
   }
 
   checkComments() {
-    const prevStatus = this.status;
     this.status = this.comments.length ? REPORT_COMMENTED : REPORT_OPEN;
-
-    if (this.status !== prevStatus) {
-      this.apply(
-        new ReportStatusUpdatedEvent({
-          reportId: this.id,
-          type: this.type,
-          reportedPostId: this.reportedPostId || undefined,
-          reportedCommentId: this.reportedCommentId || undefined,
-          reportStatus: this.status,
-        }),
-      );
-    }
   }
 
   findComment(commentId: string) {
@@ -119,12 +106,5 @@ export class ReportEntity extends AggregateRoot {
 
   validateSubmitTerm() {
     return validateCooldown(this.createdAt);
-  }
-
-  checkReportedUser() {
-    if (!this.reportedUser) throw new NotFoundException(ReportErrorMessage.REPORTED_USER_NOT_FOUND);
-
-    const input = this.reportedUser.checkReceivedReports();
-    this.apply(new CheckedReportedUserEvent(input));
   }
 }
