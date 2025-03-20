@@ -14,6 +14,7 @@ import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.
 import { BidPlacedEvent } from '@lib/domains/auction/application/events/bid-placed/bid-placed.event';
 import { formatNumber } from '@lib/shared/number/format-number';
 import { ReportCommentCreatedEvent } from '@lib/domains/report/application/events/report-comment-created/report-comment-created.event';
+import { ReportCommentUpdatedEvent } from '@lib/domains/report/application/events/report-comment-updated/report-comment-updated.event';
 import { SendDiscordWebhookCommand } from '../commands/send-discord-webhook/send-discord-webhook.command';
 import { DiscordWebhookParser } from '../services/discord-webhook.parser';
 
@@ -157,8 +158,35 @@ export class DiscordWebhookSagas {
       ofType(ReportCommentCreatedEvent),
       map((event) => {
         const embed = new EmbedBuilder()
-          .setTitle(`[새 댓글] ${event.content}`)
+          .setTitle(
+            this.discordWebhookParser.parseCreatedReportCommentTitle({ content: event.content }),
+          )
           .setColor('DarkGreen')
+          .setAuthor({
+            name: event.reportedUserUsername,
+            iconURL: event.reportedUserAvatarURL,
+          })
+          .setDescription(this.discordWebhookParser.parseReportURL({ reportId: event.reportId }));
+        return new SendDiscordWebhookCommand({
+          target: 'reportComment',
+          embed,
+        });
+      }),
+    );
+
+  @Saga()
+  reportCommentUpdated = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(ReportCommentUpdatedEvent),
+      map((event) => {
+        const embed = new EmbedBuilder()
+          .setTitle(
+            this.discordWebhookParser.parseUpdatedReportCommentTitle({
+              oldContent: event.oldContent,
+              newContent: event.newContent,
+            }),
+          )
+          .setColor('Red')
           .setAuthor({
             name: event.reportedUserUsername,
             iconURL: event.reportedUserAvatarURL,
