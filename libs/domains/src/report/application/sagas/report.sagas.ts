@@ -1,72 +1,52 @@
 import { Injectable } from '@nestjs/common';
 import { ICommand, Saga, ofType } from '@nestjs/cqrs';
-import { Observable, concatMap, filter, map, of } from 'rxjs';
+import { Observable, concatMap, of } from 'rxjs';
 import { ConnectRolesCommand } from '@lib/domains/user/application/commands/connect-roles/connect-roles.command';
-import { DisconnectRolesCommand } from '@lib/domains/user/application/commands/disconnect-roles/disconnect-roles.command';
-import { CheckReportCommentsCommand } from '../commands/check-report-comments/check-report-comments.command';
+import { REPORTED_USER_ROLE_NAME } from '@lib/domains/role/domain/role.constants';
 import { ReportCreatedEvent } from '../events/report-created/report-created.event';
-import { ReportStatusUpdatedEvent } from '../events/report-status-updated/report-status-updated.event';
-import { CheckedReportedUserEvent } from '../events/checked-reported-user/checked-reported-user.event';
-import { CheckReportedUserCommand } from '../commands/check-reported-user/check-reported-user.command';
-import { ReportCommentedEvent } from '../events/report-commented/report-commented.event';
+import { ReportCommentCreatedEvent } from '../events/report-comment-created/report-comment-created.event';
+import { ReportCommentUpdatedEvent } from '../events/report-comment-updated/report-comment-updated.event';
 
 @Injectable()
 export class ReportSagas {
   @Saga()
-  reportCommented = (events$: Observable<any>): Observable<ICommand> =>
-    events$.pipe(
-      ofType(ReportCommentedEvent),
-      map((event) => new CheckReportCommentsCommand(event)),
-    );
-
-  @Saga()
-  postReportCreated = (events$: Observable<any>): Observable<ICommand> =>
+  reportCreated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
       ofType(ReportCreatedEvent),
-      filter((event) => event.type === 'post'),
       concatMap((event) =>
         of(
-          new CheckReportedUserCommand({
-            reportId: event.reportId,
+          new ConnectRolesCommand({
+            input: {
+              roleIds: [],
+              roleNames: [REPORTED_USER_ROLE_NAME],
+            },
+            userId: event.reportedUserId,
           }),
         ),
       ),
     );
 
   @Saga()
-  postReportStatusUpdated = (events$: Observable<any>): Observable<ICommand> =>
+  reportCommentCreated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
-      ofType(ReportStatusUpdatedEvent),
-      filter((event) => event.type === 'post'),
-      concatMap((event) =>
-        of(
-          new CheckReportedUserCommand({
-            reportId: event.reportId,
-          }),
-        ),
-      ),
+      ofType(ReportCommentCreatedEvent),
+      // TODO
     );
 
   @Saga()
-  reportedUserChecked = (events$: Observable<any>): Observable<ICommand> =>
+  reportCommentUpdated = (events$: Observable<any>): Observable<ICommand> =>
     events$.pipe(
-      ofType(CheckedReportedUserEvent),
-      map((event) =>
-        event.hasUncommentedReceivedReports
-          ? new ConnectRolesCommand({
-              input: {
-                roleIds: event.roleIds,
-                roleNames: event.roleNames,
-              },
-              userId: event.userId,
-            })
-          : new DisconnectRolesCommand({
-              input: {
-                roleIds: [],
-                roleNames: event.roleNames,
-              },
-              userId: event.userId!,
-            }),
+      ofType(ReportCommentUpdatedEvent),
+      concatMap((event) =>
+        of(
+          new ConnectRolesCommand({
+            input: {
+              roleIds: [],
+              roleNames: [REPORTED_USER_ROLE_NAME],
+            },
+            userId: event.reportedUserId,
+          }),
+        ),
       ),
     );
 }

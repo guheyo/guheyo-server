@@ -10,6 +10,8 @@ export class ReportCreatedEvent implements IEvent {
 
   reportedCommentId?: string;
 
+  reportedUserId: string;
+
   reportedUserUsername: string;
 
   reportedUserAvatarURL?: string;
@@ -23,6 +25,7 @@ export class ReportCreatedEvent implements IEvent {
     this.type = input.type;
     this.reportedPostId = input.reportedPostId;
     this.reportedCommentId = input.reportedCommentId;
+    this.reportedUserId = input.reportedUserId;
     this.reportedUserUsername = input.reportedUserUsername;
     this.reportedUserAvatarURL = input.reportedUserAvatarURL;
     this.reason = input.reason;

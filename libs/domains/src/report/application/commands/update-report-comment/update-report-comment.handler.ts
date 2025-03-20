@@ -31,9 +31,10 @@ export class UpdateReportCommentHandler extends PrismaCommandHandler<
     const comment = report.findComment(command.id);
     if (!comment) throw new NotFoundException(ReportErrorMessage.REPORT_COMMENT_NOT_FOUND);
 
+    const oldContent = comment.content;
     comment.update({ id: command.id, content: command.content });
     await this.savePort.updateComment(comment);
-    report.commentReport();
+    report.updateComment({ oldContent, newContent: comment.content });
     report.commit();
   }
 }
