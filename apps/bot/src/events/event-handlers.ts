@@ -21,6 +21,7 @@ import { SellThreadCreatedHandler } from './sell-thread-created/sell-thread-crea
 import { SellThreadUpdatedHandler } from './sell-thread-updated/sell-thread-updated.handler';
 import { SwapThreadCreatedHandler } from './swap-thread-created/swap-thread-created.handler';
 import { SwapThreadUpdatedHandler } from './swap-thread-updated/swap-thread-updated.handler';
+import { JoinedMemberRoleInitializedHandler } from './joined-member-role-initialized/joined-member-role-initialized.handler';
 
 export const EVENT_HANDLERS = [
   ReadyHandler,
@@ -46,6 +47,7 @@ export const EVENT_HANDLERS = [
   BuyThreadUpdatedHandler,
   SwapThreadCreatedHandler,
   SwapThreadUpdatedHandler,
+  JoinedMemberRoleInitializedHandler,
   // NOTE: Delete directly from the web
   // offer, demand, swap messages
 ];
