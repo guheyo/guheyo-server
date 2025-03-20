@@ -13,6 +13,7 @@ import { DISCORD } from '@lib/shared/discord/discord.constants';
 import { BumpedEvent } from '@lib/domains/bump/application/events/bumped/bumped.event';
 import { BidPlacedEvent } from '@lib/domains/auction/application/events/bid-placed/bid-placed.event';
 import { formatNumber } from '@lib/shared/number/format-number';
+import { ReportCommentCreatedEvent } from '@lib/domains/report/application/events/report-comment-created/report-comment-created.event';
 import { SendDiscordWebhookCommand } from '../commands/send-discord-webhook/send-discord-webhook.command';
 import { DiscordWebhookParser } from '../services/discord-webhook.parser';
 
@@ -145,6 +146,26 @@ export class DiscordWebhookSagas {
           .setDescription(this.discordWebhookParser.parseReportURL({ reportId: event.reportId }));
         return new SendDiscordWebhookCommand({
           target: 'report',
+          embed,
+        });
+      }),
+    );
+
+  @Saga()
+  reportCommentCreated = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(ReportCommentCreatedEvent),
+      map((event) => {
+        const embed = new EmbedBuilder()
+          .setTitle(`[새 댓글] ${event.content}`)
+          .setColor('DarkGreen')
+          .setAuthor({
+            name: event.reportedUserUsername,
+            iconURL: event.reportedUserAvatarURL,
+          })
+          .setDescription(this.discordWebhookParser.parseReportURL({ reportId: event.reportId }));
+        return new SendDiscordWebhookCommand({
+          target: 'reportComment',
           embed,
         });
       }),
