@@ -28,6 +28,13 @@ export class JoinedMemberRoleInitializedHandler {
     const appliedMember = appliedMembers[0];
 
     const memberRoleNames = appliedMember.roles.cache.map((role) => role.name);
-    console.log(`${user.username}<@${member.id}> role initialized\n${memberRoleNames}`);
+    console.log(`${user.username}<@${member.id}> role initialized ${memberRoleNames}`);
+
+    if (memberRoleNames.includes('피신고자')) {
+      member.send(`
+        동물의 왕국: ⏱타임아웃 7일\n사유: 피신고자 서버 재입장
+      `);
+      member.timeout(1000 * 3600 * 24 * 7, '피신고자 서버 재입장'); // Timeout 7일
+    }
   }
 }
