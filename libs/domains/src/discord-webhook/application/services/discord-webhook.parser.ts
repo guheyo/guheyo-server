@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { OFFER } from '@lib/domains/offer/domain/offer.constants';
 import { formatNumber } from '@lib/shared/number/format-number';
+import { truncateText } from '@lib/shared/text/truncate-text';
 
 @Injectable()
 export class DiscordWebhookParser {
@@ -37,6 +38,20 @@ export class DiscordWebhookParser {
   parseUserReviewTitle({ rating, title }: { rating: number; title: string }) {
     if (rating === 1) return `[비매너 후기] ${title}`;
     return `[매너 후기] ${title}`;
+  }
+
+  parseCreatedReportCommentTitle({ content }: { content: string }) {
+    return `[New] ${truncateText(content, 40)}`;
+  }
+
+  parseUpdatedReportCommentTitle({
+    oldContent,
+    newContent,
+  }: {
+    oldContent: string;
+    newContent: string;
+  }) {
+    return `[New] ${truncateText(newContent, 40)}\n[Old] ${truncateText(oldContent, 40)}`;
   }
 
   parseOfferURL({ slug }: { slug: string }) {
