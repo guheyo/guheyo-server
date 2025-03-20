@@ -1,4 +1,4 @@
-export class ReportCommentedInput {
+export class ReportCommentCreatedInput {
   reportId: string;
 
   constructor({ reportId }: { reportId: string }) {
