@@ -6,7 +6,7 @@ import { PostEntity } from '@lib/domains/post/domain/post.entity';
 import { ReportCreatedEvent } from '../application/events/report-created/report-created.event';
 import { REPORT_COMMENTED, REPORT_OPEN } from './report.constants';
 import { ReportedUserEntity } from './reported-user.entity';
-import { ReportCommentedEvent } from '../application/events/report-commented/report-commented.event';
+import { ReportCommentCreatedEvent } from '../application/events/report-comment-created/report-comment-created.event';
 import { ReportCommentEntity } from './report-comment.entity';
 import { ReportCommentUpdatedEvent } from '../application/events/report-comment-updated/report-comment-updated.event';
 
@@ -77,10 +77,11 @@ export class ReportEntity extends AggregateRoot {
     return this.reportedUserId === userId;
   }
 
-  commentReport() {
+  createComment({ content }: { content: string }) {
     this.apply(
-      new ReportCommentedEvent({
+      new ReportCommentCreatedEvent({
         reportId: this.id,
+        content,
       }),
     );
   }
