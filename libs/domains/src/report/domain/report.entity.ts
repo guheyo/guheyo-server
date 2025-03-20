@@ -12,6 +12,7 @@ import { ReportErrorMessage } from './report.error.message';
 import { CheckedReportedUserEvent } from '../application/events/checked-reported-user/checked-reported-user.event';
 import { ReportCommentedEvent } from '../application/events/report-commented/report-commented.event';
 import { ReportCommentEntity } from './report-comment.entity';
+import { ReportCommentUpdatedEvent } from '../application/events/report-comment-updated/report-comment-updated.event';
 
 export class ReportEntity extends AggregateRoot {
   id: string;
@@ -82,6 +83,14 @@ export class ReportEntity extends AggregateRoot {
   commentReport() {
     this.apply(
       new ReportCommentedEvent({
+        reportId: this.id,
+      }),
+    );
+  }
+
+  updateComment() {
+    this.apply(
+      new ReportCommentUpdatedEvent({
         reportId: this.id,
       }),
     );
