@@ -21,13 +21,14 @@ export class UpdateReportCommentHandler extends PrismaCommandHandler<
   }
 
   async execute(command: UpdateReportCommentCommand): Promise<void> {
-    const report = await this.loadPort.findById(command.reportId);
+    let report = await this.loadPort.findById(command.reportId);
     if (!report) throw new NotFoundException(ReportErrorMessage.REPORT_NOT_FOUND);
     if (!report.validateCommenter(command.user.id))
       throw new ForbiddenException(
         ReportErrorMessage.COMMENT_REPORT_REQUEST_FROM_UNAUTHORIZED_USER,
       );
 
+    report = this.publisher.mergeObjectContext(report);
     const comment = report.findComment(command.id);
     if (!comment) throw new NotFoundException(ReportErrorMessage.REPORT_COMMENT_NOT_FOUND);
 
