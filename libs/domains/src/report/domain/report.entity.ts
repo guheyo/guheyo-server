@@ -81,6 +81,8 @@ export class ReportEntity extends AggregateRoot {
     this.apply(
       new ReportCommentCreatedEvent({
         reportId: this.id,
+        reportedUserUsername: this.reportedUser.username,
+        reportedUserAvatarURL: this.reportedUser.avatarURL || undefined,
         content,
       }),
     );
