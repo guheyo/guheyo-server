@@ -97,7 +97,7 @@ export class ReportEntity extends AggregateRoot {
     );
   }
 
-  checkComments() {
+  updateStatus() {
     this.status = this.comments.length ? REPORT_COMMENTED : REPORT_OPEN;
   }
 
