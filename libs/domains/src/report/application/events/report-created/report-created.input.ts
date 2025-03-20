@@ -7,6 +7,8 @@ export class ReportCreatedInput {
 
   reportedCommentId?: string;
 
+  reportedUserId: string;
+
   reportedUserUsername: string;
 
   reportedUserAvatarURL?: string;
@@ -20,6 +22,7 @@ export class ReportCreatedInput {
     type,
     reportedPostId,
     reportedCommentId,
+    reportedUserId,
     reportedUserUsername,
     reportedUserAvatarURL,
     reason,
@@ -29,6 +32,7 @@ export class ReportCreatedInput {
     type: string;
     reportedPostId?: string;
     reportedCommentId?: string;
+    reportedUserId: string;
     reportedUserUsername: string;
     reportedUserAvatarURL: string;
     reason: string;
@@ -38,6 +42,7 @@ export class ReportCreatedInput {
     this.type = type;
     this.reportedPostId = reportedPostId;
     this.reportedCommentId = reportedCommentId;
+    this.reportedUserId = reportedUserId;
     this.reportedUserUsername = reportedUserUsername;
     this.reportedUserAvatarURL = reportedUserAvatarURL;
     this.reason = reason;
