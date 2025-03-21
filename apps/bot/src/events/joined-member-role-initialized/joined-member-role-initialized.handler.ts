@@ -20,7 +20,7 @@ export class JoinedMemberRoleInitializedHandler {
   ) {
     const guild = await member.guild.fetch();
     const filteredRoles = (await guild.roles.fetch()).filter(
-      (r) => !/사파리/.test(r.name) && !/초식마크/.test(r.name),
+      (r) => [1, 12369084].includes(r.color), // #000001, #bcbcbc
     );
 
     const userWithMember = { user, member };
