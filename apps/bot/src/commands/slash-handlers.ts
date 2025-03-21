@@ -20,6 +20,7 @@ import { BulkSaveBidsSlashHandler } from './bulk-save/bulk-save-bids.slash-handl
 import { BulkSaveAuctionCommentsSlashHandler } from './bulk-save/bulk-save-auction-comments.slash-handler';
 import { CountPostsSlashHandler } from './count-posts/count-posts.slash-handler';
 import { BulkSaveThreadsSlashHandler } from './bulk-save/bulk-save-threads.slash-handler';
+import { AssignUserRoleSlashHandler } from './assign-user-role/assign-user-role.slash-handler';
 
 export const SLASH_HANDLERS = [
   PingSlashHandler,
@@ -35,6 +36,7 @@ export const SLASH_HANDLERS = [
   BulkSaveBidsSlashHandler,
   BulkSaveAuctionCommentsSlashHandler,
   ConnectUserRolesSlashHandler,
+  AssignUserRoleSlashHandler,
   FindUserWithoutSocialAccountsCountSlashHandler,
   BulkConnectUserRolesSlashHandler,
   LinkNonExistingDiscordAccountsSlashHandler,
