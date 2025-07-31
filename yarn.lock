@@ -2454,7 +2454,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guheyo/domains@workspace:libs/domains"
   dependencies:
-    "@nestjs/common": ^10.2.4
+    "@nestjs/common": ^10.4.16
     "@nestjs/config": ^3.1.1
     "@nestjs/core": ^10.2.4
     "@nestjs/cqrs": ^10.2.5
@@ -2499,7 +2499,7 @@ __metadata:
     "@aws-sdk/client-sso-oidc": ^3.592.0
     "@aws-sdk/client-sts": ^3.592.0
     "@aws-sdk/s3-request-presigner": ^3.417.0
-    "@nestjs/common": ^10.2.4
+    "@nestjs/common": ^10.4.16
     "@nestjs/config": ^3.0.1
     "@nestjs/core": ^10.2.4
     "@nestjs/cqrs": ^10.2.6
@@ -3017,24 +3017,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/common@npm:^10.2.4, @nestjs/common@npm:^10.2.5":
-  version: 10.2.6
-  resolution: "@nestjs/common@npm:10.2.6"
+"@nestjs/common@npm:^10.4.16":
+  version: 10.4.20
+  resolution: "@nestjs/common@npm:10.4.20"
   dependencies:
+    file-type: 20.4.1
     iterare: 1.2.1
-    tslib: 2.6.2
+    tslib: 2.8.1
     uid: 2.0.2
   peerDependencies:
     class-transformer: "*"
     class-validator: "*"
-    reflect-metadata: ^0.1.12
+    reflect-metadata: ^0.1.12 || ^0.2.0
     rxjs: ^7.1.0
   peerDependenciesMeta:
     class-transformer:
       optional: true
     class-validator:
       optional: true
-  checksum: 4fbfbd48a047cd76619b5cc8b56972fc665c502691b878b2ccc44928529d17ac5b46a1fcc57abbd93478555174cd11892560582aa77ef686a8e625fbf402a8c9
+  checksum: c790a47246f3c830bd16ca34849d6a9c6006a5564745db7d86f6f80ac3b5134fb87c2b925a84044ec7d41cd2b8c4b695b284ba756b9cfe98c1b2004933e62e3d
   languageName: node
   linkType: hard
 
@@ -4960,6 +4961,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tokenizer/inflate@npm:^0.2.6":
+  version: 0.2.7
+  resolution: "@tokenizer/inflate@npm:0.2.7"
+  dependencies:
+    debug: ^4.4.0
+    fflate: ^0.8.2
+    token-types: ^6.0.0
+  checksum: 0c77759d453501aa0509f6c60a3f2ec2ff6db9e33f196d077af719be6c2cc5a6b2c686e425610ed25d6416ddcb7f495a5e9ef689c8df225a80703b03e83aa956
+  languageName: node
+  linkType: hard
+
+"@tokenizer/token@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@tokenizer/token@npm:0.3.0"
+  checksum: 1d575d02d2a9f0c5a4ca5180635ebd2ad59e0f18b42a65f3d04844148b49b3db35cf00b6012a1af2d59c2ab3caca59451c5689f747ba8667ee586ad717ee58e1
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:1":
   version: 1.1.2
   resolution: "@tootallnate/once@npm:1.1.2"
@@ -6269,7 +6288,7 @@ __metadata:
     "@nestjs/axios": ^3.0.0
     "@nestjs/cache-manager": ^2.1.0
     "@nestjs/cli": ^10.3.0
-    "@nestjs/common": ^10.2.4
+    "@nestjs/common": ^10.4.16
     "@nestjs/config": ^3.0.1
     "@nestjs/core": ^10.2.4
     "@nestjs/cqrs": ^10.2.5
@@ -6909,7 +6928,7 @@ __metadata:
     "@nestjs/axios": ^3.0.0
     "@nestjs/cache-manager": ^2.1.0
     "@nestjs/cli": ^10.3.0
-    "@nestjs/common": ^10.2.5
+    "@nestjs/common": ^10.4.16
     "@nestjs/config": ^3.0.0
     "@nestjs/core": ^10.2.5
     "@nestjs/cqrs": ^10.2.5
@@ -7988,6 +8007,18 @@ __metadata:
   dependencies:
     ms: ^2.1.1
   checksum: b3d8c5940799914d30314b7c3304a43305fd0715581a919dacb8b3176d024a782062368405b47491516d2091d6462d4d11f2f4974a405048094f8bfebfa3071c
+  languageName: node
+  linkType: hard
+
+"debug@npm:^4.4.0":
+  version: 4.4.1
+  resolution: "debug@npm:4.4.1"
+  dependencies:
+    ms: ^2.1.3
+  peerDependenciesMeta:
+    supports-color:
+      optional: true
+  checksum: a43826a01cda685ee4cec00fb2d3322eaa90ccadbef60d9287debc2a886be3e835d9199c80070ede75a409ee57828c4c6cd80e4b154f2843f0dc95a570dc0729
   languageName: node
   linkType: hard
 
@@ -9412,6 +9443,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fflate@npm:^0.8.2":
+  version: 0.8.2
+  resolution: "fflate@npm:0.8.2"
+  checksum: 29470337b85d3831826758e78f370e15cda3169c5cd4477c9b5eea2402261a74b2975bae816afabe1c15d21d98591e0d30a574f7103aa117bff60756fa3035d4
+  languageName: node
+  linkType: hard
+
 "figures@npm:^3.0.0":
   version: 3.2.0
   resolution: "figures@npm:3.2.0"
@@ -9437,6 +9475,18 @@ __metadata:
   dependencies:
     flat-cache: ^3.0.4
   checksum: f49701feaa6314c8127c3c2f6173cfefff17612f5ed2daaafc6da13b5c91fd43e3b2a58fd0d63f9f94478a501b167615931e7200e31485e320f74a33885a9c74
+  languageName: node
+  linkType: hard
+
+"file-type@npm:20.4.1":
+  version: 20.4.1
+  resolution: "file-type@npm:20.4.1"
+  dependencies:
+    "@tokenizer/inflate": ^0.2.6
+    strtok3: ^10.2.0
+    token-types: ^6.0.0
+    uint8array-extras: ^1.4.0
+  checksum: 672504dff2a15aaebaf32457be3a89fa8b09a15b0da96d82411bab9474bc18aae740a90863f3777e1493a34093994e69cfd19b5be801fdc0f7a7646d19138b40
   languageName: node
   linkType: hard
 
@@ -10633,7 +10683,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ieee754@npm:^1.1.13, ieee754@npm:^1.1.4":
+"ieee754@npm:^1.1.13, ieee754@npm:^1.1.4, ieee754@npm:^1.2.1":
   version: 1.2.1
   resolution: "ieee754@npm:1.2.1"
   checksum: 5144c0c9815e54ada181d80a0b810221a253562422e7c6c3a60b1901154184f49326ec239d618c416c1c5945a2e197107aee8d986a3dd836b53dffefd99b5e7e
@@ -12731,7 +12781,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ms@npm:2.1.3, ms@npm:^2.0.0":
+"ms@npm:2.1.3, ms@npm:^2.0.0, ms@npm:^2.1.3":
   version: 2.1.3
   resolution: "ms@npm:2.1.3"
   checksum: aa92de608021b242401676e35cfa5aa42dd70cbdc082b916da7fb925c542173e36bce97ea3e804923fe92c0ad991434e4a38327e15a1b5b5f945d66df615ae6d
@@ -15393,6 +15443,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"strtok3@npm:^10.2.0":
+  version: 10.3.4
+  resolution: "strtok3@npm:10.3.4"
+  dependencies:
+    "@tokenizer/token": ^0.3.0
+  checksum: 7faf008cdf7f96c3d066d349116affbd5e5a49da0f03520299a9a04ad55d57b338d368231d469a64d358a86a03c2a0a3b67d61aa124000c941f65093ada9ae98
+  languageName: node
+  linkType: hard
+
 "subscriptions-transport-ws@npm:0.11.0":
   version: 0.11.0
   resolution: "subscriptions-transport-ws@npm:0.11.0"
@@ -15756,6 +15815,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"token-types@npm:^6.0.0":
+  version: 6.0.4
+  resolution: "token-types@npm:6.0.4"
+  dependencies:
+    "@tokenizer/token": ^0.3.0
+    ieee754: ^1.2.1
+  checksum: 371c2eb805951a7fda54ae79a1042018394da42cca7f80bfebe9af2bf602d4e612bcfc373ca76ad16aabdfdb8be25942f3e2e5397848c30984948fde54be2890
+  languageName: node
+  linkType: hard
+
 "tr46@npm:~0.0.3":
   version: 0.0.3
   resolution: "tr46@npm:0.0.3"
@@ -15898,6 +15967,13 @@ __metadata:
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 329ea56123005922f39642318e3d1f0f8265d1e7fcb92c633e0809521da75eeaca28d2cf96d7248229deb40e5c19adf408259f4b9640afd20d13aecc1430f3ad
+  languageName: node
+  linkType: hard
+
+"tslib@npm:2.8.1":
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: e4aba30e632b8c8902b47587fd13345e2827fa639e7c3121074d5ee0880723282411a8838f830b55100cbe4517672f84a2472667d355b81e8af165a55dc6203a
   languageName: node
   linkType: hard
 
@@ -16122,6 +16198,13 @@ __metadata:
   dependencies:
     "@lukeed/csprng": ^1.0.0
   checksum: 98aabddcd6fe46f9b331b0378a93ee9cc51474348ada02006df9d10b4abc783ed596748ed9f20d7f6c5ff395dbcd1e764a65a68db6f39a31c95ae85ef13fe979
+  languageName: node
+  linkType: hard
+
+"uint8array-extras@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "uint8array-extras@npm:1.4.0"
+  checksum: 791c07e1f632cb6b4d5c0275dcac2efa4689be523f021cc78b66377872e500dbe5b4c56749367cc97892f6952bc5bccd34cf9147a2a16ccb253f3b7f94588398
   languageName: node
   linkType: hard
 
