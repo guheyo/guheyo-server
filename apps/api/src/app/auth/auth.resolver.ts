@@ -11,6 +11,12 @@ import { JwtResponse } from '@lib/domains/auth/guards/jwt/jwt.response';
 import { UserErrorMessage } from '@lib/domains/user/domain/user.error.message';
 import { FindUserQuery } from '@lib/domains/user/application/queries/find-user/find-user.query';
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
+import { DeleteUserResponse } from '@lib/domains/user/application/commands/delete-user/delete-user.response';
+import { DeleteUserCommand } from '@lib/domains/user/application/commands/delete-user/delete-user.command';
+import { ExtractedUser } from '@lib/domains/auth/decorators/extracted-user/extracted-user.decorator';
+import { MyUserResponse } from '@lib/domains/user/application/dtos/my-user.response';
+import { UserAgent } from '@lib/domains/auth/decorators/user-agent/user-agent.decorator';
+import { IpAddress } from '@lib/domains/auth/decorators/ip/ip-address.decorator';
 import { GqlThrottlerBehindProxyGuard } from '../throttler/gql-throttler-behind-proxy.guard';
 
 @UseGuards(GqlThrottlerBehindProxyGuard)
@@ -111,5 +117,26 @@ export class AuthResolver {
       provider: jwtPayload.socialProfile.provider,
       socialId: jwtPayload.socialProfile.id,
     });
+  }
+
+  @Mutation(() => DeleteUserResponse)
+  @UseGuards(JwtRefreshGuard)
+  async withdraw(
+    @ExtractedUser() user: MyUserResponse,
+    @UserAgent() userAgent: string,
+    @IpAddress() ipAddress: string,
+  ): Promise<DeleteUserResponse> {
+    await this.commandBus.execute(
+      new DeleteUserCommand({
+        user,
+        userAgent,
+        ipAddress,
+      }),
+    );
+
+    return {
+      id: user.id,
+      deletedAt: new Date(),
+    };
   }
 }
