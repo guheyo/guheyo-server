@@ -6,6 +6,7 @@ import { BidSavePort } from '@lib/domains/auction/application/ports/out/bid.save
 import { BidEntity } from '@lib/domains/auction/domain/bid.entity';
 import { AuctionSavePort } from '@lib/domains/auction/application/ports/out/auction.save.port';
 import { AuctionLoadPort } from '@lib/domains/auction/application/ports/out/auction.load.port';
+import { BID, REJECTED } from '@lib/domains/auction/domain/bid.constants';
 
 @Injectable()
 export class AuctionRepository
@@ -166,6 +167,25 @@ export class AuctionRepository
             data: _.pick(bid, 'canceledAt'),
           },
         },
+      },
+    });
+  }
+
+  async rejectBids(userId: string): Promise<void> {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+    await this.prismaService.bid.updateMany({
+      where: {
+        userId,
+        status: BID,
+        canceledAt: null,
+        createdAt: {
+          gte: oneWeekAgo,
+        },
+      },
+      data: {
+        status: REJECTED,
       },
     });
   }

@@ -4,6 +4,7 @@ import { paginate } from '@lib/shared/cqrs/queries/pagination/paginate';
 import { plainToInstance } from 'class-transformer';
 import { CommentWithAuthorResponse } from '@lib/domains/comment/application/dtos/comment-with-author.response';
 import { COMMENT } from '@lib/domains/comment/domain/comment.constants';
+import { BID } from '@lib/domains/auction/domain/bid.constants';
 import { FindAuctionInteractionItemsQuery } from './find-auction-interaction-items.query';
 import { AuctionInteractionItemUnion } from '../../dtos/auction-interaction-item.response';
 import { PaginatedAuctionInteractionItemsResponse } from './paginated-auction-interaction-items.response';
@@ -34,7 +35,7 @@ export class FindAuctionInteractionItemsHandler extends PrismaQueryHandler {
               ...where,
               auctionId: query.where?.auctionId,
               userId: query.where?.userId,
-              status: query.where?.status,
+              status: query.where?.status || BID,
             },
             take: query.take + 1,
             skip: query.skip,

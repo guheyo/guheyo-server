@@ -8,6 +8,7 @@ import { AUCTION_CLOSED } from '@lib/domains/auction/domain/auction.constants';
 import { NotFoundException } from '@nestjs/common';
 import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
 import dayjs from 'dayjs';
+import { BID } from '@lib/domains/auction/domain/bid.constants';
 import { FindAuctionPreviewsQuery } from './find-auction-previews.query';
 import { AuctionPreviewResponse } from '../../dtos/auction-preview.response';
 import { PaginatedAuctionPreviewsResponse } from './paginated-auction-previews.response';
@@ -194,6 +195,7 @@ export class FindAuctionPreviewsHandler extends PrismaQueryHandler {
           },
           where: {
             canceledAt: null,
+            status: BID,
           },
           orderBy: {
             price: 'desc',

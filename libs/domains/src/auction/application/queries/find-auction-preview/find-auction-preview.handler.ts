@@ -3,6 +3,7 @@ import { PrismaQueryHandler } from '@lib/shared/cqrs/queries/handlers/prisma-que
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
 import { plainToInstance } from 'class-transformer';
+import { BID } from '@lib/domains/auction/domain/bid.constants';
 import { FindAuctionPreviewQuery } from './find-auction-preview.query';
 import { AuctionPreviewResponse } from '../../dtos/auction-preview.response';
 
@@ -44,6 +45,7 @@ export class FindAuctionPreviewHandler extends PrismaQueryHandler {
           },
           where: {
             canceledAt: null,
+            status: BID,
           },
           orderBy: {
             price: 'desc',
