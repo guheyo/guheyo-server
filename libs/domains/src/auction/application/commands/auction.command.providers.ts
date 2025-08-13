@@ -7,6 +7,7 @@ import { InitialScheduleAuctionEndHandler } from './initial-schedule-auction-end
 import { ReScheduleAuctionEndHandler } from './re-schedule-auction-end/re-schedule-auction-end.handler';
 import { ScheduleAuctionEndingSoonHandler } from './schedule-auction-ending-soon/schedule-auction-ending-soon.handler';
 import { CreateBidsHandler } from './create-bids/create-bids.handler';
+import { RejectBidsHandler } from './reject-bids/reject-bids.handler';
 
 export const AUCTION_COMMAND_PROVIDERS = [
   CreateAuctionHandler,
@@ -18,4 +19,5 @@ export const AUCTION_COMMAND_PROVIDERS = [
   ReScheduleAuctionEndHandler,
   ScheduleAuctionEndingSoonHandler,
   CreateBidsHandler,
+  RejectBidsHandler,
 ];
