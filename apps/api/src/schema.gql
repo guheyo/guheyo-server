@@ -403,6 +403,11 @@ input DeleteCommentInput {
   id: ID!
 }
 
+type DeleteUserResponse {
+  deletedAt: DateTime!
+  id: ID!
+}
+
 type DeletedCommentResponse {
   id: ID!
 }
@@ -787,6 +792,7 @@ type Mutation {
   updateUser(input: UpdateUserInput!): MutationResponse!
   updateUserImage(input: UpdateUserImageInput!): MutationResponse!
   upsertBrandsFromCsv(input: UpsertBrandsFromCsvInput!): MutationResponse!
+  withdraw: DeleteUserResponse!
 }
 
 type MutationResponse {

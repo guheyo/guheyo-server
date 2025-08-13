@@ -13,7 +13,7 @@ export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand> {
   ) {}
 
   async execute(command: DeleteUserCommand): Promise<void> {
-    const user = await this.userLoadPort.findById(command.id);
+    const user = await this.userLoadPort.findById(command.user.id);
     if (!user) throw new NotFoundException(UserErrorMessage.USER_IS_NOT_FOUND);
 
     await this.userSavePort.delete(user);
