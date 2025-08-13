@@ -5,6 +5,7 @@ import { plainToInstance } from 'class-transformer';
 import { NotFoundException } from '@nestjs/common';
 import { AuctionErrorMessage } from '@lib/domains/auction/domain/auction.error.message';
 import { UserResponse } from '@lib/domains/user/application/dtos/user.response';
+import { BID } from '@lib/domains/auction/domain/bid.constants';
 import { PaginatedBiddersResponse } from './paginated-bidders.response';
 import { FindBiddersQuery } from './find-bidders.query';
 
@@ -19,6 +20,7 @@ export class FindBiddersHandler extends PrismaQueryHandler {
         bids: {
           where: {
             canceledAt: null,
+            status: BID,
           },
           include: {
             user: {
