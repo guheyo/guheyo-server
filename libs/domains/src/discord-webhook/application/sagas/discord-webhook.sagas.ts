@@ -15,6 +15,7 @@ import { BidPlacedEvent } from '@lib/domains/auction/application/events/bid-plac
 import { formatNumber } from '@lib/shared/number/format-number';
 import { ReportCommentCreatedEvent } from '@lib/domains/report/application/events/report-comment-created/report-comment-created.event';
 import { ReportCommentUpdatedEvent } from '@lib/domains/report/application/events/report-comment-updated/report-comment-updated.event';
+import { UserDeletedEvent } from '@lib/domains/user/application/events/user-deleted/user-deleted.event';
 import { SendDiscordWebhookCommand } from '../commands/send-discord-webhook/send-discord-webhook.command';
 import { DiscordWebhookParser } from '../services/discord-webhook.parser';
 
@@ -220,6 +221,32 @@ export class DiscordWebhookSagas {
           .setThumbnail(event.thumbnail || null);
         return new SendDiscordWebhookCommand({
           target: 'userReview',
+          embed,
+        });
+      }),
+    );
+
+  @Saga()
+  userDeleted = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(UserDeletedEvent),
+      map((event) => {
+        const embed = new EmbedBuilder()
+          .setTitle(
+            this.discordWebhookParser.parseWithdrawTitle({
+              userId: event.userId,
+              username: event.username,
+              discordId: event.discordId,
+            }),
+          )
+          .setColor('Red')
+          .setAuthor({
+            name: event.username,
+            iconURL: event.avatarURL,
+          })
+          .setDescription(`<@${event.discordId}>`);
+        return new SendDiscordWebhookCommand({
+          target: 'withdraw',
           embed,
         });
       }),
