@@ -21,6 +21,7 @@ import { BulkSaveAuctionCommentsSlashHandler } from './bulk-save/bulk-save-aucti
 import { CountPostsSlashHandler } from './count-posts/count-posts.slash-handler';
 import { BulkSaveThreadsSlashHandler } from './bulk-save/bulk-save-threads.slash-handler';
 import { AssignUserRoleSlashHandler } from './assign-user-role/assign-user-role.slash-handler';
+import { RejectBidsSlashHandler } from './reject-bids/reject-bids.slash-handler';
 
 export const SLASH_HANDLERS = [
   PingSlashHandler,
@@ -46,4 +47,5 @@ export const SLASH_HANDLERS = [
   FindMembersNeedingSocialRoleSlashHandler,
   CountPostsSlashHandler,
   BulkSaveThreadsSlashHandler,
+  RejectBidsSlashHandler,
 ];
