@@ -54,6 +54,18 @@ export class DiscordWebhookParser {
     return `[New] ${truncateText(newContent, 40)}\n[Old] ${truncateText(oldContent, 40)}`;
   }
 
+  parseWithdrawTitle({
+    userId,
+    username,
+    discordId,
+  }: {
+    userId: string;
+    username: string;
+    discordId?: string;
+  }) {
+    return `[Withdraw] ${username} <@${discordId})>\n${userId}`;
+  }
+
   parseOfferURL({ slug }: { slug: string }) {
     return `${this.configService.get('frontend.host')}/${OFFER}/${slug}`;
   }

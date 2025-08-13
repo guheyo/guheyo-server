@@ -7,6 +7,7 @@ import { UpdateUserProps } from './user.types';
 import { SocialAccountLinkedEvent } from '../application/events/social-account-linked/social-account-linked.event';
 import { UserUpdatedEvent } from '../application/events/user-updated/user-updated.event';
 import { AvatarCreatedEvent } from '../application/events/avatar-created/avatar-created.event';
+import { UserDeletedEvent } from '../application/events/user-deleted/user-deleted.event';
 
 export class UserEntity extends AggregateRoot {
   id: string;
@@ -37,6 +38,10 @@ export class UserEntity extends AggregateRoot {
   constructor(partial: Partial<UserEntity>) {
     super();
     Object.assign(this, partial);
+  }
+
+  findSocialAccount(provider: string): SocialAccountEntity | undefined {
+    return this.socialAccounts.find((socialAccount) => socialAccount.provider === provider);
   }
 
   update(props: UpdateUserProps) {
@@ -84,6 +89,18 @@ export class UserEntity extends AggregateRoot {
         url,
         contentType,
         userId: this.id,
+      }),
+    );
+  }
+
+  delete() {
+    const discordId = this.findSocialAccount('discord')?.socialId;
+    this.apply(
+      new UserDeletedEvent({
+        userId: this.id,
+        username: this.username,
+        avatarURL: this.avatarURL || undefined,
+        discordId,
       }),
     );
   }
